@@ -21,9 +21,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Manager {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
-    private Long mId;
+    private String mId;
 
     @NotNull
     private String mPw;

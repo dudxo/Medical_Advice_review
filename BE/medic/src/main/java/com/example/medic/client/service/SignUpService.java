@@ -2,17 +2,17 @@ package com.example.medic.client.service;
 
 import com.example.medic.client.domain.Client;
 import com.example.medic.client.dto.SignUpDto;
-import com.example.medic.client.repository.UserRepository;
+import com.example.medic.client.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class SignUpService {
-    private final UserRepository userRepository;
+    private final ClientRepository clientRepository;
 
     public boolean idConfirm(String uid){
-        return userRepository.existsById(uid);  //존재하면 true 반환
+        return clientRepository.existsById(uid);  //존재하면 true 반환
 
     }
 
@@ -37,6 +37,6 @@ public class SignUpService {
                 .cpAddress(signUpDto.getCpAddress())
                 .build();
 
-        return userRepository.save(client);
+        return clientRepository.save(client);
     }
 }
