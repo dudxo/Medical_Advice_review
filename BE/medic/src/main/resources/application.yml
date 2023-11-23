@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/medic?createDatabaseIfNotExist=true
+    url: jdbc:mariadb://localhost:3305/medic?createDatabaseIfNotExist=true
     username: root
     password: a
 
