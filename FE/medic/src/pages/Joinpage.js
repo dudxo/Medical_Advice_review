@@ -47,7 +47,8 @@ export default function Joinpage(){
             'uId' : uId
         }
         try{
-            const response = await axios.post(`//localhost:8080/signUp/${uId}`, userId);
+            const response = await axios.get(`/signUp/${uId}`);
+            console.log(response)
             setIdchk(true)
             if(response.data === 1){
                 setIdchk(true)
@@ -103,13 +104,16 @@ export default function Joinpage(){
         setCpNum(e.target.value)
     }
     const user_signup = async(userInfo) => {
-        const response = await axios.post('//localhost:8080/signup', userInfo)
-        if(response.data === 1 && infoEmpty){
+        console.log(2)
+        const response = await axios.post('/signUp', userInfo)
+        console.log(response)
+        if(response.data === '회원가입 완료!'){
             alert('회원가입이 완료되었습니다.')
             navigate('/mediclogin')
         }
     }
     const btn_progrm_signup = e => {
+        console.log(1)
         e.preventDefault()
         const userInfo = {
             'uRole' : uRole,

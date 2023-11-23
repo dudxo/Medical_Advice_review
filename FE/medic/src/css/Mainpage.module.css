@@ -1,0 +1,84 @@
+.main_wrap{
+    height : 1080px;
+    display : flex;
+    flex-direction : column;
+    justify-content: space-between;
+}
+.main_header{
+    display :flex;
+    flex-direction: column;
+}
+.top_header{
+    width : 1920px;
+    margin-left:10px;
+    margin-right:10px;
+    display : flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.mainlogo {
+    background-image : url('../img/LogoImg.png');
+    width : 655px;
+    height : 78px;
+    background-repeat : no-repeat;
+    background-size : contain;
+    cursor:pointer;
+}
+.sign_text{
+    font-size : 1.8rem;
+}
+.navigator{
+    width : 1920px;
+    height : 73px;
+    border-top : 1px solid rgba(0,0,0,0.3);
+    border-bottom : 1px solid black;
+}
+.user_sign{
+    width : 250px;
+    margin-right : 10px;
+    display : flex;
+    justify-content:space-between;
+    align-items: center;
+}
+.sign_text{
+    text-decoration:none;
+    color : black;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+}
+.sign_text:visited {
+    color: black;
+}
+.main_footer{
+    width : 1920px;
+    height : 306px;
+}
+.footer_navigator{
+    width : 1920px;
+    height : 73px;
+    border-top : 1px solid black;
+    border-bottom : 1px solid black;
+}
+.footer_navigatorbox{
+    width : 500px;
+    height : 73px;
+    display : flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.footer_navigate_btn{
+    width : 169px;
+    height : 73px;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+}
+.footer_box{
+    background-color : #2a293f;        
+    height : 273px;    
+}
+.footer_navigate_btn{
+    cursor: pointer;
+}
