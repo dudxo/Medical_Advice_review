@@ -17,6 +17,7 @@ export default function Header({isSession}){
             const response = await axios.get('/logout')
             if(response.status === 200){
                 alert('로그아웃 되었습니다.')
+                navigate('/', {state : {isLogin : false}})
             } else(
                 alert('현재 로그인된 세션이 없습니다.')
             )
@@ -34,9 +35,13 @@ export default function Header({isSession}){
                             {
                                 
                                  isSession ? <input type="button" className={`${style.signin_text} ${style.sign_text}`} name="signin_text" onClick={signout_text} value="로그아웃"/>         
-                                        : <input type="button" className={`${style.signin_text} ${style.sign_text}`} name="signin_text" onClick={signin_text} value="로그인"/>
+                                        : 
+                                        <>
+                                            <input type="button" className={`${style.signin_text} ${style.sign_text}`} name="signin_text" onClick={signin_text} value="로그인"/>
+                                            <input type="button" className={`${style.signup_text} ${style.sign_text}`} name="signup_text" onClick={signup_text} value="회원가입"/>
+                                        </>
                             }
-						     <input type="button" className={`${style.signup_text} ${style.sign_text}`} name="signup_text" onClick={signup_text} value="회원가입"/>
+						    
                     </div>
                 </div>
             <div className={style.navigator}>메뉴바</div>

@@ -16,7 +16,6 @@ export default function Mainpage(){
         <div className={style.main_wrap}>
             <Header isSession={isSession}/>
             <section>
-                <input type="submit" className={style.btn_show_mypage} name="btn_show_mypage" onClick={btn_show_mypage} value="마이페이지"/>
             </section>
             <Footer/>
         </div>
