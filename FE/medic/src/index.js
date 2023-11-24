@@ -5,12 +5,14 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import AssignAccept from './pages/AssignAccept';
 import Mainpage from './pages/Mainpage';
 import Joinpage from './pages/Joinpage';
+import Loginpage from './pages/Loginpage';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <Routes>
       <Route path='/' element={<Mainpage/>}/>
       <Route path='/medicassign' element={<AssignAccept/>}/>
+      <Route path='/mediclogin' element={<Loginpage/>}/>
       <Route path='/medicsignup' element={<Joinpage/>}/>
     </Routes>
   </BrowserRouter>

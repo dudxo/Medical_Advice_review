@@ -4,8 +4,7 @@ import style from '../css/Mainpage.module.css'
 import Session from 'react-session-api'
 import axios from "axios";
 
-export default function Header(){
-    const [session, setSession] = useState()
+export default function Header({isSession}){
     const navigate = useNavigate();
     const signin_text = e => {
         navigate('/mediclogin')
@@ -13,18 +12,19 @@ export default function Header(){
     const signup_text = e => {
         navigate('/medicassign')
     }
-    useEffect(()=>{
-        const SESSION_USER_KEY = Session.get('SESSTION_USER_KEY')
-        console.log(SESSION_USER_KEY)
-        if(SESSION_USER_KEY){
-            setSession(true)
-        }else{
-            setSession(false)
-        }
-    },[])
     const signout_text = async(e) => {
-        console.log(1)
-        
+        try{
+            const response = await axios.get('/logout')
+            if(response.status === 200){
+                alert('로그아웃 되었습니다.')
+            } else(
+                alert('현재 로그인된 세션이 없습니다.')
+            )
+            console.log(response)
+        } catch(err){
+            console.log(err)
+        }
+       
     }
     return(
         <header className={style.main_header}>
@@ -33,7 +33,7 @@ export default function Header(){
                     <div className={style.user_sign}>
                             {
                                 
-                                 session ? <input type="button" className={`${style.signin_text} ${style.sign_text}`} name="signin_text" onClick={signout_text} value="로그아웃"/>         
+                                 isSession ? <input type="button" className={`${style.signin_text} ${style.sign_text}`} name="signin_text" onClick={signout_text} value="로그아웃"/>         
                                         : <input type="button" className={`${style.signin_text} ${style.sign_text}`} name="signin_text" onClick={signin_text} value="로그인"/>
                             }
 						     <input type="button" className={`${style.signup_text} ${style.sign_text}`} name="signup_text" onClick={signup_text} value="회원가입"/>
