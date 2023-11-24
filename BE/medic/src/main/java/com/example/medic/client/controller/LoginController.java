@@ -29,6 +29,7 @@ public class LoginController {
 
     private final LoginService loginService;
     private final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+    private final Map<String, HttpSession> sessionList = new HashMap<>();
 
     @GetMapping("/login")
     public ResponseEntity<String> loginPage(Model model) {
@@ -59,7 +60,6 @@ public class LoginController {
             return new ResponseEntity<>("로그인 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    private Map<String, HttpSession> sessionList = new HashMap<>();
 
     @GetMapping("/login/findId")
     public ResponseEntity<String> findId(@RequestBody LoginDto loginDto) {
@@ -80,5 +80,26 @@ public class LoginController {
             return new ResponseEntity<>("일치하는 계정이 없습니다. 가입 정보를 확인해주세요.", HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest httpServletRequest) {
+        try {
+            HttpSession session = httpServletRequest.getSession(false);
+
+            if (session != null) {
+                String sessionId = session.getId();
+                sessionList.remove(sessionId);
+                session.invalidate();
+
+                return new ResponseEntity<>("로그아웃 성공", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("현재 로그인된 세션이 없습니다.", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            LOGGER.error("로그아웃 중 오류 발생", e);
+            return new ResponseEntity<>("로그아웃 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
 
