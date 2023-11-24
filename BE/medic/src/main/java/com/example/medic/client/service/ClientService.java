@@ -18,15 +18,16 @@ public class ClientService {
     private final ClientRepository clientRepository;
     private final Logger logger = LoggerFactory.getLogger(ClientService.class);
 
-    public ClientInfoDto findClinetInfo(ClientInfoDto clientInfoDto) {
+    public ClientInfoDto findClientInfo(ClientInfoDto clientInfoDto) {
         try{
             String uid = clientInfoDto.getUId();
             Client client = findClient(uid);
             ClientInfoDto responseClientInfo = ClientInfoDto.builder()
+                    .uId(client.getUId())
                     .name(client.getUName())
-                    .userTel(clientInfoDto.getUserTel())
-                    .userPhone(clientInfoDto.getUserPhone())
-                    .userAddress(clientInfoDto.getUserAddress())
+                    .userTel(client.getUserTel())
+                    .userPhone(client.getUserPhone())
+                    .userAddress(client.getUserAddress())
                     .build();
             return responseClientInfo;
         }catch (NoSuchElementException n){

@@ -21,12 +21,12 @@ public class ClientController {
     public ResponseEntity<ClientInfoDto> findUserInfo(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
-        String uid = (String) session.getAttribute("udi");
+        String uid = (String) session.getAttribute("uId");
 
         ClientInfoDto clientInfoDto = ClientInfoDto.builder()
                 .uId(uid)
                 .build();
-        ClientInfoDto response = clientService.findClinetInfo(clientInfoDto);
+        ClientInfoDto response = clientService.findClientInfo(clientInfoDto);
 
         return ResponseEntity.ok().body(response);
     }

@@ -1,10 +1,10 @@
 package com.example.medic.client.dto;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClientInfoDto {
 
     private String uId;
@@ -16,4 +16,14 @@ public class ClientInfoDto {
     private String userPhone;
 
     private String userAddress;
+
+    @Builder
+    ClientInfoDto(String uId, String name, String userTel, String userPhone, String userAddress){
+        this.uId = uId;
+        this.name = name;
+        this.userTel = userTel;
+        this.userPhone = userPhone;
+        this.userAddress = userAddress;
+    }
+
 }
