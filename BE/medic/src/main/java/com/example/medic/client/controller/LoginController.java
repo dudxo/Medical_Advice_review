@@ -15,7 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -37,7 +39,8 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto,
+                                        HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         try {
             Client client = loginService.login(loginDto);
 
@@ -45,10 +48,16 @@ public class LoginController {
             httpServletRequest.getSession().invalidate();
             HttpSession session = httpServletRequest.getSession(true);
             // 세션에 userId를 넣어줌
+            String uId = client.getUId();
             session.setAttribute("uId", client.getUId());
             session.setMaxInactiveInterval(1800);
 
             sessionList.put(session.getId(), session);
+
+            // 쿠키에 uId 설정
+            Cookie uIdCookie = new Cookie("uId", uId);
+            uIdCookie.setMaxAge(1800);
+            httpServletResponse.addCookie(uIdCookie);
 
             return new ResponseEntity<>("로그인 성공 - 세션 ID: " + session.getId(), HttpStatus.OK);
         } catch (NotCorrespondingIdException e) {
