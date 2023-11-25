@@ -86,4 +86,8 @@ public class Client {
         this.uRole = uRole;
         this.cpAddress = cpAddress;
     }
+
+    public void updatePassword(String newUpw) {
+        this.uPw = newUpw;
+    }
 }
