@@ -1,0 +1,42 @@
+.join_wrap {
+    height: 1080px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* 추가: 화면 가운데 정렬 */
+    text-align: center;
+}
+
+div.tb {
+    display: flex;
+    justify-content: center;
+}
+
+.iconbox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    text-align: center;
+    width: 880px;
+    margin: 0 auto; /* 가운데 정렬을 위한 margin 추가 */
+}
+
+.title_td{
+    width: 600px;
+}
+
+div.complete {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.btt_complete {
+    display: inline-block;
+    font-size: 1.2rem;
+    background-color: #3cb371;
+    height: 50px;
+    width: 180px;
+    border: none;
+    border-radius: 20px;
+}
