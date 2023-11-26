@@ -18,6 +18,9 @@ export default function Header({}) {
             setIsSession(false)
         }
     },[uId])
+    const btn_program_Mainpage_view = e => {
+        navigate('/')
+    }
     const signin_text = (e) => {
         navigate('/mediclogin');
     }
@@ -43,90 +46,77 @@ export default function Header({}) {
     }
 
     const btn_program_adviceRequest_view = (e) => {
-        // Add your logic for advice request view
+        navigate('/medic/advice/adviceRequest')
     }
 
     const btn_program_adviceList_view = (e) => {
-        // Add your logic for advice list view
+        navigate('/medic/advice/adviceList')
     }
 
     const btn_program_analysisRequest_view = (e) => {
-        // Add your logic for analysis request view
+        navigate('/medic/analysis/analysisRequest')
     }
 
     const btn_program_analysisList_view = (e) => {
-        // Add your logic for analysis list view
+        navigate('/medic/analysis/analysisList')
     }
 
     const btn_program_translateRequest_view = (e) => {
-        // Add your logic for translate request view
+        navigate('/medic/translate/translateRequest')
     }
 
     const btn_program_translateList_view = (e) => {
-        // Add your logic for translate list view
+        navigate('/meidc/translate/translateList')
     }
 
     const btn_program_faultInfo_view = (e) => {
-        // Add your logic for fault information view
+        navigate('/medic/medicalknowledge/faultInfo')
     }
 
     const btn_program_industrialAccidentInfo_view = (e) => {
-        // Add your logic for industrial accident information view
+        navigate('/medic/medicalknowledge/industrialAccidentInfo')
     }
 
     const btn_program_trafficAccidentInfo_view = (e) => {
-        // Add your logic for traffic accident information view
+        navigate('/medic/medicalknowledge/trafficAccidentInfo')
     }
 
     const btn_program_woundInfo_view = (e) => {
-        // Add your logic for wound information view
+        navigate('/medic/medicalknowledge/woundInfo')
     }
 
     const btn_program_announcement_view = (e) => {
-        // Add your logic for announcement view
+        navigate('/medic/customer/Anccouncement')
     }
 
     const btn_program_customerInquiry_view = (e) => {
-        // Add your logic for customer inquiry view
+        navigate('/medic/customer/customerInquiry')
     }
 
     const btn_program_FAQ_view = (e) => {
-        // Add your logic for FAQ view
+        navigate('/medic/customer/FAQ')
     }
 
     const btn_program_myAdviceList_view = (e) => {
-        // Add your logic for my advice list view
+        navigate('/medic/mypage')
     }
 
     const btn_program_myAnalysisList_view = (e) => {
-        // Add your logic for my analysis list view
+        navigate('/medic/mypage')
     }
 
     const btn_program_myTranslateList_view = (e) => {
-        // Add your logic for my translate list view
+        navigate('/medic/mypage')
     }
 
     const btn_program_changeMemberInfo_view = (e) => {
-        // Add your logic for change member info view
+        navigate('/medic/mypage')
     }
-
-    // const handleMouseOverNavigator = () => {
-    //     setShowSubMenu(true);
-    //     console.log(showSubMenu)
-    //     document.querySelector(`.${navigator.navigator}`).classList.add(`${navigator.noBorderBottom}`);
-    // }
-    
-    // const handleMouseOutNavigator = () => {
-    //     setShowSubMenu(false);
-    //     console.log(showSubMenu)
-    //     document.querySelector(`.${navigator.navigator}`).classList.remove(`${navigator.noBorderBottom}`);
-    // }
-    
     
     return (
         <div className={style.main_header}>
             <div className={style.top_header}>
-                <div className={style.mainlogo}></div>
+                <div className={style.mainlogo} onClick={btn_program_Mainpage_view}></div>
                 <div className={style.user_sign}>
                     {isSession ? (
                         <button className={`${style.signin_text} ${style.sign_text}`} name="signin_text" onClick={signout_text}>로그아웃</button>
@@ -138,53 +128,53 @@ export default function Header({}) {
                     )}
                 </div>
             </div>
-            <div className={navigator.navigator} >
+                <div className={navigator.navigator}>
                 <ul className={navigator.menu}>
                     <li>
                         <button>의료자문</button>
                         <ul className={`${navigator.submenu}`}>
-                            <li><a href="#" onClick={btn_program_adviceRequest_view}><span>의료자문신청</span></a></li>
-                            <li><a href="#" onClick={btn_program_adviceList_view}><span>의료자문현황</span></a></li>
+                            <li><span onClick={btn_program_adviceRequest_view}>의료자문신청</span></li>
+                            <li><span onClick={btn_program_adviceList_view}>의료자문현황</span></li>
                         </ul>
                     </li>
                     <li>
                         <button>의료분석</button>
                         <ul className={`${navigator.submenu}`}>
-                            <li><a href="#" onClick={btn_program_analysisRequest_view}><span>의료분석신청</span></a></li>
-                            <li><a href="#" onClick={btn_program_analysisList_view}><span>의료분석현황</span></a></li>
+                            <li><span onClick={btn_program_analysisRequest_view}>의료분석신청</span></li>
+                            <li><span onClick={btn_program_analysisList_view}>의료분석현황</span></li>
                         </ul>
                     </li>
                     <li>
                         <button>의료번역</button>
                         <ul className={`${navigator.submenu}`}>
-                            <li><a href="#" onClick={btn_program_translateRequest_view}><span>의료번역신청</span></a></li>
-                            <li><a href="#" onClick={btn_program_translateList_view}><span>의료번역현황</span></a></li>
+                            <li><span onClick={btn_program_translateRequest_view}>의료번역신청</span></li>
+                            <li><span onClick={btn_program_translateList_view}>의료번역현황</span></li>
                         </ul>
                     </li>
                     <li>
                         <button>의료법률지식</button>
                         <ul className={`${navigator.submenu}`}>
-                            <li><a href="#" onClick={btn_program_faultInfo_view}><span>의료과실 정보</span></a></li>
-                            <li><a href="#" onClick={btn_program_industrialAccidentInfo_view}><span>산업재해 정보</span></a></li>
-                            <li><a href="#" onClick={btn_program_trafficAccidentInfo_view}><span>교통사고 정보</span></a></li>
-                            <li><a href="#" onClick={btn_program_woundInfo_view}><span>상해 정보</span></a></li>
+                            <li><span onClick={btn_program_faultInfo_view}>의료과실 정보</span></li>
+                            <li><span onClick={btn_program_industrialAccidentInfo_view}>산업재해 정보</span></li>
+                            <li><span onClick={btn_program_trafficAccidentInfo_view}>교통사고 정보</span></li>
+                            <li><span onClick={btn_program_woundInfo_view}>상해 정보</span></li>
                         </ul>
                     </li>
                     <li>
                         <button>고객지원</button>
                         <ul className={`${navigator.submenu}`}>
-                            <li><a href="#" onClick={btn_program_announcement_view}><span>공지사항</span></a></li>
-                            <li><a href="#" onClick={btn_program_customerInquiry_view}><span>고객문의</span></a></li>
-                            <li><a href="#" onClick={btn_program_FAQ_view}><span>자주 묻는 질문</span></a></li>
+                            <li><span onClick={btn_program_announcement_view}>공지사항</span></li>
+                            <li><span onClick={btn_program_customerInquiry_view}>고객문의</span></li>
+                            <li><span onClick={btn_program_FAQ_view}>자주 묻는 질문</span></li>
                         </ul>
                     </li>
                     <li>
                         <button>마이페이지</button>
                         <ul className={`${navigator.submenu}`}>
-                            <li><a href="#" onClick={btn_program_myAdviceList_view}><span>나의 자문의뢰현황</span></a></li>
-                            <li><a href="#" onClick={btn_program_myAnalysisList_view}><span>나의 분석의뢰현황</span></a></li>
-                            <li><a href="#" onClick={btn_program_myTranslateList_view}><span>나의 번역의뢰현황</span></a></li>
-                            <li><a href="#" onClick={btn_program_changeMemberInfo_view}><span>회원정보변경</span></a></li>
+                            <li><span onClick={btn_program_myAdviceList_view}>나의 자문의뢰현황</span></li>
+                            <li><span onClick={btn_program_myAnalysisList_view}>나의 분석의뢰현황</span></li>
+                            <li><span onClick={btn_program_myTranslateList_view}>나의 번역의뢰현황</span></li>
+                            <li><span onClick={btn_program_changeMemberInfo_view}>회원정보변경</span></li>
                         </ul>
                     </li>
                 </ul>

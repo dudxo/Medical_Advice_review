@@ -3,7 +3,7 @@ import style from '../css/Mainpage.module.css'
 
 export default function Footer(){
     const btn_intro_advisor = e => {
-
+        
     }
     const btn_intro_company = e => {
 
