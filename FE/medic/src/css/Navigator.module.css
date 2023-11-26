@@ -1,0 +1,60 @@
+.menu {
+    width: 1920px;
+    overflow: hidden;
+    margin: 50px auto;
+    margin-top: 20px;
+}
+
+ul {
+    padding: 0;
+}
+.menu > li {
+    width: 16.6%; /*20*5=100%*/
+    float: left;
+    text-align: center;
+    line-height: 40px;
+    background-color: #FFF;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: (180deg, #B4B4B4 0%, rgba(217, 217, 217, 0.00) 100%);
+    list-style: none;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: (180deg, #B4B4B4 0%, rgba(217, 217, 217, 0.00) 100%);
+    padding: 20px 0 20px 0;
+    &:hover{
+        border-bottom: none;
+    }
+}
+
+.menu button {
+    color: #000;
+    text-align: center;
+    font-family: Inter;
+    font-size: 1.8rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    border: none;
+    background-color: white;
+}
+a {
+    text-decoration: none;
+    color: black;
+    font-size: 1.2rem;
+}
+.submenu > li {
+    line-height: 50px;
+    background-color: #EBEBEB;
+}
+
+.submenu {
+    height: 0; 
+    overflow: hidden;
+}
+
+.menu > li:hover .submenu {
+    height: 250px;
+    transition-duration: 1s;
+    margin-top: 20px;
+ }

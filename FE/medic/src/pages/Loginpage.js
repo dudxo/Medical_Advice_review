@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import style from '../css/Loginpage.module.css'
-import Session from 'react-session-api'
+import { Cookies } from 'react-cookie';
+
 
 export default function Loginpage(){
     const [uid, setUid] = useState('');
     const [upw, setUpw] = useState('');
     const [errmsg, setErrmsg] = useState('')
     const navigate = useNavigate();
-
+    
     const inputId = e => {
         setUid(e.target.value)
     }
