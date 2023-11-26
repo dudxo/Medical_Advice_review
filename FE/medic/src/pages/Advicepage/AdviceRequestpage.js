@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import style from '../../css/AdviceRequestpage.module.css'
 
 
+
 export default function AdviceRequestpage(){
     const startYear = 1960;
     const today = new Date();
@@ -39,7 +40,7 @@ export default function AdviceRequestpage(){
             </td>
           </tr>
         ));
-      };
+    };
   
     const updateLastDay = () => {
         const year = parseInt(selectedYear);
@@ -54,9 +55,8 @@ export default function AdviceRequestpage(){
         if (selectedDay > lastDay) {
           setSelectedDay(lastDay);
         }
-      };
+    };
     
-  
     useEffect(() => {
       updateLastDay();
     }, [selectedYear, selectedMonth]);
@@ -382,6 +382,7 @@ export default function AdviceRequestpage(){
             </div>
             <div className={style.complete}>
             <button type = "button" /* disabled={!infoEmpty}*/ className={style.btt_complete}>자문 의뢰신청</button>
+            <button type = "button" /* disabled={!infoEmpty}*/ className={style.btt_complete}>취소</button>
         </div>
         </div>
     )
