@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 @RestController
@@ -80,13 +81,17 @@ public class LoginController {
         }
     }
 
-    @GetMapping("login/findPw")
+    @PostMapping("login/findPw")
     public ResponseEntity<String> findPw(@RequestBody LoginDto loginDto) {
-        String foundPw = loginService.findPw(loginDto);
-        if (foundPw != null) {
-            return new ResponseEntity<>("회원님의 비밀번호 : " + foundPw, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("일치하는 계정이 없습니다. 가입 정보를 확인해주세요.", HttpStatus.NOT_FOUND);
+        try {
+            loginService.updatePassword(loginDto);
+
+            return new ResponseEntity<>("비밀번호가 재설정되었습니다.", HttpStatus.OK);
+        } catch (NotCorrespondingIdException e) {
+            return new ResponseEntity<>("비밀번호 재설정 실패 - 아이디가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            LOGGER.error("비밀번호 재설정 중 오류 발생", e);
+            return new ResponseEntity<>("비밀번호 재설정 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

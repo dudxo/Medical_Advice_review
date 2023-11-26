@@ -36,9 +36,15 @@ public class LoginService {
         return optionalClient.map(Client::getUId).orElse(null);
     }
 
-    public String findPw(LoginDto loginDto) {
+    public void updatePassword(LoginDto loginDto) {
         Optional<Client> optionalClient =
                 clientRepository.findByUNameAndUIdAndUEmail(loginDto.getUName(), loginDto.getUId(), loginDto.getUEmail());
-        return optionalClient.map(Client::getUPw).orElse(null);
+        if (optionalClient.isPresent()) {
+            Client client = optionalClient.get();
+            client.updatePassword(loginDto.getNewUpw());
+            clientRepository.save(client);
+        } else {
+            throw new NotCorrespondingIdException("아이디가 일치하지 않습니다.");
+        }
     }
 }

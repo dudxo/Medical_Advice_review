@@ -4,8 +4,6 @@ import com.example.medic.client.domain.Client;
 import lombok.*;
 
 
-@Getter
-@Setter
 @Builder
 @Data
 public class LoginDto {
@@ -14,6 +12,7 @@ public class LoginDto {
     private String uPw;
     private String uName;
     private String uEmail;
+    private String newUpw;
 
     public static LoginDto form(Client client) {
         return LoginDto.builder()
