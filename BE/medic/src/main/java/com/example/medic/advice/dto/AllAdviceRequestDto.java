@@ -1,0 +1,110 @@
+package com.example.medic.advice.dto;
+
+import lombok.Builder;
+import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
+
+@Getter
+@Builder
+public class AllAdviceRequestDto {
+
+    /* 자문의뢰내역 */
+    private String adPtName;
+
+    private String adPtSsNum;
+
+    private String adPtSub;
+
+    private String adPtDiagnosis;
+
+    private String adPtRec;
+
+    private String adPtCmt;
+
+    private String insurance;
+
+    private String insureDate;
+
+    private String insureName;
+
+    private String adEtc;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date adRegDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date adMdDate;
+
+    /*자문내역 질문지*/
+    private String adQuestionContent;
+
+    private String adAnswerContent;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date adAnswerDate;
+
+    /*자문 파일*/
+    private String adReqForm;
+
+    private String adDiagnosis;
+
+    private String adRecord;
+
+    private String adFilm;
+
+    private String adOther;
+
+    /*진료기록*/
+    private String hospital;
+
+    private String admStart;
+
+    private String admEnd;
+
+    private String visitStart;
+
+    private String visitEnd;
+
+    private String treatCmt;
+
+    private int diagRound;
+
+    @Builder
+    public AllAdviceRequestDto(String adPtName, String adPtSsNum, String adPtSub, String adPtDiagnosis,
+                               String adPtRec, String adPtCmt, String insurance, String insureDate,
+                               String insureName, String adEtc, Date adRegDate, Date adMdDate,
+                               String adQuestionContent, String adAnswerContent, Date adAnswerDate,
+                               String adReqForm, String adDiagnosis, String adRecord, String adFilm,
+                               String adOther, String hospital, String admStart, String admEnd,
+                               String visitStart, String visitEnd, String treatCmt, int diagRound){
+        this.adPtName = adPtName;
+        this.adPtSsNum = adPtSsNum;
+        this.adPtSub = adPtSub;
+        this.adPtDiagnosis = adPtDiagnosis;
+        this.adPtRec = adPtRec;
+        this.adPtCmt = adPtCmt;
+        this.insurance = insurance;
+        this.insureDate = insureDate;
+        this.insureName = insureName;
+        this.adEtc = adEtc;
+        this.adRegDate =adRegDate;
+        this.adMdDate = adMdDate;
+        this.adQuestionContent = adQuestionContent;
+        this.adAnswerContent = adAnswerContent;
+        this.adAnswerDate = adAnswerDate;
+        this.adReqForm = adReqForm;
+        this.adDiagnosis = adDiagnosis;
+        this.adRecord = adRecord;
+        this.adFilm = adFilm;
+        this.adOther = adOther;
+        this.hospital = hospital;
+        this.admStart = admStart;
+        this.admEnd = admEnd;
+        this.visitStart = visitStart;
+        this.visitEnd = visitEnd;
+        this.treatCmt = treatCmt;
+        this.diagRound = diagRound;
+    }
+}
