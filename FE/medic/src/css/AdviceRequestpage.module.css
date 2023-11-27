@@ -1,5 +1,5 @@
 .join_wrap {
-    height: 1080px;
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -12,7 +12,7 @@ export default function Footer(){
 
     }
     return(
-        <footer className={style.main_footer}>
+        <div className={`${style.main_footer} ${style.footer}`}>
             <div className={style.footer_navigator}>
                 <div className={style.footer_navigatorbox}>
                     <div className={`${style.btn_intro_advisor} ${style.footer_navigate_btn}`} onClick={btn_intro_advisor}>
@@ -31,6 +31,6 @@ export default function Footer(){
                 2. 회사소개
                 3. 펙스 및 이메일 정보
             </div>
-        </footer>
+        </div>
     )
 }

@@ -114,16 +114,16 @@ export default function Header({}) {
     }
     
     return (
-        <div className={style.main_header}>
-            <div className={style.top_header}>
-                <div className={style.mainlogo} onClick={btn_program_Mainpage_view}></div>
-                <div className={style.user_sign}>
+        <div className={navigator.main_header}>
+            <div className={navigator.top_header}>
+                <div className={navigator.mainlogo} onClick={btn_program_Mainpage_view}></div>
+                <div className={navigator.user_sign}>
                     {isSession ? (
-                        <button className={`${style.signin_text} ${style.sign_text}`} name="signin_text" onClick={signout_text}>로그아웃</button>
+                        <button className={`${navigator.signin_text} ${navigator.sign_text}`} name="signin_text" onClick={signout_text}>로그아웃</button>
                     ) : (
                         <>
-                            <button className={`${style.signin_text} ${style.sign_text}`} name="signin_text" onClick={signin_text}>로그인</button>
-                            <button className={`${style.signup_text} ${style.sign_text}`} name="signup_text" onClick={signup_text}>회원가입</button>
+                            <button className={`${navigator.signin_text} ${navigator.sign_text}`} name="signin_text" onClick={signin_text}>로그인</button>
+                            <button className={`${navigator.signup_text} ${navigator.sign_text}`} name="signup_text" onClick={signup_text}>회원가입</button>
                         </>
                     )}
                 </div>
