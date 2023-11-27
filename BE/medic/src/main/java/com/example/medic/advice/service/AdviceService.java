@@ -129,16 +129,16 @@ public class AdviceService {
     public boolean saveAdviceQuestionRequest(AdviceQuestionRequestDto parseAdviceQuestionRequestDto,
                                           AdviceRequestList adviceRequestList) throws PersistenceException {
         try {
-            AdviceQuestion adviceQuestionRequest = AdviceQuestion.builder()
-                    .adQuestionContent(parseAdviceQuestionRequestDto.getAdQuestionContent())
-                    .adAnswerContent(parseAdviceQuestionRequestDto.getAdAnswerContent())
-                    .adAnswerDate(parseAdviceQuestionRequestDto.getAdAnswerDate())
-                    .adviceRequestList(adviceRequestList)
-                    .build();
-            adviceQuestionRepository.save(adviceQuestionRequest);
+            for(String questionContent : parseAdviceQuestionRequestDto.getAdQuestionContent()){
+                AdviceQuestion adviceQuestionRequest = AdviceQuestion.builder()
+                        .adQuestionContent(questionContent)
+                        .adviceRequestList(adviceRequestList)
+                        .build();
+                adviceQuestionRepository.save(adviceQuestionRequest);
+            }
             return true;
         }catch (PersistenceException p){
-            logger.info("자문 내역질 문지 저장 실패");
+            logger.info("자문 내역 질문지 저장 실패");
             throw new PersistenceException();
         }
     }
