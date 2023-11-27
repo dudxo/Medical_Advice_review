@@ -3,6 +3,8 @@ import style from '../../css/AdviceRequestpage.module.css'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+
+// 나중에 날짜형식이 다르면 알림메시지 뜨게 추가해야 할듯
 export default function AdviceRequestpage(){
     const startYear = 1960;
     const today = new Date();
@@ -232,8 +234,25 @@ export default function AdviceRequestpage(){
     const input_visit_endDay = e => {
         setVisitendDay(e.target.value)
     }
-
+    const isFormValid = () => {
+        // 여러 입력 필드와 텍스트 영역의 유효성을 확인
+        const isUserInfoValid = uname && utel && uphone && uaddress;
+        const isPtInfoValid = ad_ptname && ad_ptssnum1 && ad_ptssnum2 && ad_ptsub && ad_ptdiagnosis && ad_ptrec && ad_ptcmt;
+        const isInsuranceValid = insurance && insure_name && selectedYear && selectedMonth && selectedDay;
+        const isHospitalInfoValid = hospital && adm_startYear && adm_startMonth && adm_startDay && adm_endYear && adm_endMonth && adm_endDay &&
+          visit_startYear && visit_startMonth && visit_startDay && visit_endYear && visit_endMonth && visit_endDay && treat_cmt;
+        const isEtcInfoValid = adEtcValue;
+        const isQuestionInfoValid = adQuestionContents.every(content => content); // 모든 질문 내용이 비어있지 않아야 함
+      
+        // 모든 조건을 만족하면 true를 반환
+        return isUserInfoValid && isPtInfoValid && isInsuranceValid && isHospitalInfoValid && isEtcInfoValid && isQuestionInfoValid;
+      };
     const btn_advice_request = async() => {
+         // 유효성 검사
+        if (!isFormValid()) {
+            alert('입력값을 확인해주세요.');
+            return;
+        }
         const adPtSsNum = ad_ptssnum1 + ad_ptssnum2
         const insureDate = selectedYear + '-' + selectedMonth + '-' + selectedDay
         const today = new Date()
@@ -265,8 +284,10 @@ export default function AdviceRequestpage(){
         }
         try{
             const response = axios.post('/advice/request', adviceRequest)
+            alert('자문의뢰 신청이 완료되었습니다.')
+            navigate('/')
         } catch(err){
-
+            console.log(err)
         }
     }
     const btn_advice_cancle = async() => {
@@ -340,9 +361,9 @@ export default function AdviceRequestpage(){
                             주민등록번호
                         </td>
                         <td>
-                            <input type="text" name="ad_ptssnum1" onChange={input_ad_ptssnum1}></input>
+                            <input type="text" name="ad_ptssnum1" maxLength={6} onChange={input_ad_ptssnum1}></input>
                             -
-                            <input type="password" name="ad_ptssnum2" onChange={input_ad_ptssnum2}></input>
+                            <input type="password" name="ad_ptssnum2" maxLength={7} onChange={input_ad_ptssnum2}></input>
                         </td>
                     </tr>
                     <tr>
@@ -439,9 +460,9 @@ export default function AdviceRequestpage(){
                             <input type="text" name="adm_startMonth" onChange={input_adm_startMonth} minLength={2} maxLength={2}></input>월
                             <input type="text" name="adm_startDay" onChange={input_adm_startDay} minLength={2} maxLength={2}></input>일
                             ~
-                            <input type="text" name="adm_endYear" onChange={input_adm_endYear}></input>년
-                            <input type="text" name="adm_endMonth" onChange={input_adm_endMonth}></input>월
-                            <input type="text" name="adm_endDay" onChange={input_adm_endDay}></input>일
+                            <input type="text" name="adm_endYear" onChange={input_adm_endYear} minLength={4} maxLength={4}></input>년
+                            <input type="text" name="adm_endMonth" onChange={input_adm_endMonth} minLength={2} maxLength={2}></input>월
+                            <input type="text" name="adm_endDay" onChange={input_adm_endDay} minLength={2} maxLength={2}></input>일
                         </td>
                     </tr>
                     <tr>
@@ -449,13 +470,13 @@ export default function AdviceRequestpage(){
                             통원 치료기간
                         </td>
                         <td>
-                            <input type="text" name="visit_startYear" onChange={input_visit_startYear}></input>년
-                            <input type="text" name="visit_startMonth" onChange={input_visit_startMonth}></input>월
-                            <input type="text" name="visit_startDay" onChange={input_visit_startDay}></input>일
+                            <input type="text" name="visit_startYear" onChange={input_visit_startYear} minLength={4} maxLength={4}></input>년
+                            <input type="text" name="visit_startMonth" onChange={input_visit_startMonth} minLength={2} maxLength={2}></input>월
+                            <input type="text" name="visit_startDay" onChange={input_visit_startDay} minLength={2} maxLength={2}></input>일
                             ~
-                            <input type="text" name="visit_endYear" onChange={input_visit_endYear}></input>년
-                            <input type="text" name="visit_endMonth" onChange={input_visit_endMonth}></input>월
-                            <input type="text" name="visit_endDay" onChange={input_visit_endDay}></input>일
+                            <input type="text" name="visit_endYear" onChange={input_visit_endYear} minLength={4} maxLength={4}></input>년
+                            <input type="text" name="visit_endMonth" onChange={input_visit_endMonth} minLength={2} maxLength={2}></input>월
+                            <input type="text" name="visit_endDay" onChange={input_visit_endDay} minLength={2} maxLength={2}></input>일
                         </td>
                     </tr>
                     <tr>
