@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-@Builder
 public class DiagnosisRecord {
 
     @Id

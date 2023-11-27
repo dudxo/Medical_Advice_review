@@ -13,7 +13,6 @@ import java.util.Date;
 @Entity
 @Getter
 @NoArgsConstructor
-@Builder
 public class AdviceQuestion {
 
     @Id

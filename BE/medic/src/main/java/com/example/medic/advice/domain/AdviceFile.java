@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-@Builder
 public class AdviceFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
