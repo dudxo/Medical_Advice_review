@@ -2,6 +2,7 @@ package com.example.medic.advice.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,6 +13,7 @@ import java.util.Date;
 @Entity
 @Getter
 @NoArgsConstructor
+@Builder
 public class AdviceQuestion {
 
     @Id
@@ -33,5 +35,12 @@ public class AdviceQuestion {
     @JsonIgnore
     private AdviceRequestList adviceRequestList;
 
-
+    @Builder
+    public AdviceQuestion(String adQuestionContent, String adAnswerContent, Date adAnswerDate,
+                          AdviceRequestList adviceRequestList) {
+        this.adQuestionContent = adQuestionContent;
+        this.adAnswerContent = adAnswerContent;
+        this.adAnswerDate = adAnswerDate;
+        this.adviceRequestList = adviceRequestList;
+    }
 }
