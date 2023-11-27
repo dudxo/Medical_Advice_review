@@ -4,6 +4,7 @@ package com.example.medic.advice.domain;
 import com.example.medic.consultative.domain.Consultative;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,7 +15,6 @@ import java.util.Date;
 @Entity
 @Getter
 @NoArgsConstructor
-
 public class AdviceAssignment {
 
     @Id
@@ -33,5 +33,11 @@ public class AdviceAssignment {
     @JoinColumn(name = "cId")
     @JsonIgnore
     private Consultative consultative;
+
+    @Builder
+    public AdviceAssignment(Date admDate, Consultative consultative) {
+        this.admDate = admDate;
+        this.consultative = consultative;
+    }
 
 }
