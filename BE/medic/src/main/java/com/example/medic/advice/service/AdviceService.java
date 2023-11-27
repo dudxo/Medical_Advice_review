@@ -155,7 +155,7 @@ public class AdviceService {
                     .adviceRequestList(adviceRequestList)
                     .build();
             adviceFileRepository.save(adviceFile);
-            return false;
+            return true;
         }catch (PersistenceException p){
             logger.info("자문 파일 저장 실패");
             throw new PersistenceException();
@@ -176,6 +176,7 @@ public class AdviceService {
                     .adviceRequestList(adviceRequestList)
                     .build();
             diagnosisRecordRepository.save(diagnosisRecord);
+            return true;
         }catch (PersistenceException p){
             logger.info("진료 기록 저장 실패");
             throw new PersistenceException();
