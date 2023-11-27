@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Builder
@@ -38,7 +39,7 @@ public class AllAdviceRequestDto {
     private Date adMdDate;
 
     /*자문내역 질문지*/
-    private String adQuestionContent;
+    private List<String> adQuestionContent;
 
     private String adAnswerContent;
 
@@ -75,7 +76,7 @@ public class AllAdviceRequestDto {
     public AllAdviceRequestDto(String adPtName, String adPtSsNum, String adPtSub, String adPtDiagnosis,
                                String adPtRec, String adPtCmt, String insurance, String insureDate,
                                String insureName, String adEtc, Date adRegDate, Date adMdDate,
-                               String adQuestionContent, String adAnswerContent, Date adAnswerDate,
+                               List<String> adQuestionContent, String adAnswerContent, Date adAnswerDate,
                                String adReqForm, String adDiagnosis, String adRecord, String adFilm,
                                String adOther, String hospital, String admStart, String admEnd,
                                String visitStart, String visitEnd, String treatCmt, int diagRound){
