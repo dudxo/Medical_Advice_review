@@ -1,9 +1,110 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import style from '../../css/AdviceListPage.module.css';
 
-export default function AdviceListpage(){
-    return(
-        <>
-            자문현황페이지
-        </>
-    )
+
+export default function AdviceListPage() {
+  const [selectedStatus, setSelectedStatus] = useState('자문의뢰중');
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 추가
+  const [adviceList, setAdviceList] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('/advice/list', {
+          params: {
+            adPtSub: 'ad_pt_sub', // 실제 값으로 교체
+            adPtDiagnosis: 'ad_pt_diagnosis', // 실제 값으로 교체
+            adRegDate: 'ad_reg_date', // 실제 값으로 교체
+          },
+        });
+        setAdviceList(response.data);
+      } catch (error) {
+        console.error('Error fetching advice list:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleStatusChange = (newStatus) => {
+    setSelectedStatus(newStatus);
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+
+  return (
+    <div className={style.contents}>
+        <div className={style.iconbox}>
+                <h1>
+                    <i className="fa-solid fa-circle icon"></i>
+                    자문의뢰 현황
+                </h1>
+            </div>
+      <table>
+        <thead>
+          <tr>
+            <th>NO.</th>
+            <th>진단과목</th>
+            <th>진단명</th>
+            <th>의뢰신청일</th>
+            <th>의뢰배정일</th>
+            <th>의뢰자문일</th>
+            <th>진행상태</th>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td className={style.statusCell}>
+              <select value={selectedStatus} onChange={(e) => handleStatusChange(e.target.value)}>
+                <option value="자문의뢰중">자문의뢰중</option>
+                <option value="자문배정중">자문배정중</option>
+                <option value="결제하기">결제하기</option>
+                <option value="자문완료">자문완료</option>
+              </select>
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+         {[...Array(7)].map((_, rowIndex) => (
+            <tr key={rowIndex}>
+                {adviceList.map((advice, index) => (
+                    <React.Fragment key={index}>
+                        {rowIndex === index && (
+                            <>
+                                <td>{index + 1}</td>
+                                <td>{advice.adPtSub}</td>
+                                <td>{advice.adPtDiagnosis}</td>
+                                <td>{advice.adRegDate}</td>
+                            </>
+                        )}
+                    </React.Fragment>
+                ))}
+            </tr>
+        ))}
+        </tbody>
+
+      </table>
+      <div className={style.pagination}>
+        <button className={style.paginationButton} onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+          ◀
+        </button>
+        {[...Array(10)].map((_, index) => (
+          <button key={index} className={style.paginationButton} onClick={() => handlePageChange(index + 1)} disabled={currentPage === index + 1}>
+            {index + 1}
+          </button>
+        ))}
+        <button className={style.paginationButton} onClick={() => handlePageChange(currentPage + 1)}>
+          ▶
+        </button>
+      </div>
+    </div>
+  );
 }
