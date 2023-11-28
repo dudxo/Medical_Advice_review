@@ -12,7 +12,6 @@ import AnalysisListpage from './pages/Analysispage/AnalysisListpage';
 import TranslateRequestpage from './pages/Translatepage/TranslateRequestpage'
 import TranslateListpage from './pages/Translatepage/TranslateListpage'
 import CustomerInquirypage from './pages/Customerpage/CustomerInquirypage';
-import Anccouncementpage from './pages/Customerpage/Anccouncementpage';
 import FAQpage from './pages/Customerpage/FAQpage';
 import FaultInfopage from './pages/MedicalLegalKnowledge/FaultInfopage'
 import IndustrialAccidentInfopage from './pages/MedicalLegalKnowledge/IndustrialAccidentInfopage'
@@ -20,6 +19,9 @@ import TrafficAccidentInfopage from'./pages/MedicalLegalKnowledge/TrafficAcciden
 import WoundInfopage from'./pages/MedicalLegalKnowledge/WoundInfopage'
 import Mypage from './pages/Mypage/Mypage'
 import Header from "./components/Header";
+import Announcementpage from "./pages/Customerpage/Announcementpage";
+import AnnouncementDetail from "./pages/Customerpage/Announcement/AnnouncementDetail";
+import WriteAnnouncement from "./pages/Customerpage/Announcement/WriteAnnouncement";
 export default function App(){
     return(
         <BrowserRouter>
@@ -38,13 +40,15 @@ export default function App(){
                     <Route path='/medic/translate/translateRequest' element={<TranslateRequestpage/>}/>
                     <Route path='/meidc/translate/translateList' element={<TranslateListpage/>}/>
                     <Route path='/medic/customer/customerInquiry' element={<CustomerInquirypage/>}/>
-                    <Route path='/medic/customer/Anccouncement' element={<Anccouncementpage/>}/>
+                    <Route path='/medic/customer/announcement' element={<Announcementpage/>}/>
                     <Route path='/medic/customer/FAQ' element={<FAQpage/>}/>
                     <Route path='/medic/medicalknowledge/faultInfo' element={<FaultInfopage/>}/>
                     <Route path='/medic/medicalknowledge/industrialAccidentInfo' element={<IndustrialAccidentInfopage/>}/>
                     <Route path='/medic/medicalknowledge/trafficAccidentInfo' element={<TrafficAccidentInfopage/>}/>
                     <Route path='/medic/medicalknowledge/woundInfo' element={<WoundInfopage/>}/>
                     <Route path='/medic/mypage' element={<Mypage/>}/>
+                    <Route path={`/medic/customer/announcement/announcementdetails`} element={<AnnouncementDetail/>}/>
+                    <Route path='/medic/customer/announcement/writeannouncement' element={<WriteAnnouncement/>}/> 
                 </Routes>
             </div> 
             </div>   

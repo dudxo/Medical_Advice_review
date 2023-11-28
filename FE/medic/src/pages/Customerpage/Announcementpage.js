@@ -1,11 +1,11 @@
 // Announcement.js
 
 import React, { useEffect, useState } from 'react';
-import style from '../css/Announcement.module.css';
+import style from '../../css/Announcement.module.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const Announcement = () => {
+export default function Announcementpage() {
   const [announcements, setAnnouncements] = useState([]);
   const navigate = useNavigate();
 
@@ -13,7 +13,8 @@ const Announcement = () => {
     const getAnnouncements = async () => {
       try {
         const resp = await axios.get('/post');
-        setAnnouncements(resp.data);
+        const data = resp.data.reverse()
+        setAnnouncements(data);
         console.log(resp);
       } catch (error) {
         console.error('Error fetching announcements:', error);
@@ -31,12 +32,16 @@ const Announcement = () => {
 
   const medicWrite = () => {
     
-    navigate('/medicwrite');
+    navigate('/medic/customer/announcement/writeannouncement');
   };
 
   const goToDetailPage = (announcementId) => {
-    
-    navigate(`/medicannouncedetail/${announcementId}`);
+    navigate(`/medic/customer/announcement/announcementdetails`, {state : {
+      announcementdetail : announcements[announcementId],
+      announcementId : announcementId,
+      announcements : announcements
+    }});
+    console.log(announcements[announcementId])
   };
 
   return (
@@ -59,7 +64,7 @@ const Announcement = () => {
           </thead>
           <tbody>
             {announcements.map((announcement, index) => (
-              <tr key={index} onClick={() => goToDetailPage(announcement.amId)}>
+              <tr key={index} onClick={() => goToDetailPage(index)}>
                 <td>{announcement.amId}</td>
                 <td>{announcement.amName}</td>
                 <td>{formatDateString(announcement.amRegDate)}</td>
@@ -75,5 +80,3 @@ const Announcement = () => {
     </div>
   );
 };
-
-export default Announcement;

@@ -4,6 +4,7 @@ import com.example.medic.client.domain.Client;
 import com.example.medic.manager.domain.Manager;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -37,4 +38,14 @@ public class Announcement {
     @JoinColumn(name = "mId")
     @JsonIgnore
     private Manager manager;
+
+    @Builder
+    private Announcement(Long amId, String amName, Date amRegDate, String amContent, Date amMdDate, Manager manager){
+        this.amId = amId;
+        this.amName = amName;
+        this.amRegDate = amRegDate;
+        this.amContent = amContent;
+        this.amRegDate = amRegDate;
+        this.manager = manager;
+    }
 }

@@ -1,0 +1,34 @@
+.Finduserwrap{
+    width: 1000px;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    margin: 0 auto;
+}
+.findid_form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.Findusertitle{
+    width: 1000px;
+    display: flex;
+    justify-content: start;
+}
+.FinduserinfoBox{
+    width: 1000px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+}  
+.FindBox_box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 600px;
+    height: 300px;
+    border: 1px solid black;
+}

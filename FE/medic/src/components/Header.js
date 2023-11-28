@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import style from '../css/Mainpage.module.css';
 import navigator from '../css/Navigator.module.css';
 import axios from "axios";
 import { Cookies } from "react-cookie";
@@ -10,7 +9,6 @@ export default function Header({}) {
     const cookies = new Cookies();
     const [isSession, setIsSession] = useState();
     const uId = cookies.get('uId')
-
     useEffect(() => {
         if(cookies.get('uId')){
             setIsSession(true)
@@ -46,71 +44,156 @@ export default function Header({}) {
     }
 
     const btn_program_adviceRequest_view = (e) => {
-        navigate('/medic/advice/adviceRequest')
+        if(isSession){
+            navigate('/medic/advice/adviceRequest')
+        } else{
+            alert('로그인 후 이용해주세요!')
+            navigate('/mediclogin')
+        }
     }
 
     const btn_program_adviceList_view = (e) => {
-        navigate('/medic/advice/adviceList')
+        if (isSession) {
+            navigate('/medic/advice/adviceList');
+        } else {
+            alert('로그인 후 이용해주세요!');
+            navigate('/mediclogin');
+        }
     }
-
+    
     const btn_program_analysisRequest_view = (e) => {
-        navigate('/medic/analysis/analysisRequest')
+        if (isSession) {
+            navigate('/medic/analysis/analysisRequest');
+        } else {
+            alert('로그인 후 이용해주세요!');
+            navigate('/mediclogin');
+        }
     }
-
+    
     const btn_program_analysisList_view = (e) => {
-        navigate('/medic/analysis/analysisList')
+        if (isSession) {
+            navigate('/medic/analysis/analysisList');
+        } else {
+            alert('로그인 후 이용해주세요!');
+            navigate('/mediclogin');
+        }
     }
-
+    
     const btn_program_translateRequest_view = (e) => {
-        navigate('/medic/translate/translateRequest')
+        if (isSession) {
+            navigate('/medic/translate/translateRequest');
+        } else {
+            alert('로그인 후 이용해주세요!');
+            navigate('/mediclogin');
+        }
     }
-
+    
     const btn_program_translateList_view = (e) => {
-        navigate('/meidc/translate/translateList')
+        if (isSession) {
+            navigate('/meidc/translate/translateList');
+        } else {
+            alert('로그인 후 이용해주세요!');
+            navigate('/mediclogin');
+        }
     }
-
+    
     const btn_program_faultInfo_view = (e) => {
-        navigate('/medic/medicalknowledge/faultInfo')
+        if (isSession) {
+            navigate('/medic/medicalknowledge/faultInfo');
+        } else {
+            alert('로그인 후 이용해주세요!');
+            navigate('/mediclogin');
+        }
     }
-
+    
     const btn_program_industrialAccidentInfo_view = (e) => {
-        navigate('/medic/medicalknowledge/industrialAccidentInfo')
+        if (isSession) {
+            navigate('/medic/medicalknowledge/industrialAccidentInfo');
+        } else {
+            alert('로그인 후 이용해주세요!');
+            navigate('/mediclogin');
+        }
     }
-
+    
     const btn_program_trafficAccidentInfo_view = (e) => {
-        navigate('/medic/medicalknowledge/trafficAccidentInfo')
+        if (isSession) {
+            navigate('/medic/medicalknowledge/trafficAccidentInfo');
+        } else {
+            alert('로그인 후 이용해주세요!');
+            navigate('/mediclogin');
+        }
     }
-
+    
     const btn_program_woundInfo_view = (e) => {
-        navigate('/medic/medicalknowledge/woundInfo')
+        if (isSession) {
+            navigate('/medic/medicalknowledge/woundInfo');
+        } else {
+            alert('로그인 후 이용해주세요!');
+            navigate('/mediclogin');
+        }
     }
-
+    
     const btn_program_announcement_view = (e) => {
-        navigate('/medic/customer/Anccouncement')
+        if (isSession) {
+            navigate('/medic/customer/announcement');
+        } else {
+            alert('로그인 후 이용해주세요!');
+            navigate('/mediclogin');
+        }
     }
-
+    
     const btn_program_customerInquiry_view = (e) => {
-        navigate('/medic/customer/customerInquiry')
+        if (isSession) {
+            navigate('/medic/customer/customerInquiry');
+        } else {
+            alert('로그인 후 이용해주세요!');
+            navigate('/mediclogin');
+        }
     }
-
+    
     const btn_program_FAQ_view = (e) => {
-        navigate('/medic/customer/FAQ')
+        if (isSession) {
+            navigate('/medic/customer/FAQ');
+        } else {
+            alert('로그인 후 이용해주세요!');
+            navigate('/mediclogin');
+        }
     }
-
+    
     const btn_program_myAdviceList_view = (e) => {
-        navigate('/medic/mypage')
+        if (isSession) {
+            navigate('/medic/mypage');
+        } else {
+            alert('로그인 후 이용해주세요!');
+            navigate('/mediclogin');
+        }
     }
-
+    
     const btn_program_myAnalysisList_view = (e) => {
-        navigate('/medic/mypage')
+        if (isSession) {
+            navigate('/medic/mypage');
+        } else {
+            alert('로그인 후 이용해주세요!');
+            navigate('/mediclogin');
+        }
     }
-
+    
     const btn_program_myTranslateList_view = (e) => {
-        navigate('/medic/mypage')
+        if (isSession) {
+            navigate('/medic/mypage');
+        } else {
+            alert('로그인 후 이용해주세요!');
+            navigate('/mediclogin');
+        }
     }
-
+    
     const btn_program_changeMemberInfo_view = (e) => {
-        navigate('/medic/mypage')
+        if (isSession) {
+            navigate('/medic/mypage');
+        } else {
+            alert('로그인 후 이용해주세요!');
+            navigate('/mediclogin');
+        }
     }
     
     return (
