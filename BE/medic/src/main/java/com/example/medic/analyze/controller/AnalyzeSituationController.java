@@ -27,7 +27,7 @@ public class AnalyzeSituationController {
         }
 
         try {
-            // AdviceRequestService를 통해 자문의뢰 건수 조회
+            // AdviceRequestService를 통해 자문 의뢰 건수 조회
             int analyzeRequestCount = analyzeSituationService.getAnalyzeCount(currentUid);
             return ResponseEntity.ok(analyzeRequestCount);
         } catch (Exception e) {
