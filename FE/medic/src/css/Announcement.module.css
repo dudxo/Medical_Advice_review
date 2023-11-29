@@ -12,16 +12,16 @@
 }
 
 h2 {
-  font-size: 24px; /* 1.5rem */
+  font-size: 24px; 
 }
 
-table {
+.announce_table {
   width: 850px;
   border-collapse: collapse;
-  position: relative; /* 테이블도 relative로 설정 */
+  position: relative; 
 }
 
-th, td {
+.announce_th, .announce_td {
   height: 40px;
   font-size: 14px;
   border: 1px solid black;
@@ -29,7 +29,7 @@ th, td {
   padding: 8px;
 }
 
-/* .write_button {
+.write_button {
   display: inline-block;
     font-size: 1.2rem;
     background-color: #3cb371;
@@ -37,7 +37,7 @@ th, td {
     width: 180px;
     border: none;
     border-radius: 20px;
-} */
+}
 
 div.complete {
   text-align: right;

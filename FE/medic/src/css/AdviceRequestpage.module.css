@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; /* 추가: 화면 가운데 정렬 */
+    align-items: center; 
     text-align: center;
 }
 

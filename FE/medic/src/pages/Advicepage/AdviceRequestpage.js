@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import style from '../../css/AdviceRequestpage.module.css'
+import advicerequest from '../../css/AdviceRequestpage.module.css'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -294,24 +294,24 @@ export default function AdviceRequestpage(){
         navigate('/')
     }
     return(
-        <div className={style.join_wrap}>
-            <div className={style.iconbox}>
+        <div className={advicerequest.join_wrap}>
+            <div className={advicerequest.iconbox}>
                 <h2>
                     <i className="fa-solid fa-circle icon"></i>
                     자문의뢰 신청
                 </h2>
                 - 의료 자문의뢰를 신청하고자 하는 의뢰자께서는 아래 모든 항목에 대해 모두 입력해주세요.
             </div>
-            <div className={style.iconbox}>
+            <div className={advicerequest.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
                     신청자 정보
                 </h3>
             </div>
-            <div className = {style.tb}>
+            <div className = {advicerequest.tb}>
                 <table>
                     <tr>
-                        <td className ={style.title_td}>
+                        <td className ={advicerequest.title_td}>
                             의뢰자명
                         </td>
                         <td colSpan="3">
@@ -319,13 +319,13 @@ export default function AdviceRequestpage(){
                         </td>
                     </tr>
                     <tr>
-                        <td className ={style.title_td}>
+                        <td className ={advicerequest.title_td}>
                             일반전화
                         </td>
                         <td>
                             <input type="text" disabled={true} value={utel}/>
                         </td>
-                        <td className ={style.title_td}>
+                        <td className ={advicerequest.title_td}>
                             휴대전화
                         </td>
                         <td>
@@ -333,7 +333,7 @@ export default function AdviceRequestpage(){
                         </td>
                     </tr>
                     <tr>
-                        <td className ={style.title_td}>
+                        <td className ={advicerequest.title_td}>
                             주소
                         </td>
                         <td>
@@ -342,22 +342,22 @@ export default function AdviceRequestpage(){
                     </tr>
                 </table>
             </div>
-            <div className={style.iconbox}>
+            <div className={advicerequest.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
                     환자의료 기록 사항
                 </h3>
             </div>
-            <div className = {style.tb}>
+            <div className = {advicerequest.tb}>
                 <table>
                     <tr>
-                        <td className ={style.title_td}>
+                        <td className ={advicerequest.title_td}>
                             환자명
                         </td>
                         <td>
                             <input type="text" name="ad_ptname" onChange={input_ad_ptname}></input>
                         </td>
-                        <td className ={style.title_td}>
+                        <td className ={advicerequest.title_td}>
                             주민등록번호
                         </td>
                         <td>
@@ -367,13 +367,13 @@ export default function AdviceRequestpage(){
                         </td>
                     </tr>
                     <tr>
-                        <td className ={style.title_td}>
+                        <td className ={advicerequest.title_td}>
                             진단과목
                         </td>
                         <td>
                             <input type="text" name="ad_ptsub" onChange={input_ad_ptsub}></input>
                         </td>
-                        <td className ={style.title_td}>
+                        <td className ={advicerequest.title_td}>
                             진단명
                         </td>
                         <td>
@@ -381,7 +381,7 @@ export default function AdviceRequestpage(){
                         </td>
                     </tr>
                     <tr>
-                        <td className ={style.title_td}>
+                        <td className ={advicerequest.title_td}>
                             과거 진단이력
                         </td>
                         <td colSpan="3">
@@ -389,7 +389,7 @@ export default function AdviceRequestpage(){
                         </td>
                     </tr>
                     <tr>
-                        <td className ={style.title_td}>
+                        <td className ={advicerequest.title_td}>
                             내용
                         </td>
                         <td colSpan="3">
@@ -400,22 +400,22 @@ export default function AdviceRequestpage(){
                 </table>
             </div>
 
-            <div className={style.iconbox}>
+            <div className={advicerequest.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
                     보험 계약 정보
                 </h3>
             </div>
-            <div className = {style.tb}>
+            <div className = {advicerequest.tb}>
                 <table>
                     <tr>
-                        <td className ={style.title_td}>
+                        <td className ={advicerequest.title_td}>
                             보험사
                         </td>
                         <td>
                             <input type="text" name="insurance" onChange={input_insurance}></input>
                         </td>
-                        <td className ={style.title_td}>
+                        <td className ={advicerequest.title_td}>
                             계약일자
                         </td>
                         <td>
@@ -425,7 +425,7 @@ export default function AdviceRequestpage(){
                         </td>
                     </tr>
                     <tr>
-                        <td className ={style.title_td}>
+                        <td className ={advicerequest.title_td}>
                             보험계약명
                         </td>
                         <td colSpan="3">
@@ -435,16 +435,16 @@ export default function AdviceRequestpage(){
                 </table>
             </div>
 
-            <div className={style.iconbox}>
+            <div className={advicerequest.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
                     병원치료사항
                 </h3>
             </div>
-            <div className = {style.tb}>
+            <div className = {advicerequest.tb}>
                 <table>
                     <tr>
-                        <td className ={style.title_td}>
+                        <td className ={advicerequest.title_td}>
                             1차 치료 병원명
                         </td>
                         <td>
@@ -452,7 +452,7 @@ export default function AdviceRequestpage(){
                         </td>
                     </tr>
                     <tr>
-                        <td className ={style.title_td}>
+                        <td className ={advicerequest.title_td}>
                             입원 치료기간
                         </td>
                         <td>
@@ -466,7 +466,7 @@ export default function AdviceRequestpage(){
                         </td>
                     </tr>
                     <tr>
-                        <td className ={style.title_td}>
+                        <td className ={advicerequest.title_td}>
                             통원 치료기간
                         </td>
                         <td>
@@ -480,7 +480,7 @@ export default function AdviceRequestpage(){
                         </td>
                     </tr>
                     <tr>
-                        <td className ={style.title_td}>
+                        <td className ={advicerequest.title_td}>
                             치료사항
                         </td>
                         <td>
@@ -491,13 +491,13 @@ export default function AdviceRequestpage(){
                 </table>
             </div>
 
-            <div className={style.iconbox}>
+            <div className={advicerequest.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
                     기타사항
                 </h3>
             </div>
-            <div className = {style.tb}>
+            <div className = {advicerequest.tb}>
                 <table>
                     <tr>
                         <td>
@@ -511,13 +511,13 @@ export default function AdviceRequestpage(){
                 </table>
             </div>
             
-            <div className={style.iconbox}>
+            <div className={advicerequest.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
                     질문지 작성
                 </h3>
             </div>
-            <div className = {style.tb}>
+            <div className = {advicerequest.tb}>
                 <table>
                     <tr>
                         <td>
@@ -536,13 +536,13 @@ export default function AdviceRequestpage(){
                 </table>
             </div>
 
-            <div className={style.iconbox}>
+            <div className={advicerequest.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
                     첨부자료
                 </h3>
             </div>
-            <div className = {style.tb}>
+            <div className = {advicerequest.tb}>
                 <table>
                     <tr>
                         <td>
@@ -578,9 +578,9 @@ export default function AdviceRequestpage(){
                     </tr>
                 </table>
             </div>
-            <div className={style.complete}>
-            <button type = "button" className={style.btt_complete} onClick={btn_advice_request}>자문 의뢰신청</button>
-            <button type = "button" className={style.btt_complete} onClick={btn_advice_cancle}>취소</button>
+            <div className={advicerequest.complete}>
+            <button type = "button" className={advicerequest.btt_complete} onClick={btn_advice_request}>자문 의뢰신청</button>
+            <button type = "button" className={advicerequest.btt_complete} onClick={btn_advice_cancle}>취소</button>
         </div>
         </div>
     )

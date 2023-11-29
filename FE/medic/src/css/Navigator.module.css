@@ -21,7 +21,6 @@ ul {
     border-bottom-style: solid;
     border-bottom-color: (180deg, #B4B4B4 0%, rgba(217, 217, 217, 0.00) 100%);
     padding: 20px 0 20px 0;
-    background-color: white;
     &:hover{
         border-bottom: none;
     }
@@ -118,9 +117,6 @@ ul {
     margin-top: 20px;
 }
 
-ul {
-    padding: 0;
-}
 .menu > li {
     width: 16.6%; /*20*5=100%*/
     float: left;
@@ -151,26 +147,16 @@ ul {
     border: none;
     background-color: white;
 }
-.submenu{
-    background-color: #EBEBEB;
-}
+
 .submenu span {
     text-decoration: none;
     color: black;
     font-size: 1.2rem;
-}
-.submenu > li {
-    line-height: 50px;
-    background-color: #EBEBEB;
-}
-
-.submenu {
-    height: 0; 
-    overflow: hidden;
 }
 
 .menu > li:hover .submenu {
     height: 250px;
     transition-duration: 1s;
     margin-top: 20px;
+    background-color: #EBEBEB;
  }

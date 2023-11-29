@@ -11,7 +11,7 @@
     justify-content: start;
   }
   
-  div.complete {
+  .complete {
     text-align: right;
     margin-top: 50px;
   }
@@ -20,13 +20,13 @@
     font-size: 24px; 
   }
   
-  table {
+  .announcedetail_table {
     width: 850px;
     border-collapse: collapse;
     position: relative;
   }
   
-  th, td {
+  .announcedetail_th, .announcedetail_td {
     height: 40px;
     font-size: 14px;
     border: 1px solid black;

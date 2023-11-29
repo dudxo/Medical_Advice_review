@@ -15,13 +15,13 @@
     font-size: 24px; 
   }
   
-  table {
+  .writeannouncement_table {
     width: 850px;
     border-collapse: collapse;
-    position: relative; /* 테이블도 relative로 설정 */
+    position: relative;
   }
   
-  th, td {
+  .writeannouncement_th, .writeannouncementtd {
     height: 40px;
     font-size: 14px;
     border: 1px solid black;

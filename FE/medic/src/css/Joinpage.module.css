@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; /* 추가: 화면 가운데 정렬 */
+    align-items: center;
     text-align: center;
 }
 
@@ -15,21 +15,27 @@ div.tb {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
 }
 
-table,
-td,
-th {
-    border: 1px solid black;
+div.tb .joinpage_table {
     border-collapse: collapse;
     width: 850px;
-    height: 40px;
+    max-width: 100%;
+    margin: 10px;
 }
 
-td {
+div.tb .joinpage_table .joinpage_td,
+div.tb .joinpage_table .joinpage_th {
+    border: 1px solid black; /* Keep border for td and th */
     text-align: left;
-    padding-left: 20px;
+    padding: 10px;
 }
+
+div.tb .joinpage_table tr {
+    border: none; /* Remove border for tr */
+}
+
 tr.zipcode_tb {
     height: 100px;
 }
@@ -47,6 +53,7 @@ div.complete {
     width: 180px;
     border: none;
     border-radius: 20px;
+    margin-top: 20px;
 }
 
 .iconbox {
@@ -56,5 +63,5 @@ div.complete {
     align-items: start;
     text-align: center;
     width: 880px;
-    margin: 0 auto; /* 가운데 정렬을 위한 margin 추가 */
+    margin: 0 auto 20px;
 }

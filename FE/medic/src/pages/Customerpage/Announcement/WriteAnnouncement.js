@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import style from '../../../css/WriteAnnouncement.module.css';
+import writeannoucement from '../../../css/WriteAnnouncement.module.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
@@ -49,8 +49,8 @@ const WriteAnnouncement = () => {
     setAmContentcount(e.target.value.length)
   }
   return (
-    <div className={style.writeform}>
-      <div className={style.announce_title}>
+    <div className={writeannoucement.writeform}>
+      <div className={writeannoucement.announce_title}>
         <h2>
           <i className="fa-solid fa-circle icon"></i>
           공지사항 작성
@@ -58,31 +58,31 @@ const WriteAnnouncement = () => {
       </div>
       <br/>
       <form>
-        <table>
+        <table className={writeannoucement.write_table}>
           <tbody>
             <tr>
-              <th>제목</th>
-              <td><input type="text" name="subject" onChange={input_annoucement_titile}/></td>
-              <th>작성자</th>
-              <td><input type="text" disabled={true} name="writer" value={writer}/></td>
+              <th className={writeannoucement.write_th}>제목</th>
+              <td className={writeannoucement.write_td}><input type="text" name="subject" onChange={input_annoucement_titile}/></td>
+              <th className={writeannoucement.write_th}>작성자</th>
+              <td className={writeannoucement.write_td}><input type="text" disabled={true} name="writer" value={writer}/></td>
             </tr>
             <tr>
-              <th>비밀번호</th>
-              <td><input type="password" name="password" /></td>
-              <th>등록일</th>
-              <td><input type="text" name="date" value={timer} readOnly /></td>
+              <th className={writeannoucement.write_th}>비밀번호</th>
+              <td className={writeannoucement.write_td}><input type="password" name="password" /></td>
+              <th className={writeannoucement.write_th}>등록일</th>
+              <td className={writeannoucement.write_td}><input type="text" name="date" value={timer} readOnly /></td>
             </tr>
             <tr>
-              <th>내용</th>
-              <td colSpan="3">
+              <th className={writeannoucement.write_th}>내용</th>
+              <td className={writeannoucement.write_td} colSpan="3">
                 <textarea name="content" onChange={input_am_Content} maxLength={500}></textarea>
                 <span>{amContentcount}/500</span>
               </td>
             </tr>
           </tbody>
         </table>
-        <div className={style.complete}>
-          <button type="button" onClick={medicannounce} className={style.btt_write}>글쓰기 완료</button>
+        <div className={writeannoucement.complete}>
+          <button type="button" onClick={medicannounce} className={writeannoucement.btt_write}>글쓰기 완료</button>
         </div>
       </form>
     </div>
