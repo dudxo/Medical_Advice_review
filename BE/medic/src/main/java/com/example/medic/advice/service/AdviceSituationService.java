@@ -28,13 +28,23 @@ public class AdviceSituationService {
         try {
             String uid = clientInfoDto.getUId();
 
-            List<AdviceRequestList> requestList = adviceRequestListRepository.findByClient_UId(uid);
+            List<AdviceRequestList> adviceRequestList = adviceRequestListRepository.findByClient_UId(uid);
 
-            return requestList.stream()
+            return adviceRequestList.stream()
                     .map(AdviceSituationDto::from)
                     .collect(Collectors.toList());
         } catch (Exception e) {
             throw new RuntimeException("AdviceSituationList 조회 중 오류 발생", e);
+        }
+    }
+
+    public int getAdviceCount(String uid) {
+        try {
+            List<AdviceRequestList> adviceRequestList = adviceRequestListRepository.findByClient_UId(uid);
+
+            return adviceRequestList.size();
+        } catch (Exception e) {
+            throw new RuntimeException("AdviceRequestList 건수 조회 중 오류 발생");
         }
     }
 }
