@@ -87,11 +87,11 @@ export default function AdviceRequestpage(){
 
     const renderQuestionInputs = () => {
         return Array.from({ length: adQuestionTotal }, (_, index) => (
-          <tr key={index}>
-            <td>
+          <div className={advicerequest.row_box} style={{height : 'auto'}} key={index}>
+            <div className={advicerequest.title_box}>
               질문 {index + 1} 입력
-            </td>
-            <td>
+            </div>
+            <div className={advicerequest.input_box}>
               <input
                 type="text"
                 name={`adQuestionContent_${index}`}
@@ -99,8 +99,8 @@ export default function AdviceRequestpage(){
                 onChange={(e) => handleQuestionContentChange(index, e)}
                 maxLength={300}
               />
-            </td>
-          </tr>
+            </div>
+          </div>
         ));
     };
     
@@ -294,294 +294,257 @@ export default function AdviceRequestpage(){
         navigate('/')
     }
     return(
-        <div className={advicerequest.join_wrap}>
+        <div className={advicerequest.advicerequest_wrap}>
             <div className={advicerequest.iconbox}>
                 <h2>
                     <i className="fa-solid fa-circle icon"></i>
                     자문의뢰 신청
                 </h2>
                 - 의료 자문의뢰를 신청하고자 하는 의뢰자께서는 아래 모든 항목에 대해 모두 입력해주세요.
-            </div>
-            <div className={advicerequest.iconbox}>
+             </div>
+             <div className={advicerequest.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
                     신청자 정보
                 </h3>
-            </div>
-            <div className = {advicerequest.tb}>
-                <table>
-                    <tr>
-                        <td className ={advicerequest.title_td}>
-                            의뢰자명
-                        </td>
-                        <td colSpan="3">
-                            <input type="text" disabled={true} value={uname}/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className ={advicerequest.title_td}>
-                            일반전화
-                        </td>
-                        <td>
-                            <input type="text" disabled={true} value={utel}/>
-                        </td>
-                        <td className ={advicerequest.title_td}>
-                            휴대전화
-                        </td>
-                        <td>
-                            <input type="text" disabled={true} value={uphone}/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className ={advicerequest.title_td}>
-                            주소
-                        </td>
-                        <td>
-                            <input type="text" disabled={true} value={uaddress} />
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div className={advicerequest.iconbox}>
+             </div>
+             <div className={advicerequest.request_usertable}>
+                <div className={advicerequest.row_box}>
+                    <div className={advicerequest.title_box}>의뢰자명</div>
+                    <div className={advicerequest.input_box}>
+                        <input type="text" disabled={true} value={uname}/>
+                    </div>
+                </div>
+                <div className={advicerequest.row_box}>
+                    <div className={advicerequest.title_box}>일반전화</div>
+                    <div className={advicerequest.input_box}>
+                        <input type="text" disabled={true} value={utel}/>
+                    </div>
+                    <div className={advicerequest.title_box} style={{borderLeft : '1px solid black'}}>휴대전화</div>
+                    <div className={advicerequest.input_box}>
+                        <input type="text" disabled={true} value={uphone}/>
+                    </div>
+                </div>
+                <div className={advicerequest.row_box}>
+                    <div className={advicerequest.title_box}>주소</div>
+                    <div className={advicerequest.input_box}>
+                        <input type="text" disabled={true} value={uaddress}/>
+                    </div>
+                </div>
+             </div>
+             <div className={advicerequest.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
                     환자의료 기록 사항
                 </h3>
             </div>
-            <div className = {advicerequest.tb}>
-                <table>
-                    <tr>
-                        <td className ={advicerequest.title_td}>
-                            환자명
-                        </td>
-                        <td>
-                            <input type="text" name="ad_ptname" onChange={input_ad_ptname}></input>
-                        </td>
-                        <td className ={advicerequest.title_td}>
-                            주민등록번호
-                        </td>
-                        <td>
-                            <input type="text" name="ad_ptssnum1" maxLength={6} onChange={input_ad_ptssnum1}></input>
-                            -
-                            <input type="password" name="ad_ptssnum2" maxLength={7} onChange={input_ad_ptssnum2}></input>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className ={advicerequest.title_td}>
-                            진단과목
-                        </td>
-                        <td>
-                            <input type="text" name="ad_ptsub" onChange={input_ad_ptsub}></input>
-                        </td>
-                        <td className ={advicerequest.title_td}>
-                            진단명
-                        </td>
-                        <td>
-                            <input type="text" name="ad_ptdiagnosis" onChange={input_ad_ptdiagnosis}></input>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className ={advicerequest.title_td}>
-                            과거 진단이력
-                        </td>
-                        <td colSpan="3">
-                            <input type="text" name="ad_ptrec" onChange={input_ad_ptrec}></input>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className ={advicerequest.title_td}>
-                            내용
-                        </td>
-                        <td colSpan="3">
-                            <textarea cols="50" rows="10" onChange={input_ad_ptcmt} maxLength={500}></textarea>
+            <div className={advicerequest.request_patienttable}>
+                <div className={`${advicerequest.row_box} ${advicerequest.patient_box}`}>
+                    <div className={`${advicerequest.title_box} ${advicerequest.patient_box}`}>환자명</div>
+                    <div className={`${advicerequest.input_box} ${advicerequest.patient_box}`}>
+                        <input type="text" name="ad_ptname" onChange={input_ad_ptname}></input>
+                    </div>
+                    <div className={`${advicerequest.title_box} ${advicerequest.patient_box}`} style={{borderLeft : '1px solid black'}}>주민등록번호</div>
+                    <div className={`${advicerequest.input_box} ${advicerequest.input_ptssnumbox} ${advicerequest.patient_box}`}>
+                        <input type="text" name="ad_ptssnum1" maxLength={6} onChange={input_ad_ptssnum1}></input>
+                         -
+                        <input type="password" name="ad_ptssnum2" maxLength={7} onChange={input_ad_ptssnum2}></input>
+                    </div>
+                </div>
+                <div className={advicerequest.row_box}>
+                    <div className={advicerequest.title_box}>진단과목</div>
+                    <div className={advicerequest.input_box}>
+                        <input type="text" name="ad_ptsub" onChange={input_ad_ptsub}/>
+                    </div>
+                    <div className={advicerequest.title_box} style={{borderLeft : '1px solid black'}}>진단명</div>
+                    <div className={advicerequest.input_box}>
+                        <input type="text" name="ad_ptdiagnosis" onChange={input_ad_ptdiagnosis}/>
+                    </div>
+                </div>
+                <div className={advicerequest.row_box}>
+                    <div className={advicerequest.title_box}>과거 진단이력</div>
+                    <div className={advicerequest.input_box}>
+                        <input type="text" name="ad_ptrec" onChange={input_ad_ptrec}/>
+                    </div>
+                </div>
+                <div className={`${advicerequest.row_box}`}>
+                    <div className ={`${advicerequest.title_box} ${advicerequest.row_contentbox}`}>
+                        내용
+                    </div>
+                    <div className={advicerequest.input_box} style={{width : '400px', height : 'auto'}}>
+                        <textarea cols="50" rows="10" onChange={input_ad_ptcmt} maxLength={500}/>
+                        <div className={advicerequest.count_box}>
                             <span>{contents_count}/500</span>
-                        </td>
-                    </tr>
-                </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-
             <div className={advicerequest.iconbox}>
-                <h3>
-                    <i className="fa-solid fa-circle icon"></i>
-                    보험 계약 정보
-                </h3>
+                 <h3>
+                     <i className="fa-solid fa-circle icon"></i>
+                     보험 계약 정보
+                 </h3>
+             </div>
+             <div className={advicerequest.request_insurancetable}>
+                <div className={advicerequest.row_box}>
+                    <div className={advicerequest.title_box}>보험사명</div>
+                    <div className={advicerequest.input_box}>
+                        <input type="text" name="insurance" onChange={input_insurance}></input>
+                    </div>
+                    <div className={advicerequest.title_box} style={{borderLeft : '1px solid black'}}>계약일자</div>
+                    <div className={advicerequest.input_box}>
+                        <select onChange={handleYearChange} value={selectedYear}>{generateOptions(startYear, todayYear)}</select> -
+                        <select onChange={handleMonthChange} value={selectedMonth}>{generateOptions(1, 12)}</select> -
+                        <select onChange={handleDayChange} value={selectedDay}>{dayOptions.map((day) => day)}</select>
+                    </div>
+                </div>
+                <div className={advicerequest.row_box}>
+                    <div className={advicerequest.title_box}>보험계약명</div>
+                    <div className={advicerequest.input_box}>
+                        <input type="text" name="insure_name" onChange={input_insure_name}></input>
+                    </div>
+                </div>
             </div>
-            <div className = {advicerequest.tb}>
-                <table>
-                    <tr>
-                        <td className ={advicerequest.title_td}>
-                            보험사
-                        </td>
-                        <td>
-                            <input type="text" name="insurance" onChange={input_insurance}></input>
-                        </td>
-                        <td className ={advicerequest.title_td}>
-                            계약일자
-                        </td>
-                        <td>
-                            <select onChange={handleYearChange} value={selectedYear}>{generateOptions(startYear, todayYear)}</select> -
-                            <select onChange={handleMonthChange} value={selectedMonth}>{generateOptions(1, 12)}</select> -
-                            <select onChange={handleDayChange} value={selectedDay}>{dayOptions.map((day) => day)}</select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className ={advicerequest.title_td}>
-                            보험계약명
-                        </td>
-                        <td colSpan="3">
-                            <input type="text" name="insure_name" onChange={input_insure_name}></input>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
             <div className={advicerequest.iconbox}>
-                <h3>
-                    <i className="fa-solid fa-circle icon"></i>
-                    병원치료사항
-                </h3>
+                 <h3>
+                      <i className="fa-solid fa-circle icon"></i>
+                     병원치료사항
+                 </h3>
             </div>
-            <div className = {advicerequest.tb}>
-                <table>
-                    <tr>
-                        <td className ={advicerequest.title_td}>
-                            1차 치료 병원명
-                        </td>
-                        <td>
-                            <input type="text" name="hospital" onChange={input_hospital}></input>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className ={advicerequest.title_td}>
-                            입원 치료기간
-                        </td>
-                        <td>
+            <div className={advicerequest.request_diagtable}>
+                <div className={advicerequest.row_box} style={{height : '42px'}}>
+                    <div className={advicerequest.title_box} >1차 치료 병원명</div>
+                    <div className={advicerequest.input_box}>
+                        <input type="text" name="hospital" onChange={input_hospital}></input>
+                    </div>
+                </div>
+                <div className={advicerequest.row_box}>
+                    <div className={advicerequest.title_box} style={{height : '92px'}}>입원 치료기간</div>
+                    <div className={advicerequest.input_box} style={{display:'flex', flexDirection:'column' ,width: '600px', alignItems : 'space-between', height : '80px'}}>
+                        <div className={advicerequest.datebox}>
                             <input type="text" name="adm_startYear" onChange={input_adm_startYear} minLength={4} maxLength={4}></input>년
                             <input type="text" name="adm_startMonth" onChange={input_adm_startMonth} minLength={2} maxLength={2}></input>월
                             <input type="text" name="adm_startDay" onChange={input_adm_startDay} minLength={2} maxLength={2}></input>일
-                            ~
+                        </div>                       
+                        ~
+                        <div className={advicerequest.datebox}>
                             <input type="text" name="adm_endYear" onChange={input_adm_endYear} minLength={4} maxLength={4}></input>년
                             <input type="text" name="adm_endMonth" onChange={input_adm_endMonth} minLength={2} maxLength={2}></input>월
                             <input type="text" name="adm_endDay" onChange={input_adm_endDay} minLength={2} maxLength={2}></input>일
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className ={advicerequest.title_td}>
-                            통원 치료기간
-                        </td>
-                        <td>
+                        </div>                       
+                    </div>
+                </div>
+                <div className={advicerequest.row_box}>
+                    <div className={advicerequest.title_box} style={{height : '92px'}}>통원 치료기간</div>
+                    <div className={advicerequest.input_box} style={{display:'flex', flexDirection:'column' ,width: '600px', justifyContent : 'start', alignItems : 'space-between', height : '80px'}}>
+                        <div className={advicerequest.datebox}>
                             <input type="text" name="visit_startYear" onChange={input_visit_startYear} minLength={4} maxLength={4}></input>년
                             <input type="text" name="visit_startMonth" onChange={input_visit_startMonth} minLength={2} maxLength={2}></input>월
                             <input type="text" name="visit_startDay" onChange={input_visit_startDay} minLength={2} maxLength={2}></input>일
-                            ~
+                        </div>                       
+                        ~
+                        <div className={advicerequest.datebox}>
                             <input type="text" name="visit_endYear" onChange={input_visit_endYear} minLength={4} maxLength={4}></input>년
                             <input type="text" name="visit_endMonth" onChange={input_visit_endMonth} minLength={2} maxLength={2}></input>월
                             <input type="text" name="visit_endDay" onChange={input_visit_endDay} minLength={2} maxLength={2}></input>일
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className ={advicerequest.title_td}>
-                            치료사항
-                        </td>
-                        <td>
-                            <textarea cols="50" rows="10" maxLength={500} onChange={input_treat_cmt}></textarea>
+                        </div>                       
+                    </div>
+                </div>
+                <div className={advicerequest.row_box}>
+                    <div className ={`${advicerequest.title_box} ${advicerequest.row_contentbox}`} style={{height : '130px'}}>
+                        치료사항
+                    </div>
+                    <div className={advicerequest.input_box} style={{width : '400px', height : 'auto'}}>
+                        <textarea cols="50" rows="10" maxLength={500} onChange={input_treat_cmt}></textarea>
+                        <div className={advicerequest.count_box}>
                             <span>{treat_cmt_count}/500</span>
-                        </td>
-                    </tr>
-                </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-
             <div className={advicerequest.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
                     기타사항
                 </h3>
             </div>
-            <div className = {advicerequest.tb}>
-                <table>
-                    <tr>
-                        <td>
-                            내용
-                        </td>
-                        <td>
+            <div className={advicerequest.request_othertable}>
+                <div className={advicerequest.row_box} >
+                    <div className={advicerequest.title_box} style={{height : '130px'}}>기타사항</div>
+                    <div className={advicerequest.input_box} style={{width : '400px'}}>
                         <textarea cols="50" rows="3" name="adEtc" value={adEtcValue} onChange={handleAdEtcChange} maxLength={300}></textarea>
-                        <span>{ad_etc_count}/300</span>
-                        </td>
-                    </tr>
-                </table>
+                        <div className={advicerequest.count_box}>
+                            <span>{ad_etc_count}/300</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <div className={advicerequest.iconbox}>
+            <div className={advicerequest.iconbox} style={{marginTop : '50px'}}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
                     질문지 작성
                 </h3>
             </div>
-            <div className = {advicerequest.tb}>
-                <table>
-                    <tr>
-                        <td>
-                            질문 항목수
-                        </td>
-                        <td>
-                            <input
-                                type="text"
-                                name="adQuestionTotal"
-                                value={adQuestionTotal}
-                                onChange={handleQuestionTotalChange}
-                            />
-                        </td>
-                    </tr>
+            <div className = {advicerequest.request_questiontable}>
+                <div className={advicerequest.row_box} style={{height : 'auto'}}>
+                    <div className={advicerequest.title_box}>
+                        질문 항목수
+                    </div>
+                    <div className={advicerequest.input_box}>
+                        <input
+                            type="text"
+                            name="adQuestionTotal"
+                            value={adQuestionTotal}
+                            onChange={handleQuestionTotalChange}
+                        />
+                    </div>
+                </div>
                     {renderQuestionInputs()}
-                </table>
-            </div>
-
-            <div className={advicerequest.iconbox}>
+                </div>
+             <div className={advicerequest.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
-                    첨부자료
+                        첨부자료
                 </h3>
             </div>
-            <div className = {advicerequest.tb}>
-                <table>
-                    <tr>
-                        <td>
-                            자문의뢰신청서
-                        </td>
-                        <td>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            진단서
-                        </td>
-                        <td>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            의무기록지
-                        </td>
-                        <td>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            필름
-                        </td>
-                        <td>
-
-                        </td>
-                    </tr>
-                </table>
+            <div className={advicerequest.file_table}>
+                <div className={advicerequest.row_box} style={{height : 'auto'}}>
+                    <div className={advicerequest.title_box}>
+                        자문의뢰신청서
+                    </div>
+                    <div className={advicerequest.input_box}>
+                        <input type='file'/>
+                    </div>
+                </div>
+                <div className={advicerequest.row_box} style={{height : 'auto'}}>
+                    <div className={advicerequest.title_box}>
+                        진단서
+                    </div>
+                    <div className={advicerequest.input_box}>
+                        <input type='file'/>
+                    </div>
+                </div>
+                <div className={advicerequest.row_box} style={{height : 'auto'}}>
+                    <div className={advicerequest.title_box}>
+                        의무기록지
+                    </div>
+                    <div className={advicerequest.input_box}>
+                        <input type='file'/>
+                    </div>
+                </div>
+                <div className={advicerequest.row_box} style={{height : 'auto'}}>
+                    <div className={advicerequest.title_box}>
+                        필름
+                    </div>
+                    <div className={advicerequest.input_box}>
+                        <input type='file'/>
+                    </div>
+                </div>
+                <div className={advicerequest.complete}>
+                    <button type = "button" className={advicerequest.btt_complete} onClick={btn_advice_request}>자문 의뢰신청</button>
+                    <button type = "button" className={advicerequest.btt_complete} onClick={btn_advice_cancle}>취소</button>
+                 </div>
             </div>
-            <div className={advicerequest.complete}>
-            <button type = "button" className={advicerequest.btt_complete} onClick={btn_advice_request}>자문 의뢰신청</button>
-            <button type = "button" className={advicerequest.btt_complete} onClick={btn_advice_cancle}>취소</button>
-        </div>
-        </div>
+        </div>  
     )
 }
