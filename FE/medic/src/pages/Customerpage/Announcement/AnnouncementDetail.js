@@ -17,17 +17,17 @@ const AnnouncementDetail = () => {
 
   useEffect(() => {
     if (announcementId === 0) {
-      setPrevTitle('이전글이 없습니다.');
+      setNextTitle('이전글이 없습니다.');
     } else {
-      setPrevTitle(announcements[announcementId - 1].amName);
-      setPrevDate(announcements[announcementId - 1].amRegDate);
+      setNextTitle(announcements[announcementId - 1].amName);
+      setNextDate(announcements[announcementId - 1].amRegDate);
     }
 
     if (announcementId < announcements.length - 1) {
-      setNextTitle(announcements[announcementId + 1].amName);
-      setNextDate(announcements[announcementId + 1].amRegDate);
+      setPrevTitle(announcements[announcementId + 1].amName);
+      setPrevDate(announcements[announcementId + 1].amRegDate);
     } else {
-      setNextTitle('다음글이 없습니다.');
+      setPrevTitle('다음글이 없습니다.');
     }
   }, [announcementId, announcements]);
 

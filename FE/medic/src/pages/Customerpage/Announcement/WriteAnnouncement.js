@@ -57,7 +57,6 @@ const WriteAnnouncement = () => {
         </h2>
       </div>
       <br/>
-      <form>
         <table className={writeannoucement.write_table}>
           <tbody>
             <tr>
@@ -84,7 +83,6 @@ const WriteAnnouncement = () => {
         <div className={writeannoucement.complete}>
           <button type="button" onClick={medicannounce} className={writeannoucement.btt_write}>글쓰기 완료</button>
         </div>
-      </form>
     </div>
   );
 };

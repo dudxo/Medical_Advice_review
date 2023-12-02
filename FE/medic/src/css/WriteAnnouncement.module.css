@@ -15,18 +15,17 @@
     font-size: 24px; 
   }
   
-  .writeannouncement_table {
+  .write_table {
     width: 850px;
     border-collapse: collapse;
     position: relative;
   }
   
-  .writeannouncement_th, .writeannouncementtd {
+  .write_th, .write_td {
     height: 40px;
     font-size: 14px;
     border: 1px solid black;
-    text-align: center;
-    padding: 8px;
+    text-align: left;
   }
   
   

@@ -7,25 +7,24 @@
   text-align: center;
 }
 
-table {
-  width: 80%;
-  border-collapse: collapse;
+.adviceList_table {
+  width: 900px;
   text-align: center;
 }
 
-th, td {
+.adviceList_th, .adviceList_td {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
-th {
+.adviceList_th {
   background-color: #f2f2f2;
   font-weight: bold;
   font-size: 20px;
 }
 
-th:first-child,
-td:first-child {
+.adviceList_th:first-child,
+.adviceList_td:first-child {
   width: 100px;
 }
 
@@ -56,5 +55,5 @@ td:first-child {
   justify-content: center;
   align-items: start;
   text-align: center;
-  width: 1200px;
+  width: 950px;
 }
