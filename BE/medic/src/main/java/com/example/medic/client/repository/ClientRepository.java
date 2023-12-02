@@ -13,8 +13,8 @@ public interface ClientRepository extends JpaRepository<Client,String> {
     @Query("SELECT c FROM Client c WHERE c.uName = :uName AND c.uEmail = :uEmail")
     Optional<Client> findByUNameAndUEmail(String uName, String uEmail);
 
-    @Query("SELECT c FROM Client c WHERE c.uName = :uName AND c.uId = :uId AND c.uEmail = :uEmail")
-    Optional<Client> findByUNameAndUIdAndUEmail(String uName, String uId, String uEmail);
+    @Query("SELECT c FROM Client c WHERE c.uId = :uId AND c.uEmail = :uEmail")
+    Optional<Client> findByUIdAndUEmail(String uId, String uEmail);
 
 
 }

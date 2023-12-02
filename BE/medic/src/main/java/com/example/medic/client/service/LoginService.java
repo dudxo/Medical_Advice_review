@@ -38,7 +38,7 @@ public class LoginService {
 
     public void updatePassword(LoginDto loginDto) {
         Optional<Client> optionalClient =
-                clientRepository.findByUNameAndUIdAndUEmail(loginDto.getUName(), loginDto.getUId(), loginDto.getUEmail());
+                clientRepository.findByUIdAndUEmail(loginDto.getUId(), loginDto.getUEmail());
         if (optionalClient.isPresent()) {
             Client client = optionalClient.get();
             client.updatePassword(loginDto.getNewUpw());

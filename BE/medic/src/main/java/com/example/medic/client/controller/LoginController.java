@@ -71,7 +71,7 @@ public class LoginController {
         }
     }
 
-    @GetMapping("/login/findId")
+    @PostMapping("/login/findId")
     public ResponseEntity<String> findId(@RequestBody LoginDto loginDto) {
         String foundId = loginService.findId(loginDto);
         if (foundId != null) {
