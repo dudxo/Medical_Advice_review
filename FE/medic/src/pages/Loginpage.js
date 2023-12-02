@@ -43,6 +43,9 @@ export default function Loginpage(){
     const btn_user_siginup = e => {
         navigate('/medicsignup')
     }
+    const btn_finduserinfo = e => {
+        navigate('/medic/finduserinfo')
+    }
     return(
                <div className={style.contents}>
                <form name="dataForm" className={style.loginform}>            
@@ -76,7 +79,7 @@ export default function Loginpage(){
                     <div className={style.signbtnbox}>                            
                         <input type="submit" className={style.signbtn} value ="로그인" onClick={userLogin}/>
                         <span><small>아직 회원이 아니라면?<input type="submit" className={style.gotosignup} value="회원가입" onClick={btn_user_siginup}/></small></span>
-	                    <span><small>잘 기억이 나지 않으시다면?<input type="submit" className={style.findidpw} value="ID/PW 찾기"/></small></span>
+	                    <span><small>잘 기억이 나지 않으시다면?<input type="submit" className={style.findidpw} value="ID/PW 찾기" onClick={btn_finduserinfo}/></small></span>
                     </div>
                 </div>
             </div>

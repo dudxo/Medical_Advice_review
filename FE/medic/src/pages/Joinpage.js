@@ -57,7 +57,7 @@ export default function Joinpage(){
                 alert('이미 사용중인 아이디 입니다.')
             }        
         } catch(err){
-            console.log(err)
+            alert('이미 사용중인 아이디 입니다.')
         }
     }
     const input_id = e => {

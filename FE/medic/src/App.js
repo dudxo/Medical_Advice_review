@@ -22,6 +22,7 @@ import Header from "./components/Header";
 import Announcementpage from "./pages/Customerpage/Announcementpage";
 import AnnouncementDetail from "./pages/Customerpage/Announcement/AnnouncementDetail";
 import WriteAnnouncement from "./pages/Customerpage/Announcement/WriteAnnouncement";
+import FinduserInfopage from "./pages/FinduserInfo/FinduserInfopage";
 export default function App(){
     return(
         <BrowserRouter>
@@ -49,6 +50,7 @@ export default function App(){
                     <Route path='/medic/mypage' element={<Mypage/>}/>
                     <Route path={`/medic/customer/announcement/announcementdetails`} element={<AnnouncementDetail/>}/>
                     <Route path='/medic/customer/announcement/writeannouncement' element={<WriteAnnouncement/>}/> 
+                    <Route path="/medic/finduserinfo" element={<FinduserInfopage/>}/>
                 </Routes>
             </div> 
             </div>   
