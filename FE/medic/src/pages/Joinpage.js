@@ -11,14 +11,14 @@ export default function Joinpage(){
     const [uEmail, setUEmail] = useState('') //email
     const [userTel, setUserTel] = useState('') //tel
     const [userPhone, setUserPhone] = useState('') //
-    const [userAddress, setUserAddress] = useState('안양')
+    const [userAddress, setUserAddress] = useState('anyang')
 
     const [company, setCompany] = useState('') //업체명
     const [ceo, setCeo] = useState('') //대표자명
     const [cpTel, setCpTel] = useState('') //회사 전화번호
     const [cpFx, setCpFx] = useState('') //회사 팩스번호
     const [cpNum, setCpNum] = useState('') //회사 사업자번호
-    const [cpAddress, setCpAddress] = useState('서울') //회사 주소
+    const [cpAddress, setCpAddress] = useState('seoul') //회사 주소
 
     const [idchk, setIdchk] = useState(false) // 중복검사
     const [pwchk, setPwchk] = useState(false)
