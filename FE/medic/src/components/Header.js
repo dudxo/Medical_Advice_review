@@ -162,7 +162,7 @@ export default function Header({}) {
     
     const btn_program_myAdviceList_view = (e) => {
         if (isSession) {
-            navigate('/medic/mypage');
+            navigate('/medic/advice/adviceList');
         } else {
             alert('로그인 후 이용해주세요!');
             navigate('/mediclogin');
@@ -171,7 +171,7 @@ export default function Header({}) {
     
     const btn_program_myAnalysisList_view = (e) => {
         if (isSession) {
-            navigate('/medic/mypage');
+            navigate('/medic/analysis/analysisList');
         } else {
             alert('로그인 후 이용해주세요!');
             navigate('/mediclogin');
@@ -180,7 +180,7 @@ export default function Header({}) {
     
     const btn_program_myTranslateList_view = (e) => {
         if (isSession) {
-            navigate('/medic/mypage');
+            navigate('/meidc/translate/translateList');
         } else {
             alert('로그인 후 이용해주세요!');
             navigate('/mediclogin');
@@ -188,6 +188,14 @@ export default function Header({}) {
     }
     
     const btn_program_changeMemberInfo_view = (e) => {
+        if (isSession) {
+            navigate('/medic/mypage');
+        } else {
+            alert('로그인 후 이용해주세요!');
+            navigate('/mediclogin');
+        }
+    }
+    const btn_program_mypage_view = e => {
         if (isSession) {
             navigate('/medic/mypage');
         } else {
@@ -254,6 +262,7 @@ export default function Header({}) {
                 <li>
                     <button>마이페이지</button>
                     <ul className={`${navigator.submenu}`}>
+                        <li><span onClick={btn_program_mypage_view}>마이페이지</span></li>
                         <li><span onClick={btn_program_myAdviceList_view}>나의 자문의뢰현황</span></li>
                         <li><span onClick={btn_program_myAnalysisList_view}>나의 분석의뢰현황</span></li>
                         <li><span onClick={btn_program_myTranslateList_view}>나의 번역의뢰현황</span></li>

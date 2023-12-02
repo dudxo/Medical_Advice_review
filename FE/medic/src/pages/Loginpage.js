@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import style from '../css/Loginpage.module.css'
-import { Cookies } from 'react-cookie';
 
 
 export default function Loginpage(){
