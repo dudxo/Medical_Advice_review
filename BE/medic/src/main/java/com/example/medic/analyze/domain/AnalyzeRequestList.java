@@ -5,6 +5,7 @@ import com.example.medic.advice.domain.AdviceQuestion;
 import com.example.medic.client.domain.Client;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,7 +32,7 @@ public class AnalyzeRequestList {
     private String anPtSsNum;
 
     @NotNull
-    private String ptSub;
+    private String anPtSub;
     @NotNull
     private String anPtDiagnosis;
 
@@ -42,10 +43,10 @@ public class AnalyzeRequestList {
     private String anEtc;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date adRegDate;
+    private Date anRegDate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date adMdDate;
+    private Date anMdDate;
 
     @ManyToOne
     @JoinColumn(name = "client_Id")
@@ -61,5 +62,18 @@ public class AnalyzeRequestList {
     @OneToMany(mappedBy = "analyzeRequestList")
     private List<AnalyzeRequestFile> analyzeRequestFiles = new ArrayList<>();
 
-
+    @Builder
+    private AnalyzeRequestList(Long anId, String anPtName, String anPtSsNum, String anPtSub, String anPtDiagnosis,
+                              String anPtDiagContent, String anEtc, Date anRegDate, Date anMdDate, Client client){
+        this.anId = anId;
+        this.anPtName = anPtName;
+        this.anPtSsNum = anPtSsNum;
+        this.anPtSub = anPtSub;
+        this.anPtDiagnosis = anPtDiagnosis;
+        this.anPtDiagContent = anPtDiagContent;
+        this.anEtc = anEtc;
+        this.anRegDate = anRegDate;
+        this.anMdDate = anMdDate;
+        this.client = client;
+    }
 }
