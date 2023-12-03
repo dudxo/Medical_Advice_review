@@ -22,13 +22,28 @@
     height: 350px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     border: 1px solid black;
 }  
 .FindBox_box{
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
-    width: 600px;
+    width: 800px;
     height: 300px;
-    border: 1px solid black;
+}
+.findid_form{
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+    justify-content: space-around;
+}
+.find_input{
+    width: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.findid_input_info{
+    display: flex;
 }

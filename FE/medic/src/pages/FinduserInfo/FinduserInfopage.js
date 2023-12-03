@@ -15,23 +15,21 @@ export default function FinduserInfopage(){
     const input_email_id = e =>{
         setEmail_id(e.target.value)
     }
-    const btn_findid = async(e) => {
+    const btn_findid = async (e) => {
         const userInfo = {
-            'uName' : name,
-            'uEmail' : email_id
+            'uName': name,
+            'uEmail': email_id
         }
-        try{
-            const response = axios.get('/login/findId', userInfo)
-            window.localStorage.setItem('uid', response.data)
-            alert('회원님의 아이디 : ', window.localStorage.getItem('uid'))
-            window.localStorage.removeItem('uid')
-            navigate('/medic/finduserinfo')
-            // navigate('/medic/findusrinfo/findid')
-        }catch(err){
-            console.log(err)
-            alert('가입된 정보가 없습니다.')
+        try {
+            const response = await axios.post('/login/findId', userInfo); 
+            alert(response.data); // 문자열 연결 수정
+            navigate('/mediclogin');
+        } catch (err) {
+            console.log(err);
+            alert('가입된 정보가 없습니다.');
         }
     }
+
     const input_id = e =>{
         setId(e.target.value)
     }
@@ -44,8 +42,8 @@ export default function FinduserInfopage(){
             'uEmail' : email_pw
         }
         try{
-            const response = axios.get('/login/findPw', userInfo)
-            navigate('/medic/findusrinfo/findpw')
+            const response = await axios.post('/login/findPw', userInfo)
+            navigate('/medic/findusrinfo/updatepw')
         }catch(err){
             console.log(err)
             alert('가입된 정보가 없습니다.')
@@ -59,7 +57,7 @@ export default function FinduserInfopage(){
                 </div>
                 <div className={style.FindBox_box}>
                     <div className={style.findid_form}>
-                        <div className={style.findid_input}>
+                        <div className={style.find_input}>
                             <div className={style.findid_input_info}>
                                 <h3>이름 : </h3>
                                 <input className={`${style.findid_input_name} ${style.input}`} onChange={input_name}/>
@@ -68,8 +66,8 @@ export default function FinduserInfopage(){
                                 <h3>이메일 : </h3>
                                 <input className={`${style.findid_input_email} ${style.input}`} onChange={input_email_id}/>
                             </div>
-                            <button className={style.btn_findbtn} onClick={btn_findid}>아이디 찾기</button>
                         </div>
+                        <button className={style.btn_findbtn} onClick={btn_findid}>아이디 찾기</button>
                     </div>
                 </div>
             </div>
@@ -79,7 +77,7 @@ export default function FinduserInfopage(){
                 </div>
                     <div className={style.FindBox_box}>
                     <div className={style.findid_form}>
-                        <div className={style.findid_input}>
+                        <div className={style.find_input}>
                             <div className={style.findid_input_info}>
                                 <h3>아이디 : </h3>
                                 <input className={`${style.findpw_input_id} ${style.input}`} onChange={input_id}/>
