@@ -7,8 +7,8 @@ import Joinpage from './pages/Joinpage';
 import Loginpage from './pages/Loginpage';
 import AdviceRequestpage from './pages/Advicepage/AdviceRequestpage';
 import AdviceListpage from './pages/Advicepage/AdviceListPage';
-import AnalysisRequestpage from './pages/Analysispage/AnalysisRequestpage';
-import AnalysisListpage from './pages/Analysispage/AnalysisListpage';
+import AnalyzeRequestpage from './pages/Analyzepage/AnalyzeRequestpage';
+import AnalyzeListpage from './pages/Analyzepage/AnalyzeListpage';
 import TranslateRequestpage from './pages/Translatepage/TranslateRequestpage'
 import TranslateListpage from './pages/Translatepage/TranslateListpage'
 import CustomerInquirypage from './pages/Customerpage/CustomerInquirypage';
@@ -39,8 +39,8 @@ export default function App(){
                     <Route path='/medicsignup' element={<Joinpage/>}/>
                     <Route path='/medic/advice/adviceRequest' element={<AdviceRequestpage/>}/>
                     <Route path='/medic/advice/adviceList' element={<AdviceListpage/>}/>
-                    <Route path='/medic/analysis/analysisRequest' element={<AnalysisRequestpage/>}/>
-                    <Route path='/medic/analysis/analysisList' element={<AnalysisListpage/>}/>
+                    <Route path='/medic/analyze/analyzeRequest' element={<AnalyzeRequestpage/>}/>
+                    <Route path='/medic/analyze/analyzeList' element={<AnalyzeListpage/>}/>
                     <Route path='/medic/translate/translateRequest' element={<TranslateRequestpage/>}/>
                     <Route path='/meidc/translate/translateList' element={<TranslateListpage/>}/>
                     <Route path='/medic/customer/customerInquiry' element={<CustomerInquirypage/>}/>

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function AnalysisRequestpage(){
+export default function AnalyzeRequestpage(){
     return(
         <>
             분석의뢰페이지

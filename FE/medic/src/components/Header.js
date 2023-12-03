@@ -61,18 +61,18 @@ export default function Header({}) {
         }
     }
     
-    const btn_program_analysisRequest_view = (e) => {
+    const btn_program_analyzeRequest_view = (e) => {
         if (isSession) {
-            navigate('/medic/analysis/analysisRequest');
+            navigate('/medic/analyze/analyzeRequest');
         } else {
             alert('로그인 후 이용해주세요!');
             navigate('/mediclogin');
         }
     }
     
-    const btn_program_analysisList_view = (e) => {
+    const btn_program_analyzeList_view = (e) => {
         if (isSession) {
-            navigate('/medic/analysis/analysisList');
+            navigate('/medic/analyze/analyzeList');
         } else {
             alert('로그인 후 이용해주세요!');
             navigate('/mediclogin');
@@ -169,9 +169,9 @@ export default function Header({}) {
         }
     }
     
-    const btn_program_myAnalysisList_view = (e) => {
+    const btn_program_myAnalyzeList_view = (e) => {
         if (isSession) {
-            navigate('/medic/analysis/analysisList');
+            navigate('/medic/analyze/analyzeList');
         } else {
             alert('로그인 후 이용해주세요!');
             navigate('/mediclogin');
@@ -231,8 +231,8 @@ export default function Header({}) {
                 <li>
                     <button>의료분석</button>
                     <ul className={`${navigator.submenu}`}>
-                        <li><span onClick={btn_program_analysisRequest_view}>의료분석신청</span></li>
-                        <li><span onClick={btn_program_analysisList_view}>의료분석현황</span></li>
+                        <li><span onClick={btn_program_analyzeRequest_view}>의료분석신청</span></li>
+                        <li><span onClick={btn_program_analyzeList_view}>의료분석현황</span></li>
                     </ul>
                 </li>
                 <li>
@@ -264,7 +264,7 @@ export default function Header({}) {
                     <ul className={`${navigator.submenu}`}>
                         <li><span onClick={btn_program_mypage_view}>마이페이지</span></li>
                         <li><span onClick={btn_program_myAdviceList_view}>나의 자문의뢰현황</span></li>
-                        <li><span onClick={btn_program_myAnalysisList_view}>나의 분석의뢰현황</span></li>
+                        <li><span onClick={btn_program_myAnalyzeList_view}>나의 분석의뢰현황</span></li>
                         <li><span onClick={btn_program_myTranslateList_view}>나의 번역의뢰현황</span></li>
                         <li><span onClick={btn_program_changeMemberInfo_view}>회원정보변경</span></li>
                     </ul>
