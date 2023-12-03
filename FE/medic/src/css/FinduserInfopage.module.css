@@ -35,15 +35,19 @@
 .findid_form{
     display: flex;
     flex-direction: column;
-    height: 200px;
     justify-content: space-around;
 }
 .find_input{
     width: 600px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 .findid_input_info{
     display: flex;
+    margin-bottom: 50px;
+    align-items: center;
+}
+.input{
+    height: 20px;
 }

@@ -41,7 +41,7 @@ export default function Loginpage(){
         navigate('/')
     }
     const btn_user_siginup = e => {
-        navigate('/medicsignup')
+        navigate('/medicassign')
     }
     const btn_finduserinfo = e => {
         navigate('/medic/finduserinfo')

@@ -1,25 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import updatepw from '../../css/Updatepw.module.css'
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Updatepw() {
     const [updateuserpw, setUpdateuserpw] = useState('')
+    const [newpwEmpty, setNewpwEmpty] = useState(false)
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    const uId = location.state.uId
+    const uEmail = location.state.uEmail
 
     const input_updatepw = e => {
         setUpdateuserpw(e.target.value)
     }
 
+    useEffect(()=>{
+        if(updateuserpw){
+            setNewpwEmpty(false)
+        }else{
+            setNewpwEmpty(true)
+        }
+    }, [updateuserpw])
     const btn_update_pw = async(e) => {
         const userPw = {
-            'updatepw' : updateuserpw
+            'newUpw' : updateuserpw,
+            'uId' : uId,
+            'uEmail' : uEmail
         }
         try{
-            const response = await axios.post('/login/findPw', userPw)
-            console.log(response.data)
+            const response = await axios.post('/login/findPw/updatePw', userPw)
+            alert(response.data)
+            navigate('/mediclogin')
         } catch(err){
             console.log(err)
         }
     }
+
 
     return(
         <div className={updatepw.updatepw_wrap}>
@@ -31,7 +49,7 @@ export default function Updatepw() {
                 <input type="password" onChange={input_updatepw} />
             </div>
             <div className={updatepw.btn_update_pw}>
-                <button onClick={btn_update_pw} >비밀번호 변경</button>
+                <button onClick={btn_update_pw} disabled={newpwEmpty} >비밀번호 변경</button>
             </div>
         </div>
     )

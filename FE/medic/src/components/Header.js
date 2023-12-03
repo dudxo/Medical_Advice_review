@@ -189,7 +189,7 @@ export default function Header({}) {
     
     const btn_program_changeMemberInfo_view = (e) => {
         if (isSession) {
-            navigate('/medic/mypage');
+            navigate('/medic/mypage/changemyinfo');
         } else {
             alert('로그인 후 이용해주세요!');
             navigate('/mediclogin');

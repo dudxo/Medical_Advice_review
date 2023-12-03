@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from '../../css/FinduserInfopage.module.css'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,10 @@ export default function FinduserInfopage(){
     const [email_id, setEmail_id] = useState('')
     const [id, setId] = useState('')
     const [email_pw, setEmail_pw] = useState('')
+
+    const [useridinfo, setUseridinfo] = useState(true)
+    const [userpwinfo, setUserpwinfo] = useState(true)
+
     const navigate = useNavigate()
     const input_name = e => {
         setName(e.target.value)
@@ -30,6 +34,21 @@ export default function FinduserInfopage(){
         }
     }
 
+    useEffect(()=>{
+        if(name && email_id){
+            setUseridinfo(false)
+        }else{
+            setUseridinfo(true)
+        }
+    }, [name, email_id])
+
+    useEffect(()=>{
+        if(id && email_pw){
+            setUserpwinfo(false)
+        }else{
+            setUserpwinfo(true)
+        }
+    }, [id, email_pw])
     const input_id = e =>{
         setId(e.target.value)
     }
@@ -43,7 +62,7 @@ export default function FinduserInfopage(){
         }
         try{
             const response = await axios.post('/login/findPw', userInfo)
-            navigate('/medic/findusrinfo/updatepw')
+            navigate('/medic/finduserinfo/findpw', {state : {uId : id, uEmail : email_pw}})
         }catch(err){
             console.log(err)
             alert('가입된 정보가 없습니다.')
@@ -67,7 +86,7 @@ export default function FinduserInfopage(){
                                 <input className={`${style.findid_input_email} ${style.input}`} onChange={input_email_id}/>
                             </div>
                         </div>
-                        <button className={style.btn_findbtn} onClick={btn_findid}>아이디 찾기</button>
+                        <button className={style.btn_findbtn} disabled={useridinfo} onClick={btn_findid}>아이디 찾기</button>
                     </div>
                 </div>
             </div>
@@ -86,8 +105,8 @@ export default function FinduserInfopage(){
                                 <h3>이메일 : </h3>
                                 <input className={`${style.findpw_input_email} ${style.input}`} onChange={input_email_pw}/>
                             </div>
-                            <button className={style.btn_findbtn} onClick={btn_findpw}>비밀번호 찾기</button>
                         </div>
+                        <button className={style.btn_findbtn} disabled={userpwinfo} onClick={btn_findpw}>비밀번호 찾기</button>
                     </div>
                 </div>
             </div>
