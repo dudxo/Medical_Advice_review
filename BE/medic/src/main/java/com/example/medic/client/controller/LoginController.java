@@ -84,16 +84,31 @@ public class LoginController {
     @PostMapping("login/findPw")
     public ResponseEntity<String> findPw(@RequestBody LoginDto loginDto) {
         try {
-            loginService.updatePassword(loginDto);
+            Optional<Client> optionalClient = loginService.findClient(loginDto);
 
-            return new ResponseEntity<>("비밀번호가 재설정되었습니다.", HttpStatus.OK);
-        } catch (NotCorrespondingIdException e) {
-            return new ResponseEntity<>("비밀번호 재설정 실패 - 아이디가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
+            if (optionalClient.isPresent()) {
+                return new ResponseEntity<>("안녕하세요 " + optionalClient.get().getUName() + "님", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
-            LOGGER.error("비밀번호 재설정 중 오류 발생", e);
-            return new ResponseEntity<>("비밀번호 재설정 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping("login/findPw/updatePw")
+    public ResponseEntity<String> updatePw(@RequestBody LoginDto loginDto) {
+        try {
+            if (loginService.updatePassword(loginDto)) {
+                return new ResponseEntity<>("비밀번호가 재설정 되었습니다.", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("비밀번호 설정 중 에러가 발생했습니다.", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("에러 발생", HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     @GetMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest httpServletRequest) {
