@@ -4,6 +4,7 @@ import com.example.medic.analyze.domain.AnalyzeAssignment;
 import com.example.medic.client.domain.Client;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -60,6 +61,19 @@ public class TranslationRequestList {
     @OneToOne(mappedBy = "translationRequestList")
     private TranslationAnswerFile translationAnswerFile;
 
-
-
+    @Builder
+    private TranslationRequestList(Long trId, String trPtName, String trPtSsNum, String trPtSub, String trPtDiagnosis,
+                                   String trPtRec, String trPtCmt, String trEtc, Date trRegDate, Date trMdDate, Client client) {
+        this.trId = trId;
+        this.trPtName = trPtName;
+        this.trPtSsNum = trPtSsNum;
+        this.trPtSub = trPtSub;
+        this.trPtDiagnosis = trPtDiagnosis;
+        this.trPtRec = trPtRec;
+        this.trPtCmt = trPtCmt;
+        this. trEtc = trEtc;
+        this.trRegDate = trRegDate;
+        this. trMdDate = trMdDate;
+        this.client = client;
+    }
 }
