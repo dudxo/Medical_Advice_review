@@ -1,20 +1,48 @@
 package com.example.medic.translation.controller;
 
+import com.example.medic.analyze.dto.AnalyzeSituationDto;
+import com.example.medic.client.dto.ClientInfoDto;
+import com.example.medic.translation.dto.TranslationSituationDto;
 import com.example.medic.translation.service.TranslationSituationService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
 public class TranslationSituationController {
 
     private final TranslationSituationService translationSituationService;
+
+    @GetMapping("/translation/list")
+    public ResponseEntity<List<TranslationSituationDto>> getTranslationSituationList(
+            @RequestParam(name = "trPtSub", required = false) String trPtSub,
+            @RequestParam(name = "trPtDiagnosis", required = false) String trPtDiagnosis,
+            @RequestParam(name = "trRegDate", required = false) Date trRegDate,
+            HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        String uid = (String) session.getAttribute("uId");
+
+        ClientInfoDto clientInfoDto = ClientInfoDto.builder()
+                .uId(uid)
+                .build();
+        try {
+            List<TranslationSituationDto> translationList = translationSituationService.getTranslationSituationList(trPtSub, trPtDiagnosis, trRegDate, clientInfoDto);
+            return ResponseEntity.ok(translationList);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 
     @GetMapping("mypage/myTranslationSituation")
     public ResponseEntity<Integer> getTranslationCount(HttpServletRequest request) {
