@@ -16,7 +16,6 @@ public class ClientController {
 
     private final ClientService clientService;
 
-
     @GetMapping("/userInfo")
     public ResponseEntity<ClientInfoDto> findUserInfo(HttpServletRequest request) {
 
@@ -27,7 +26,6 @@ public class ClientController {
                 .uId(uid)
                 .build();
         ClientInfoDto response = clientService.findClientInfo(clientInfoDto);
-
         return ResponseEntity.ok().body(response);
     }
 }

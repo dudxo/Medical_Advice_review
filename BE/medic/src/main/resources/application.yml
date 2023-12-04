@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3305/medic
+    url: jdbc:mariadb://localhost:3306/medic
     username: root
-    password: a
+    password: 6103
 
   jpa:
     hibernate:
