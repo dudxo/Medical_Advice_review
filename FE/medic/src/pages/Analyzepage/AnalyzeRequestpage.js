@@ -270,7 +270,7 @@ export default function AnalyzeRequestpage(){
             <div className={analyzerequest.file_table}>
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
                     <div className={analyzerequest.title_box}>
-                        자문의뢰신청서
+                        분석의뢰신청서
                     </div>
                     <div className={analyzerequest.input_box}>
                         <input type='file'/>
@@ -295,6 +295,14 @@ export default function AnalyzeRequestpage(){
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
                     <div className={analyzerequest.title_box}>
                         필름
+                    </div>
+                    <div className={analyzerequest.input_box}>
+                        <input type='file'/>
+                    </div>
+                </div>
+                <div className={analyzerequest.row_box} style={{height : 'auto'}}>
+                    <div className={analyzerequest.title_box}>
+                        기타자료
                     </div>
                     <div className={analyzerequest.input_box}>
                         <input type='file'/>
