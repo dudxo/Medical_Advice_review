@@ -100,5 +100,11 @@ div.complete {
 }
 
 .notice{
-    font-size: 1.1rem
+    font-size: 0.9rem;
+    color: #be0000;
+    margin-left : 80px;
+}
+
+.file_box{
+    margin-top : 50px
 }
