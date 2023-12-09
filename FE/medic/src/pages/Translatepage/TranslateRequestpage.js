@@ -180,7 +180,7 @@ export default function TranslateRequestpage(){
                         진단 사항
                     </div>
                     <div className={translaterequest.input_box} style={{width : '400px', height : 'auto'}}>
-                        <textarea cols="50" rows="10" onChange={input_tr_ptcmt} maxLength={500}/>
+                        <textarea cols="50" rows="10" onChange={input_tr_ptcmt} maxLength={500}/>   
                         <div className={translaterequest.count_box}>
                             <span>{contents_count}/500</span>
                         </div>
@@ -205,11 +205,13 @@ export default function TranslateRequestpage(){
                 </div>
             </div>
 
-             <div className={translaterequest.iconbox}>
+             <div className={`${translaterequest.iconbox} ${translaterequest.file_box}`}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
                         첨부자료
-                        
+                        <span className={translaterequest.notice}>
+                        ※ 번역자료는 압축파일(zip 파일형식) 으로 첨부해 주세요
+                        </span>
                 </h3>
             </div>
             <div className={translaterequest.file_table}>
