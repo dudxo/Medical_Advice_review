@@ -220,7 +220,7 @@ export default function Header({}) {
             </div>
         </div>
             <div className={navigator.navigator}>
-            <ul className={navigator.menu}>
+            <ul className={navigator.menu} style={{marginLeft : 0}}>
                 <li>
                     <button>의료자문</button>
                     <ul className={`${navigator.submenu}`}>

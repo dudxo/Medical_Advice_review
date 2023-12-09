@@ -1,12 +1,14 @@
 .menu {
-    width: 1680px;
+    width: 100vw;
     overflow: hidden;
     margin: 50px auto;
     margin-top: 20px;
+    
 }
 
 ul {
     padding: 0;
+    
 }
 .menu > li {
     width: 16.6%; /*20*5=100%*/

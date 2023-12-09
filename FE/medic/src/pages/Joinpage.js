@@ -11,14 +11,18 @@ export default function Joinpage(){
     const [uEmail, setUEmail] = useState('') //email
     const [userTel, setUserTel] = useState('') //tel
     const [userPhone, setUserPhone] = useState('') //
-    const [userAddress, setUserAddress] = useState('anyang')
+    const [zipcodeNum, setZipcodeNum] = useState('')
+    const [zipcode, setZipcode] = useState('')
+    const [userAddress, setUserAddress] = useState('')
 
     const [company, setCompany] = useState('') //업체명
     const [ceo, setCeo] = useState('') //대표자명
     const [cpTel, setCpTel] = useState('') //회사 전화번호
     const [cpFx, setCpFx] = useState('') //회사 팩스번호
     const [cpNum, setCpNum] = useState('') //회사 사업자번호
-    const [cpAddress, setCpAddress] = useState('seoul') //회사 주소
+    const [cpZipcodeNum, setCpZipcodeNum] = useState('')
+    const [cpZipcode, setCpZipcode] = useState('')
+    const [cpAddress, setCpAddress] = useState('') //회사 주소
 
     const [idchk, setIdchk] = useState(false) // 중복검사
     const [pwchk, setPwchk] = useState(false)
@@ -88,6 +92,16 @@ export default function Joinpage(){
     const input_phone = e => {
         setUserPhone(e.target.value)
     }
+    const input_zipcode_num = e => {
+        setZipcodeNum(e.target.value)
+    }
+    const input_zipcode = e => {
+        setZipcode(e.target.value)
+    }
+    const input_details_zipcode = e => {
+        const uadd = zipcodeNum + " " + zipcode + " " + e.target.value
+        setUserAddress(uadd)
+    }
     const input_cpname = e => {
         setCompany(e.target.value)
     }
@@ -102,6 +116,16 @@ export default function Joinpage(){
     }
     const input_cp_num = e => {
         setCpNum(e.target.value)
+    }
+    const input_cp_zipcode_num = e => {
+        setCpZipcodeNum(e.target.value)
+    }
+    const input_cp_zipcode = e => {
+        setCpZipcode(e.target.value)
+    }
+    const input_cp_details_zipcode = e => {
+        const cpadd = cpZipcodeNum + " " + cpZipcode + " " + e.target.value
+        setCpAddress(cpadd)
     }
     const user_signup = async(userInfo) => {
         console.log(2)
@@ -226,11 +250,11 @@ export default function Joinpage(){
                         </td>
                         <td colSpan="4" className={joinpage.joinpage_td}>
                             <div className={joinpage.joinpage_zipcode}>
-                                <input type="text" name="zipcode_num"/>
+                                <input type="text" name="zipcode_num" onChange={input_zipcode_num}/>
                                 <button type="button" onClick={() => alert('우편번호')} className={joinpage.joinpage_zipcode_btn}>우편번호</button>
                                 <br/>
-                                <input type="text" name="zipcode"/><br/>
-                                <input type="text" name="details_zipcode"/>
+                                <input type="text" name="zipcode" onChange={input_zipcode}/><br/>
+                                <input type="text" name="details_zipcode" onChange={input_details_zipcode}/>
                             </div>
                         </td>
                     </tr>
@@ -286,11 +310,11 @@ export default function Joinpage(){
                     </td>
                     <td colSpan="4" className={joinpage.joinpage_td}>
                         <div className={joinpage.zipcode}>
-                            <input type="text" name="cp_zipcode_num" />
+                            <input type="text" name="cp_zipcode_num" onChange={input_cp_zipcode_num}/>
                             <button type="button" onClick={() => alert('우편번호')} className={joinpage.zipcode}>우편번호</button>
                             <br />
-                            <input type="text" name="cp_zipcode" /><br />
-                            <input type="text" name="cp_details_zipcode" />
+                            <input type="text" name="cp_zipcode" onChange={input_cp_zipcode}/><br />
+                            <input type="text" name="cp_details_zipcode" onChange={input_cp_details_zipcode}/>
                         </div>
                     </td>
                 </tr>
