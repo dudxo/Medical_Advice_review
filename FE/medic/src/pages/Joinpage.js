@@ -194,7 +194,7 @@ export default function Joinpage(){
                         </td>
                         <td colSpan="3" className={joinpage.joinpage_td}>
                             <div className={joinpage.id}>
-                                <input type="text" name="id" className={joinpage.input_id} onChange={input_id}/>
+                                <input type="text" name="id" className={joinpage.input_id} onChange={input_id} maxLength={12}/>
                                 <button type="button" onClick={btn_progrm_idConfirm} className={joinpage.btt_id}>아이디 중복확인</button>
                             </div>
                         </td>
@@ -205,13 +205,13 @@ export default function Joinpage(){
                             비밀번호
                         </td>
                         <td className={joinpage.joinpage_td}>
-                            <input type="password" name="pw" onChange={input_pw}/>
+                            <input type="password" name="pw" onChange={input_pw} maxLength={15}/>
                         </td>
                         <td className={joinpage.joinpage_th}>
                             비밀번호 재입력
                         </td>
                         <td className={joinpage.joinpage_td}>
-                            <input type="password" name="re_pw" onBlur={input_pwchk}/>
+                            <input type="password" name="re_pw" onBlur={input_pwchk} maxLength={15}/>
                         </td>
                     </tr>
                     <tr>
@@ -219,13 +219,13 @@ export default function Joinpage(){
                             회원명
                         </td>
                         <td className={joinpage.joinpage_td}>
-                            <input type="text" name="name" onChange={input_name}/>
+                            <input type="text" name="name" onChange={input_name} maxLength={20}/>
                         </td>
                         <td className={joinpage.joinpage_td}>
                             이메일
                         </td>
                         <td className={joinpage.joinpage_td}>
-                            <input type="text" name="email" onChange={input_email}/>
+                            <input type="text" name="email" onChange={input_email} maxLength={30}/>
                         </td>
                     </tr>
 
@@ -234,13 +234,13 @@ export default function Joinpage(){
                             일반전화
                         </td>
                         <td className={joinpage.joinpage_td}>
-                            <input type="text" name="tel" onChange={input_tel}/>
+                            <input type="text" name="tel" onChange={input_tel} maxLength={13}/>
                         </td>
                         <td className={joinpage.joinpage_td}>
                             휴대폰번호
                         </td>
                         <td className={joinpage.joinpage_td}>
-                            <input type="text" name="phone" onChange={input_phone}/>
+                            <input type="text" name="phone" onChange={input_phone} maxLength={13}/>
                         </td>
                     </tr>
 
@@ -250,11 +250,11 @@ export default function Joinpage(){
                         </td>
                         <td colSpan="4" className={joinpage.joinpage_td}>
                             <div className={joinpage.joinpage_zipcode}>
-                                <input type="text" name="zipcode_num" onChange={input_zipcode_num}/>
+                                <input type="text" name="zipcode_num" onChange={input_zipcode_num} maxLength={5}/>
                                 <button type="button" onClick={() => alert('우편번호')} className={joinpage.joinpage_zipcode_btn}>우편번호</button>
                                 <br/>
-                                <input type="text" name="zipcode" onChange={input_zipcode}/><br/>
-                                <input type="text" name="details_zipcode" onChange={input_details_zipcode}/>
+                                <input type="text" name="zipcode" onChange={input_zipcode} maxLength={80}/><br/>
+                                <input type="text" name="details_zipcode" onChange={input_details_zipcode} maxLength={15}/>
                             </div>
                         </td>
                     </tr>
@@ -273,13 +273,13 @@ export default function Joinpage(){
                         회사명
                     </td>
                     <td className={joinpage.joinpage_td}>
-                        <input type="text" name="cp_name" onChange={input_cpname} />
+                        <input type="text" name="cp_name" onChange={input_cpname} maxLength={20}/>
                     </td>
                     <td className={joinpage.joinpage_th}>
                         대표자명
                     </td>
                     <td className={joinpage.joinpage_td}>
-                        <input type="text" name="cp_ceo" onChange={input_cp_ceo} />
+                        <input type="text" name="cp_ceo" onChange={input_cp_ceo} maxLength={8}/>
                     </td>
                 </tr>
                 <tr>
@@ -287,13 +287,13 @@ export default function Joinpage(){
                         일반전화
                     </td>
                     <td className={joinpage.joinpage_td}>
-                        <input type="text" name="cp_tel" onChange={input_cp_tel} />
+                        <input type="text" name="cp_tel" onChange={input_cp_tel} maxLength={13}/>
                     </td>
                     <td className={joinpage.joinpage_th}>
                         팩스번호
                     </td>
                     <td className={joinpage.joinpage_td}>
-                        <input type="text" name="cp_fx" onChange={input_cp_fx} />
+                        <input type="text" name="cp_fx" onChange={input_cp_fx} maxLength={15}/>
                     </td>
                 </tr>
                 <tr>
@@ -301,7 +301,7 @@ export default function Joinpage(){
                         사업자번호(법인)
                     </td>
                     <td colSpan="4" className={joinpage.joinpage_td}>
-                        <input type="text" name="cp_num" onChange={input_cp_num} />
+                        <input type="text" name="cp_num" onChange={input_cp_num} maxLength={20}/>
                     </td>
                 </tr>
                 <tr className={joinpage.zipcode_tb}>
@@ -310,11 +310,11 @@ export default function Joinpage(){
                     </td>
                     <td colSpan="4" className={joinpage.joinpage_td}>
                         <div className={joinpage.zipcode}>
-                            <input type="text" name="cp_zipcode_num" onChange={input_cp_zipcode_num}/>
+                            <input type="text" name="cp_zipcode_num" onChange={input_cp_zipcode_num} maxLength={5}/>
                             <button type="button" onClick={() => alert('우편번호')} className={joinpage.zipcode}>우편번호</button>
                             <br />
-                            <input type="text" name="cp_zipcode" onChange={input_cp_zipcode}/><br />
-                            <input type="text" name="cp_details_zipcode" onChange={input_cp_details_zipcode}/>
+                            <input type="text" name="cp_zipcode" onChange={input_cp_zipcode} maxLength={80}/><br />
+                            <input type="text" name="cp_details_zipcode" onChange={input_cp_details_zipcode} maxLength={15}/>
                         </div>
                     </td>
                 </tr>

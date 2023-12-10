@@ -79,11 +79,11 @@ export default function AssignAccept(){
                 <div className ={style.certification1}>
                     <div className = {style.text_num}>
                         <label htmlFor="phone_num">휴대폰번호</label>   
-                        <input type = "text" name = "phone_num" className={style.certification}/>
+                        <input type = "text" name = "phone_num" className={style.certification} maxLength={13}/>
                     </div>
                     <div className = {style.text_num}>
                         인증 번호 &nbsp;
-                        <input type = "text" name = "certificationo_num" className={style.certification}/>
+                        <input type = "text" name = "certificationo_num" className={style.certification} maxLength={6}/>
                     </div>
                 </div>
                 <br/>
