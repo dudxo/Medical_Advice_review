@@ -46,7 +46,7 @@ export default function Updatepw() {
             </div>
             <div className={updatepw.updatepw_inputbox}>
                 새 비밀번호 :
-                <input type="password" onChange={input_updatepw} />
+                <input type="password" onChange={input_updatepw} maxLength={15}/>
             </div>
             <div className={updatepw.btn_update_pw}>
                 <button onClick={btn_update_pw} disabled={newpwEmpty} >비밀번호 변경</button>

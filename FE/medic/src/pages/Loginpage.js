@@ -26,7 +26,6 @@ export default function Loginpage(){
         try{
             const response = await axios.post('/login', userInfo)
             console.log(response.status)
-
             if(response.status === 200){
                 alert('로그인 되었습니다.')
                 navigate('/', {state : {isLogin : true}})
@@ -59,7 +58,7 @@ export default function Loginpage(){
                                     <h3>아이디</h3>
                                 </label>
                             <div className={style.textbox}>
-                                <input type="text" name="uid" className={`${style.uid} ${style.inputtext}`} placeholder="아이디를 입력하세요." onChange={inputId}/>
+                                <input type="text" name="uid" className={`${style.uid} ${style.inputtext}`} placeholder="아이디를 입력하세요." onChange={inputId} maxLength={12}/>
                             </div>
                         </div>
                         <div className={`${style.input} ${style.inputpassoword}`}>
@@ -67,7 +66,7 @@ export default function Loginpage(){
                                 <h3>비밀번호</h3>
                             </label>
                             <div className={style.textbox}>
-                                <input type="password" name="upw" className={`${style.upw} ${style.inputtext}`} placeholder="비밀번호를 입력하세요." onChange={inputPw}/>    
+                                <input type="password" name="upw" className={`${style.upw} ${style.inputtext}`} placeholder="비밀번호를 입력하세요." onChange={inputPw} maxLength={15}/>    
                             </div>
                         </div>
                         <div className={style.errmsgbox}>

@@ -253,7 +253,7 @@ export default function AdviceRequestpage(){
             alert('입력값을 확인해주세요.');
             return;
         }
-        const adPtSsNum = ad_ptssnum1 + ad_ptssnum2
+        const adPtSsNum = ad_ptssnum1 + "-" + ad_ptssnum2
         const insureDate = selectedYear + '-' + selectedMonth + '-' + selectedDay
         const today = new Date()
         const admStart = adm_startYear + '-' + adm_startMonth + '-' + adm_startDay
@@ -342,7 +342,7 @@ export default function AdviceRequestpage(){
                 <div className={`${advicerequest.row_box} ${advicerequest.patient_box}`}>
                     <div className={`${advicerequest.title_box} ${advicerequest.patient_box}`}>환자명</div>
                     <div className={`${advicerequest.input_box} ${advicerequest.patient_box}`}>
-                        <input type="text" name="ad_ptname" onChange={input_ad_ptname}></input>
+                        <input type="text" name="ad_ptname" onChange={input_ad_ptname} maxLength={20}></input>
                     </div>
                     <div className={`${advicerequest.title_box} ${advicerequest.patient_box}`} style={{borderLeft : '1px solid black'}}>주민등록번호</div>
                     <div className={`${advicerequest.input_box} ${advicerequest.input_ptssnumbox} ${advicerequest.patient_box}`}>
@@ -354,17 +354,17 @@ export default function AdviceRequestpage(){
                 <div className={advicerequest.row_box}>
                     <div className={advicerequest.title_box}>진단과목</div>
                     <div className={advicerequest.input_box}>
-                        <input type="text" name="ad_ptsub" onChange={input_ad_ptsub}/>
+                        <input type="text" name="ad_ptsub" onChange={input_ad_ptsub} maxLength={10}/>
                     </div>
                     <div className={advicerequest.title_box} style={{borderLeft : '1px solid black'}}>진단명</div>
                     <div className={advicerequest.input_box}>
-                        <input type="text" name="ad_ptdiagnosis" onChange={input_ad_ptdiagnosis}/>
+                        <input type="text" name="ad_ptdiagnosis" onChange={input_ad_ptdiagnosis} maxLength={50}/>
                     </div>
                 </div>
                 <div className={advicerequest.row_box}>
                     <div className={advicerequest.title_box}>과거 진단이력</div>
                     <div className={advicerequest.input_box}>
-                        <input type="text" name="ad_ptrec" onChange={input_ad_ptrec}/>
+                        <input type="text" name="ad_ptrec" onChange={input_ad_ptrec} maxLength={100}/>
                     </div>
                 </div>
                 <div className={`${advicerequest.row_box}`}>
@@ -389,7 +389,7 @@ export default function AdviceRequestpage(){
                 <div className={advicerequest.row_box}>
                     <div className={advicerequest.title_box}>보험사명</div>
                     <div className={advicerequest.input_box}>
-                        <input type="text" name="insurance" onChange={input_insurance}></input>
+                        <input type="text" name="insurance" onChange={input_insurance} maxLength={10}></input>
                     </div>
                     <div className={advicerequest.title_box} style={{borderLeft : '1px solid black'}}>계약일자</div>
                     <div className={advicerequest.input_box}>
@@ -401,7 +401,7 @@ export default function AdviceRequestpage(){
                 <div className={advicerequest.row_box}>
                     <div className={advicerequest.title_box}>보험계약명</div>
                     <div className={advicerequest.input_box}>
-                        <input type="text" name="insure_name" onChange={input_insure_name}></input>
+                        <input type="text" name="insure_name" onChange={input_insure_name} maxLength={20}></input>
                     </div>
                 </div>
             </div>
@@ -415,7 +415,7 @@ export default function AdviceRequestpage(){
                 <div className={advicerequest.row_box} style={{height : '42px'}}>
                     <div className={advicerequest.title_box} >1차 치료 병원명</div>
                     <div className={advicerequest.input_box}>
-                        <input type="text" name="hospital" onChange={input_hospital}></input>
+                        <input type="text" name="hospital" onChange={input_hospital} maxLength={20}></input>
                     </div>
                 </div>
                 <div className={advicerequest.row_box}>
