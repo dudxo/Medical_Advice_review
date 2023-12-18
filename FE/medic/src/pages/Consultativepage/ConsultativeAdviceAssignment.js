@@ -3,7 +3,7 @@ import axios from 'axios';
 import assignmentAdvice from '../../css/ConsultativeAdviceAssignment.module.css';
 
 
-export default function AdviceListPage() {
+export default function ConsultativeAdviceAssignmentpage() {
   const [selectedStatus, setSelectedStatus] = useState('자문의뢰중');
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 추가
   const [adviceList, setAdviceList] = useState([]);
@@ -21,6 +21,10 @@ export default function AdviceListPage() {
 
     fetchData();
   }, []);
+
+  const handledetailClick = e => {
+    navigate('/medic/consultative/assignmentAdviceDetail', {state : {index : index}})
+  }
   
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -66,7 +70,7 @@ export default function AdviceListPage() {
                 {adviceList.map((advice, index) => (
                     rowIndex === index && (
                     <React.Fragment key={index}>
-                        <td className={assignmentAdvice.adviceList_td}>{index + 1}</td>
+                        <td className={assignmentAdvice.adviceList_td} onClick={() => handledetailClick(index)}>{index + 1}</td>
                         <td className={assignmentAdvice.adviceList_td}>{advice.adPtSub}</td>
                         <td className={assignmentAdvice.adviceList_td}>{advice.adPtDiagnosis}</td>
                         <td className={assignmentAdvice.adviceList_td}>

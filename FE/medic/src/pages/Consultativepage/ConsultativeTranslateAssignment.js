@@ -3,7 +3,7 @@ import axios from 'axios';
 import assignmentTranslate from '../../css/ConsultativeTranslateAssignment.module.css';
 
 
-export default function TranslateListPage() {
+export default function ConsultativeTranslateAssignmentpage() {
   const [selectedStatus, setSelectedStatus] = useState('번역의뢰중');
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 추가
   const [translateList, setTranslateList] = useState([]);
