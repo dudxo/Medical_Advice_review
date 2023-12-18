@@ -28,7 +28,7 @@ import ChangeMyInfo from "./pages/Mypage/ChangeMyInfopage";
 import ConsultativeAdviceAssignmentDetail from './pages/Consultativepage/ConsultativeAssignmentAdviceDetail'
 import ConsultativeAdviceAssignment from './pages/Consultativepage/ConsultativeAdviceAssignment'
 import ConsultativeAnalyzeAssignment from './pages/Consultativepage/ConsultativeAnalyzeAssignment'
-import ConsultativeTranslateAssignment from '.pages/Consultativepage/ConsultativeTranslateAssignment'
+import ConsultativeTranslateAssignment from './pages/Consultativepage/ConsultativeTranslateAssignment'
 
 export default function App(){
     return(
