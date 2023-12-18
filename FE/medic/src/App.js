@@ -12,6 +12,7 @@ import AnalyzeListpage from './pages/Analyzepage/AnalyzeListpage';
 import TranslateRequestpage from './pages/Translatepage/TranslateRequestpage'
 import TranslateListpage from './pages/Translatepage/TranslateListpage'
 import CustomerInquirypage from './pages/Customerpage/CustomerInquirypage';
+import WriteCustomerInquiry from './pages/Customerpage/Customerinquiry/WriteCustomerInquiry'
 import FAQpage from './pages/Customerpage/FAQpage';
 import FaultInfopage from './pages/MedicalLegalKnowledge/FaultInfopage'
 import IndustrialAccidentInfopage from './pages/MedicalLegalKnowledge/IndustrialAccidentInfopage'
@@ -24,7 +25,7 @@ import AnnouncementDetail from "./pages/Customerpage/Announcement/AnnouncementDe
 import WriteAnnouncement from "./pages/Customerpage/Announcement/WriteAnnouncement";
 import FinduserInfopage from "./pages/FinduserInfo/FinduserInfopage";
 import Updatepw from './pages/FinduserInfo/Updatepw'
-import ChangeMyInfo from "./pages/Mypage/ChangeMyInfopage";
+import ChangeMyInfo from "./pages/Mypage/ChangeMyInfopage"
 
 export default function App(){
     return(
@@ -44,6 +45,7 @@ export default function App(){
                     <Route path='/medic/translate/translateRequest' element={<TranslateRequestpage/>}/>
                     <Route path='/meidc/translate/translateList' element={<TranslateListpage/>}/>
                     <Route path='/medic/customer/customerInquiry' element={<CustomerInquirypage/>}/>
+                    <Route path="/medic/customer/announcement/writeannouncement" element={<WriteCustomerInquiry/>}/>
                     <Route path='/medic/customer/announcement' element={<Announcementpage/>}/>
                     <Route path='/medic/customer/FAQ' element={<FAQpage/>}/>
                     <Route path='/medic/medicalknowledge/faultInfo' element={<FaultInfopage/>}/>
