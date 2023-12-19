@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import advicerequest from '../../css/AdviceRequestpage.module.css'
+import assignmentadvicedetail from '../../css/ConsultativeAdviceAssignmentDetailpage.module.css'
 import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function ConsultativeAdviceAssignmentDetailpage(){
     const navigate = useNavigate();
     const location = useLocation();
   
     const adviceIndex = location.state.index + 1;
-
-    const today = new Date();
-    const todayYear = today.getFullYear();
     
     const [uname, setUname] = useState('')
     const [utel, setUtel] = useState('')
@@ -55,6 +52,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
     // 질문지
     const [adQuestionTotal, setAdQuestionTotal] = useState(1);
     const [adQuestionContents, setAdQuestionContents] = useState([]);
+    const [adAnswerContents, setAdAnswerContents] = useState([]);
 
 
     const getUserInfo = async() =>{
@@ -106,11 +104,11 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
 
     const renderQuestionInputs = () => {
         return adQuestionContents.map((content, index) => (
-          <div className={advicerequest.row_box} style={{ height: 'auto' }} key={index}>
-            <div className={advicerequest.title_box}>
+          <div className={assignmentadvicedetail.row_box} style={{ height: 'auto' }} key={index}>
+            <div className={assignmentadvicedetail.title_box}>
               질문 {index + 1}
             </div>
-            <div className={advicerequest.input_box}>
+            <div className={assignmentadvicedetail.input_box}>
               <input
                 type="text"
                 name={`adQuestionContent_${index}`}
@@ -119,10 +117,10 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                 maxLength={300}
               />
             </div>
-            <div className={advicerequest.title_box}>
+            <div className={assignmentadvicedetail.title_box}>
               답변 입력
             </div>
-            <div className={advicerequest.input_box}>
+            <div className={assignmentadvicedetail.input_box}>
               <input
                 type="text"
                 name={`adAnswerContent_${index}`}
@@ -135,15 +133,19 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
         ));
       };
       
-    
+    const handleAnswerContentChange = (index, event) => {
+        const newAnswerContents = [...adAnswerContents];
+        newAnswerContents[index] = event.target.value;
+        setAdAnswerContents(newAnswerContents);
+    };
     
     const isFormValid = () => {
         // 여러 입력 필드와 텍스트 영역의 유효성을 확인
         
-        const isQuestionInfoValid = adQuestionContents.every(content => content); // 모든 질문 내용이 비어있지 않아야 함
+        const isadAnswerContentsInfoValid = adAnswerContents.every(content => content); // 모든 질문 내용이 비어있지 않아야 함
       
         // 모든 조건을 만족하면 true를 반환
-        return isUserInfoValid && isPtInfoValid && isInsuranceValid && isHospitalInfoValid && isEtcInfoValid && isQuestionInfoValid;
+        return isadAnswerContentsInfoValid;
       };
     const btn_advice_request = async() => {
          // 유효성 검사
@@ -152,9 +154,18 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
             return;
         }
     
+        const answerList = adAnswerContents.map((answer, index) => {
+            return {
+              question: adQuestionContents[index],
+              answer: answer,
+            };
+        });
+
         const adviceRequest = {
-            "diagRound" : 1
-        }
+            "diagRound" : 1,
+            "answerList" : answerList
+        };
+
         try{
             const response = axios.post('/advice/request', adviceRequest)
             alert('자문의뢰 신청이 완료되었습니다.')
@@ -167,246 +178,245 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
         navigate('/')
     }
     return(
-        <div className={advicerequest.advicerequest_wrap}>
-            <div className={advicerequest.iconbox}>
+        <div className={assignmentadvicedetail.advicerequest_wrap}>
+            <div className={assignmentadvicedetail.iconbox}>
                 <h2>
                     <i className="fa-solid fa-circle icon"></i>
                     자문의뢰 답변
                 </h2>
                 - 보다 정확한 의료 자문의뢰 질문에 대한 답변을 모두 입력해주세요.
              </div>
-             <div className={advicerequest.iconbox}>
+             <div className={assignmentadvicedetail.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
                     신청자 정보
                 </h3>
              </div>
-             <div className={advicerequest.request_usertable}>
-                <div className={advicerequest.row_box}>
-                    <div className={advicerequest.title_box}>의뢰자명</div>
-                    <div className={advicerequest.input_box}>
+             <div className={assignmentadvicedetail.request_usertable}>
+                <div className={assignmentadvicedetail.row_box}>
+                    <div className={assignmentadvicedetail.title_box}>의뢰자명</div>
+                    <div className={assignmentadvicedetail.input_box}>
                         <input type="text" disabled={true} value={uname}/>
                     </div>
                 </div>
-                <div className={advicerequest.row_box}>
-                    <div className={advicerequest.title_box}>일반전화</div>
-                    <div className={advicerequest.input_box}>
+                <div className={assignmentadvicedetail.row_box}>
+                    <div className={assignmentadvicedetail.title_box}>일반전화</div>
+                    <div className={assignmentadvicedetail.input_box}>
                         <input type="text" disabled={true} value={utel}/>
                     </div>
-                    <div className={advicerequest.title_box} style={{borderLeft : '1px solid black'}}>휴대전화</div>
-                    <div className={advicerequest.input_box}>
+                    <div className={assignmentadvicedetail.title_box} style={{borderLeft : '1px solid black'}}>휴대전화</div>
+                    <div className={assignmentadvicedetail.input_box}>
                         <input type="text" disabled={true} value={uphone}/>
                     </div>
                 </div>
-                <div className={advicerequest.row_box}>
-                    <div className={advicerequest.title_box}>주소</div>
-                    <div className={advicerequest.input_box}>
+                <div className={assignmentadvicedetail.row_box}>
+                    <div className={assignmentadvicedetail.title_box}>주소</div>
+                    <div className={assignmentadvicedetail.input_box}>
                         <input type="text" disabled={true} value={uaddress}/>
                     </div>
                 </div>
              </div>
-             <div className={advicerequest.iconbox}>
+             <div className={assignmentadvicedetail.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
                     환자의료 기록 사항
                 </h3>
             </div>
-            <div className={advicerequest.request_patienttable}>
-                <div className={`${advicerequest.row_box} ${advicerequest.patient_box}`}>
-                    <div className={`${advicerequest.title_box} ${advicerequest.patient_box}`}>환자명</div>
-                    <div className={`${advicerequest.input_box} ${advicerequest.patient_box}`}>
+            <div className={assignmentadvicedetail.request_patienttable}>
+                <div className={`${assignmentadvicedetail.row_box} ${assignmentadvicedetail.patient_box}`}>
+                    <div className={`${assignmentadvicedetail.title_box} ${assignmentadvicedetail.patient_box}`}>환자명</div>
+                    <div className={`${assignmentadvicedetail.input_box} ${assignmentadvicedetail.patient_box}`}>
                         <input type="text" disabled={true} value={ad_ptname}></input>
                     </div>
-                    <div className={`${advicerequest.title_box} ${advicerequest.patient_box}`} style={{borderLeft : '1px solid black'}}>주민등록번호</div>
-                    <div className={`${advicerequest.input_box} ${advicerequest.input_ptssnumbox} ${advicerequest.patient_box}`}>
+                    <div className={`${assignmentadvicedetail.title_box} ${assignmentadvicedetail.patient_box}`} style={{borderLeft : '1px solid black'}}>주민등록번호</div>
+                    <div className={`${assignmentadvicedetail.input_box} ${assignmentadvicedetail.input_ptssnumbox} ${assignmentadvicedetail.patient_box}`}>
                         <input type="text" disabled={true} value={ad_ptssnum1}></input>
                          -
                         <input type="password" disabled={true} value={ad_ptssnum2}></input>
                     </div>
                 </div>
-                <div className={advicerequest.row_box}>
-                    <div className={advicerequest.title_box}>진단과목</div>
-                    <div className={advicerequest.input_box}>
+                <div className={assignmentadvicedetail.row_box}>
+                    <div className={assignmentadvicedetail.title_box}>진단과목</div>
+                    <div className={assignmentadvicedetail.input_box}>
                         <input type="text" disabled={true} value={ad_ptsub}/>
                     </div>
-                    <div className={advicerequest.title_box} style={{borderLeft : '1px solid black'}}>진단명</div>
-                    <div className={advicerequest.input_box}>
+                    <div className={assignmentadvicedetail.title_box} style={{borderLeft : '1px solid black'}}>진단명</div>
+                    <div className={assignmentadvicedetail.input_box}>
                         <input type="text" disabled={true} value={ad_ptdiagnosis}/>
                     </div>
                 </div>
-                <div className={advicerequest.row_box}>
-                    <div className={advicerequest.title_box}>과거 진단이력</div>
-                    <div className={advicerequest.input_box}>
+                <div className={assignmentadvicedetail.row_box}>
+                    <div className={assignmentadvicedetail.title_box}>과거 진단이력</div>
+                    <div className={assignmentadvicedetail.input_box}>
                         <input type="text" disabled={true} value={ad_ptrec}/>
                     </div>
                 </div>
-                <div className={`${advicerequest.row_box}`}>
-                    <div className ={`${advicerequest.title_box} ${advicerequest.row_contentbox}`}>
+                <div className={`${assignmentadvicedetail.row_box}`}>
+                    <div className ={`${assignmentadvicedetail.title_box} ${assignmentadvicedetail.row_contentbox}`}>
                         내용
                     </div>
-                    <div className={advicerequest.input_box} style={{width : '400px', height : 'auto'}}>
+                    <div className={assignmentadvicedetail.input_box} style={{width : '400px', height : 'auto'}}>
                         <textarea cols="50" rows="10" value={ad_ptcmt} readOnly/>
                     </div>
                 </div>
             </div>
-            <div className={advicerequest.iconbox}>
+            <div className={assignmentadvicedetail.iconbox}>
                  <h3>
                      <i className="fa-solid fa-circle icon"></i>
                      보험 계약 정보
                  </h3>
              </div>
-             <div className={advicerequest.request_insurancetable}>
-                <div className={advicerequest.row_box}>
-                    <div className={advicerequest.title_box}>보험사명</div>
-                    <div className={advicerequest.input_box}>
+             <div className={assignmentadvicedetail.request_insurancetable}>
+                <div className={assignmentadvicedetail.row_box}>
+                    <div className={assignmentadvicedetail.title_box}>보험사명</div>
+                    <div className={assignmentadvicedetail.input_box}>
                         <input type="text" disabled={true} value={insurance}></input>
                     </div>
-                    <div className={advicerequest.title_box} style={{borderLeft : '1px solid black'}}>계약일자</div>
-                    <div className={advicerequest.input_box}>
+                    <div className={assignmentadvicedetail.title_box} style={{borderLeft : '1px solid black'}}>계약일자</div>
+                    <div className={assignmentadvicedetail.input_box}>
                     <input type="text" disabled={true} value={insuranceYear}></input> -
                     <input type="text" disabled={true} value={insuranceMonth}></input> -
                     <input type="text" disabled={true} value={insuranceDay}></input>
                     </div>
                 </div>
-                <div className={advicerequest.row_box}>
-                    <div className={advicerequest.title_box}>보험계약명</div>
-                    <div className={advicerequest.input_box}>
+                <div className={assignmentadvicedetail.row_box}>
+                    <div className={assignmentadvicedetail.title_box}>보험계약명</div>
+                    <div className={assignmentadvicedetail.input_box}>
                         <input type="text" disabled={true} value={insure_name}></input>
                     </div>
                 </div>
             </div>
-            <div className={advicerequest.iconbox}>
+            <div className={assignmentadvicedetail.iconbox}>
                  <h3>
                       <i className="fa-solid fa-circle icon"></i>
                      병원치료사항
                  </h3>
             </div>
-            <div className={advicerequest.request_diagtable}>
-                <div className={advicerequest.row_box} style={{height : '42px'}}>
-                    <div className={advicerequest.title_box} >1차 치료 병원명</div>
-                    <div className={advicerequest.input_box}>
+            <div className={assignmentadvicedetail.request_diagtable}>
+                <div className={assignmentadvicedetail.row_box} style={{height : '42px'}}>
+                    <div className={assignmentadvicedetail.title_box} >1차 치료 병원명</div>
+                    <div className={assignmentadvicedetail.input_box}>
                         <input type="text" disabled={true} value={hospital}></input>
                     </div>
                 </div>
-                <div className={advicerequest.row_box}>
-                    <div className={advicerequest.title_box} style={{height : '92px'}}>입원 치료기간</div>
-                    <div className={advicerequest.input_box} style={{display:'flex', flexDirection:'column' ,width: '600px', alignItems : 'space-between', height : '80px'}}>
-                        <div className={advicerequest.datebox}>
+                <div className={assignmentadvicedetail.row_box}>
+                    <div className={assignmentadvicedetail.title_box} style={{height : '92px'}}>입원 치료기간</div>
+                    <div className={assignmentadvicedetail.input_box} style={{display:'flex', flexDirection:'column' ,width: '600px', alignItems : 'space-between', height : '80px'}}>
+                        <div className={assignmentadvicedetail.datebox}>
                         <input type="text" disabled={true} value={adm_startYear}></input>년
                         <input type="text" disabled={true} value={adm_startMonth}></input>월
                         <input type="text" disabled={true} value={adm_startDay}></input>일
                         </div>                       
                         ~
-                        <div className={advicerequest.datebox}>
+                        <div className={assignmentadvicedetail.datebox}>
                         <input type="text" disabled={true} value={adm_endYear}></input>년
                         <input type="text" disabled={true} value={adm_endMonth}></input>월
                         <input type="text" disabled={true} value={adm_endDay}></input>일
                         </div>                       
                     </div>
                 </div>
-                <div className={advicerequest.row_box}>
-                    <div className={advicerequest.title_box} style={{height : '92px'}}>통원 치료기간</div>
-                    <div className={advicerequest.input_box} style={{display:'flex', flexDirection:'column' ,width: '600px', justifyContent : 'start', alignItems : 'space-between', height : '80px'}}>
-                        <div className={advicerequest.datebox}>
+                <div className={assignmentadvicedetail.row_box}>
+                    <div className={assignmentadvicedetail.title_box} style={{height : '92px'}}>통원 치료기간</div>
+                    <div className={assignmentadvicedetail.input_box} style={{display:'flex', flexDirection:'column' ,width: '600px', justifyContent : 'start', alignItems : 'space-between', height : '80px'}}>
+                        <div className={assignmentadvicedetail.datebox}>
                         <input type="text" disabled={true} value={visit_startYear}></input>년
                         <input type="text" disabled={true} value={visit_startMonth}></input>월
                         <input type="text" disabled={true} value={visit_startDay}></input>일
                         </div>                       
                         ~
-                        <div className={advicerequest.datebox}>
+                        <div className={assignmentadvicedetail.datebox}>
                         <input type="text" disabled={true} value={visit_endYear}></input>년
                         <input type="text" disabled={true} value={visit_endMonth}></input>월
                         <input type="text" disabled={true} value={visit_endDay}></input>일
                         </div>                       
                     </div>
                 </div>
-                <div className={advicerequest.row_box}>
-                    <div className ={`${advicerequest.title_box} ${advicerequest.row_contentbox}`} style={{height : '130px'}}>
+                <div className={assignmentadvicedetail.row_box}>
+                    <div className ={`${assignmentadvicedetail.title_box} ${assignmentadvicedetail.row_contentbox}`} style={{height : '130px'}}>
                         치료사항
                     </div>
-                    <div className={advicerequest.input_box} style={{width : '400px', height : 'auto'}}>
+                    <div className={assignmentadvicedetail.input_box} style={{width : '400px', height : 'auto'}}>
                         <textarea cols="50" rows="10" value={treat_cmt} readOnly/>
                     </div>
                 </div>
             </div>
-            <div className={advicerequest.iconbox}>
+            <div className={assignmentadvicedetail.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
                     기타사항
                 </h3>
             </div>
-            <div className={advicerequest.request_othertable}>
-                <div className={advicerequest.row_box} >
-                    <div className={advicerequest.title_box} style={{height : '130px'}}>기타사항</div>
-                    <div className={advicerequest.input_box} style={{width : '400px'}}>
+            <div className={assignmentadvicedetail.request_othertable}>
+                <div className={assignmentadvicedetail.row_box} >
+                    <div className={assignmentadvicedetail.title_box} style={{height : '130px'}}>기타사항</div>
+                    <div className={assignmentadvicedetail.input_box} style={{width : '400px'}}>
                         <textarea cols="50" rows="10" value={adEtcValue} readOnly/>
                     </div>
                 </div>
             </div>
-            <div className={advicerequest.iconbox} style={{marginTop : '50px'}}>
+            <div className={assignmentadvicedetail.iconbox} style={{marginTop : '50px'}}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
-                    질문지 작성
+                    질문지
                 </h3>
             </div>
-            <div className = {advicerequest.request_questiontable}>
-                <div className={advicerequest.row_box} style={{height : 'auto'}}>
-                    <div className={advicerequest.title_box}>
-                        질문 항목수
+            <div className = {assignmentadvicedetail.request_questiontable}>
+                <div className={assignmentadvicedetail.row_box} style={{height : 'auto'}}>
+                    <div className={assignmentadvicedetail.title_box}>
+                        질문 항목
                     </div>
-                    <div className={advicerequest.input_box}>
+                    <div className={assignmentadvicedetail.input_box}>
                         <input
                             type="text"
                             name="adQuestionTotal"
                             value={adQuestionTotal}
-                            onChange={handleQuestionTotalChange}
                         />
                     </div>
                 </div>
                     {renderQuestionInputs()}
             </div>
-            <div className={advicerequest.iconbox}>
+            <div className={assignmentadvicedetail.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
                         첨부자료
                 </h3>
             </div>
-            <div className={advicerequest.file_table}>
-                <div className={advicerequest.row_box} style={{height : 'auto'}}>
-                    <div className={advicerequest.title_box}>
+            <div className={assignmentadvicedetail.file_table}>
+                <div className={assignmentadvicedetail.row_box} style={{height : 'auto'}}>
+                    <div className={assignmentadvicedetail.title_box}>
                         자문의뢰신청서
                     </div>
-                    <div className={advicerequest.input_box}>
+                    <div className={assignmentadvicedetail.input_box}>
                         <input type='file'/>
                     </div>
                 </div>
-                <div className={advicerequest.row_box} style={{height : 'auto'}}>
-                    <div className={advicerequest.title_box}>
+                <div className={assignmentadvicedetail.row_box} style={{height : 'auto'}}>
+                    <div className={assignmentadvicedetail.title_box}>
                         진단서
                     </div>
-                    <div className={advicerequest.input_box}>
+                    <div className={assignmentadvicedetail.input_box}>
                         <input type='file'/>
                     </div>
                 </div>
-                <div className={advicerequest.row_box} style={{height : 'auto'}}>
-                    <div className={advicerequest.title_box}>
+                <div className={assignmentadvicedetail.row_box} style={{height : 'auto'}}>
+                    <div className={assignmentadvicedetail.title_box}>
                         의무기록지
                     </div>
-                    <div className={advicerequest.input_box}>
+                    <div className={assignmentadvicedetail.input_box}>
                         <input type='file'/>
                     </div>
                 </div>
-                <div className={advicerequest.row_box} style={{height : 'auto'}}>
-                    <div className={advicerequest.title_box}>
+                <div className={assignmentadvicedetail.row_box} style={{height : 'auto'}}>
+                    <div className={assignmentadvicedetail.title_box}>
                         필름
                     </div>
-                    <div className={advicerequest.input_box}>
+                    <div className={assignmentadvicedetail.input_box}>
                         <input type='file'/>
                     </div>
                 </div>
-                <div className={advicerequest.complete}>
-                    <button type = "button" className={advicerequest.btt_complete} onClick={btn_advice_request}>자문의뢰 답변 저장</button>
-                    <button type = "button" className={advicerequest.btt_complete} onClick={btn_advice_cancle}>취소</button>
+                <div className={assignmentadvicedetail.complete}>
+                    <button type = "button" className={assignmentadvicedetail.btt_complete} onClick={btn_advice_request}>자문의뢰 답변 저장</button>
+                    <button type = "button" className={assignmentadvicedetail.btt_complete} onClick={btn_advice_cancle}>취소</button>
                  </div>
             </div>
         </div>  
