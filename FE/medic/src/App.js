@@ -45,7 +45,7 @@ export default function App(){
                     <Route path='/medic/translate/translateRequest' element={<TranslateRequestpage/>}/>
                     <Route path='/meidc/translate/translateList' element={<TranslateListpage/>}/>
                     <Route path='/medic/customer/customerInquiry' element={<CustomerInquirypage/>}/>
-                    <Route path="/medic/customer/announcement/writeannouncement" element={<WriteCustomerInquiry/>}/>
+                    <Route path="/medic/customer/customerinquiry/writecustomerinquiry" element={<WriteCustomerInquiry/>}/>
                     <Route path='/medic/customer/announcement' element={<Announcementpage/>}/>
                     <Route path='/medic/customer/FAQ' element={<FAQpage/>}/>
                     <Route path='/medic/medicalknowledge/faultInfo' element={<FaultInfopage/>}/>
