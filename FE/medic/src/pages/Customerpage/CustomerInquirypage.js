@@ -30,6 +30,10 @@ export default function CustomerInquirypage() {
   //   }
   // }, []);
 
+  const btn_inquiryDetail = (e,index) => {
+    navigate('/medic/customer/customerinquiry/customerinquirydetails', {state : {index : index}})
+  }
+
   return (
     <div className={cusinquiry.wrap}>
       <div className={cusinquiry.cusinquiry_title}>
@@ -56,7 +60,7 @@ export default function CustomerInquirypage() {
               <div className={`${cusinquiry.quirylist_no} ${cusinquiry.list_content}`}>
                 {quiry.qaNo}
               </div>
-              <div className={`${cusinquiry.quirylist_question} ${cusinquiry.list_content}`}>
+              <div className={`${cusinquiry.quirylist_question} ${cusinquiry.list_content}`} onClick={btn_inquiryDetail(index)}>
                 {quiry.qaQuestion}
               </div>
               <div className={`${cusinquiry.quirylist_writedate} ${cusinquiry.list_content}`}>

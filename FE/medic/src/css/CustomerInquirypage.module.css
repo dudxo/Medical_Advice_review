@@ -32,7 +32,12 @@
     font-weight: bold;
     background-color: #f2f2f2;
 }
-
+.list_content{
+    cursor: pointer;
+    &:hover{
+        text-decoration: underline;
+    }
+}
 .cusinquiry_quirylist_content{
     width: 850px;
     height: 40px;

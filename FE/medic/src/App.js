@@ -26,6 +26,7 @@ import WriteAnnouncement from "./pages/Customerpage/Announcement/WriteAnnounceme
 import FinduserInfopage from "./pages/FinduserInfo/FinduserInfopage";
 import Updatepw from './pages/FinduserInfo/Updatepw'
 import ChangeMyInfo from "./pages/Mypage/ChangeMyInfopage"
+import CustomerInquiryDetail from "./pages/Customerpage/Customerinquiry/CustomerinquiryDetail";
 
 export default function App(){
     return(
@@ -46,6 +47,7 @@ export default function App(){
                     <Route path='/meidc/translate/translateList' element={<TranslateListpage/>}/>
                     <Route path='/medic/customer/customerInquiry' element={<CustomerInquirypage/>}/>
                     <Route path="/medic/customer/customerinquiry/writecustomerinquiry" element={<WriteCustomerInquiry/>}/>
+                    <Route path="/medic/customer/customerinquiry/customerinquirydetails" element={<CustomerInquiryDetail/>}/>
                     <Route path='/medic/customer/announcement' element={<Announcementpage/>}/>
                     <Route path='/medic/customer/FAQ' element={<FAQpage/>}/>
                     <Route path='/medic/medicalknowledge/faultInfo' element={<FaultInfopage/>}/>
