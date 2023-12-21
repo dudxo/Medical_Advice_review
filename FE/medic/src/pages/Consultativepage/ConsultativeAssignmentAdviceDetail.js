@@ -146,7 +146,8 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
       
         // 모든 조건을 만족하면 true를 반환
         return isadAnswerContentsInfoValid;
-      };
+    };
+    
     const btn_advice_request = async() => {
          // 유효성 검사
         if (!isFormValid()) {
@@ -168,7 +169,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
 
         try{
             const response = axios.post('/advice/request', adviceRequest)
-            alert('자문의뢰 신청이 완료되었습니다.')
+            alert('자문의뢰 답변이 저장되었습니다.')
             navigate('/')
         } catch(err){
             console.log(err)
@@ -184,7 +185,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                     <i className="fa-solid fa-circle icon"></i>
                     자문의뢰 답변
                 </h2>
-                - 보다 정확한 의료 자문의뢰 질문에 대한 답변을 모두 입력해주세요.
+                - 자문의뢰 질문에 대한 답변을 모두 입력해주세요.
              </div>
              <div className={assignmentadvicedetail.iconbox}>
                 <h3>
