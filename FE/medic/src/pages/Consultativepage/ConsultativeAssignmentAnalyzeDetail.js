@@ -44,7 +44,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
             setAnptssnum2(response.data.anptssnum2)
             setAnptsub(response.data.anptsub)
             setAnptdiagnosis(response.data.anptdiagnosis)
-            setAnptdiagcontent(response.data.anptcmt)
+            setAnptdiagcontent(response.data.anptdiagcontent)
             setAnEtcValue(response.data.anEtcValue)
             setAnQuestionTotal(response.data.anQuestionTotal)
             setAnQuestionContents(response.data.anQuestionContents)
