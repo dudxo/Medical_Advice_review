@@ -22,6 +22,10 @@ export default function ConsultativeAnalyzeAssignmentpage() {
     fetchData();
   }, []);
   
+  const handledetailClick = e => {
+    navigate('/medic/consultative/assignmentAnalyzeDetail', {state : {index : index}})
+  }
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -66,7 +70,7 @@ export default function ConsultativeAnalyzeAssignmentpage() {
                 {analyzeList.map((analyze, index) => (
                     rowIndex === index && (
                     <React.Fragment key={index}>
-                        <td className={assignmentAnalyze.analyzeList_td}>{index + 1}</td>
+                        <td className={assignmentAnalyze.analyzeList_td} onClick={() => handledetailClick(index)}>{index + 1}</td>
                         <td className={assignmentAnalyze.analyzeList_td}>{analyze.anPtSub}</td>
                         <td className={assignmentAnalyze.analyzeList_td}>{analyze.anPtDiagnoze}</td>
                         <td className={assignmentAnalyze.analyzeList_td}>
