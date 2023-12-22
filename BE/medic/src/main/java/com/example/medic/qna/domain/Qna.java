@@ -28,23 +28,23 @@ public class Qna {
     private Date qaDate;
 
     @NotNull
-    private String qaQuestion;
+    private String qaTitle;     // QNA 제목
 
-    private String qaAnswer;
+    @NotNull
+    private String qaQuestion;      // QNA 본문 내용
 
     private boolean qaSecret;
 
     private String qaPw;
 
+    @OneToOne(mappedBy = "qna")
+    @JsonIgnore
+    private QnaAnswer qnaAnswer;
+
     @ManyToOne
     @JoinColumn(name = "client_Id")
     @JsonIgnore
     private Client client;
-
-    @ManyToOne
-    @JoinColumn(name = "mId")
-    @JsonIgnore
-    private Manager manager;
 
 
 }
