@@ -34,11 +34,10 @@ public class TranslationRequestList {
     @NotNull
     private String trPtDiagnosis;
 
-    private String trPtRec;
+    @NotNull
+    private String trPtDiagContent;
 
     @NotNull
-    private String trPtCmt;
-
     private String trEtc;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -63,14 +62,13 @@ public class TranslationRequestList {
 
     @Builder
     private TranslationRequestList(Long trId, String trPtName, String trPtSsNum, String trPtSub, String trPtDiagnosis,
-                                   String trPtRec, String trPtCmt, String trEtc, Date trRegDate, Date trMdDate, Client client) {
+                                   String trPtDiagContent, String trEtc, Date trRegDate, Date trMdDate, Client client) {
         this.trId = trId;
         this.trPtName = trPtName;
         this.trPtSsNum = trPtSsNum;
         this.trPtSub = trPtSub;
         this.trPtDiagnosis = trPtDiagnosis;
-        this.trPtRec = trPtRec;
-        this.trPtCmt = trPtCmt;
+        this.trPtDiagContent = trPtDiagContent;
         this. trEtc = trEtc;
         this.trRegDate = trRegDate;
         this. trMdDate = trMdDate;
