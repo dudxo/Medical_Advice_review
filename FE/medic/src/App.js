@@ -25,10 +25,12 @@ import WriteAnnouncement from "./pages/Customerpage/Announcement/WriteAnnounceme
 import FinduserInfopage from "./pages/FinduserInfo/FinduserInfopage";
 import Updatepw from './pages/FinduserInfo/Updatepw'
 import ChangeMyInfo from "./pages/Mypage/ChangeMyInfopage";
-import ConsultativeAdviceAssignmentDetail from './pages/Consultativepage/ConsultativeAssignmentAdviceDetail'
 import ConsultativeAdviceAssignment from './pages/Consultativepage/ConsultativeAdviceAssignment'
 import ConsultativeAnalyzeAssignment from './pages/Consultativepage/ConsultativeAnalyzeAssignment'
 import ConsultativeTranslateAssignment from './pages/Consultativepage/ConsultativeTranslateAssignment'
+import ConsultativeAdviceAssignmentDetail from './pages/Consultativepage/ConsultativeAssignmentAdviceDetail'
+import ConsultativeAnalyzeAssignmenDetail from "./pages/Consultativepage/ConsultativeAssignmentAnalyzeDetail";
+import ConsultativeTranslateAssignmentDetail from "./pages/Consultativepage/ConsultativeTranslateAssignment";
 
 export default function App(){
     return(
@@ -60,10 +62,12 @@ export default function App(){
                     <Route path="/medic/finduserinfo" element={<FinduserInfopage/>}/>
                     <Route path="/medic/finduserinfo/findpw" element={<Updatepw/>}/>
                     <Route path="/medic/mypage/changemyinfo" element={<ChangeMyInfo/>}/>
-                    <Route path="/medic/consultative/assignmentAdviceDetail" element={<ConsultativeAdviceAssignmentDetail/>}/>
                     <Route path="/medic/consultative/assignmentAdviceList" element={<ConsultativeAdviceAssignment/>}/>
                     <Route path="/medic/consultative/assignmentAnalyzeList" element={<ConsultativeAnalyzeAssignment/>}/>
                     <Route path="/medic/consultative/assignmentTranslateList" element={<ConsultativeTranslateAssignment/>}/>
+                    <Route path="/medic/consultative/assignmentAdviceDetail" element={<ConsultativeAdviceAssignmentDetail/>}/>
+                    <Route path="/medic/consultative/assignmentAnalyzeDetail" element={<ConsultativeAnalyzeAssignmenDetail/>}/>
+                    <Route path="/medic/consultative/assignmentTranslateDetail" element={<ConsultativeTranslateAssignmentDetail/>}/>
                 </Routes>
             </div> 
             </div>   
