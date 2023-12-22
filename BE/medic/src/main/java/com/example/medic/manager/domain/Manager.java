@@ -8,6 +8,7 @@ import com.example.medic.medicalKnowledge.domain.WoundInfo;
 import com.example.medic.qna.domain.Announcement;
 import com.example.medic.qna.domain.Faq;
 import com.example.medic.qna.domain.Qna;
+import com.example.medic.qna.domain.QnaAnswer;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,8 +37,8 @@ public class Manager {
     @NotNull
     private String mgrPhone;
 
-    @OneToMany(mappedBy = "manager")
-    private List<Qna> qnas = new ArrayList<>();
+    @OneToOne(mappedBy = "manager")
+    private QnaAnswer qnaAnswer;
 
     @OneToMany(mappedBy = "manager")
     private List<Faq> faqs = new ArrayList<>();
