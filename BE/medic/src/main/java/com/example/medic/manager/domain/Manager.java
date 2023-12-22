@@ -28,6 +28,9 @@ public class Manager {
     private String mPw;
 
     @NotNull
+    private String mRole;
+
+    @NotNull
     private String mName;
 
     @NotNull
