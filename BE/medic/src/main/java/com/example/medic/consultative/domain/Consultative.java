@@ -29,6 +29,9 @@ public class Consultative {
     private String cPw;
 
     @NotNull
+    private String cRole;
+
+    @NotNull
     private String cName;
 
     @NotNull
