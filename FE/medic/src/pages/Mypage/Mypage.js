@@ -40,6 +40,9 @@ export default function Mypage(){
     const btn_show_myTranslaion = e => {
         navigate('/meidc/translate/translateList')
     }
+    const btn_show_customerInquiry = e => {
+        navigate('/medic/customer/customerinquiry')
+    }
     return(
         <div className={mypage.mypage_box}>
             <div className={mypage.mypage_requestcount_box}>
@@ -64,7 +67,7 @@ export default function Mypage(){
                             <h3>전체 {myTranslation}건</h3>
                         </div>
                     </div>
-                    <div className={mypage.mypage_countbox}>
+                    <div className={mypage.mypage_countbox} onClick={btn_show_customerInquiry}>
                         <h2 className={mypage.my_counttitle}>나의 문의 현황</h2>                     
                         <div className={mypage.my_count}>
                             <h3>전체 0건</h3>
