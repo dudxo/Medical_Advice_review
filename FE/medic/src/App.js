@@ -7,10 +7,13 @@ import Joinpage from './pages/Joinpage';
 import Loginpage from './pages/Loginpage';
 import AdviceRequestpage from './pages/Advicepage/AdviceRequestpage';
 import AdviceListpage from './pages/Advicepage/AdviceListPage';
+import AdviceDetailpage from './pages/Advicepage/AdviceDetailpage';
 import AnalyzeRequestpage from './pages/Analyzepage/AnalyzeRequestpage';
 import AnalyzeListpage from './pages/Analyzepage/AnalyzeListpage';
+import AnalyzeDetailpage from './pages/Analyzepage/AnalyzeDetailpage';
 import TranslateRequestpage from './pages/Translatepage/TranslateRequestpage'
 import TranslateListpage from './pages/Translatepage/TranslateListpage'
+import TranslateDetailpage from './pages/Translatepage/TranslateDetailpage'
 import CustomerInquirypage from './pages/Customerpage/CustomerInquirypage';
 import FAQpage from './pages/Customerpage/FAQpage';
 import FaultInfopage from './pages/MedicalLegalKnowledge/FaultInfopage'
@@ -39,10 +42,13 @@ export default function App(){
                     <Route path='/medicsignup' element={<Joinpage/>}/>
                     <Route path='/medic/advice/adviceRequest' element={<AdviceRequestpage/>}/>
                     <Route path='/medic/advice/adviceList' element={<AdviceListpage/>}/>
+                    <Route path='/medic/advice/adviceDetail' element={<AdviceDetailpage/>}/>
                     <Route path='/medic/analyze/analyzeRequest' element={<AnalyzeRequestpage/>}/>
                     <Route path='/medic/analyze/analyzeList' element={<AnalyzeListpage/>}/>
+                    <Route path='/medic/analyze/analyzeDetail' element={<AnalyzeDetailpage/>}/>
                     <Route path='/medic/translate/translateRequest' element={<TranslateRequestpage/>}/>
-                    <Route path='/meidc/translate/translateList' element={<TranslateListpage/>}/>
+                    <Route path='/medic/translate/translateList' element={<TranslateListpage/>}/>
+                    <Route path='/medic/translate/translateDetail' element={<TranslateDetailpage/>}/>
                     <Route path='/medic/customer/customerInquiry' element={<CustomerInquirypage/>}/>
                     <Route path='/medic/customer/announcement' element={<Announcementpage/>}/>
                     <Route path='/medic/customer/FAQ' element={<FAQpage/>}/>
