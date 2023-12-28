@@ -25,6 +25,11 @@ import WriteAnnouncement from "./pages/Customerpage/Announcement/WriteAnnounceme
 import FinduserInfopage from "./pages/FinduserInfo/FinduserInfopage";
 import Updatepw from './pages/FinduserInfo/Updatepw'
 import ChangeMyInfo from "./pages/Mypage/ChangeMyInfopage";
+import AdministratorMypage from "./pages/Adminstrator/AdministratorMypage";
+import DocManagement from "./pages/Adminstrator/DocManagement";
+import UserManagement from "./pages/Adminstrator/UserManagement";
+import DocEdit from "./pages/Adminstrator/DocEdit";
+import UserEdit from "./pages/Adminstrator/UserEdit";
 
 export default function App(){
     return(
@@ -56,6 +61,11 @@ export default function App(){
                     <Route path="/medic/finduserinfo" element={<FinduserInfopage/>}/>
                     <Route path="/medic/finduserinfo/findpw" element={<Updatepw/>}/>
                     <Route path="/medic/mypage/changemyinfo" element={<ChangeMyInfo/>}/>
+                    <Route path="/medic/adminstrator/docmanagement" element={<DocManagement/>}/>
+                    <Route path="/medic/adminstrator/administratormypage" element={<AdministratorMypage/>}/>
+                    <Route path="/medic/adminstrator/usermanagement" element={<UserManagement/>}/>
+                    <Route path="/medic/adminstrator/docedit" element={<DocEdit/>}/>
+                    <Route path="/medic/adminstrator/useredit" element={<UserEdit/>}/>
                 </Routes>
             </div> 
             </div>   
