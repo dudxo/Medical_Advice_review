@@ -3,11 +3,10 @@ import customerinquirydetails from '../css/CustomerInquiryDetails.module.css'
 import writecustomerinquiry from '../css/WriteCustomerInquiry.module.css';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-export default function AdminWriteQnaAnswer() {
+export default function UserQnaAnswer() {
     const [answer, setAnswer] = useState("");
     const navigate = useNavigate();
-    
+
     const getAnswer = async() => {
         try{
             const response = await axios.get('/답변 받는 엔드포인트(아마 id값과 함께)')

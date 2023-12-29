@@ -4,7 +4,7 @@ import writecustomerinquiry from '../../../css/WriteCustomerInquiry.module.css';
 import { useLocation } from "react-router-dom";
 import AdminWriteQnaAnswer from "../../../components/AdminWriteQnaAnswer.js";
 import AdminQnaAnswer from '../../../components/AdminQnaAnswer.js'
-import QnaAnswer from '../../../components/QnaAnswer.js'
+import UserQnaAnswer from '../../../components/UserQnaAnswer.js'
 
 export default function CustomerInquiryDetail(){
     const [detaillist, setDetaillist] = useState({});

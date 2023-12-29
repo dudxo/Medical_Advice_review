@@ -4,7 +4,7 @@ import writecustomerinquiry from '../css/WriteCustomerInquiry.module.css';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function AdminWriteQnaAnswer() {
+export default function AdminQnaAnswer() {
     const [answer, setAnswer] = useState("");
     const navigate = useNavigate();
 
