@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 export default function AdminWriteQnaAnswer() {
     const [answer, setAnswer] = useState("");
     const navigate = useNavigate();
-    
+
     const getAnswer = async() => {
         try{
             const response = await axios.get('/답변 받는 엔드포인트(아마 id값과 함께)')
@@ -19,18 +19,22 @@ export default function AdminWriteQnaAnswer() {
 
     useEffect(()=> {getAnswer()}, [])
 
+    const fetchAnswer = e => {
+        //수정관련 로직
+    };
     
-      const handlePostAnswer = async() => {
+    
+    const handlePostAnswer = async() => {
         const answer = {'qaAnswer' : answer}
         try{
           const response = await axios.post('/sadf/', answer)
         } catch(err){
           console.log(err)
         }
-      };
-      const btn_goto_inquirylist = e => {
+    };
+    const btn_goto_inquirylist = e => {
         navigate('/medic/customer/customerInquiry')
-      }
+    }
     return(
         <div className={customerinquirydetails.answerwrap}>
             <div className={writecustomerinquiry.inquiry_title}>
@@ -41,6 +45,12 @@ export default function AdminWriteQnaAnswer() {
                 </div>
                 <div className={customerinquirydetails.answerContainer}>
                 <div className={customerinquirydetails.answertext}>{answer}</div>
+                    <button
+                        className={customerinquirydetails.answerButton}
+                        onClick={fetchAnswer}
+                    >
+                        수정
+                    </button>
                     <button
                         className={customerinquirydetails.answerButton}
                         onClick={btn_goto_inquirylist}

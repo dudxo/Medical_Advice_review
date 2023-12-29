@@ -1,37 +1,25 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import writecustomerinquiry from '../../../css/WriteCustomerInquiry.module.css';
-import customerinquirydetails from '../../../css/CustomerInquiryDetails.module.css'
 import { useLocation } from "react-router-dom";
-
+import AdminWriteQnaAnswer from "../../../components/AdminWriteQnaAnswer.js";
+import AdminQnaAnswer from '../../../components/AdminQnaAnswer.js'
+import QnaAnswer from '../../../components/QnaAnswer.js'
 
 export default function CustomerInquiryDetail(){
     const [detaillist, setDetaillist] = useState({});
-    // Add a state for the answer
-    const [answer, setAnswer] = useState("");
-  
-    useEffect(async() => {
-      // Simulating fetching data using axios (uncomment when integrating with your API)
-      // try {
-      //   const response = await axios.get(`/어쩌고/${index}`);
-      //   setDetaillist(response.data);
-      // } catch (err) {
-      //   console.log(err);
-      // }
+    // Add a state for the answer  
+    const getInquiryDetail = async()=>{
+        try {
+            const response = await axios.get(`/어쩌고/`);
+            setDetaillist(response.data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    useEffect(() => {
+        getInquiryDetail()
     }, []);
-  
-    const handleAnswerChange = (e) => {
-      setAnswer(e.target.value);
-    };
-  
-    const handlePostAnswer = async() => {
-      const answer = {'qaAnswer' : answer}
-      try{
-        const response = await axios.post('/sadf/', answer)
-      } catch(err){
-        console.log(err)
-      }
-    };
 
     return (
         <>
@@ -79,27 +67,7 @@ export default function CustomerInquiryDetail(){
                 </div>
             </div>
             </div>
-            <div className={customerinquirydetails.answerwrap}>
-                <div className={writecustomerinquiry.inquiry_title}>
-                <h1>
-                    <i className="fa-solid fa-circle icon"></i>
-                    문의답변
-                </h1>
-                </div>
-                <div className={customerinquirydetails.answerContainer}>
-                <textarea
-                    className={customerinquirydetails.answerInput}
-                    placeholder="답변을 작성하세요..."
-                    onChange={handleAnswerChange}
-                />
-                <button
-                    className={customerinquirydetails.answerButton}
-                    onClick={handlePostAnswer}
-                >
-                    답변 등록
-                </button>
-                </div>
-            </div>
+            <AdminWriteQnaAnswer/>
         </>
       );
 }

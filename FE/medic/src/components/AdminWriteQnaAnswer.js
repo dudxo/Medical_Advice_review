@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import customerinquirydetails from '../css/CustomerInquiryDetails.module.css'
 import writecustomerinquiry from '../css/WriteCustomerInquiry.module.css';
 import axios from "axios";
@@ -6,21 +6,13 @@ import { useNavigate } from "react-router-dom";
 
 export default function AdminWriteQnaAnswer() {
     const [answer, setAnswer] = useState("");
-    const navigate = useNavigate();
-    
-    const getAnswer = async() => {
-        try{
-            const response = await axios.get('/답변 받는 엔드포인트(아마 id값과 함께)')
-            setAnswer(response.data)
-        } catch(err){
-            console.log(err)
-        }
-    }
+    const navigate = useNavigate()
 
-    useEffect(()=> {getAnswer()}, [])
-
+    const handleAnswerChange = (e) => {
+        setAnswer(e.target.value);
+      };
     
-      const handlePostAnswer = async() => {
+      const btn_post_answer = async() => {
         const answer = {'qaAnswer' : answer}
         try{
           const response = await axios.post('/sadf/', answer)
@@ -40,13 +32,25 @@ export default function AdminWriteQnaAnswer() {
                 </h1>
                 </div>
                 <div className={customerinquirydetails.answerContainer}>
-                <div className={customerinquirydetails.answertext}>{answer}</div>
+                <textarea
+                    className={customerinquirydetails.answerInput}
+                    placeholder="답변을 작성하세요..."
+                    onChange={handleAnswerChange}
+                />
+                <div className={customerinquirydetails.answerButtonbox}>
+                    <button 
+                        className={customerinquirydetails.answerButton}
+                        onClick={btn_post_answer}
+                    >
+                        답변 등록
+                    </button>
                     <button
                         className={customerinquirydetails.answerButton}
                         onClick={btn_goto_inquirylist}
                     >
                         목록
                     </button>
+                </div>
             </div>
         </div>
     )
