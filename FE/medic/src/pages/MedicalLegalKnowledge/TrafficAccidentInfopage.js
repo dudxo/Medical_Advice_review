@@ -47,7 +47,7 @@ export default function TrafficAccidentInfopage(){
       <div className={trafficAccident.trafficAccident_title}>
         <h2>
           <i className="fa-solid fa-circle icon"></i>
-          산업재해정보
+          교통사고 정보
         </h2>
       </div>
       <br />
