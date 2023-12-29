@@ -66,7 +66,7 @@ export default function IndustrialAccidentInfopage(){
               <tr key={index} onClick={() => goToDetailPage(index)}>
                 <td className={industrialAccident.industrialAccident_td}>{industrialAccidentInfo.iaId}</td>
                 <td className={industrialAccident.industrialAccident_td}>{industrialAccidentInfo.iaName}</td>
-                <td className={industrialAccident.announce_td}>{formatDateString(industrialAccidentInfo.iaRegDate)}</td>
+                <td className={industrialAccident.industrialAccident_td}>{formatDateString(industrialAccidentInfo.iaRegDate)}</td>
               </tr>
             ))}
           </tbody>
