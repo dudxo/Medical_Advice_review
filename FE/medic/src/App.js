@@ -21,6 +21,7 @@ import IndustrialAccidentInfopage from './pages/MedicalLegalKnowledge/Industrial
 import TrafficAccidentInfopage from'./pages/MedicalLegalKnowledge/TrafficAccidentInfopage'
 import WoundInfopage from'./pages/MedicalLegalKnowledge/WoundInfopage'
 import Mypage from './pages/Mypage/Mypage'
+import ConsultativeMypage from './pages/Mypage/ConsultativeMypage'
 import Header from "./components/Header";
 import Announcementpage from "./pages/Customerpage/Announcementpage";
 import AnnouncementDetail from "./pages/Customerpage/Announcement/AnnouncementDetail";
@@ -28,6 +29,7 @@ import WriteAnnouncement from "./pages/Customerpage/Announcement/WriteAnnounceme
 import FinduserInfopage from "./pages/FinduserInfo/FinduserInfopage";
 import Updatepw from './pages/FinduserInfo/Updatepw'
 import ChangeMyInfo from "./pages/Mypage/ChangeMyInfopage";
+import ChangeConsultativeInfo from "./pages/Mypage/ChangeConsultativeInfopage";
 
 export default function App(){
     return(
@@ -57,11 +59,13 @@ export default function App(){
                     <Route path='/medic/medicalknowledge/trafficAccidentInfo' element={<TrafficAccidentInfopage/>}/>
                     <Route path='/medic/medicalknowledge/woundInfo' element={<WoundInfopage/>}/>
                     <Route path='/medic/mypage' element={<Mypage/>}/>
-                    <Route path={`/medic/customer/announcement/announcementdetails`} element={<AnnouncementDetail/>}/>
+                    <Route path='/medic/consultativeMypage' element={<ConsultativeMypage/>}/>
+                    <Route path='/medic/customer/announcement/announcementdetails' element={<AnnouncementDetail/>}/>
                     <Route path='/medic/customer/announcement/writeannouncement' element={<WriteAnnouncement/>}/> 
                     <Route path="/medic/finduserinfo" element={<FinduserInfopage/>}/>
                     <Route path="/medic/finduserinfo/findpw" element={<Updatepw/>}/>
                     <Route path="/medic/mypage/changemyinfo" element={<ChangeMyInfo/>}/>
+                    <Route path="/medic/mypage/ChangeConsultativeInfo" element={<ChangeConsultativeInfo/>}/>
                 </Routes>
             </div> 
             </div>   
