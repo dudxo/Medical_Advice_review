@@ -46,5 +46,4 @@ public class Qna {
     @JsonIgnore
     private Client client;
 
-
 }

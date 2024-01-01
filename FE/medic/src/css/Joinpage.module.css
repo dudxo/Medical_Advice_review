@@ -43,6 +43,10 @@ tr.zipcode_tb {
 div.complete {
     text-align: center;
     margin-top: 50px;
+    width: 400px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .btt_complete {

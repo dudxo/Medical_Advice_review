@@ -15,6 +15,7 @@ import TranslateRequestpage from './pages/Translatepage/TranslateRequestpage'
 import TranslateListpage from './pages/Translatepage/TranslateListpage'
 import TranslateDetailpage from './pages/Translatepage/TranslateDetailpage'
 import CustomerInquirypage from './pages/Customerpage/CustomerInquirypage';
+import WriteCustomerInquiry from './pages/Customerpage/Customerinquiry/WriteCustomerInquiry'
 import FAQpage from './pages/Customerpage/FAQpage';
 import FaultInfopage from './pages/MedicalLegalKnowledge/FaultInfopage'
 import IndustrialAccidentInfopage from './pages/MedicalLegalKnowledge/IndustrialAccidentInfopage'
@@ -28,8 +29,13 @@ import AnnouncementDetail from "./pages/Customerpage/Announcement/AnnouncementDe
 import WriteAnnouncement from "./pages/Customerpage/Announcement/WriteAnnouncement";
 import FinduserInfopage from "./pages/FinduserInfo/FinduserInfopage";
 import Updatepw from './pages/FinduserInfo/Updatepw'
+<<<<<<< HEAD
 import ChangeMyInfo from "./pages/Mypage/ChangeMyInfopage";
 import ChangeConsultativeInfo from "./pages/Mypage/ChangeConsultativeInfopage";
+=======
+import ModifyMyInfopage from "./pages/Mypage/ModifyMyInfopage"
+import CustomerInquiryDetail from "./pages/Customerpage/Customerinquiry/CustomerinquiryDetail";
+>>>>>>> feature-qna-ABC
 
 export default function App(){
     return(
@@ -52,6 +58,8 @@ export default function App(){
                     <Route path='/medic/translate/translateList' element={<TranslateListpage/>}/>
                     <Route path='/medic/translate/translateDetail' element={<TranslateDetailpage/>}/>
                     <Route path='/medic/customer/customerInquiry' element={<CustomerInquirypage/>}/>
+                    <Route path="/medic/customer/customerinquiry/writecustomerinquiry" element={<WriteCustomerInquiry/>}/>
+                    <Route path="/medic/customer/customerinquiry/customerinquirydetails" element={<CustomerInquiryDetail/>}/>
                     <Route path='/medic/customer/announcement' element={<Announcementpage/>}/>
                     <Route path='/medic/customer/FAQ' element={<FAQpage/>}/>
                     <Route path='/medic/medicalknowledge/faultInfo' element={<FaultInfopage/>}/>
@@ -64,8 +72,8 @@ export default function App(){
                     <Route path='/medic/customer/announcement/writeannouncement' element={<WriteAnnouncement/>}/> 
                     <Route path="/medic/finduserinfo" element={<FinduserInfopage/>}/>
                     <Route path="/medic/finduserinfo/findpw" element={<Updatepw/>}/>
-                    <Route path="/medic/mypage/changemyinfo" element={<ChangeMyInfo/>}/>
                     <Route path="/medic/mypage/ChangeConsultativeInfo" element={<ChangeConsultativeInfo/>}/>
+                    <Route path="/medic/mypage/modifymyinfo" element={<ModifyMyInfopage/>}/>
                 </Routes>
             </div> 
             </div>   
