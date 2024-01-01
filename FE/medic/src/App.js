@@ -29,13 +29,9 @@ import AnnouncementDetail from "./pages/Customerpage/Announcement/AnnouncementDe
 import WriteAnnouncement from "./pages/Customerpage/Announcement/WriteAnnouncement";
 import FinduserInfopage from "./pages/FinduserInfo/FinduserInfopage";
 import Updatepw from './pages/FinduserInfo/Updatepw'
-<<<<<<< HEAD
-import ChangeMyInfo from "./pages/Mypage/ChangeMyInfopage";
 import ChangeConsultativeInfo from "./pages/Mypage/ChangeConsultativeInfopage";
-=======
 import ModifyMyInfopage from "./pages/Mypage/ModifyMyInfopage"
 import CustomerInquiryDetail from "./pages/Customerpage/Customerinquiry/CustomerinquiryDetail";
->>>>>>> feature-qna-ABC
 
 export default function App(){
     return(
