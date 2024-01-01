@@ -41,10 +41,9 @@ public class Qna {
     @JsonIgnore
     private Client client;
 
-    @ManyToOne
-    @JoinColumn(name = "mId")
-    @JsonIgnore
-    private Manager manager;
-
+    //    @ManyToOne
+//    @JoinColumn(name = "mId")
+//    @JsonIgnore
+//    private Manager manager;
 
 }

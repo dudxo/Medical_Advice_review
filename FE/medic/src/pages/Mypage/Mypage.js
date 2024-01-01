@@ -2,14 +2,16 @@ import React, { useEffect, useState } from "react";
 import mypage from '../../css/Mypage.module.css'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Cookies } from "react-cookie";
 
 export default function Mypage(){
     const [myAdvice, setMyAdvice] = useState(0)
     const [myanalysis, setMyAnalysis] = useState(0)
     const [myTranslation, setMyTranslation] = useState(0)
-    //const [myRequest, setMyRequset] = useState(0)
-
+    const [myRequest, setMyRequset] = useState(0)
+    const cookie = new Cookies();
     const navigate = useNavigate();
+    
     const myRequestcount = async()=>{
         try{
             const advice = await axios.get('/mypage/myAdviceSituation')
@@ -18,7 +20,8 @@ export default function Mypage(){
             setMyAnalysis(Analysis.data)
             const Translation = await axios.get('/mypage/myTranslationSituation')
             setMyTranslation(Translation.data)
-            // 문의현황 건수 조회 추가
+            const CustomerInquiry = await axios.get(`/mypage/myCustomerInquiry`)
+            setMyRequset(CustomerInquiry.data)
         } catch(err){
             console.log(err)
         }
@@ -70,7 +73,7 @@ export default function Mypage(){
                     <div className={mypage.mypage_countbox} onClick={btn_show_customerInquiry}>
                         <h2 className={mypage.my_counttitle}>나의 문의 현황</h2>                     
                         <div className={mypage.my_count}>
-                            <h3>전체 0건</h3>
+                            <h3>전체 {myRequest}건</h3>
                         </div>
                     </div>
                 </div>

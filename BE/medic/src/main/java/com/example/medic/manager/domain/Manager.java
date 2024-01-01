@@ -33,8 +33,8 @@ public class Manager {
     @NotNull
     private String mgrPhone;
 
-    @OneToMany(mappedBy = "manager")
-    private List<Qna> qnas = new ArrayList<>();
+//    @OneToMany(mappedBy = "manager")
+//    private List<Qna> qnas = new ArrayList<>();
 
     @OneToMany(mappedBy = "manager")
     private List<Faq> faqs = new ArrayList<>();
