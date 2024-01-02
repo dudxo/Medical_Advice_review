@@ -55,7 +55,7 @@ export default function IndustrialAccidentInfopage(){
         <table className={industrialAccidentDetail.industrialaccidentdetail_table}>
           <tr>
             <th className={industrialAccidentDetail.industrialaccidentdetail_th}>제목</th>
-            <td className={industrialAccidentDetail.industrialaccidentdetail_td}>{announcementdetail.iaName}</td>
+            <td className={industrialAccidentDetail.industrialaccidentdetail_td}>{industrialAccidentInfoDetail.iaName}</td>
             <th className={industrialAccidentDetail.industrialaccidentdetail_th}>등록일</th>
             <td className={industrialAccidentDetail.industrialaccidentdetail_td}>{formatDateString(industrialAccidentInfoDetail.iaRegDate)}</td>
           </tr>
