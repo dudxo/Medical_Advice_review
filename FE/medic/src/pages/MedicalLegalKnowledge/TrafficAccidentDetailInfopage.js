@@ -55,13 +55,13 @@ export default function TrafficAccidentDetailInfopage(){
         <table className={trafficAccidentDetail.trafficaccidentdetail_table}>
           <tr>
             <th className={trafficAccidentDetail.trafficaccidentdetail_th}>제목</th>
-            <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{trafficAccidentInfoDetail.iaName}</td>
+            <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{trafficAccidentInfoDetail.taName}</td>
             <th className={trafficAccidentDetail.trafficaccidentdetail_th}>등록일</th>
-            <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{formatDateString(trafficAccidentInfoDetail.iaRegDate)}</td>
+            <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{formatDateString(trafficAccidentInfoDetail.taRegDate)}</td>
           </tr>
           <th className={trafficAccidentDetail.trafficaccidentdetail_th}>내용</th>
           <td colSpan="3" className={trafficAccidentDetail.trafficaccidentdetail_td}>
-            <div className={trafficAccidentDetail.content}>{trafficAccidentInfoDetail.iaContent}</div>
+            <div className={trafficAccidentDetail.content}>{trafficAccidentInfoDetail.taContent}</div>
           </td>
           <tr></tr>
         </table>
