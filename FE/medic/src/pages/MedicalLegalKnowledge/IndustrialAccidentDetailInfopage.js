@@ -3,7 +3,7 @@ import industrialAccidentDetail from '../../css/industrialAccidentInfoDetail.mod
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-export default function IndustrialAccidentInfopage(){
+export default function IndustrialAccidentDetailInfopage(){
   const navigate = useNavigate();
   const location = useLocation();
 
