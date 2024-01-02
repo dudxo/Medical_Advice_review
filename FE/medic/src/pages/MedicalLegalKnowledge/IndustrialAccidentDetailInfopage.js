@@ -47,7 +47,7 @@ export default function IndustrialAccidentInfopage(){
       <div className={industrialAccidentDetail.detail_title}>
         <h2>
           <i className="fa-solid fa-circle icon"></i>
-          공지사항 상세
+          산업재해정보 상세 보기
         </h2>
       </div>
       <br />
