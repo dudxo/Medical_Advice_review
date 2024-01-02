@@ -28,6 +28,9 @@ import WriteAnnouncement from "./pages/Customerpage/Announcement/WriteAnnounceme
 import FinduserInfopage from "./pages/FinduserInfo/FinduserInfopage";
 import Updatepw from './pages/FinduserInfo/Updatepw'
 import ChangeMyInfo from "./pages/Mypage/ChangeMyInfopage";
+import IndustrialAccidentDetail from "./pages/MedicalLegalKnowledge/IndustrialAccidentDetailInfopage";
+import TrafficAccidentDetail from "./pages/MedicalLegalKnowledge/TrafficAccidentDetailInfopage";
+
 
 export default function App(){
     return(
@@ -62,7 +65,9 @@ export default function App(){
                     <Route path="/medic/finduserinfo" element={<FinduserInfopage/>}/>
                     <Route path="/medic/finduserinfo/findpw" element={<Updatepw/>}/>
                     <Route path="/medic/mypage/changemyinfo" element={<ChangeMyInfo/>}/>
-                </Routes>
+                    <Route path="/medic/knowledge/industrialaccidentdetails" element={<IndustrialAccidentDetail/>}/>
+                    <Route path="/medic/knowledge/trafficaccidentdetails" element={<TrafficAccidentDetail/>}/>
+                    </Routes>
             </div> 
             </div>   
         </BrowserRouter>
