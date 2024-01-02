@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import trafficAccidentDetail from '../../css/trafficAccidentDetailInfo.module.css';
+import trafficAccidentDetail from '../../css/TrafficAccidentDetailInfo.module.css';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 
