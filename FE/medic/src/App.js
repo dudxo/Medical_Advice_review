@@ -32,6 +32,7 @@ import Updatepw from './pages/FinduserInfo/Updatepw'
 import ChangeConsultativeInfo from "./pages/Mypage/ChangeConsultativeInfopage";
 import ModifyMyInfopage from "./pages/Mypage/ModifyMyInfopage"
 import CustomerInquiryDetail from "./pages/Customerpage/Customerinquiry/CustomerinquiryDetail";
+import ModifyMyPwpage from "./pages/Mypage/ModifyMyPwpage";
 
 export default function App(){
     return(
@@ -70,7 +71,8 @@ export default function App(){
                     <Route path="/medic/finduserinfo/findpw" element={<Updatepw/>}/>
                     <Route path="/medic/mypage/ChangeConsultativeInfo" element={<ChangeConsultativeInfo/>}/>
                     <Route path="/medic/mypage/modifymyinfo" element={<ModifyMyInfopage/>}/>
-                </Routes>
+                    <Route path="/medic/mypage/modifymyinfo/modifyMyPw" element={<ModifyMyPwpage/>}/>
+                </Routes> 
             </div> 
             </div>   
         </BrowserRouter>
