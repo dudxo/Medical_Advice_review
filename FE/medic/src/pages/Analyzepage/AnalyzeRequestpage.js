@@ -15,7 +15,7 @@ export default function AnalyzeRequestpage(){
     const [an_ptssnum2, setAnptssnum2] = useState('');
     const [an_ptsub, setAnptsub] = useState('');
     const [an_ptdiagnosis, setAnptdiagnosis] = useState('')
-    const [an_ptcmt, setAnptcmt] = useState('')
+    const [an_ptdiagcontent, setAnptdiagcontent] = useState('')
 
     //기타사항
     const [anEtcValue, setAnEtcValue] = useState('');
@@ -96,9 +96,9 @@ export default function AnalyzeRequestpage(){
     const input_an_ptdiagnosis = e => {
         setAnptdiagnosis(e.target.value)
     }
-    const input_an_ptcmt = e => {
+    const input_an_ptdiagcontent = e => {
         const contents = e.target.value
-        setAnptcmt(contents)
+        setAnptdiagcontent(contents)
         setContentscount(contents.length)
     }
     const isFormValid = () => {
@@ -125,7 +125,7 @@ export default function AnalyzeRequestpage(){
               "anPtSsNum" : an_PtSsNum,
               "anPtSub" : an_ptsub,
               "anPtDiagnosis" : an_ptdiagnosis,
-              "anPtCmt" : an_ptcmt,
+              "anPtDiagContent" : an_ptdiagcontent,
               "anEtc" : anEtcValue,
               "anRegDate" : today,
               "anQuestionContent" : anQuestionContents,
@@ -215,7 +215,7 @@ export default function AnalyzeRequestpage(){
                         진단 사항
                     </div>
                     <div className={analyzerequest.input_box} style={{width : '400px', height : 'auto'}}>
-                        <textarea cols="50" rows="10" onChange={input_an_ptcmt} maxLength={500}/>
+                        <textarea cols="50" rows="10" onChange={input_an_ptdiagcontent} maxLength={500}/>
                         <div className={analyzerequest.count_box}>
                             <span>{contents_count}/500</span>
                         </div>
