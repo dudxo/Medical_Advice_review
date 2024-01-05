@@ -41,6 +41,7 @@ import ConsultativeTranslateAssignmentDetail from "./pages/Consultativepage/Cons
 import IndustrialAccidentDetail from "./pages/MedicalLegalKnowledge/IndustrialAccidentDetailInfopage";
 import TrafficAccidentDetail from "./pages/MedicalLegalKnowledge/TrafficAccidentDetailInfopage";
 
+import ModifyMyPwpage from "./pages/Mypage/ModifyMyPwpage";
 
 export default function App(){
     return(
@@ -87,7 +88,8 @@ export default function App(){
                     <Route path="/medic/consultative/assignmentTranslateDetail" element={<ConsultativeTranslateAssignmentDetail/>}/>
                     <Route path="/medic/knowledge/industrialaccidentdetails" element={<IndustrialAccidentDetail/>}/>
                     <Route path="/medic/knowledge/trafficaccidentdetails" element={<TrafficAccidentDetail/>}/>
-                    </Routes>
+                    <Route path="/medic/mypage/modifymyinfo/modifyMyPw" element={<ModifyMyPwpage/>}/>
+                </Routes> 
             </div> 
             </div>   
         </BrowserRouter>

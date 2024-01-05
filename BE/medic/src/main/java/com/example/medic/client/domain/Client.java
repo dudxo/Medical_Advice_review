@@ -2,6 +2,7 @@ package com.example.medic.client.domain;
 
 import com.example.medic.advice.domain.AdviceRequestList;
 import com.example.medic.analyze.domain.AnalyzeRequestList;
+import com.example.medic.client.dto.ModifyUserDto;
 import com.example.medic.qna.domain.Qna;
 import com.example.medic.translation.domain.TranslationRequestList;
 import com.sun.istack.NotNull;
@@ -90,4 +91,5 @@ public class Client {
     public void updatePassword(String newUpw) {
         this.uPw = newUpw;
     }
+
 }

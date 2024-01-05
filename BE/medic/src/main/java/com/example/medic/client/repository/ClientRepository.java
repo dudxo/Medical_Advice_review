@@ -15,6 +15,4 @@ public interface ClientRepository extends JpaRepository<Client,String> {
 
     @Query("SELECT c FROM Client c WHERE c.uId = :uId AND c.uEmail = :uEmail")
     Optional<Client> findByUIdAndUEmail(String uId, String uEmail);
-
-
 }

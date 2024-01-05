@@ -3,6 +3,7 @@ package com.example.medic.medicalKnowledge.domain;
 import com.example.medic.manager.domain.Manager;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -40,4 +41,15 @@ public class WoundInfo {
     @JsonIgnore
     private Manager manager;
 
+    @Builder
+    private WoundInfo(Long woId, String woName, String woInstitution, Date woRegDate, Date woMdDate, String woContent,
+                                Manager manager) {
+        this.woId = woId;
+        this.woName = woName;
+        this.woInstitution = woInstitution;
+        this.woRegdate = woRegDate;
+        this.woMdDate = woMdDate;
+        this.woContent = woContent;
+        this.manager = manager;
+    }
 }

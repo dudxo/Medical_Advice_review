@@ -1,7 +1,9 @@
 package com.example.medic.client.service;
 
 import com.example.medic.client.domain.Client;
+import com.example.medic.client.dto.ClientInfoAllDto;
 import com.example.medic.client.dto.ClientInfoDto;
+import com.example.medic.client.dto.ModifyUserDto;
 import com.example.medic.client.repository.ClientRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -19,6 +21,7 @@ public class ClientService {
     private final Logger logger = LoggerFactory.getLogger(ClientService.class);
 
     public ClientInfoDto findClientInfo(ClientInfoDto clientInfoDto) {
+
         try{
             String uid = clientInfoDto.getUId();
             Client client = findClient(uid);
@@ -35,9 +38,41 @@ public class ClientService {
             return clientInfoDto;
         }
     }
+    public ClientInfoAllDto findClientInfoAll(ClientInfoAllDto clientInfoAllDto) {
+        try{
+            String uid = clientInfoAllDto.getUId();
+            Client client = findClient(uid);
+            ClientInfoAllDto responseClientInfoAll = ClientInfoAllDto.builder()
+                    .uId(client.getUId())
+                    .uPw(client.getUPw())
+                    .uRole(client.getURole())
+                    .uEmail(client.getUEmail())
+                    .name(client.getUName())
+                    .userTel(client.getUserTel())
+                    .userPhone(client.getUserPhone())
+                    .userAddress(client.getUserAddress())
+                    .company(client.getCompany())
+                    .ceo(client.getCeo())
+                    .cpTel(client.getCpTel())
+                    .cpFx(client.getCpFx())
+                    .cpNum(client.getCpNum())
+                    .cpAddress(client.getCpAddress())
+                    .build();
+            return responseClientInfoAll;
+        }catch (NoSuchElementException n){
+            logger.info("해당 회원을 찾을 수 없습니다.");
+            return clientInfoAllDto;
+        }
+    }
+
+    public void deleteUser(ClientInfoDto clientInfoDto){
+        String uid = clientInfoDto.getUId();
+        clientRepository.deleteById(uid);
+    }
 
     public Client findClient(String uid){
         Optional<Client> client = clientRepository.findByUId(uid);
         return client.orElseThrow(() -> new NoSuchElementException());
     }
+
 }
