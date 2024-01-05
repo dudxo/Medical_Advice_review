@@ -84,7 +84,7 @@ public class ClientController {
         }
     }
     @DeleteMapping("/user/deleteuser")
-    public ResponseEntity<?> deleteUserInfo(HttpServletRequest request){
+    public ResponseEntity<String> deleteUserInfo(HttpServletRequest request){
         try{
             HttpSession session = request.getSession();
             String uid = (String) session.getAttribute("uId");
