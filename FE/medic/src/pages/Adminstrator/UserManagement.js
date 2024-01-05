@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import usermanage from '../../css/UserManagement.module.css';
 
-export default function DocManagement() {
+export default function UserManagement() {
   const navigate = useNavigate();
   const [selectedStatu, setSelectedStatu] = useState('회원관리');
   const [userList, setUserList] = useState([]);
@@ -29,16 +29,19 @@ export default function DocManagement() {
     setPage(newPage);
   }
 
-  const handleEditUser = (selectedUser) => {
-    localStorage.setItem('selectedUser', JSON.stringify(selectedUser));
-    navigate('/edit/user', { state: { user: selectedUser } });
+  const handleEditUser = (userId) => {
+    navigate('/edit/user', { state: { useredit: userList[userId],  
+    userId : userId,
+    userlist : userList
+    } });
   }
 
   const handleDeleteUser = async (userId) => {
     try {
+      const confirmed = window.confirm('사용자를 삭제하시겠습니까?');
       const response = await axios.delete(`/user/delete/${userId}`);
       
-      if (response.status === 200) {
+      if (confirmed) {
         const updatedUserList = userList.filter(user => user.id !== userId);
         setUserList(updatedUserList);
         alert('사용자가 삭제되었습니다.');
@@ -70,7 +73,7 @@ export default function DocManagement() {
               <td className={usermanage.user_td}>{index + 1}</td>
               <td className={usermanage.user_td}>{user.uName}</td>
               <td className={usermanage.user_td}>{user.uRole}</td>
-              <td className={usermanage.doc_td} onClick={() => handleEditUser(user)}>수정</td>
+              <td className={usermanage.doc_td} onClick={() => handleEditUser(index)}>수정</td>
               <td className={usermanage.doc_td} onClick={() => handleDeleteUser(user.uId)}>삭제</td>
             </tr>
           ))}

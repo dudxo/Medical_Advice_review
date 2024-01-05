@@ -1,26 +1,28 @@
 import React, { useState, useEffect } from "react";
 import docedit from '../../css/DocEdit.module.css';
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , useLocation} from "react-router-dom";
 
 export default function DocEdit() {
-  const selectedDoctor = JSON.parse(localStorage.getItem('selectedDoctor')) || {};
+  const location = useLocation();
+  const doctoredit = location.state.docedit;
+ 
 
 
   const [docInfo, setDocInfo] = useState({
-    cId: selectedDoctor.cId || '',
-    cPw: selectedDoctor.cPw || '',
-    cName:selectedDoctor.cName || '',
-    cEmail: selectedDoctor.cEmail || '',
-    cTel: selectedDoctor.cTel || '',
-    cPhone: selectedDoctor.cPhone || '',
-    cAddress: selectedDoctor.cAddress || '',
-    hospName: selectedDoctor.hospName || '',
-    hospTel: selectedDoctor.hospTel || '',  
-    department: selectedDoctor.department || '',
-    hospFx: selectedDoctor.hospFx || '',
-    hospNum: selectedDoctor.hospNum || '',
-    hospAddress: selectedDoctor.hospAddress || '',
+    cId: doctoredit.cId || '',
+    cPw: doctoredit.cPw || '',
+    cName:doctoredit.cName || '',
+    cEmail: doctoredit.cEmail || '',
+    cTel: doctoredit.cTel || '',
+    cPhone: doctoredit.cPhone || '',
+    cAddress: doctoredit.cAddress || '',
+    hospName: doctoredit.hospName || '',
+    hospTel: doctoredit.hospTel || '',  
+    department: doctoredit.department || '',
+    hospFx: doctoredit.hospFx || '',
+    hospNum: doctoredit.hospNum || '',
+    hospAddress: doctoredit.hospAddress || '',
     
   });
 

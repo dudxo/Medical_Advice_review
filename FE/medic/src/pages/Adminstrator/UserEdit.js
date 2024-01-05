@@ -1,28 +1,32 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import user from '../../css/UserEdit.module.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
 
 export default function Joinpage() {
-  // 로컬 스토리지에서 선택된 회원 정보 가져오기
-  const selectedUser = JSON.parse(localStorage.getItem('selectedUser')) || {};
+
+  const location = useLocation();
+  // const selectedUser = JSON.parse(localStorage.getItem('selectedUser')) || {};
+
+  const useredit = location.state.useredit;
 
   // 회원 정보 상태 초기화
   const [userInfo, setUserInfo] = useState({
-    uRole: selectedUser.uRole || '',
-    uId: selectedUser.uId || '',
-    uPw: selectedUser.uPw || '',
-    uName: selectedUser.uName || '',
-    uEmail: selectedUser.uEmail || '',
-    userTel: selectedUser.userTel || '',
-    userPhone: selectedUser.userPhone || '',
-    userAddress: selectedUser.userAddress || '',
-    company: selectedUser.company || '',
-    ceo: selectedUser.ceo || '',
-    cpTel: selectedUser.cpTel || '',
-    cpFx: selectedUser.cpFx || '',
-    cpNum: selectedUser.cpNum || '',
-    cpAddress: selectedUser.cpAddress || '',
+    uRole: useredit.uRole || '',
+    uId: useredit.uId || '',
+    uPw: useredit.uPw || '',
+    uName: useredit.uName || '',
+    uEmail: useredit.uEmail || '',
+    userTel: useredit.userTel || '',
+    userPhone: useredit.userPhone || '',
+    userAddress: useredit.userAddress || '',
+    company: useredit.company || '',
+    ceo: useredit.ceo || '',
+    cpTel: useredit.cpTel || '',
+    cpFx: useredit.cpFx || '',
+    cpNum: useredit.cpNum || '',
+    cpAddress: useredit.cpAddress || '',
   });
 
   const [zipcodeNum, setZipcodeNum] = useState('')

@@ -29,15 +29,19 @@ export default function DocManagement() {
     setPage(newPage);
   }
 
-  const handleEditDoc = (selectedDoctor) => {
-    localStorage.setItem('selectedDoctor', JSON.stringify(selectedDoctor))
-    navigate('/edit/doctor', { state: { doctor: selectedDoctor } });
+  const handleEditDoc = (docId) => {
+   
+    navigate('/edit/doctor', { state: { docedit: doctorList[docId],
+    docId : docId,
+    doclist : doctorList
+    } });
   }
 
   const handleDeleteDoc = async (doctorId) => {
     try {
+      const confirmed = window.confirm('사용자를 삭제하시겠습니까?');
       const response = await axios.delete(`/doctor/delete/${doctorId}`);
-      if (response.status === 200) {
+      if (confirmed) {
         const updatedDoctorList = doctorList.filter(doctor => doctor.id !== doctorId);
         setDoctorList(updatedDoctorList);
         alert('의사가 삭제되었습니다.');
@@ -69,8 +73,8 @@ export default function DocManagement() {
               <td className={administrator.doc_td}>{index + 1}</td>
               <td className={administrator.doc_td}>{doctor.cName}</td>
               <td className={administrator.doc_td}>{doctor.department}</td>
-              <td className={administrator.doc_td} onClick={() => handleEditDoc(doctor)}>수정</td>
-              <td className={administrator.doc_td} onClick={() => handleDeleteDoc(doctor.cId)}>삭제</td>
+              <td className={administrator.doc_td} onClick={() => handleEditDoc(index)}>수정</td>
+              <td className={administrator.doc_td} onClick={() => handleDeleteDoc(index)}>삭제</td>
             </tr>
           ))}
         </tbody>
