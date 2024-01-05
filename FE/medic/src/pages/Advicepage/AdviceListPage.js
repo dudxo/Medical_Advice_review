@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import advicelist from '../../css/AdviceListPage.module.css';
+import { Link } from 'react-router-dom';
+
 
 
 export default function AdviceListPage() {
@@ -66,7 +68,11 @@ export default function AdviceListPage() {
                 {adviceList.map((advice, index) => (
                     rowIndex === index && (
                     <React.Fragment key={index}>
-                        <td className={advicelist.adviceList_td}>{index + 1}</td>
+                        <td className={advicelist.adviceList_td}>
+                          <Link to={`/medic/advice/adviceDetail/`}>
+                            {index + 1} 
+                          </Link>
+                        </td>
                         <td className={advicelist.adviceList_td}>{advice.adPtSub}</td>
                         <td className={advicelist.adviceList_td}>{advice.adPtDiagnosis}</td>
                         <td className={advicelist.adviceList_td}>
