@@ -180,7 +180,7 @@ export default function Header({}) {
     
     const btn_program_myTranslateList_view = (e) => {
         if (isSession) {
-            navigate('/meidc/translate/translateList');
+            navigate('/medic/translate/translateList');
         } else {
             alert('로그인 후 이용해주세요!');
             navigate('/mediclogin');
