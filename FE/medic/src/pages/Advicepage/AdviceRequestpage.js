@@ -3,8 +3,6 @@ import advicerequest from '../../css/AdviceRequestpage.module.css'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-
-// 나중에 날짜형식이 다르면 알림메시지 뜨게 추가해야 할듯
 export default function AdviceRequestpage(){
     const startYear = 1960;
     const today = new Date();

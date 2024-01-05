@@ -29,6 +29,7 @@ import AnnouncementDetail from "./pages/Customerpage/Announcement/AnnouncementDe
 import WriteAnnouncement from "./pages/Customerpage/Announcement/WriteAnnouncement";
 import FinduserInfopage from "./pages/FinduserInfo/FinduserInfopage";
 import Updatepw from './pages/FinduserInfo/Updatepw'
+<<<<<<< HEAD
 import ChangeConsultativeInfo from "./pages/Mypage/ChangeConsultativeInfopage";
 import ModifyMyInfopage from "./pages/Mypage/ModifyMyInfopage"
 import CustomerInquiryDetail from "./pages/Customerpage/Customerinquiry/CustomerinquiryDetail";
@@ -42,6 +43,14 @@ import IndustrialAccidentDetail from "./pages/MedicalLegalKnowledge/IndustrialAc
 import TrafficAccidentDetail from "./pages/MedicalLegalKnowledge/TrafficAccidentDetailInfopage";
 
 import ModifyMyPwpage from "./pages/Mypage/ModifyMyPwpage";
+=======
+import ChangeMyInfo from "./pages/Mypage/ChangeMyInfopage";
+import AdministratorMypage from "./pages/Adminstrator/AdministratorMypage";
+import DocManagement from "./pages/Adminstrator/DocManagement";
+import UserManagement from "./pages/Adminstrator/UserManagement";
+import DocEdit from "./pages/Adminstrator/DocEdit";
+import UserEdit from "./pages/Adminstrator/UserEdit";
+>>>>>>> feature-administrator-mypage-M
 
 export default function App(){
     return(
@@ -78,6 +87,7 @@ export default function App(){
                     <Route path='/medic/customer/announcement/writeannouncement' element={<WriteAnnouncement/>}/> 
                     <Route path="/medic/finduserinfo" element={<FinduserInfopage/>}/>
                     <Route path="/medic/finduserinfo/findpw" element={<Updatepw/>}/>
+<<<<<<< HEAD
                     <Route path="/medic/mypage/ChangeConsultativeInfo" element={<ChangeConsultativeInfo/>}/>
                     <Route path="/medic/mypage/modifymyinfo" element={<ModifyMyInfopage/>}/>
                     <Route path="/medic/consultative/assignmentAdviceList" element={<ConsultativeAdviceAssignment/>}/>
@@ -90,6 +100,15 @@ export default function App(){
                     <Route path="/medic/knowledge/trafficaccidentdetails" element={<TrafficAccidentDetail/>}/>
                     <Route path="/medic/mypage/modifymyinfo/modifyMyPw" element={<ModifyMyPwpage/>}/>
                 </Routes> 
+=======
+                    <Route path="/medic/mypage/changemyinfo" element={<ChangeMyInfo/>}/>
+                    <Route path="/medic/adminstrator/docmanagement" element={<DocManagement/>}/>
+                    <Route path="/medic/adminstrator/administratormypage" element={<AdministratorMypage/>}/>
+                    <Route path="/medic/adminstrator/usermanagement" element={<UserManagement/>}/>
+                    <Route path="/medic/adminstrator/docedit" element={<DocEdit/>}/>
+                    <Route path="/medic/adminstrator/useredit" element={<UserEdit/>}/>
+                </Routes>
+>>>>>>> feature-administrator-mypage-M
             </div> 
             </div>   
         </BrowserRouter>
