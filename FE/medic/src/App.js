@@ -30,6 +30,14 @@ import DocManagement from "./pages/Adminstrator/DocManagement";
 import UserManagement from "./pages/Adminstrator/UserManagement";
 import DocEdit from "./pages/Adminstrator/DocEdit";
 import UserEdit from "./pages/Adminstrator/UserEdit";
+import AdAdviceListPage from "./pages/Adminstrator/AdAdviceListPage";
+import AdAnalyzeListPage from "./pages/Adminstrator/AdAnalyzeListPage";
+import AdTranslateListPage from "./pages/Adminstrator/AdTranslateListPage";
+import AdDetailAdvice from "./pages/Adminstrator/AdDetailAdvice";
+import AdDetailAnalyze from "./pages/Mypage/Mypage";
+import AdDetailTranslate from "./pages/Adminstrator/AdDetailTranslate";
+import FAQDetailPage from "./pages/Customerpage/Announcement/FAQDetailPage";
+import WriteFaqPage from "./pages/Customerpage/Announcement/WriteFaqPage";
 
 export default function App(){
     return(
@@ -51,6 +59,8 @@ export default function App(){
                     <Route path='/medic/customer/customerInquiry' element={<CustomerInquirypage/>}/>
                     <Route path='/medic/customer/announcement' element={<Announcementpage/>}/>
                     <Route path='/medic/customer/FAQ' element={<FAQpage/>}/>
+                    <Route path='/medic/customer/FAQDetail' element={<FAQDetailPage/>}/>
+                    <Route path='/medic/customer/WriteFaq' element={<WriteFaqPage/>}/>
                     <Route path='/medic/medicalknowledge/faultInfo' element={<FaultInfopage/>}/>
                     <Route path='/medic/medicalknowledge/industrialAccidentInfo' element={<IndustrialAccidentInfopage/>}/>
                     <Route path='/medic/medicalknowledge/trafficAccidentInfo' element={<TrafficAccidentInfopage/>}/>
@@ -66,6 +76,12 @@ export default function App(){
                     <Route path="/medic/adminstrator/usermanagement" element={<UserManagement/>}/>
                     <Route path="/medic/adminstrator/docedit" element={<DocEdit/>}/>
                     <Route path="/medic/adminstrator/useredit" element={<UserEdit/>}/>
+                    <Route path="/medic/adminstrator/adadvicelistpage" element={<AdAdviceListPage/>}/>
+                    <Route path="/medic/adminstrator/adanalyzelistpage" element={<AdAnalyzeListPage/>}/>
+                    <Route path="/medic/adminstrator/adtranslatelistpage" element={<AdTranslateListPage/>}/>
+                    <Route path="/medic/adminstrator/addetailadvice" element={<AdDetailAdvice/>}/>
+                    <Route path="/medic/adminstrator/addetailanalyze" element={<AdDetailAnalyze/>}/>
+                    <Route path="/medic/adminstrator/addetailtranslate" element={<AdDetailTranslate/>}/>
                 </Routes>
             </div> 
             </div>   
