@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import assignmentTranslate from '../../css/ConsultativeTranslateAssignment.module.css';
+import { useNavigate} from 'react-router-dom';
 
 
 export default function ConsultativeTranslateAssignmentpage() {
   const [selectedStatus, setSelectedStatus] = useState('번역의뢰중');
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 추가
   const [translateList, setTranslateList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,6 +23,10 @@ export default function ConsultativeTranslateAssignmentpage() {
 
     fetchData();
   }, []);
+
+  const handledetailClick = (e, index) => {
+    navigate('/medic/consultative/assignmentTranslateDetail', {state : {index : index}})
+  }
   
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -66,7 +72,7 @@ export default function ConsultativeTranslateAssignmentpage() {
                 {translateList.map((translation, index) => (
                     rowIndex === index && (
                     <React.Fragment key={index}>
-                        <td className={assignmentTranslate.translateList_td}>{index + 1}</td>
+                        <td className={assignmentTranslate.translateList_td} onClick={() => handledetailClick(index)}>{index + 1}</td>
                         <td className={assignmentTranslate.translateList_td}>{translation.trPtSub}</td>
                         <td className={assignmentTranslate.translateList_td}>{translation.trPtDiagnoze}</td>
                         <td className={assignmentTranslate.translateList_td}>
