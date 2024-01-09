@@ -104,7 +104,7 @@ export default function AnalyzeRequestpage(){
     const isFormValid = () => {
           // 여러 입력 필드와 텍스트 영역의 유효성을 확인
           const isUserInfoValid = uname && utel && uphone && uaddress;
-          const isPtInfoValid = an_ptname && an_ptssnum1 && an_ptssnum2 && an_ptsub && an_ptdiagnosis && an_ptcmt;
+          const isPtInfoValid = an_ptname && an_ptssnum1 && an_ptssnum2 && an_ptsub && an_ptdiagnosis;
           const isEtcInfoValid = anEtcValue;
           const isQuestionInfoValid = anQuestionContents.every(content => content); // 모든 질문 내용이 비어있지 않아야 함
         

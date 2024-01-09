@@ -104,7 +104,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
         return isadAnswerContentsInfoValid;
     };
 
-    const btn_advice_request = async() => {
+    const btn_analyze_request = async() => {
          // 유효성 검사
         if (!isFormValid()) {
             alert('입력값을 확인해주세요.');
@@ -131,7 +131,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
             console.log(err)
         }
     }
-    const btn_advice_cancle = async() => {
+    const btn_analyze_cancle = async() => {
         navigate('/')
     }
     return(

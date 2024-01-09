@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import assignmentAdvice from '../../css/ConsultativeAdviceAssignment.module.css';
+import { useNavigate} from 'react-router-dom';
 
 
 export default function ConsultativeAdviceAssignmentpage() {
   const [selectedStatus, setSelectedStatus] = useState('자문의뢰중');
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 추가
   const [adviceList, setAdviceList] = useState([]);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,7 +25,7 @@ export default function ConsultativeAdviceAssignmentpage() {
     fetchData();
   }, []);
 
-  const handledetailClick = e => {
+  const handledetailClick = (e, index) => {
     navigate('/medic/consultative/assignmentAdviceDetail', {state : {index : index}})
   }
   
