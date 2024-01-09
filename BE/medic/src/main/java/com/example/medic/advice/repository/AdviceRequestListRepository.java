@@ -11,4 +11,8 @@ import java.util.Optional;
 public interface AdviceRequestListRepository extends JpaRepository<AdviceRequestList,Long> {
     @Query("SELECT arl FROM AdviceRequestList arl WHERE arl.client.uId = :uId")
     List<AdviceRequestList> findByClient_UId(String uId);
+
+
+
+    int countAllByClient(Client client);
 }
