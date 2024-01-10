@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import announcedetail from '../../../css/AnnouncementDetail.module.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const FaqDetailPage = () => {
+export default function FaqDetailPage()  {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -97,4 +97,4 @@ const FaqDetailPage = () => {
   );
 };
 
-export default FaqDetailPage;
+
