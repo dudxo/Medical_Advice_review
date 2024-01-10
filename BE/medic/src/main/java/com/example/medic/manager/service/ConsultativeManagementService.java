@@ -1,4 +1,4 @@
-package com.example.medic.manager.controller;
+package com.example.medic.manager.service;
 
 import com.example.medic.manager.dto.ManagedConsultativeInfoDto;
 
@@ -14,7 +14,7 @@ public interface ConsultativeManagementService {
     /**
      * @return 특정 전문의 상세 조회
      */
-    ManagedConsultativeInfoDto viewDoctorManagementDetails(Long cId);
+    ManagedConsultativeInfoDto viewDoctorManagementDetails(String cId);
 
     /**
      * @return 특정 전문의 정보 수정

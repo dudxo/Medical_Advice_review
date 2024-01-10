@@ -1,14 +1,14 @@
 package com.example.medic.manager.controller;
 
-import com.example.medic.manager.service.ConsultativeManagementService;
+import com.example.medic.manager.service.ConsultativeManagementServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
 @Controller
 @RequiredArgsConstructor
-public class ConsultativeManagementControllerImpl {
+public class ConsultativeManagementController {
 
-    private final ConsultativeManagementService consultativeManagementService;
+    private final ConsultativeManagementServiceImpl consultativeManagementService;
 
 
 }
