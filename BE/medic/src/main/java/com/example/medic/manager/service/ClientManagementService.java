@@ -3,11 +3,16 @@ package com.example.medic.manager.service;
 import com.example.medic.advice.repository.AdviceRequestListRepository;
 import com.example.medic.analyze.repository.AnalyzeRequestListRepository;
 import com.example.medic.client.domain.Client;
+import com.example.medic.client.dto.ClientInfoAllDto;
+import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.client.repository.ClientRepository;
 import com.example.medic.manager.dto.ManagedClientInfoDto;
 import com.example.medic.translation.repository.TranslationRequestListRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +25,8 @@ public class ClientManagementService {
     private final AnalyzeRequestListRepository analyzeRequestListRepository;
     private final TranslationRequestListRepository translationRequestListRepository;
     private final ClientRepository clientRepository;
+    private final Logger LOGGER = LoggerFactory.getLogger(ClientManagementService.class);
+
 
 
     /**
@@ -66,4 +73,62 @@ public class ClientManagementService {
         return adviceRequestListRepository.countAllByClient(client);
     }
 
+    /**
+     * 일반 회원 상세 조회
+     */
+    public ManagedClientInfoDto findDetailByClient(String uId) {
+        Client findClient = clientRepository.findByUId(uId).get();
+        ManagedClientInfoDto response = ManagedClientInfoDto.builder()
+                .uId(findClient.getUId())
+                .uPw(findClient.getUPw())
+                .uRole(findClient.getURole())
+                .uName(findClient.getUName())
+                .uEmail(findClient.getUEmail())
+                .userTel(findClient.getUserTel())
+                .userPhone(findClient.getUserPhone())
+                .userAddress(findClient.getUserAddress())
+                .company(findClient.getCompany())
+                .ceo(findClient.getCeo())
+                .cpTel(findClient.getCpTel())
+                .cpFx(findClient.getCpFx())
+                .cpNum(findClient.getCpNum())
+                .cpAddress(findClient.getCpAddress())
+                .countByAdvice(countByAdvice(findClient))
+                .countByAnalyze(countByAnalyze(findClient))
+                .countByTranslate(countByTranslate(findClient))
+                .build();
+
+        return response;
+    }
+
+    /**
+     * 관리자 일반 회원 수정
+     */
+    @Transactional
+    public boolean updateClient(ManagedClientInfoDto requestManagedClientInfoDto) {
+        Client currentClient = clientRepository.findByUId(requestManagedClientInfoDto.getUId()).get();
+        if (currentClient == null) {
+            LOGGER.info("[Error] {} 유저가 존재하지 않습니다.", requestManagedClientInfoDto.getUId());
+            return false;
+        }
+
+        currentClient.updateClientByManager(requestManagedClientInfoDto);
+        clientRepository.save(currentClient);
+        return true;
+    }
+
+
+    /**
+     * 관리자 일반 회원 삭제
+     */
+    @Transactional
+    public boolean deleteClient(ManagedClientInfoDto requestManagedClientInfoDto) {
+        Client currentClient = clientRepository.findByUId(requestManagedClientInfoDto.getUId()).get();
+        if (currentClient == null) {
+            LOGGER.info("[Error] {} 유저가 존재하지 않습니다.", requestManagedClientInfoDto.getUId());
+            return false;
+        }
+        clientRepository.delete(currentClient);
+        return true;
+    }
 }
