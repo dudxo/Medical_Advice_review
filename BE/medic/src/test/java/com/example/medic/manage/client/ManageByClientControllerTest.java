@@ -1,4 +1,4 @@
-package com.example.medic.manage;
+package com.example.medic.manage.client;
 
 import com.example.medic.advice.domain.AdviceRequestList;
 import com.example.medic.advice.repository.AdviceRequestListRepository;
