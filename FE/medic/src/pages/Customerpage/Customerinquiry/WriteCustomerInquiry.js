@@ -23,15 +23,14 @@ export default function WriteCustomerInquiry() {
     const btn_writequestion = async()=> {
         const today = new Date();
         const InquiryInfo = {
-            'inputTitle' : inputTitle,
-            'writer' : writer,
+            'qaTitle' : inputTitle,
             'qaQuestion' : inquiryQuestion,
             'qaDate' : today,
             'qaSecret' : isSecret,
             'qaPw' : secretPw
         }
         try{
-            const response = await axios.post('/write/post', InquiryInfo)
+            const response = await axios.post('/qna/writeqna', InquiryInfo)
             navigate('/medic/customer/customerInquiry');
         } catch(err){
             console.log(err)

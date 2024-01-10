@@ -223,7 +223,7 @@ export default function ModifyMyInfopage(){
                             회원구분
                         </td>
                         <td colSpan="3" className={joinpage.joinpage_td}>
-                        <input type="radio" name="user_role" value="general_user" checked={uRole === 'general_user'} onChange={radio_select_userRole} />일반회원
+                        <input type="radio" name="user_role" value="general_user" checked={true} onChange={radio_select_userRole} />일반회원
                         <input type="radio" name="user_role" value="insurance_co" checked={uRole === 'insurance_co'} onChange={radio_select_userRole} />보험사
                         <input type="radio" name="user_role" value="deduction_sc" checked={uRole === 'deduction_sc'} onChange={radio_select_userRole} />공제회
                         <input type="radio" name="user_role" value="adjuster_cp" checked={uRole === 'adjuster_cp'} onChange={radio_select_userRole} />손해사정법인
