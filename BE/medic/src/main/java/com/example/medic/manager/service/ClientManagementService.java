@@ -9,7 +9,10 @@ import com.example.medic.client.repository.ClientRepository;
 import com.example.medic.manager.dto.ManagedClientInfoDto;
 import com.example.medic.translation.repository.TranslationRequestListRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,8 @@ public class ClientManagementService {
     private final AnalyzeRequestListRepository analyzeRequestListRepository;
     private final TranslationRequestListRepository translationRequestListRepository;
     private final ClientRepository clientRepository;
+    private final Logger LOGGER = LoggerFactory.getLogger(ClientManagementService.class);
+
 
 
     /**
@@ -95,4 +100,21 @@ public class ClientManagementService {
 
         return response;
     }
+
+    /**
+     * 관리자 일반 회원 수정
+     */
+    @Transactional
+    public boolean updateClient(ManagedClientInfoDto requestManagedClientInfoDto) {
+        Client currentClient = clientRepository.findByUId(requestManagedClientInfoDto.getUId()).get();
+        if (currentClient == null) {
+            LOGGER.info("[Error] {} 유저가 존재하지 않습니다.", requestManagedClientInfoDto.getUId());
+            return false;
+        }
+
+        currentClient.updateClientByManager(requestManagedClientInfoDto);
+        clientRepository.save(currentClient);
+        return true;
+    }
+
 }

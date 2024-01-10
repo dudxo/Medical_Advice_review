@@ -42,4 +42,13 @@ public class ManageByClientController {
         return ResponseEntity.ok(responseClientInfoDto);
     }
 
+    /**
+     * 관리자 일반 회원 수정
+     */
+    public ResponseEntity<String> updateUserInfo(@RequestBody ManagedClientInfoDto requestManagedClientInfoDto) {
+        if (!clientManagementService.updateClient(requestManagedClientInfoDto)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.ok("사용자 정보 업데이트 완료");
+    }
 }
