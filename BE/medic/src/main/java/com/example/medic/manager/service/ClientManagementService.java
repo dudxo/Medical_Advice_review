@@ -3,6 +3,8 @@ package com.example.medic.manager.service;
 import com.example.medic.advice.repository.AdviceRequestListRepository;
 import com.example.medic.analyze.repository.AnalyzeRequestListRepository;
 import com.example.medic.client.domain.Client;
+import com.example.medic.client.dto.ClientInfoAllDto;
+import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.client.repository.ClientRepository;
 import com.example.medic.manager.dto.ManagedClientInfoDto;
 import com.example.medic.translation.repository.TranslationRequestListRepository;
@@ -66,4 +68,31 @@ public class ClientManagementService {
         return adviceRequestListRepository.countAllByClient(client);
     }
 
+    /**
+     * 일반 회원 상세 조회
+     */
+    public ManagedClientInfoDto findDetailByClient(String uId) {
+        Client findClient = clientRepository.findByUId(uId).get();
+        ManagedClientInfoDto response = ManagedClientInfoDto.builder()
+                .uId(findClient.getUId())
+                .uPw(findClient.getUPw())
+                .uRole(findClient.getURole())
+                .uName(findClient.getUName())
+                .uEmail(findClient.getUEmail())
+                .userTel(findClient.getUserTel())
+                .userPhone(findClient.getUserPhone())
+                .userAddress(findClient.getUserAddress())
+                .company(findClient.getCompany())
+                .ceo(findClient.getCeo())
+                .cpTel(findClient.getCpTel())
+                .cpFx(findClient.getCpFx())
+                .cpNum(findClient.getCpNum())
+                .cpAddress(findClient.getCpAddress())
+                .countByAdvice(countByAdvice(findClient))
+                .countByAnalyze(countByAnalyze(findClient))
+                .countByTranslate(countByTranslate(findClient))
+                .build();
+
+        return response;
+    }
 }
