@@ -53,21 +53,21 @@ public class ClientManagementService {
     }
 
     /**
-     * 회원 자문 의뢰 전체 건수 조회
+     * 회원 분석 의뢰 전체 건수 조회
      */
     public int countByAnalyze(Client client) {
         return analyzeRequestListRepository.countAllByClient(client);
     }
 
     /**
-     * 회원 분석 의뢰 전체 건수 조회
+     * 회원 번역 의뢰 전체 건수 조회
      */
     public int countByTranslate(Client client) {
         return translationRequestListRepository.countAllByClient(client);
     }
 
     /**
-     * 회원 번역 의뢰 전체 건수 조회
+     * 회원 자문 의뢰 전체 건수 조회
      */
     public int countByAdvice(Client client) {
         return adviceRequestListRepository.countAllByClient(client);
