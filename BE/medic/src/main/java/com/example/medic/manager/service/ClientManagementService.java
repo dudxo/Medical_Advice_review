@@ -117,4 +117,18 @@ public class ClientManagementService {
         return true;
     }
 
+
+    /**
+     * 관리자 일반 회원 삭제
+     */
+    @Transactional
+    public boolean deleteClient(ManagedClientInfoDto requestManagedClientInfoDto) {
+        Client currentClient = clientRepository.findByUId(requestManagedClientInfoDto.getUId()).get();
+        if (currentClient == null) {
+            LOGGER.info("[Error] {} 유저가 존재하지 않습니다.", requestManagedClientInfoDto.getUId());
+            return false;
+        }
+        clientRepository.delete(currentClient);
+        return true;
+    }
 }

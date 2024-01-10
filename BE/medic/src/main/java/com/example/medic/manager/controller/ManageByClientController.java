@@ -51,4 +51,14 @@ public class ManageByClientController {
         }
         return ResponseEntity.ok("사용자 정보 업데이트 완료");
     }
+
+    /**
+     * 관리자 일반 회원 삭제
+     */
+    public ResponseEntity<String> deleteUserInfo(@RequestBody ManagedClientInfoDto requestManagedClientInfoDto) {
+        if (!clientManagementService.deleteClient(requestManagedClientInfoDto)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.ok("일반 회원 삭제 완료");
+    }
 }
