@@ -3,6 +3,7 @@ package com.example.medic.client.domain;
 import com.example.medic.advice.domain.AdviceRequestList;
 import com.example.medic.analyze.domain.AnalyzeRequestList;
 import com.example.medic.client.dto.ModifyUserDto;
+import com.example.medic.manager.dto.ManagedClientInfoDto;
 import com.example.medic.qna.domain.Qna;
 import com.example.medic.translation.domain.TranslationRequestList;
 import com.sun.istack.NotNull;
@@ -90,6 +91,23 @@ public class Client {
 
     public void updatePassword(String newUpw) {
         this.uPw = newUpw;
+    }
+
+    public void updateClientByManager(ManagedClientInfoDto managedClientInfoDto) {
+        this.uId = managedClientInfoDto.getUId();
+        this.uPw = managedClientInfoDto.getUPw();
+        this.uEmail = managedClientInfoDto.getUEmail();
+        this.uName = managedClientInfoDto.getUName();
+        this.userPhone = managedClientInfoDto.getUserPhone();
+        this.userTel = managedClientInfoDto.getUserTel();
+        this.userAddress = managedClientInfoDto.getUserAddress();
+        this.company = managedClientInfoDto.getCompany();
+        this.ceo = managedClientInfoDto.getCeo();
+        this.cpFx = managedClientInfoDto.getCpFx();
+        this.cpNum = managedClientInfoDto.getCpNum();
+        this.cpTel =managedClientInfoDto.getCpTel();
+        this.uRole = managedClientInfoDto.getURole();
+        this.cpAddress = managedClientInfoDto.getCpAddress();
     }
 
 }
