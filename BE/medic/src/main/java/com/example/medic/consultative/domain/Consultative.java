@@ -23,7 +23,7 @@ public class Consultative {
 
     @Id
     @NotNull
-    private Long cId;
+    private String cId;
 
     @NotNull
     private String cPw;
@@ -74,7 +74,7 @@ public class Consultative {
     private List<TranslationAnswerFile> translationAnswerFiles = new ArrayList<>();
 
     @Builder
-    Consultative(Long cId, String cPw, String cRole, String cName, String cEmail, String cTel,
+    Consultative(String cId, String cPw, String cRole, String cName, String cEmail, String cTel,
                                String cPhone, String cAddress, String hospName, String hospTel,
                                String department, String hospFx, String hospNum, String hospAddress) {
         this.cId = cId;
