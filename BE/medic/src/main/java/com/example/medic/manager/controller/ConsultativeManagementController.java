@@ -49,4 +49,14 @@ public class ConsultativeManagementController {
         }
         return ResponseEntity.ok("전문의 정보 수정 완료");
     }
+
+    /**
+     * @return 관리자 특정 전문의 정보 삭제
+     */
+    public ResponseEntity<String> deleteConsultativeInfO(@RequestBody ManagedConsultativeInfoDto managedConsultativeInfoDto) {
+        if (!consultativeManagementService.deleteDoctorManagement(managedConsultativeInfoDto)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.ok("전문의 정보 삭제 완료");
+    }
 }
