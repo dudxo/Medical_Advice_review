@@ -1,11 +1,13 @@
 package com.example.medic.manager.controller;
 
+import com.example.medic.manager.dto.ManagedClientInfoDto;
 import com.example.medic.manager.dto.ManagedConsultativeInfoDto;
 import com.example.medic.manager.service.ConsultativeManagementServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -26,4 +28,15 @@ public class ConsultativeManagementController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * @return 관지라 특정 전문의 상세 조회
+     */
+    public ResponseEntity<ManagedConsultativeInfoDto> findDetailByConsultative(@RequestBody ManagedConsultativeInfoDto managedConsultativeInfoDto) {
+        String cId = managedConsultativeInfoDto.getCId();
+        if (cId == null || cId.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        ManagedConsultativeInfoDto responseConsultativeInfoDto = consultativeManagementService.viewDoctorManagementDetails(cId);
+        return ResponseEntity.ok(responseConsultativeInfoDto);
+    }
 }
