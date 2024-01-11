@@ -98,9 +98,18 @@ public class ConsultativeManagementServiceImpl implements ConsultativeManagement
         return true;
     }
 
+    /**
+     * @return 관리자 특정 전문의 삭제
+     */
     @Override
     public boolean deleteDoctorManagement(ManagedConsultativeInfoDto managedConsultativeInfoDto) {
-        return false;
+        Consultative currentClient = consultativeRepository.findById(managedConsultativeInfoDto.getCId()).get();
+        if (currentClient == null) {
+            LOGGER.info("[Error] {} 유저가 존재하지 않습니다.", managedConsultativeInfoDto.getCId());
+            return false;
+        }
+        consultativeRepository.delete(currentClient);
+        return true;
     }
 
     /**
