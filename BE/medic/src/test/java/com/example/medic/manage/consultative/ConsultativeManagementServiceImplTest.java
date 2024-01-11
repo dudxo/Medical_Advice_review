@@ -98,4 +98,39 @@ public class ConsultativeManagementServiceImplTest {
         assertThat(managedConsultativeInfoDto.getHospTel()).isNotEqualTo("112");
 
     }
+
+    @Test
+    @DisplayName("특정 전문의 정보 수정")
+    @Transactional
+    void updateConsultative() {
+        //given
+        // insertConsultative()
+        ManagedConsultativeInfoDto updateConsultative = ManagedConsultativeInfoDto.builder()
+                .cId("test1")
+                .cPw("1")
+                .cRole("한의원")
+                .cName("권영태")
+                .cAddress("ad")
+                .cEmail("update@test.com")
+                .cPhone("111")
+                .cTel("111")
+                .hospAddress("111")
+                .department("11")
+                .hospFx("11")
+                .hospName("11")
+                .hospNum("11")
+                .hospTel("11")
+                .build();
+
+        //when
+        consultativeManagementServiceImpl.updateDoctorManagement(updateConsultative);
+        Consultative featureConsultative = consultativeRepository.findById("test1").get();
+
+        //then
+        assertThat(featureConsultative.getCRole()).isEqualTo("한의원");
+        assertThat(featureConsultative.getCName()).isEqualTo("권영태");
+        assertThat(featureConsultative.getCEmail()).isEqualTo("update@test.com");
+        assertThat(featureConsultative.getCPw()).isEqualTo("1");
+        assertThat(featureConsultative.getCAddress()).isNotEqualTo("abcd");
+    }
 }
