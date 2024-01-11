@@ -81,4 +81,21 @@ public class ConsultativeManagementServiceImplTest {
             }
         }
     }
+
+    @Test
+    @DisplayName("전문의 상세 정보 확인")
+    void findDetailConsultativeInfo() {
+        //given
+        // insertConsultative()
+
+        //when
+        ManagedConsultativeInfoDto managedConsultativeInfoDto = consultativeManagementServiceImpl.viewDoctorManagementDetails("test1");
+
+        //then
+        assertThat(managedConsultativeInfoDto.getCId()).isEqualTo("test1");
+        assertThat(managedConsultativeInfoDto.getCEmail()).isEqualTo("test@test.com");
+        assertThat(managedConsultativeInfoDto.getCRole()).isEqualTo("전문의");
+        assertThat(managedConsultativeInfoDto.getHospTel()).isNotEqualTo("112");
+
+    }
 }
