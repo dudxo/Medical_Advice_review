@@ -29,6 +29,9 @@ public class ConsultativeManagementServiceImpl implements ConsultativeManagement
     private final ConsultativeRepository consultativeRepository;
     private final Logger LOGGER = LoggerFactory.getLogger(ConsultativeManagementServiceImpl.class);
 
+    /**
+     * @return 관리자 전문의 목록 조회
+     */
     @Override
     public List<ManagedConsultativeInfoDto> findAllConsultative() {
         List<Consultative> consultatives = consultativeRepository.findAll();
@@ -49,9 +52,33 @@ public class ConsultativeManagementServiceImpl implements ConsultativeManagement
         return managedConsultativeInfoDtoList;
     }
 
+    /**
+     * @return 관리자 특정 전문의 정보 상세 조회
+     */
     @Override
     public ManagedConsultativeInfoDto viewDoctorManagementDetails(String cId) {
-        return null;
+        Consultative findConsultative = consultativeRepository.findById(cId).get();
+        ManagedConsultativeInfoDto response = ManagedConsultativeInfoDto.builder()
+                .cId(findConsultative.getCId())
+                .cPw(findConsultative.getCPw())
+                .cRole(findConsultative.getCRole())
+                .cName(findConsultative.getCName())
+                .cEmail(findConsultative.getCEmail())
+                .cTel(findConsultative.getCTel())
+                .cPhone(findConsultative.getCPhone())
+                .cAddress(findConsultative.getCAddress())
+                .department(findConsultative.getDepartment())
+                .hospName(findConsultative.getHospName())
+                .hospNum(findConsultative.getHospNum())
+                .hospTel(findConsultative.getHospTel())
+                .hospAddress(findConsultative.getHospAddress())
+                .hospFx(findConsultative.getHospFx())
+                .countByAdviceAssignment(countByAdvice(findConsultative))
+                .countByAnalyzeAssignment(countByAnalyze(findConsultative))
+                .countByTranslateAssignment(countByTranslate(findConsultative))
+                .build();
+
+        return response;
     }
 
     @Override
