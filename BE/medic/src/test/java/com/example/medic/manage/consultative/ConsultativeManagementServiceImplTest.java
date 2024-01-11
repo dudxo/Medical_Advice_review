@@ -133,4 +133,30 @@ public class ConsultativeManagementServiceImplTest {
         assertThat(featureConsultative.getCPw()).isEqualTo("1");
         assertThat(featureConsultative.getCAddress()).isNotEqualTo("abcd");
     }
+
+    @Test
+    @DisplayName("특정 전문의 삭제")
+    @Transactional
+    void deleteConsultative() {
+        //given
+        //insertConsultative();
+        ManagedConsultativeInfoDto deleteConsultative = ManagedConsultativeInfoDto.builder()
+                .cId("test1")
+                .build();
+
+        //when
+        consultativeManagementServiceImpl.deleteDoctorManagement(deleteConsultative);
+        List<ManagedConsultativeInfoDto> allConsultative = consultativeManagementServiceImpl.findAllConsultative();
+        Consultative findConsultative = new Consultative();
+        for (ManagedConsultativeInfoDto managedConsultativeInfoDto : allConsultative) {
+            findConsultative = consultativeRepository.findById(managedConsultativeInfoDto.getCId()).get();
+        }
+        //then
+        assertThat(allConsultative.size()).isEqualTo(1);
+        assertThat(findConsultative.getCId()).isEqualTo("test2");
+        assertThat(findConsultative.getCId()).isNotEqualTo("test1");
+
+    }
+
+
 }
