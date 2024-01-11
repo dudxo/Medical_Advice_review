@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.*;
 public class ConsultativeManagementServiceImplTest {
 
     @Autowired
-    ConsultativeManagementServiceImpl consultativeManagementService;
+    ConsultativeManagementServiceImpl consultativeManagementServiceImpl;
     @Autowired
     ConsultativeRepository consultativeRepository;
 
@@ -68,7 +68,7 @@ public class ConsultativeManagementServiceImplTest {
     @DisplayName("전문의 목록 확인")
     @Transactional
     void findAllConsultative() {
-        List<ManagedConsultativeInfoDto> allConsultative = consultativeManagementService.findAllConsultative();
+        List<ManagedConsultativeInfoDto> allConsultative = consultativeManagementServiceImpl.findAllConsultative();
         for (ManagedConsultativeInfoDto managedConsultativeInfoDto : allConsultative) {
             Consultative findConsultative = consultativeRepository.findById(managedConsultativeInfoDto.getCId()).get();
             if (findConsultative.getCId().equals("test1")) {
@@ -77,6 +77,7 @@ public class ConsultativeManagementServiceImplTest {
                 assertThat(managedConsultativeInfoDto.getCountByAdviceAssignment()).isNotEqualTo(3);
             } else {
                 assertThat(findConsultative.getCEmail()).isEqualTo("test2@test.com");
+                assertThat(findConsultative.getCEmail()).isNotEqualTo("test@test.com");
             }
         }
     }
