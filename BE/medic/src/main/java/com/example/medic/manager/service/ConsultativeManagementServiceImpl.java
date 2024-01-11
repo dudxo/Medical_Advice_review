@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,9 +82,20 @@ public class ConsultativeManagementServiceImpl implements ConsultativeManagement
         return response;
     }
 
+    /**
+     * @return 관리자 특정 전문의 정보 수정
+     */
     @Override
+    @Transactional
     public boolean updateDoctorManagement(ManagedConsultativeInfoDto managedConsultativeInfoDto) {
-        return false;
+        Consultative currentClient = consultativeRepository.findById(managedConsultativeInfoDto.getCId()).get();
+        if (currentClient == null) {
+            LOGGER.info("[Error] {} 유저가 존재하지 않습니다.", managedConsultativeInfoDto.getCId());
+            return false;
+        }
+        currentClient.updateConsultativeByManager(managedConsultativeInfoDto);
+        consultativeRepository.save(currentClient);
+        return true;
     }
 
     @Override
