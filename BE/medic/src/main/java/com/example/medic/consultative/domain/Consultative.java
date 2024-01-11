@@ -3,6 +3,7 @@ package com.example.medic.consultative.domain;
 import com.example.medic.advice.domain.AdviceAssignment;
 import com.example.medic.advice.domain.AdviceQuestion;
 import com.example.medic.analyze.domain.AnalyzeAssignment;
+import com.example.medic.manager.dto.ManagedConsultativeInfoDto;
 import com.example.medic.translation.domain.TranslationAnswerFile;
 import com.example.medic.translation.domain.TranslationAssignment;
 import com.sun.istack.NotNull;
@@ -91,5 +92,22 @@ public class Consultative {
         this.hospFx = hospFx;
         this.hospNum = hospNum;
         this.hospAddress = hospAddress;
+    }
+
+    public void updateConsultativeByManager(ManagedConsultativeInfoDto managedConsultativeInfoDto) {
+        this.cId = managedConsultativeInfoDto.getCId();
+        this.cPw = managedConsultativeInfoDto.getCPw();
+        this.cRole = managedConsultativeInfoDto.getCRole();
+        this.cName = managedConsultativeInfoDto.getCName();
+        this.cEmail = managedConsultativeInfoDto.getCEmail();
+        this.cTel = managedConsultativeInfoDto.getCTel();
+        this.cPhone = managedConsultativeInfoDto.getCPhone();
+        this.cAddress = managedConsultativeInfoDto.getCAddress();
+        this.hospName = managedConsultativeInfoDto.getHospName();
+        this.hospTel = managedConsultativeInfoDto.getHospTel();
+        this.department = managedConsultativeInfoDto.getDepartment();
+        this.hospFx = managedConsultativeInfoDto.getHospFx();
+        this.hospNum = managedConsultativeInfoDto.getHospNum();
+        this.hospAddress = managedConsultativeInfoDto.getHospAddress();
     }
 }
