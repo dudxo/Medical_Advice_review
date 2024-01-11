@@ -39,4 +39,14 @@ public class ConsultativeManagementController {
         ManagedConsultativeInfoDto responseConsultativeInfoDto = consultativeManagementService.viewDoctorManagementDetails(cId);
         return ResponseEntity.ok(responseConsultativeInfoDto);
     }
+
+    /**
+     * @return 관리자 특정 전문의 정보 수정
+     */
+    public ResponseEntity<String> updateConsultativeInfo(@RequestBody ManagedConsultativeInfoDto managedConsultativeInfoDto) {
+        if (!consultativeManagementService.updateDoctorManagement(managedConsultativeInfoDto)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.ok("전문의 정보 수정 완료");
+    }
 }
