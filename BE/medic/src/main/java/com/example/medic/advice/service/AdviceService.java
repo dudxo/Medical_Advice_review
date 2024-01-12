@@ -42,7 +42,7 @@ public class AdviceService {
     public boolean saveAdviceRequest(AllAdviceRequestDto allAdviceRequestDto, ClientInfoDto clientInfoDto) {
         Client client = clientService.findClient(clientInfoDto.getUId());
         AdviceFileRequestDto parseAdviceFileRequestDto = splitRequestToFileDto(allAdviceRequestDto);
-        List<AdviceQuestionRequestDto> parseAdviceQuestionRequestDto = splitRequestToQuestionDto(allAdviceRequestDto);
+        AdviceQuestionRequestDto parseAdviceQuestionRequestDto = splitRequestToQuestionDto(allAdviceRequestDto);
         AdviceRequestListDto parseAdviceRequestListDto = splitRequestToRequestListDto(allAdviceRequestDto);
         DiagnosisRecordRequestDto parseDiagnosisRecordRequestDto = parseDiagnosisRecordRequestDto(allAdviceRequestDto);
 
@@ -75,19 +75,10 @@ public class AdviceService {
     /**
      * @return 자문 의뢰 신청 질문지 변환
      */
-    public List<AdviceQuestionRequestDto> splitRequestToQuestionDto(AllAdviceRequestDto allAdviceRequestDto) {
-        List<AdviceQuestionRequestDto> adviceQuestionRequestDtoList = new ArrayList<>();
-        Map<String, String> questions = allAdviceRequestDto.getQuestions();
-        questions.forEach((key, value) ->
-                        adviceQuestionRequestDtoList.add(
-                                AdviceQuestionRequestDto.builder()
-                                        .adQuestionNum(Integer.parseInt(key))
-                                        .adQuestionContent(value)
-                                        .build()
-                        )
-                );
-
-        return adviceQuestionRequestDtoList;
+    public AdviceQuestionRequestDto splitRequestToQuestionDto(AllAdviceRequestDto allAdviceRequestDto) {
+        return AdviceQuestionRequestDto.builder()
+                .adQuestionContent(allAdviceRequestDto.getAdQuestionContent())
+                .build();
     }
 
     /**
@@ -159,13 +150,12 @@ public class AdviceService {
     /**
      * 자문 의뢰 신청 질문 저장
      */
-    public void saveAdviceQuestion(List<AdviceQuestionRequestDto> parseAdviceQuestionRequestDto,
+    public void saveAdviceQuestion(AdviceQuestionRequestDto parseAdviceQuestionRequestDto,
                                       AdviceRequestList adviceRequestList) throws PersistenceException {
         try {
-            for(AdviceQuestionRequestDto adviceQuestionRequestDto : parseAdviceQuestionRequestDto){
+            for(String questionContent : parseAdviceQuestionRequestDto.getAdQuestionContent()){
                 AdviceQuestion adviceQuestionRequest = AdviceQuestion.builder()
-                        .adQuestionNum(adviceQuestionRequestDto.getAdQuestionNum())
-                        .adQuestionContent(adviceQuestionRequestDto.getAdQuestionContent())
+                        .adQuestionContent(questionContent)
                         .adviceRequestList(adviceRequestList)
                         .build();
                 adviceQuestionRepository.save(adviceQuestionRequest);

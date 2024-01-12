@@ -13,9 +13,7 @@ import java.util.List;
 @Builder
 public class AdviceQuestionRequestDto {
 
-    private int adQuestionNum;
-
-    private String adQuestionContent;
+    private List<String> adQuestionContent;
 
     private String adAnswerContent;
 
