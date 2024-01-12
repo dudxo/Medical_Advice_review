@@ -1,7 +1,7 @@
 package com.example.medic.analyze.controller;
 
 import com.example.medic.analyze.dto.AnalyzeRequestDto;
-import com.example.medic.analyze.service.AnalyzeService;
+import com.example.medic.analyze.service.AnalyzeServiceImpl;
 import com.example.medic.client.dto.ClientInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class AnalyzeController {
 
-    private final AnalyzeService analyzeService;
+    private final AnalyzeServiceImpl analyzeService;
 
     public ResponseEntity<String> saveAnalyzeRequest(@RequestBody AnalyzeRequestDto analyzeRequestDto,
                                                      HttpServletRequest request) {

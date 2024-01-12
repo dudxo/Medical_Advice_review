@@ -1,6 +1,5 @@
 package com.example.medic.analyze.service;
 
-import com.example.medic.advice.service.AdviceService;
 import com.example.medic.analyze.domain.AnalyzeRequest;
 import com.example.medic.analyze.domain.AnalyzeRequestFile;
 import com.example.medic.analyze.domain.AnalyzeRequestList;
@@ -28,9 +27,9 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class AnalyzeService {
+public class AnalyzeServiceImpl {
 
-    private final Logger logger = LoggerFactory.getLogger(AnalyzeService.class);
+    private final Logger logger = LoggerFactory.getLogger(AnalyzeServiceImpl.class);
     private final AnalyzeRequestListRepository analyzeRequestListRepository;
     private final AnalyzeRequestRepository analyzeRequestRepository;
     private final AnalyzeRequestFileRepository analyzeRequestFileRepository;
