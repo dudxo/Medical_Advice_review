@@ -27,7 +27,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class AnalyzeServiceImpl {
+public class AnalyzeServiceImpl implements AnalyzeService {
 
     private final Logger logger = LoggerFactory.getLogger(AnalyzeServiceImpl.class);
     private final AnalyzeRequestListRepository analyzeRequestListRepository;
