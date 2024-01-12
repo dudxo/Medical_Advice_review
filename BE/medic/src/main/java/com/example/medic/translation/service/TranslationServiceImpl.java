@@ -89,6 +89,7 @@ public class TranslationServiceImpl implements TranslationService {
                     .trPtDiagContent(translationListDto.getTrPtDiagContent())
                     .trEtc(translationListDto.getTrEtc())
                     .trRegDate(LocalDate.now())
+                    .client(client)
                     .build();
             return translationRequestListRepository.save(translationRequestList);
         } catch (PersistenceException e) {
