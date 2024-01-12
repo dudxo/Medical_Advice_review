@@ -1,6 +1,5 @@
 package com.example.medic.translation.service;
 
-import com.example.medic.analyze.service.AnalyzeServiceImpl;
 import com.example.medic.client.domain.Client;
 import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.client.service.ClientService;

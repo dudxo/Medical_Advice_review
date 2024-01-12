@@ -1,13 +1,11 @@
 package com.example.medic.translation.domain;
 
-import com.example.medic.analyze.domain.AnalyzeRequestList;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Scanner;
 
 @Entity
 @Getter

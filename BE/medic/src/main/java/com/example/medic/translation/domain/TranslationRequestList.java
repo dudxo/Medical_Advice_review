@@ -1,17 +1,14 @@
 package com.example.medic.translation.domain;
 
-import com.example.medic.analyze.domain.AnalyzeAssignment;
 import com.example.medic.client.domain.Client;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Getter
