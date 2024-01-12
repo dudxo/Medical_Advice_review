@@ -39,6 +39,7 @@ import ConsultativeAdviceAssignmentDetail from './pages/Consultativepage/Consult
 import ConsultativeAnalyzeAssignmenDetail from "./pages/Consultativepage/ConsultativeAssignmentAnalyzeDetail";
 import ConsultativeTranslateAssignmentDetail from "./pages/Consultativepage/ConsultativeTranslateAssignment";
 import IndustrialAccidentDetail from "./pages/MedicalLegalKnowledge/IndustrialAccidentDetailInfopage";
+import FaultInfoDetail from "./pages/MedicalLegalKnowledge/FaultInfoDetailpage";
 import TrafficAccidentDetail from "./pages/MedicalLegalKnowledge/TrafficAccidentDetailInfopage";
 import ModifyMyPwpage from "./pages/Mypage/ModifyMyPwpage";
 import AdministratorMypage from "./pages/Adminstrator/AdministratorMypage";
@@ -91,6 +92,7 @@ export default function App(){
                     <Route path="/medic/consultative/assignmentAnalyzeDetail" element={<ConsultativeAnalyzeAssignmenDetail/>}/>
                     <Route path="/medic/consultative/assignmentTranslateDetail" element={<ConsultativeTranslateAssignmentDetail/>}/>
                     <Route path="/medic/knowledge/industrialaccidentdetails" element={<IndustrialAccidentDetail/>}/>
+                    <Route path="/medic/knowledge/faultinfodetails" element={<FaultInfoDetail/>}/>
                     <Route path="/medic/knowledge/trafficaccidentdetails" element={<TrafficAccidentDetail/>}/>
                     <Route path="/medic/mypage/modifymyinfo/modifyMyPw" element={<ModifyMyPwpage/>}/>
                     <Route path="/medic/adminstrator/docmanagement" element={<DocManagement/>}/>
