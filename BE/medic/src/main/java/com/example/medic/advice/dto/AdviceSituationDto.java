@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -17,7 +18,7 @@ public class AdviceSituationDto {
 
     private String adPtSub;
     private String adPtDiagnosis;
-    private Date adRegDate;
+    private LocalDate adRegDate;
 
     public static AdviceSituationDto from(AdviceRequestList adviceRequestList) {
         return AdviceSituationDto.builder()
