@@ -2,6 +2,7 @@ package com.example.medic.translation.domain;
 
 import com.example.medic.analyze.domain.AnalyzeRequestList;
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +24,11 @@ public class TranslationRequestFile {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trId")
     private TranslationRequestList translationRequestList;
+
+    @Builder
+    public TranslationRequestFile(Long tfId, String trMtl, TranslationRequestList translationRequestList) {
+        this.tfId = tfId;
+        this.trMtl = trMtl;
+        this.translationRequestList = translationRequestList;
+    }
 }
