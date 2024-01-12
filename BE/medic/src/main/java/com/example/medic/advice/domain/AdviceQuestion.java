@@ -5,6 +5,7 @@ import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -23,6 +24,9 @@ public class AdviceQuestion {
     private String adQuestionContent;
 
     @NotNull
+    private int adQuestionNum;
+
+    @NotNull
     private String adAnswerContent;
 
     private LocalDate adAnswerDate;
@@ -34,10 +38,11 @@ public class AdviceQuestion {
 
     @Builder
     public AdviceQuestion(String adQuestionContent, String adAnswerContent, LocalDate adAnswerDate,
-                          AdviceRequestList adviceRequestList) {
+                          int adQuestionNum, AdviceRequestList adviceRequestList) {
         this.adQuestionContent = adQuestionContent;
         this.adAnswerContent = adAnswerContent;
         this.adAnswerDate = adAnswerDate;
+        this.adQuestionNum = adQuestionNum;
         this.adviceRequestList = adviceRequestList;
     }
 }

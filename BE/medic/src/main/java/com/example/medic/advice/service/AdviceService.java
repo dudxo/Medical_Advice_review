@@ -13,12 +13,13 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -34,18 +35,22 @@ public class AdviceService {
 
     private final ClientService clientService;
 
+    /**
+     * @return 자문 의뢰 신청 저장
+     */
+    @Transactional
     public boolean saveAdviceRequest(AllAdviceRequestDto allAdviceRequestDto, ClientInfoDto clientInfoDto) {
         Client client = clientService.findClient(clientInfoDto.getUId());
-        AdviceFileRequestDto parseAdviceFileRequestDto = parseAdviceFileDto(allAdviceRequestDto);
-        AdviceQuestionRequestDto parseAdviceQuestionRequestDto = parseAdviceQuestionRequestDto(allAdviceRequestDto);
-        AdviceRequestListDto parseAdviceRequestListDto = parseAdviceRequestListDto(allAdviceRequestDto);
+        AdviceFileRequestDto parseAdviceFileRequestDto = splitRequestToFileDto(allAdviceRequestDto);
+        List<AdviceQuestionRequestDto> parseAdviceQuestionRequestDto = splitRequestToQuestionDto(allAdviceRequestDto);
+        AdviceRequestListDto parseAdviceRequestListDto = splitRequestToRequestListDto(allAdviceRequestDto);
         DiagnosisRecordRequestDto parseDiagnosisRecordRequestDto = parseDiagnosisRecordRequestDto(allAdviceRequestDto);
 
         try{
-            AdviceRequestList adviceRequestList = saveAdviceRequestList(parseAdviceRequestListDto, client);
-            saveAdviceFileRequest(parseAdviceFileRequestDto, adviceRequestList);
-            saveAdviceQuestionRequest(parseAdviceQuestionRequestDto, adviceRequestList);
-            saveDiagnosisRecordRequest(parseDiagnosisRecordRequestDto, adviceRequestList);
+            AdviceRequestList savedAdviceRequestList = saveAdviceRequestList(parseAdviceRequestListDto, client);
+            saveAdviceFile(parseAdviceFileRequestDto, savedAdviceRequestList);
+            saveAdviceQuestion(parseAdviceQuestionRequestDto, savedAdviceRequestList);
+            saveAdviceDiagnosisRecord(parseDiagnosisRecordRequestDto, savedAdviceRequestList);
             return true;
         }catch (PersistenceException p){
             logger.info("자문 의뢰 신청 저장 실패");
@@ -53,7 +58,11 @@ public class AdviceService {
         }
     }
 
-    public AdviceFileRequestDto parseAdviceFileDto(AllAdviceRequestDto allAdviceRequestDto) {
+
+    /**
+     * @return 자문 의뢰 신청 파일 변환
+     */
+    public AdviceFileRequestDto splitRequestToFileDto(AllAdviceRequestDto allAdviceRequestDto) {
         return AdviceFileRequestDto.builder()
                 .adReqForm(allAdviceRequestDto.getAdReqForm())
                 .adDiagnosis(allAdviceRequestDto.getAdDiagnosis())
@@ -63,14 +72,28 @@ public class AdviceService {
                 .build();
     }
 
-    public AdviceQuestionRequestDto parseAdviceQuestionRequestDto(AllAdviceRequestDto allAdviceRequestDto) {
-        return AdviceQuestionRequestDto.builder()
-                .adQuestionContent(allAdviceRequestDto.getAdQuestionContent())
-                .adAnswerContent(allAdviceRequestDto.getAdAnswerContent())
-                .adAnswerDate(allAdviceRequestDto.getAdAnswerDate())
-                .build();
+    /**
+     * @return 자문 의뢰 신청 질문지 변환
+     */
+    public List<AdviceQuestionRequestDto> splitRequestToQuestionDto(AllAdviceRequestDto allAdviceRequestDto) {
+        List<AdviceQuestionRequestDto> adviceQuestionRequestDtoList = new ArrayList<>();
+        Map<String, String> questions = allAdviceRequestDto.getQuestions();
+        questions.forEach((key, value) ->
+                        adviceQuestionRequestDtoList.add(
+                                AdviceQuestionRequestDto.builder()
+                                        .adQuestionNum(Integer.parseInt(key))
+                                        .adQuestionContent(value)
+                                        .build()
+                        )
+                );
+
+        return adviceQuestionRequestDtoList;
     }
-    public AdviceRequestListDto parseAdviceRequestListDto(AllAdviceRequestDto allAdviceRequestDto) {
+
+    /**
+     * @return 자문 의뢰 신청 내역 변환
+     */
+    public AdviceRequestListDto splitRequestToRequestListDto(AllAdviceRequestDto allAdviceRequestDto) {
         return AdviceRequestListDto.builder()
                 .adPtName(allAdviceRequestDto.getAdPtName())
                 .adPtSsNum(allAdviceRequestDto.getAdPtSsNum())
@@ -88,6 +111,9 @@ public class AdviceService {
                 .build();
     }
 
+    /**
+     * @return 자문 의뢰 신청 진료기록 변환
+     */
     public DiagnosisRecordRequestDto parseDiagnosisRecordRequestDto(AllAdviceRequestDto allAdviceRequestDto) {
         return DiagnosisRecordRequestDto.builder()
                 .hospital(allAdviceRequestDto.getHospital())
@@ -100,6 +126,10 @@ public class AdviceService {
                 .build();
     }
 
+
+    /**
+     * @return 자문 의뢰 신청 내역 저장
+     */
     public AdviceRequestList saveAdviceRequestList(AdviceRequestListDto parseAdviceRequestListDto,
                                                    Client client) throws PersistenceException {
         try {
@@ -126,25 +156,31 @@ public class AdviceService {
         }
     }
 
-    public boolean saveAdviceQuestionRequest(AdviceQuestionRequestDto parseAdviceQuestionRequestDto,
-                                          AdviceRequestList adviceRequestList) throws PersistenceException {
+    /**
+     * 자문 의뢰 신청 질문 저장
+     */
+    public void saveAdviceQuestion(List<AdviceQuestionRequestDto> parseAdviceQuestionRequestDto,
+                                      AdviceRequestList adviceRequestList) throws PersistenceException {
         try {
-            for(String questionContent : parseAdviceQuestionRequestDto.getAdQuestionContent()){
+            for(AdviceQuestionRequestDto adviceQuestionRequestDto : parseAdviceQuestionRequestDto){
                 AdviceQuestion adviceQuestionRequest = AdviceQuestion.builder()
-                        .adQuestionContent(questionContent)
+                        .adQuestionNum(adviceQuestionRequestDto.getAdQuestionNum())
+                        .adQuestionContent(adviceQuestionRequestDto.getAdQuestionContent())
                         .adviceRequestList(adviceRequestList)
                         .build();
                 adviceQuestionRepository.save(adviceQuestionRequest);
             }
-            return true;
         }catch (PersistenceException p){
             logger.info("자문 내역 질문지 저장 실패");
             throw new PersistenceException();
         }
     }
 
-    public boolean saveAdviceFileRequest(AdviceFileRequestDto parseAdviceFileRequestDto,
-                                         AdviceRequestList adviceRequestList) throws PersistenceException {
+    /**
+     * 자문 의뢰 신청 파일 저장
+     */
+    public void saveAdviceFile(AdviceFileRequestDto parseAdviceFileRequestDto,
+                               AdviceRequestList adviceRequestList) throws PersistenceException {
         try {
             AdviceFile adviceFile = AdviceFile.builder()
                     .adReqForm(parseAdviceFileRequestDto.getAdReqForm())
@@ -155,15 +191,17 @@ public class AdviceService {
                     .adviceRequestList(adviceRequestList)
                     .build();
             adviceFileRepository.save(adviceFile);
-            return true;
         }catch (PersistenceException p){
             logger.info("자문 파일 저장 실패");
             throw new PersistenceException();
         }
     }
 
-    public boolean saveDiagnosisRecordRequest(DiagnosisRecordRequestDto parseDiagnosisRecordRequestDto,
-                                              AdviceRequestList adviceRequestList) throws PersistenceException {
+    /**
+     * 자문 의뢰 신청 진료기록 저장
+     */
+    public void saveAdviceDiagnosisRecord(DiagnosisRecordRequestDto parseDiagnosisRecordRequestDto,
+                                          AdviceRequestList adviceRequestList) throws PersistenceException {
         try{
             DiagnosisRecord diagnosisRecord = DiagnosisRecord.builder()
                     .hospital(parseDiagnosisRecordRequestDto.getHospital())
@@ -176,7 +214,6 @@ public class AdviceService {
                     .adviceRequestList(adviceRequestList)
                     .build();
             diagnosisRecordRepository.save(diagnosisRecord);
-            return true;
         }catch (PersistenceException p){
             logger.info("진료 기록 저장 실패");
             throw new PersistenceException();

@@ -13,15 +13,12 @@ import java.util.List;
 @Builder
 public class AdviceQuestionRequestDto {
 
-    private List<String> adQuestionContent;
+    private int adQuestionNum;
+
+    private String adQuestionContent;
 
     private String adAnswerContent;
 
     private LocalDate adAnswerDate;
 
-    public AdviceQuestionRequestDto(List<String> adQuestionContent, String adAnswerContent, LocalDate adAnswerDate) {
-        this.adQuestionContent = adQuestionContent;
-        this.adAnswerContent = adAnswerContent;
-        this.adAnswerDate = adAnswerDate;
-    }
 }
