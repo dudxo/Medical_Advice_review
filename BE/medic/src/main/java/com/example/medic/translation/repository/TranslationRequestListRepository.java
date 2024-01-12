@@ -13,4 +13,6 @@ public interface TranslationRequestListRepository extends JpaRepository<Translat
     List<TranslationRequestList> findByClient_UId(String uId);
 
     int countAllByClient(Client client);
+
+    TranslationRequestList findByTrPtName(String trPtName);
 }
