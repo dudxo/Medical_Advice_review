@@ -1,10 +1,10 @@
 package com.example.medic.analyze.domain;
 
-import com.example.medic.advice.domain.AdviceRequestList;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -18,6 +18,9 @@ public class AnalyzeRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
     private Long anQid;
+
+    @NotNull
+    private int anQuestionNum;
 
     @NotNull
     private String anQuestionContent;
