@@ -80,7 +80,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 analyzeQuestionDtoList.add(
                         AnalyzeQuestionDto.builder()
                                 .anQuestionNum(Integer.parseInt(key))
-                                .anAnswerContent(value).build()));
+                                .anQuestionContent(value).build()));
         return analyzeQuestionDtoList;
     }
 
