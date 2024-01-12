@@ -2,13 +2,12 @@ package com.example.medic.analyze.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -25,17 +24,23 @@ public class AnalyzeRequest {
     @NotNull
     private String anQuestionContent;
 
-    @NotNull
     private String anAnswerContent;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date anAnswerDate;
+    private LocalDate anAnswerDate;
 
     @ManyToOne
     @JoinColumn(name = "anId")
     @JsonIgnore
     private AnalyzeRequestList analyzeRequestList;
 
-
-
+    @Builder
+    public AnalyzeRequest(Long anQid, int anQuestionNum, String anQuestionContent, String anAnswerContent,
+                          LocalDate anAnswerDate, AnalyzeRequestList analyzeRequestList) {
+        this.anQid = anQid;
+        this.anQuestionNum = anQuestionNum;
+        this.anQuestionContent = anQuestionContent;
+        this.anAnswerContent = anAnswerContent;
+        this.anAnswerDate = anAnswerDate;
+        this.analyzeRequestList = analyzeRequestList;
+    }
 }
