@@ -42,7 +42,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     public boolean saveAnalyzeRequest(AnalyzeRequestDto requestDto, ClientInfoDto clientInfoDto) {
         Client currentClient = clientService.findClient(clientInfoDto.getUId());
         AnalyzeRequestListDto analyzeRequestListDto = splitRequestToRequestListDto(requestDto);
-        List<AnalyzeQuestionDto> analyzeQuestionDtoList = splitRequestToQuestionDto(requestDto);
+        AnalyzeQuestionDto analyzeQuestionDtoList = splitRequestToQuestionDto(requestDto);
         AnalyzeRequestFileDto analyzeRequestFileDto = splitRequestToRequestFileDto(requestDto);
 
         try{
@@ -73,15 +73,11 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     /**
      * @return 요청 받은 분석 의뢰 질문지 변환
      */
-    public List<AnalyzeQuestionDto> splitRequestToQuestionDto(AnalyzeRequestDto analyzeRequestDto) {
-        List<AnalyzeQuestionDto> analyzeQuestionDtoList = new ArrayList<>();
-        Map<String, String> questions = analyzeRequestDto.getQuestions();
-        questions.forEach((key, value) ->
-                analyzeQuestionDtoList.add(
-                        AnalyzeQuestionDto.builder()
-                                .anQuestionNum(Integer.parseInt(key))
-                                .anQuestionContent(value).build()));
-        return analyzeQuestionDtoList;
+    public AnalyzeQuestionDto splitRequestToQuestionDto(AnalyzeRequestDto analyzeRequestDto) {
+        return AnalyzeQuestionDto.builder()
+                .anQuestionContent(analyzeRequestDto.getAnQuestionContent())
+                .build();
+
     }
 
     /**
@@ -129,13 +125,11 @@ public class AnalyzeServiceImpl implements AnalyzeService {
      */
     @Transactional
     public void saveAnalyzeQuestion(AnalyzeRequestList savedAnalyzeRequestList,
-                                    List<AnalyzeQuestionDto> analyzeQuestionDtoList) throws PersistenceException {
+                                    AnalyzeQuestionDto analyzeQuestionDto) throws PersistenceException {
         try {
-            for (AnalyzeQuestionDto analyzeQuestionDto : analyzeQuestionDtoList) {
+            for (String questionContent : analyzeQuestionDto.getAnQuestionContent()) {
                 AnalyzeRequest analyzeRequest = AnalyzeRequest.builder()
-                        .anQuestionNum(analyzeQuestionDto.getAnQuestionNum())
-                        .anQuestionContent(analyzeQuestionDto.getAnQuestionContent())
-                        .anAnswerContent(analyzeQuestionDto.getAnAnswerContent())
+                        .anQuestionContent(questionContent)
                         .analyzeRequestList(savedAnalyzeRequestList)
                         .build();
                 analyzeRequestRepository.save(analyzeRequest);

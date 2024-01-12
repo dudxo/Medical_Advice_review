@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -27,7 +28,7 @@ public class AnalyzeRequestDto {
 
     private Date anMdDate;
 
-    private Map<String, String> questions;
+    private List<String> anQuestionContent;
 
     private String anReqForm;
 
@@ -42,7 +43,7 @@ public class AnalyzeRequestDto {
     @Builder
     private AnalyzeRequestDto(Long anId, String anPtName, String anPtSsNum, String anPtSub,
                               String anPtDiagnosis, String anPtDiagContent, String anEtc,
-                              Date anRegDate, Date anMdDate, Map<String, String> questions,
+                              Date anRegDate, Date anMdDate, List<String> anQuestionContent,
                               String anReqForm, String anDiagnosis, String anRecord,
                               String anFilm, String anOther) {
         this.anId = anId;
@@ -54,7 +55,7 @@ public class AnalyzeRequestDto {
         this.anEtc = anEtc;
         this.anRegDate = anRegDate;
         this.anMdDate = anMdDate;
-        this.questions = questions;
+        this.anQuestionContent = anQuestionContent;
         this.anReqForm = anReqForm;
         this.anDiagnosis = anDiagnosis;
         this.anRecord = anRecord;

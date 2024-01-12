@@ -16,14 +16,14 @@ public interface AnalyzeService {
 
     AnalyzeRequestListDto splitRequestToRequestListDto(AnalyzeRequestDto analyzeRequestDto);
 
-    List<AnalyzeQuestionDto> splitRequestToQuestionDto(AnalyzeRequestDto analyzeRequestDto);
+    AnalyzeQuestionDto splitRequestToQuestionDto(AnalyzeRequestDto analyzeRequestDto);
 
     AnalyzeRequestFileDto splitRequestToRequestFileDto(AnalyzeRequestDto analyzeRequestDto);
 
     AnalyzeRequestList saveAnalyzeRequestList(AnalyzeRequestListDto analyzeRequestListDto, Client client);
 
     void saveAnalyzeQuestion(AnalyzeRequestList savedAnalyzeRequestList,
-                             List<AnalyzeQuestionDto> analyzeQuestionDtoList);
+                             AnalyzeQuestionDto analyzeQuestionDto);
 
     void saveAnalyzeFile(AnalyzeRequestList savedAnalyzeRequestList,
                          AnalyzeRequestFileDto analyzeRequestFileDto);

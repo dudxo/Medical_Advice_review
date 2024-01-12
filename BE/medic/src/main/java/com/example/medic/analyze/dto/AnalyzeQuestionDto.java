@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Builder
@@ -13,9 +14,7 @@ public class AnalyzeQuestionDto {
 
     private Long anQid;
 
-    private int anQuestionNum;
-
-    private String anQuestionContent;
+    private List<String> anQuestionContent;
 
     private String anAnswerContent;
 
