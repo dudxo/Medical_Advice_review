@@ -18,6 +18,10 @@ public class AnalyzeController {
 
     private final AnalyzeServiceImpl analyzeService;
 
+    /**
+     * @return 분석 의뢰 저장
+     */
+
     public ResponseEntity<String> saveAnalyzeRequest(@RequestBody AnalyzeRequestDto analyzeRequestDto,
                                                      HttpServletRequest request) {
         HttpSession session = request.getSession();
