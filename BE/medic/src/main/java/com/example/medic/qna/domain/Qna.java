@@ -2,7 +2,9 @@ package com.example.medic.qna.domain;
 
 import com.example.medic.client.domain.Client;
 import com.example.medic.manager.domain.Manager;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
