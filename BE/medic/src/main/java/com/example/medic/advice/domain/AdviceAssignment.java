@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -22,8 +23,7 @@ public class AdviceAssignment {
     @NotNull
     private Long admId;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date admDate;
+    private LocalDate admDate;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "adId")
@@ -35,7 +35,7 @@ public class AdviceAssignment {
     private Consultative consultative;
 
     @Builder
-    public AdviceAssignment(Date admDate, Consultative consultative) {
+    public AdviceAssignment(LocalDate admDate, Consultative consultative) {
         this.admDate = admDate;
         this.consultative = consultative;
     }

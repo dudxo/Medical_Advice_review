@@ -1,6 +1,5 @@
 package com.example.medic.translation.repository;
 
-import com.example.medic.analyze.domain.AnalyzeRequestList;
 import com.example.medic.client.domain.Client;
 import com.example.medic.translation.domain.TranslationRequestList;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +13,6 @@ public interface TranslationRequestListRepository extends JpaRepository<Translat
     List<TranslationRequestList> findByClient_UId(String uId);
 
     int countAllByClient(Client client);
+
+    TranslationRequestList findByTrPtName(String trPtName);
 }

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -30,16 +31,14 @@ public class AdviceRequestListDto {
 
     private String adEtc;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date adRegDate;
+    private LocalDate adRegDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date adMdDate;
+    private LocalDate adMdDate;
 
     @Builder
     public AdviceRequestListDto(String adPtName, String adPtSsNum, String adPtSub, String adPtDiagnosis,
                                 String adPtRec, String adPtCmt, String insurance, String insureDate,
-                                String insureName, String adEtc, Date adRegDate, Date adMdDate) {
+                                String insureName, String adEtc, LocalDate adRegDate, LocalDate adMdDate) {
         this.adPtName = adPtName;
         this.adPtSsNum = adPtSsNum;
         this.adPtSub = adPtSub;

@@ -4,8 +4,6 @@ import com.example.medic.translation.domain.TranslationRequestList;
 import com.example.medic.translation.dto.TranslationSituationDto;
 import com.example.medic.translation.repository.TranslationRequestListRepository;
 import com.example.medic.client.dto.ClientInfoDto;
-import com.example.medic.translation.domain.TranslationRequestList;
-import com.example.medic.translation.repository.TranslationRequestListRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;

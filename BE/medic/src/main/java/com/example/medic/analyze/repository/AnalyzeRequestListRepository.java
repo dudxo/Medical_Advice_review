@@ -14,4 +14,6 @@ public interface AnalyzeRequestListRepository extends JpaRepository<AnalyzeReque
     List<AnalyzeRequestList> findByClient_UId(String uId);
 
     int countAllByClient(Client client);
+
+    AnalyzeRequestList findByAnPtName(String anPtName);
 }

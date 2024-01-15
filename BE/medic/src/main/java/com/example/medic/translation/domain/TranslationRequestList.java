@@ -1,16 +1,14 @@
 package com.example.medic.translation.domain;
 
-import com.example.medic.analyze.domain.AnalyzeAssignment;
 import com.example.medic.client.domain.Client;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -40,11 +38,9 @@ public class TranslationRequestList {
     @NotNull
     private String trEtc;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date trRegDate;
+    private LocalDate trRegDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date trMdDate;
+    private LocalDate trMdDate;
 
     @ManyToOne
     @JoinColumn(name = "client_Id")
@@ -61,17 +57,18 @@ public class TranslationRequestList {
     private TranslationAnswerFile translationAnswerFile;
 
     @Builder
-    private TranslationRequestList(Long trId, String trPtName, String trPtSsNum, String trPtSub, String trPtDiagnosis,
-                                   String trPtDiagContent, String trEtc, Date trRegDate, Date trMdDate, Client client) {
+    private TranslationRequestList(Long trId, String trPtName, String trPtSsNum, String trPtSub,
+                                   String trPtDiagnosis, String trPtDiagContent, String trEtc,
+                                   LocalDate trRegDate, LocalDate trMdDate, Client client) {
         this.trId = trId;
         this.trPtName = trPtName;
         this.trPtSsNum = trPtSsNum;
         this.trPtSub = trPtSub;
         this.trPtDiagnosis = trPtDiagnosis;
         this.trPtDiagContent = trPtDiagContent;
-        this. trEtc = trEtc;
+        this.trEtc = trEtc;
         this.trRegDate = trRegDate;
-        this. trMdDate = trMdDate;
+        this.trMdDate = trMdDate;
         this.client = client;
     }
 }

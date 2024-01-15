@@ -6,11 +6,10 @@ import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -48,11 +47,9 @@ public class AdviceRequestList {
 
     private String adEtc;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date adRegDate;
+    private LocalDate adRegDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date adMdDate;
+    private LocalDate adMdDate;
 
     @ManyToOne
     @JoinColumn(name = "client_Id")
@@ -75,7 +72,7 @@ public class AdviceRequestList {
     @Builder
     private AdviceRequestList(Long adId, String adPtName, String adPtSsNum, String adPtSub, String adPtDiagnosis,
                               String adPtRec, String adPtCmt, String insurance, String insureDate, String insureName,
-                              String adEtc, Date adMdDate, Date adRegDate, Client client){
+                              String adEtc, LocalDate adMdDate, LocalDate adRegDate, Client client){
         this.adId = adId;
         this.adPtName = adPtName;
         this.adPtCmt = adPtCmt;

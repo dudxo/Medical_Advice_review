@@ -1,6 +1,5 @@
 package com.example.medic.translation.controller;
 
-import com.example.medic.analyze.dto.AnalyzeSituationDto;
 import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.translation.dto.TranslationSituationDto;
 import com.example.medic.translation.service.TranslationSituationService;

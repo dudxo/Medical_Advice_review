@@ -4,8 +4,10 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Builder
@@ -32,19 +34,16 @@ public class AllAdviceRequestDto {
 
     private String adEtc;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date adRegDate;
+    private LocalDate adRegDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date adMdDate;
+    private LocalDate adMdDate;
 
     /*자문내역 질문지*/
     private List<String> adQuestionContent;
 
     private String adAnswerContent;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date adAnswerDate;
+    private LocalDate adAnswerDate;
 
     /*자문 파일*/
     private String adReqForm;
@@ -75,8 +74,8 @@ public class AllAdviceRequestDto {
     @Builder
     public AllAdviceRequestDto(String adPtName, String adPtSsNum, String adPtSub, String adPtDiagnosis,
                                String adPtRec, String adPtCmt, String insurance, String insureDate,
-                               String insureName, String adEtc, Date adRegDate, Date adMdDate,
-                               List<String> adQuestionContent, String adAnswerContent, Date adAnswerDate,
+                               String insureName, String adEtc, LocalDate adRegDate, LocalDate adMdDate,
+                               List<String> adQuestionContent, String adAnswerContent, LocalDate adAnswerDate,
                                String adReqForm, String adDiagnosis, String adRecord, String adFilm,
                                String adOther, String hospital, String admStart, String admEnd,
                                String visitStart, String visitEnd, String treatCmt, int diagRound){

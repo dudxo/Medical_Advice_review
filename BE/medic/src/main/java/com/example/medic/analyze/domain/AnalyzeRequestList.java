@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,11 +43,9 @@ public class AnalyzeRequestList {
     @NotNull
     private String anEtc;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date anRegDate;
+    private LocalDate anRegDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date anMdDate;
+    private LocalDate anMdDate;
 
     @ManyToOne
     @JoinColumn(name = "client_Id")
@@ -64,7 +63,7 @@ public class AnalyzeRequestList {
 
     @Builder
     private AnalyzeRequestList(Long anId, String anPtName, String anPtSsNum, String anPtSub, String anPtDiagnosis,
-                              String anPtDiagContent, String anEtc, Date anRegDate, Date anMdDate, Client client){
+                               String anPtDiagContent, String anEtc, LocalDate anRegDate, LocalDate anMdDate, Client client){
         this.anId = anId;
         this.anPtName = anPtName;
         this.anPtSsNum = anPtSsNum;

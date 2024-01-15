@@ -6,6 +6,7 @@ import com.example.medic.analyze.domain.AnalyzeRequestList;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -14,7 +15,7 @@ public class AnalyzeSituationDto {
 
     private String anPtSub;
     private String anPtDiagnosis;
-    private Date anRegDate;
+    private LocalDate anRegDate;
 
     public static AnalyzeSituationDto from(AnalyzeRequestList analyzeRequestList) {
         return AnalyzeSituationDto.builder()

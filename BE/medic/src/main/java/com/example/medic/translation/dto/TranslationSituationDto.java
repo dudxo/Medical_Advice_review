@@ -1,11 +1,10 @@
 package com.example.medic.translation.dto;
 
 import com.example.medic.translation.domain.TranslationRequestList;
-import com.example.medic.translation.dto.TranslationSituationDto;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Builder
@@ -13,7 +12,7 @@ public class TranslationSituationDto {
 
     private String trPtSub;
     private String trPtDiagnosis;
-    private Date trRegDate;
+    private LocalDate trRegDate;
 
     public static TranslationSituationDto from(TranslationRequestList translationRequestList) {
         return TranslationSituationDto.builder()

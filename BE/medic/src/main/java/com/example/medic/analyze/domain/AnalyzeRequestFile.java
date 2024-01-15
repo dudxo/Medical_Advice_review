@@ -2,6 +2,7 @@ package com.example.medic.analyze.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -30,4 +31,16 @@ public class AnalyzeRequestFile {
     @JoinColumn(name = "anId")
     @JsonIgnore
     private AnalyzeRequestList analyzeRequestList;
+
+    @Builder
+    public AnalyzeRequestFile(Long anfId, String anReqForm, String anDiagnosis, String anRecord,
+                              String anFilm, String anOther, AnalyzeRequestList analyzeRequestList) {
+        this.anfId = anfId;
+        this.anReqForm = anReqForm;
+        this.anDiagnosis = anDiagnosis;
+        this.anRecord = anRecord;
+        this.anFilm = anFilm;
+        this.anOther = anOther;
+        this.analyzeRequestList = analyzeRequestList;
+    }
 }

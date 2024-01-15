@@ -5,10 +5,10 @@ import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.NonNull;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -26,8 +26,7 @@ public class AdviceQuestion {
     @NotNull
     private String adAnswerContent;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date adAnswerDate;
+    private LocalDate adAnswerDate;
 
     @ManyToOne
     @JoinColumn(name = "adId")
@@ -35,7 +34,7 @@ public class AdviceQuestion {
     private AdviceRequestList adviceRequestList;
 
     @Builder
-    public AdviceQuestion(String adQuestionContent, String adAnswerContent, Date adAnswerDate,
+    public AdviceQuestion(String adQuestionContent, String adAnswerContent, LocalDate adAnswerDate,
                           AdviceRequestList adviceRequestList) {
         this.adQuestionContent = adQuestionContent;
         this.adAnswerContent = adAnswerContent;
