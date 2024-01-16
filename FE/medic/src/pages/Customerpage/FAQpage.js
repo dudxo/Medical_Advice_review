@@ -125,6 +125,6 @@ export default function FAQpage() {
         </div>
         </div>
     );
-}
+  }
 
          
