@@ -34,12 +34,13 @@ public class AdviceQuestion {
     @JsonIgnore
     private AdviceRequestList adviceRequestList;
 
-    @Builder
+    @Builder(toBuilder = true)
     public AdviceQuestion(String adQuestionContent, String adAnswerContent, Date adAnswerDate,
-                          AdviceRequestList adviceRequestList) {
+                          AdviceRequestList adviceRequestList, Long adQid) {
         this.adQuestionContent = adQuestionContent;
         this.adAnswerContent = adAnswerContent;
         this.adAnswerDate = adAnswerDate;
         this.adviceRequestList = adviceRequestList;
+        this.adQid = adQid;
     }
 }

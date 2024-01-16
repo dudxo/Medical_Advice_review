@@ -48,6 +48,8 @@ import UserEdit from "./pages/Adminstrator/UserEdit";
 import FaqDetailPage from "./pages/Customerpage/Announcement/FAQDetailPage";
 import WriteFaqPage from "./pages/Customerpage/Announcement/WriteFaqPage";
 import FAQpage from "./pages/Customerpage/FAQpage";
+import AdAdviceListPage from "./pages/Adminstrator/AdAdviceListPage";
+import AdSetDoc from "./pages/Adminstrator/AdSetDoc";
 
 export default function App(){
     return(
@@ -102,6 +104,9 @@ export default function App(){
                     <Route path="/medic/adminstrator/useredit" element={<UserEdit/>}/>
                     <Route path='/medic/customer/faqdetail' element={<FaqDetailPage/>}/>
                     <Route path='/medic/customer/faqwrite' element={<WriteFaqPage/>}/>
+                    <Route path='/medic/adminstrator/docset/:index' element={<AdSetDoc/>}/>
+                    <Route path='/medic/adminstrator/adlist' element={<AdAdviceListPage/>}/>
+
                 </Routes>
 
             </div> 

@@ -7,6 +7,7 @@ import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import java.util.Date;
 @Entity
 @Getter
 @NoArgsConstructor
+@Setter
 public class AdviceAssignment {
 
     @Id
@@ -25,19 +27,27 @@ public class AdviceAssignment {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date admDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    private String admProgressStatus;
+
+
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JoinColumn(name = "adId")
+
     private AdviceRequestList adviceRequestList;
 
     @ManyToOne
     @JoinColumn(name = "cId")
-    @JsonIgnore
+    @JsonIgnore(value = false)
     private Consultative consultative;
 
-    @Builder
-    public AdviceAssignment(Date admDate, Consultative consultative) {
+    @Builder(toBuilder = true)
+    public AdviceAssignment(Date admDate, Consultative consultative, String admProgressStatus, Long admId,
+                            AdviceRequestList adviceRequestList) {
         this.admDate = admDate;
         this.consultative = consultative;
+        this.admProgressStatus = admProgressStatus;
+        this.adviceRequestList = adviceRequestList;
+
     }
 
 }

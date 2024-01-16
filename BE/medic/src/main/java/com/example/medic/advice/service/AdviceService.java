@@ -1,9 +1,6 @@
 package com.example.medic.advice.service;
 
-import com.example.medic.advice.domain.AdviceFile;
-import com.example.medic.advice.domain.AdviceQuestion;
-import com.example.medic.advice.domain.AdviceRequestList;
-import com.example.medic.advice.domain.DiagnosisRecord;
+import com.example.medic.advice.domain.*;
 import com.example.medic.advice.dto.*;
 import com.example.medic.advice.repository.*;
 import com.example.medic.client.domain.Client;
@@ -32,6 +29,7 @@ public class AdviceService {
     private final AdviceRequestListRepository adviceRequestListRepository;
     private final DiagnosisRecordRepository diagnosisRecordRepository;
 
+
     private final ClientService clientService;
 
     public boolean saveAdviceRequest(AllAdviceRequestDto allAdviceRequestDto, ClientInfoDto clientInfoDto) {
@@ -46,6 +44,10 @@ public class AdviceService {
             saveAdviceFileRequest(parseAdviceFileRequestDto, adviceRequestList);
             saveAdviceQuestionRequest(parseAdviceQuestionRequestDto, adviceRequestList);
             saveDiagnosisRecordRequest(parseDiagnosisRecordRequestDto, adviceRequestList);
+            AdviceAssignment adviceAssignment = AdviceAssignment.builder()
+                    .adviceRequestList(adviceRequestList)
+                    .build();
+            adviceAssignmentRepository.save(adviceAssignment);
             return true;
         }catch (PersistenceException p){
             logger.info("자문 의뢰 신청 저장 실패");
@@ -142,6 +144,8 @@ public class AdviceService {
             throw new PersistenceException();
         }
     }
+
+
 
     public boolean saveAdviceFileRequest(AdviceFileRequestDto parseAdviceFileRequestDto,
                                          AdviceRequestList adviceRequestList) throws PersistenceException {

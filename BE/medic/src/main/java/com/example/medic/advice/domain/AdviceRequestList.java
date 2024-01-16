@@ -70,12 +70,13 @@ public class AdviceRequestList {
 
 
     @OneToOne(mappedBy = "adviceRequestList")
+    @JsonIgnore
     private AdviceAssignment adviceAssignment;
 
     @Builder
     private AdviceRequestList(Long adId, String adPtName, String adPtSsNum, String adPtSub, String adPtDiagnosis,
                               String adPtRec, String adPtCmt, String insurance, String insureDate, String insureName,
-                              String adEtc, Date adMdDate, Date adRegDate, Client client){
+                              String adEtc, Date adMdDate, Date adRegDate, Client client,AdviceAssignment adviceAssignment){
         this.adId = adId;
         this.adPtName = adPtName;
         this.adPtCmt = adPtCmt;
@@ -90,5 +91,6 @@ public class AdviceRequestList {
         this.adMdDate = adMdDate;
         this.adRegDate = adRegDate;
         this.client = client;
+        this.adviceAssignment = adviceAssignment;
     }
 }
