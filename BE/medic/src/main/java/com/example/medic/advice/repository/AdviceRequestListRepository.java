@@ -12,7 +12,7 @@ public interface AdviceRequestListRepository extends JpaRepository<AdviceRequest
     @Query("SELECT arl FROM AdviceRequestList arl WHERE arl.client.uId = :uId")
     List<AdviceRequestList> findByClient_UId(String uId);
 
-
-
     int countAllByClient(Client client);
+
+    Client findClientByAdId(Long adId);
 }

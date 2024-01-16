@@ -19,6 +19,7 @@ public class AdviceSituationDto {
     private String adPtSub;
     private String adPtDiagnosis;
     private LocalDate adRegDate;
+    private Long adId;
 
     public static AdviceSituationDto from(AdviceRequestList adviceRequestList) {
         return AdviceSituationDto.builder()

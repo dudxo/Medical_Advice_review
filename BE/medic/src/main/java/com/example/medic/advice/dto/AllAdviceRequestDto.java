@@ -14,6 +14,8 @@ import java.util.Map;
 public class AllAdviceRequestDto {
 
     /* 자문의뢰내역 */
+    private Long adId;
+
     private String adPtName;
 
     private String adPtSsNum;
@@ -41,7 +43,7 @@ public class AllAdviceRequestDto {
     /*자문내역 질문지*/
     private List<String> adQuestionContent;
 
-    private String adAnswerContent;
+    private List<String> adAnswerContent;
 
     private LocalDate adAnswerDate;
 
@@ -71,14 +73,25 @@ public class AllAdviceRequestDto {
 
     private int diagRound;
 
+    /*신청자 정보*/
+    private String uName;
+
+    private String userTel;
+
+    private String userPhone;
+
+    private String userAddress;
+
     @Builder
-    public AllAdviceRequestDto(String adPtName, String adPtSsNum, String adPtSub, String adPtDiagnosis,
+    public AllAdviceRequestDto(Long adId, String adPtName, String adPtSsNum, String adPtSub, String adPtDiagnosis,
                                String adPtRec, String adPtCmt, String insurance, String insureDate,
                                String insureName, String adEtc, LocalDate adRegDate, LocalDate adMdDate,
-                               List<String> adQuestionContent, String adAnswerContent, LocalDate adAnswerDate,
+                               List<String> adQuestionContent, List<String> adAnswerContent, LocalDate adAnswerDate,
                                String adReqForm, String adDiagnosis, String adRecord, String adFilm,
                                String adOther, String hospital, String admStart, String admEnd,
-                               String visitStart, String visitEnd, String treatCmt, int diagRound){
+                               String visitStart, String visitEnd, String treatCmt, int diagRound,
+                               String uName, String userTel, String userPhone, String userAddress){
+        this.adId = adId;
         this.adPtName = adPtName;
         this.adPtSsNum = adPtSsNum;
         this.adPtSub = adPtSub;
@@ -106,5 +119,9 @@ public class AllAdviceRequestDto {
         this.visitEnd = visitEnd;
         this.treatCmt = treatCmt;
         this.diagRound = diagRound;
+        this.uName = uName;
+        this.userTel = userTel;
+        this.userPhone = userPhone;
+        this.userAddress = userAddress;
     }
 }
