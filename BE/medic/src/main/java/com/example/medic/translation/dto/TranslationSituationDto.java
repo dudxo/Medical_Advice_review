@@ -13,6 +13,7 @@ public class TranslationSituationDto {
     private String trPtSub;
     private String trPtDiagnosis;
     private LocalDate trRegDate;
+    private Long trId;
 
     public static TranslationSituationDto from(TranslationRequestList translationRequestList) {
         return TranslationSituationDto.builder()

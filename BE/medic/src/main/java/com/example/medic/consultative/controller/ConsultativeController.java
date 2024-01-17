@@ -7,6 +7,9 @@ import com.example.medic.analyze.dto.AnalyzeResponseDto;
 import com.example.medic.analyze.dto.AnalyzeSituationDto;
 import com.example.medic.consultative.dto.ConsultativeDto;
 import com.example.medic.consultative.service.ConsultativeAssignmentServiceImpl;
+import com.example.medic.translation.dto.TranslationRequestDto;
+import com.example.medic.translation.dto.TranslationResponseDto;
+import com.example.medic.translation.dto.TranslationSituationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -92,6 +95,45 @@ public class ConsultativeController {
                 .build();
         try {
             AnalyzeResponseDto response = consultativeAssignmentService.findAssignmentAnalyzeDetail(consultativeDto, allAdviceRequestDto);
+            return ResponseEntity.ok(response);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    /**
+     * API 미구현
+     * @return 배정 번역 의뢰 목록 조회
+     */
+    public ResponseEntity<List<TranslationSituationDto>> findAssignTranslationList(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String cId = (String) session.getAttribute("uId");
+
+        ConsultativeDto consultativeDto = ConsultativeDto.builder()
+                .cId(cId)
+                .build();
+        try {
+            List<TranslationSituationDto> response = consultativeAssignmentService.findAllAssigmentTranslation(consultativeDto);
+            return ResponseEntity.ok(response);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    /**
+     * API 미구현
+     * @return 배정 받은 특정 번역 의뢰 상세 조회
+     */
+    public ResponseEntity<TranslationResponseDto> AssignAnalyzeDetails(@RequestBody TranslationRequestDto translationRequestDto,
+                                                                       HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String cId = (String) session.getAttribute("uId");
+
+        ConsultativeDto consultativeDto = ConsultativeDto.builder()
+                .cId(cId)
+                .build();
+        try {
+            TranslationResponseDto response = consultativeAssignmentService.findAssignmentTranslationDetail(consultativeDto, translationRequestDto);
             return ResponseEntity.ok(response);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

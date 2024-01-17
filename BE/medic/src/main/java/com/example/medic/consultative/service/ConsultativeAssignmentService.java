@@ -7,6 +7,7 @@ import com.example.medic.analyze.dto.AnalyzeResponseDto;
 import com.example.medic.analyze.dto.AnalyzeSituationDto;
 import com.example.medic.consultative.dto.ConsultativeDto;
 import com.example.medic.translation.dto.TranslationRequestDto;
+import com.example.medic.translation.dto.TranslationResponseDto;
 import com.example.medic.translation.dto.TranslationSituationDto;
 
 import java.util.List;
@@ -23,5 +24,5 @@ public interface ConsultativeAssignmentService {
 
     List<TranslationSituationDto> findAllAssigmentTranslation(ConsultativeDto consultativeDto);
 
-    TranslationRequestDto findAssignmentTranslationDetail(TranslationRequestDto translationRequestDto, TranslationSituationDto translationSituationDto);
+    TranslationResponseDto findAssignmentTranslationDetail(ConsultativeDto consultativeDto, TranslationRequestDto translationRequestDto);
 }

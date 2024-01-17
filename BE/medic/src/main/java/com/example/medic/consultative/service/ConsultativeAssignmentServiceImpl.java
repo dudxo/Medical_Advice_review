@@ -18,8 +18,16 @@ import com.example.medic.client.domain.Client;
 import com.example.medic.consultative.domain.Consultative;
 import com.example.medic.consultative.dto.ConsultativeDto;
 import com.example.medic.consultative.repository.ConsultativeRepository;
+import com.example.medic.translation.domain.TranslationAnswerFile;
+import com.example.medic.translation.domain.TranslationRequestFile;
+import com.example.medic.translation.domain.TranslationRequestList;
 import com.example.medic.translation.dto.TranslationRequestDto;
+import com.example.medic.translation.dto.TranslationResponseDto;
 import com.example.medic.translation.dto.TranslationSituationDto;
+import com.example.medic.translation.repository.TranslationAnswerFileRepository;
+import com.example.medic.translation.repository.TranslationAssignmentRepository;
+import com.example.medic.translation.repository.TranslationRequestFileRepository;
+import com.example.medic.translation.repository.TranslationRequestListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +49,10 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
     private final AnalyzeRequestFileRepository analyzeRequestFileRepository;
     private final AnalyzeRequestListRepository analyzeRequestListRepository;
     private final AnalyzeRequestRepository analyzeRequestRepository;
+    private final TranslationAssignmentRepository translationAssignmentRepository;
+    private final TranslationRequestListRepository translationRequestListRepository;
+    private final TranslationRequestFileRepository translationRequestFileRepository;
+    private final TranslationAnswerFileRepository translationAnswerFileRepository;
 
     /**
      * @return 배정 받은 자문 의뢰 목록 조회
@@ -53,7 +65,7 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
             }
             List<AdviceSituationDto> findAllAdviceSituationDto = new ArrayList<>();
             Consultative findConsultative = consultativeRepository.findById(consultativeDto.getCId()).get();
-            List<AdviceRequestList> findAllAdviceRequestList = adviceAssignmentRepository.findAdviceRequestListByConsultative(findConsultative);
+            List<AdviceRequestList> findAllAdviceRequestList = adviceAssignmentRepository.findAllAdviceRequestListByConsultative(findConsultative);
             for (AdviceRequestList adviceRequestList : findAllAdviceRequestList) {
                 AdviceSituationDto adviceSituationDto = AdviceSituationDto.builder()
                         .adPtSub(adviceRequestList.getAdPtSub())
@@ -151,7 +163,7 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
             }
             List<AnalyzeSituationDto> findAllAnalyzeSituationDto = new ArrayList<>();
             Consultative findConsultative = consultativeRepository.findById(consultativeDto.getCId()).get();
-            List<AnalyzeRequestList> findAllAnalyzeRequestList = analyzeAssignmentRepository.findAnalyzeRequestListByConsultative(findConsultative);
+            List<AnalyzeRequestList> findAllAnalyzeRequestList = analyzeAssignmentRepository.findAllAnalyzeRequestListByConsultative(findConsultative);
             for (AnalyzeRequestList analyzeRequestList : findAllAnalyzeRequestList) {
                 AnalyzeSituationDto analyzeSituationDto = AnalyzeSituationDto.builder()
                         .anPtSub(analyzeRequestList.getAnPtSub())
@@ -173,7 +185,7 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
      */
     @Override
     public AnalyzeResponseDto findAssignmentAnalyzeDetail(ConsultativeDto consultativeDto,
-                                                         AnalyzeRequestDto analyzeRequestDto)  throws NoSuchElementException {
+                                                         AnalyzeRequestDto analyzeRequestDto) throws NoSuchElementException {
         try {
             if (consultativeDto.getCId() == null) {
                 throw new NoSuchElementException();
@@ -225,13 +237,77 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
                 .build();
     }
 
+    /**
+     * @return 배정 받은 번역 의뢰 목록 조회
+     */
     @Override
-    public List<TranslationSituationDto> findAllAssigmentTranslation(ConsultativeDto consultativeDto) {
-        return null;
+    public List<TranslationSituationDto> findAllAssigmentTranslation(ConsultativeDto consultativeDto) throws NoSuchElementException {
+        try {
+            if (consultativeDto.getCId() == null) {
+                throw new NoSuchElementException("해당 전문의를 찾을 수 없습니다.");
+            }
+            List<TranslationSituationDto> findAllTranslationSituationDto = new ArrayList<>();
+            Consultative findConsultative = consultativeRepository.findById(consultativeDto.getCId()).get();
+            List<TranslationRequestList> findAllTranslationRequestList =
+                    translationAssignmentRepository.findAllTranslationRequestListByConsultative(findConsultative);
+            for (TranslationRequestList translationRequestList : findAllTranslationRequestList) {
+                TranslationSituationDto translationRequestDto = TranslationSituationDto.builder()
+                        .trPtSub(translationRequestList.getTrPtSub())
+                        .trPtDiagnosis(translationRequestList.getTrPtDiagnosis())
+                        .trRegDate(translationRequestList.getTrRegDate())
+                        .trId(translationRequestList.getTrId())
+                        .build();
+                findAllTranslationSituationDto.add(translationRequestDto);
+            }
+            return findAllTranslationSituationDto;
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException();
+        }
     }
 
+    /**
+     * @return 배정 받은 특정 번역 의뢰 상세 조회
+     */
     @Override
-    public TranslationRequestDto findAssignmentTranslationDetail(TranslationRequestDto translationRequestDto, TranslationSituationDto translationSituationDto) {
-        return null;
+    public TranslationResponseDto findAssignmentTranslationDetail(ConsultativeDto consultativeDto,
+                                                                  TranslationRequestDto translationRequestDto) throws NoSuchElementException {
+        try {
+            if (consultativeDto.getCId() == null) {
+                throw new NoSuchElementException();
+            }
+            TranslationRequestList findTranslationRequestList =
+                    translationRequestListRepository.findById(translationRequestDto.getTrId()).get();
+            Client requestClient = translationRequestListRepository.findClientByTrId(findTranslationRequestList.getTrId());
+            TranslationRequestFile findTranslationRequestFile =
+                    translationRequestFileRepository.findByTranslationRequestList(findTranslationRequestList);
+            TranslationAnswerFile findTranslationAnswerFile =
+                    translationAnswerFileRepository.findByTranslationRequestList(findTranslationRequestList);
+
+            return createTranslationResponseDto(findTranslationRequestList, requestClient, findTranslationRequestFile, findTranslationAnswerFile);
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException();
+        }
+    }
+
+    /**
+     * @return 신청된 의료 번역 정보 응답 dto 생성
+     */
+    private TranslationResponseDto createTranslationResponseDto(TranslationRequestList findTranslationRequestList, Client requestClient,
+                                                                TranslationRequestFile findTranslationRequestFile,
+                                                                TranslationAnswerFile findTranslationAnswerFile) {
+        return TranslationResponseDto.builder()
+                .uName(requestClient.getUName())
+                .userTel(requestClient.getUserTel())
+                .userPhone(requestClient.getUserPhone())
+                .userAddress(requestClient.getUserAddress())
+                .trPtName(findTranslationRequestList.getTrPtName())
+                .trPtSsNum(findTranslationRequestList.getTrPtSsNum())
+                .trPtSub(findTranslationRequestList.getTrPtSub())
+                .trPtDiagnosis(findTranslationRequestList.getTrPtDiagnosis())
+                .trPtDiagContent(findTranslationRequestList.getTrPtDiagContent())
+                .trEtc(findTranslationRequestList.getTrEtc())
+                .trMtl(findTranslationRequestFile.getTrMtl())
+                .trAnswer(findTranslationAnswerFile.getTrAnswer())
+                .build();
     }
 }
