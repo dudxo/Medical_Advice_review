@@ -17,6 +17,8 @@ public class AnalyzeSituationDto {
     private String anPtDiagnosis;
     private LocalDate anRegDate;
 
+    private Long anId;
+
     public static AnalyzeSituationDto from(AnalyzeRequestList analyzeRequestList) {
         return AnalyzeSituationDto.builder()
                 .anPtSub(analyzeRequestList.getAnPtSub())

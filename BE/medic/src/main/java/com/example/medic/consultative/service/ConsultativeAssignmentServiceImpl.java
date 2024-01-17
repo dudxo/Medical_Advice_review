@@ -4,8 +4,16 @@ import com.example.medic.advice.domain.*;
 import com.example.medic.advice.dto.AdviceSituationDto;
 import com.example.medic.advice.dto.AllAdviceRequestDto;
 import com.example.medic.advice.repository.*;
+import com.example.medic.analyze.domain.AnalyzeRequest;
+import com.example.medic.analyze.domain.AnalyzeRequestFile;
+import com.example.medic.analyze.domain.AnalyzeRequestList;
 import com.example.medic.analyze.dto.AnalyzeRequestDto;
+import com.example.medic.analyze.dto.AnalyzeResponseDto;
 import com.example.medic.analyze.dto.AnalyzeSituationDto;
+import com.example.medic.analyze.repository.AnalyzeAssignmentRepository;
+import com.example.medic.analyze.repository.AnalyzeRequestFileRepository;
+import com.example.medic.analyze.repository.AnalyzeRequestListRepository;
+import com.example.medic.analyze.repository.AnalyzeRequestRepository;
 import com.example.medic.client.domain.Client;
 import com.example.medic.consultative.domain.Consultative;
 import com.example.medic.consultative.dto.ConsultativeDto;
@@ -29,6 +37,10 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
     private final AdviceQuestionRepository adviceQuestionRepository;
     private final AdviceFileRepository adviceFileRepository;
     private final DiagnosisRecordRepository diagnosisRecordRepository;
+    private final AnalyzeAssignmentRepository analyzeAssignmentRepository;
+    private final AnalyzeRequestFileRepository analyzeRequestFileRepository;
+    private final AnalyzeRequestListRepository analyzeRequestListRepository;
+    private final AnalyzeRequestRepository analyzeRequestRepository;
 
     /**
      * @return 배정 받은 자문 의뢰 목록 조회
@@ -128,14 +140,89 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
                 .build();
     }
 
+    /**
+     * @return 배정 받은 분석 의뢰 목록 조회
+     */
     @Override
-    public List<AnalyzeSituationDto> findAllAssigmentAnalyze(ConsultativeDto consultativeDto) {
-        return null;
+    public List<AnalyzeSituationDto> findAllAssigmentAnalyze(ConsultativeDto consultativeDto) throws NoSuchElementException {
+        try {
+            if (consultativeDto.getCId() == null) {
+                throw new NoSuchElementException("해당 전문의를 찾을 수 없습니다.");
+            }
+            List<AnalyzeSituationDto> findAllAnalyzeSituationDto = new ArrayList<>();
+            Consultative findConsultative = consultativeRepository.findById(consultativeDto.getCId()).get();
+            List<AnalyzeRequestList> findAllAnalyzeRequestList = analyzeAssignmentRepository.findAnalyzeRequestListByConsultative(findConsultative);
+            for (AnalyzeRequestList analyzeRequestList : findAllAnalyzeRequestList) {
+                AnalyzeSituationDto analyzeSituationDto = AnalyzeSituationDto.builder()
+                        .anPtSub(analyzeRequestList.getAnPtSub())
+                        .anPtDiagnosis(analyzeRequestList.getAnPtDiagnosis())
+                        .anRegDate(analyzeRequestList.getAnRegDate())
+                        .anId(analyzeRequestList.getAnId())
+                        .build();
+                findAllAnalyzeSituationDto.add(analyzeSituationDto);
+            }
+            return findAllAnalyzeSituationDto;
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException();
+        }
     }
 
+
+    /**
+     * @return 배정 받은 특정 분석 의뢰 상세 조회
+     */
     @Override
-    public AnalyzeRequestDto findAssignmentAnalyzeDetail(ConsultativeDto consultativeDto, AnalyzeSituationDto AnalyzeSituationDto) {
-        return null;
+    public AnalyzeResponseDto findAssignmentAnalyzeDetail(ConsultativeDto consultativeDto,
+                                                         AnalyzeRequestDto analyzeRequestDto)  throws NoSuchElementException {
+        try {
+            if (consultativeDto.getCId() == null) {
+                throw new NoSuchElementException();
+            }
+            AnalyzeRequestList findAnalyzeRequestList = analyzeRequestListRepository.findById(analyzeRequestDto.getAnId()).get();
+            Client requestClient = analyzeRequestListRepository.findClientByAnId(findAnalyzeRequestList.getAnId());
+            List<AnalyzeRequest> findAnalyzeQuestion = analyzeRequestRepository.findAllByAnalyzeRequestList(findAnalyzeRequestList);
+            AnalyzeRequestFile findAnalyzeFile = analyzeRequestFileRepository.findByAnalyzeRequestList(findAnalyzeRequestList);
+
+            return createResponseAnalyzeDto(findAnalyzeRequestList, requestClient, findAnalyzeQuestion, findAnalyzeFile);
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException();
+        }
+    }
+
+    /**
+     * @return 신청된 의료 분석 정보 응답 dto 생성
+     */
+    private AnalyzeResponseDto createResponseAnalyzeDto(AnalyzeRequestList findAnalyzeRequestList, Client requestClient,
+                                                        List<AnalyzeRequest> findAnalyzeQuestion, AnalyzeRequestFile findAnalyzeFile) {
+        List<String> questionContent = new ArrayList<>();
+        List<String> answerContent = new ArrayList<>();
+        for (AnalyzeRequest analyzeRequest : findAnalyzeQuestion) {
+            questionContent.add(analyzeRequest.getAnQuestionContent());
+//            if (analyzeRequest.getAnAnswerContent() != null) {
+//                answerContent.add(analyzeRequest.getAnAnswerContent());
+//            }
+            answerContent.add(analyzeRequest.getAnAnswerContent());
+        }
+
+        return AnalyzeResponseDto.builder()
+                .uName(requestClient.getUName())
+                .userTel(requestClient.getUserTel())
+                .userPhone(requestClient.getUserPhone())
+                .userAddress(requestClient.getUserAddress())
+                .anPtName(findAnalyzeRequestList.getAnPtName())
+                .anPtSsNum(findAnalyzeRequestList.getAnPtSsNum())
+                .anPtSub(findAnalyzeRequestList.getAnPtSub())
+                .anPtDiagnosis(findAnalyzeRequestList.getAnPtDiagnosis())
+                .anPtDiagContent(findAnalyzeRequestList.getAnPtDiagContent())
+                .anEtc(findAnalyzeRequestList.getAnEtc())
+                .anQuestionContent(questionContent)
+                .anAnswerContent(answerContent)
+                .anReqForm(findAnalyzeFile.getAnReqForm())
+                .anDiagnosis(findAnalyzeFile.getAnDiagnosis())
+                .anRecord(findAnalyzeFile.getAnRecord())
+                .anFilm(findAnalyzeFile.getAnFilm())
+                .anOther(findAnalyzeFile.getAnOther())
+                .build();
     }
 
     @Override

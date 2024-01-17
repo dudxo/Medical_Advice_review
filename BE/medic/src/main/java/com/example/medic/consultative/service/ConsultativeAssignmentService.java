@@ -3,6 +3,7 @@ package com.example.medic.consultative.service;
 import com.example.medic.advice.dto.AdviceSituationDto;
 import com.example.medic.advice.dto.AllAdviceRequestDto;
 import com.example.medic.analyze.dto.AnalyzeRequestDto;
+import com.example.medic.analyze.dto.AnalyzeResponseDto;
 import com.example.medic.analyze.dto.AnalyzeSituationDto;
 import com.example.medic.consultative.dto.ConsultativeDto;
 import com.example.medic.translation.dto.TranslationRequestDto;
@@ -18,7 +19,7 @@ public interface ConsultativeAssignmentService {
 
     List<AnalyzeSituationDto> findAllAssigmentAnalyze(ConsultativeDto consultativeDto);
 
-    AnalyzeRequestDto findAssignmentAnalyzeDetail(ConsultativeDto consultativeDto, AnalyzeSituationDto AnalyzeSituationDto);
+    AnalyzeResponseDto findAssignmentAnalyzeDetail(ConsultativeDto consultativeDto, AnalyzeRequestDto analyzeRequestDto);
 
     List<TranslationSituationDto> findAllAssigmentTranslation(ConsultativeDto consultativeDto);
 
