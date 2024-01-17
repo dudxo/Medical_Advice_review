@@ -12,5 +12,5 @@ public interface AnalyzeAssignmentRepository extends JpaRepository<AnalyzeAssign
 
     int countAllByConsultative(Consultative consultative);
 
-    List<AnalyzeRequestList> findAnalyzeRequestListByConsultative(Consultative consultative);
+    List<AnalyzeRequestList> findAllAnalyzeRequestListByConsultative(Consultative consultative);
 }

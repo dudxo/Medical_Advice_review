@@ -11,6 +11,6 @@ public interface AdviceAssignmentRepository extends JpaRepository<AdviceAssignme
 
     int countAllByConsultative(Consultative consultative);
 
-    List<AdviceRequestList> findAdviceRequestListByConsultative(Consultative consultative);
+    List<AdviceRequestList> findAllAdviceRequestListByConsultative(Consultative consultative);
 
 }
