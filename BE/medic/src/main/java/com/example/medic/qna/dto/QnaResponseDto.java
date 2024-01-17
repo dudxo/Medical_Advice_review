@@ -8,6 +8,7 @@ import java.util.Date;
 
 @Getter
 public class QnaResponseDto {
+    private Long qaId;
     private Date qaDate;
     private String qaTitle;     // QNA 제목
     private String qaQuestion;      // QNA 본문 내용
@@ -16,7 +17,7 @@ public class QnaResponseDto {
     private String uId;
 
     @Builder
-    QnaResponseDto(Date qaDate, String qaTitle, String qaQuestion, boolean qaSecret, String qaPw, String uId){
+    QnaResponseDto(Long qaId, Date qaDate, String qaTitle, String qaQuestion, boolean qaSecret, String qaPw, String uId){
         this.qaDate = qaDate;
         this.qaTitle = qaTitle;
         this.qaQuestion = qaQuestion;

@@ -5,6 +5,7 @@ import com.example.medic.client.repository.ClientRepository;
 import com.example.medic.qna.domain.Qna;
 import com.example.medic.qna.dto.QnaRequestDto;
 import com.example.medic.qna.dto.QnaResponseDto;
+import com.example.medic.qna.repository.QnaAnswerRepository;
 import com.example.medic.qna.repository.QnaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class QnaService {
     private final QnaRepository qnaRepository;
     private final ClientRepository clientRepository;
+    private final QnaAnswerRepository qnaAnswerRepository;
 
     //문의건수 조회
     public int getQnaCount(String uid) {
@@ -39,6 +41,7 @@ public class QnaService {
         String uId = qnaRepository.findUserIdByQaId(qaId).get();
 
         QnaResponseDto qnaResponseDto = QnaResponseDto.builder()
+                .qaId(qna.getQaId())
                 .qaDate(qna.getQaDate())
                 .qaTitle(qna.getQaTitle())
                 .qaSecret(qna.isQaSecret())
@@ -72,7 +75,7 @@ public class QnaService {
         if(qna == null){
             throw new IllegalArgumentException("등록된 게시물이 없습니다.");
         }
-        Qna updateQna = Qna.builder()
+        Qna updateQna = qna.builder()
                 .qaDate(qnaRequestDto.getQaDate())
                 .qaTitle(qnaRequestDto.getQaTitle())
                 .qaSecret(qnaRequestDto.isQaSecret())
