@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import writecustomerinquiry from '../../../css/WriteCustomerInquiry.module.css';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AdminWriteQnaAnswer from "../../../components/AdminWriteQnaAnswer.js";
 import AdminQnaAnswer from '../../../components/AdminQnaAnswer.js'
 import UserQnaAnswer from '../../../components/UserQnaAnswer.js'
 
 export default function CustomerInquiryDetail(){
     const [detaillist, setDetaillist] = useState({});
-    // Add a state for the answer  
+    const navigate = useNavigate();
+    const location = useLocation();
+    const qaId = location.state.qaId
+
     const getInquiryDetail = async()=>{
         try {
-            const response = await axios.get(`/어쩌고/`);
+            const response = await axios.get(`/qna/qnaDetail/${qaId}`);
             setDetaillist(response.data);
+            console.log(response)
+            console.log(response.data)
         } catch (err) {
             console.log(err);
         }

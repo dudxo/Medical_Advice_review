@@ -186,10 +186,35 @@ export default function Header({}) {
             navigate('/mediclogin');
         }
     }
-    
-    const btn_program_changeMemberInfo_view = (e) => {
+    const getAddress = (myInfo) => {
+        if (myInfo) {
+            const uAdd = myInfo.userAddress.split(' ');
+            const cAdd = myInfo.cpAddress.split(' ');
+            myInfo['zipcodeNum'] = uAdd[0]
+            myInfo['zipCode'] = uAdd[1]
+            myInfo['detailAddress'] = uAdd[2]
+            myInfo['cpZipcodeNum'] = cAdd[0]
+            myInfo['cpZipcode'] = cAdd[1]
+            myInfo['detailCpAddress'] = cAdd[2]
+        }
+    }
+    const getMyInfo = async() => {
+        try {
+            const response = await axios.get('/userInfoAll');
+            const myInfo = response.data;
+            getAddress(myInfo)
+            console.log(myInfo)
+            return myInfo
+        } catch (err) {
+            console.log(err);
+            return err
+        }
+    }
+    const btn_program_changeMemberInfo_view = async(e) => {
         if (isSession) {
-            navigate('/medic/mypage/modifymyinfo');
+            const myInfo = await getMyInfo()
+            console.log(myInfo)
+            navigate('/medic/mypage/modifymyinfo', {state : {myInfo : myInfo}});
         } else {
             alert('로그인 후 이용해주세요!');
             navigate('/mediclogin');
@@ -273,5 +298,4 @@ export default function Header({}) {
         </div>
     </div>
 );
-
 }

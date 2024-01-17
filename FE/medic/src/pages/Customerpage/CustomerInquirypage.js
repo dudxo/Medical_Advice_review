@@ -4,7 +4,7 @@ import {useNavigate} from 'react-router-dom'
 import axios from "axios";
 
 export default function CustomerInquirypage(){
-    const [quiryList, setQuiryList] = useState([{'qaNo' : 1, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 3, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 4, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 5, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 6, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 7, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 8, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 9, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'}, {'qaNo' : 9, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'} , {'qaNo' : 9, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'}, {'qaNo' : 9, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 9, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 9, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 9, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 9, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 9, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 9, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 9, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 9, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 9, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 9, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'},{'qaNo' : 1290, 'qaQuestion' : 'ㅎㅇㅎㅇ', 'qaDate' : '2023-12-17'}])
+    const [quiryList, setQuiryList] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
 
     const itemsPerPage = 7;
@@ -24,18 +24,27 @@ export default function CustomerInquirypage(){
     const btn_write_inquiry = e => {
         navigate('/medic/customer/customerinquiry/writecustomerinquiry')
     }
-    const btn_inquiryDetail = (index) => {
-      navigate('/medic/customer/customerinquiry/customerinquirydetails', { state: { index: index } });
+    const btn_inquiryDetail = (qaId) => {
+      navigate('/medic/customer/customerinquiry/customerinquirydetails', { state: { qaId: qaId } });
     };
-    // useEffect(() => {
-    //   try {
-    //     const response = await axios.get('server endpoint');
-    //     setQuiryList(response.data);
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // }, []);
-
+    const formatDateString = (dateString) => {
+        const date = new Date(dateString);
+        const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+        return formattedDate;
+      };
+    useEffect(() => {
+        async function getQnaAll(){
+            try {
+                const response = await axios.get('/qna/findAllQna');
+                console.log(response.data)
+                setQuiryList(response.data);
+              } catch (err) {
+                console.log(err);
+              }
+        }
+        getQnaAll(); 
+    }, []);
+    
     return (
         <div className={cusinquiry.wrap}>
         <div className={cusinquiry.cusinquiry_title}>
@@ -60,13 +69,13 @@ export default function CustomerInquirypage(){
             {visibleQuiryList?.map((quiry, index) => (
                 <div key={index} className={cusinquiry.cusinquiry_quirylist_content}>
                 <div className={`${cusinquiry.quirylist_no} ${cusinquiry.list_content}`}>
-                    {quiry.qaNo}
+                    {quiry.qaId}
                 </div>
-                <div className={`${cusinquiry.quirylist_question} ${cusinquiry.list_content}`} onClick={()=>btn_inquiryDetail(index)}>
-                    {quiry.qaQuestion}
+                <div className={`${cusinquiry.quirylist_question} ${cusinquiry.list_content}`} onClick={()=>btn_inquiryDetail(quiry.qaId)}>
+                    {quiry.qaTitle}
                 </div>
                 <div className={`${cusinquiry.quirylist_writedate} ${cusinquiry.list_content}`}>
-                    {quiry.qaDate}
+                    {formatDateString(quiry.qaDate)}
                 </div>
                 </div>
             ))}

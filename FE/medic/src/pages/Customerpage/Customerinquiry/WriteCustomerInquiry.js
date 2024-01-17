@@ -12,6 +12,7 @@ export default function WriteCustomerInquiry() {
     const [writer, setWriter] = useState('조아빈');
     const [secretPw, setSecretPw] = useState('')
     const [inputTitle, setInputTitle] = useState('')
+    const [isEmpty, setIsEmpty] = useState(true)
 
     const navigate = useNavigate();
     const cookie = new Cookies()
@@ -20,6 +21,13 @@ export default function WriteCustomerInquiry() {
         setWriter(cookie.get('uId'))
     }, [])
 
+    useEffect(()=>{
+        if(inputTitle && inquiryQuestion){
+            setIsEmpty(false);
+        } else{
+            setIsEmpty(true);
+        }
+    },[inputTitle, inquiryQuestion])
     const btn_writequestion = async()=> {
         const today = new Date();
         const InquiryInfo = {
@@ -133,7 +141,7 @@ export default function WriteCustomerInquiry() {
         </div>
       </div>
       <div className={writecustomerinquiry.btn_writequestionbox}>
-        <button className={writecustomerinquiry.btn_writequestion} onClick={btn_writequestion}>작성</button>
+        <button className={writecustomerinquiry.btn_writequestion} disabled={isEmpty} onClick={btn_writequestion}>작성</button>
         <button className={writecustomerinquiry.btn_writequestion} onClick={btn_questionlist}>목록</button>
       </div>
     </div>
