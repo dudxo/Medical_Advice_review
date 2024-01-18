@@ -3,7 +3,7 @@ import axios from 'axios';
 import ad from '../../css/AdAdviceListPage.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 
-export default function AdSetDoc() {
+export default function TrSetDoc() {
   const [currentPage, setCurrentPage] = useState(1);
   const [allDocList, setAllDocList] = useState([]);
   const [selectedCIds, setSelectedCIds] = useState(new Set());
@@ -15,7 +15,7 @@ export default function AdSetDoc() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/ad/docList');
+        const response = await axios.get('/tr/docList');
         console.log(response);
         setAllDocList(response.data);
       } catch (error) {
@@ -44,10 +44,10 @@ export default function AdSetDoc() {
 
   const handleSave = async () => {
     try {
-      // 선택된 cId 목록 중 첫 번째 값을 가져와서 백엔드로 전송
+
       const selectedCId = Array.from(selectedCIds)[0];
       if (selectedCId !== undefined) {
-        const response = await axios.post(`/ad/set/doc/${index}`, { cId: selectedCId });
+        const response = await axios.post(`/tr/set/doc/${index}`, { cId: selectedCId });
         console.log('저장 응답:', response.data);
       } else {
         console.error('선택된 cId가 없습니다.');
@@ -58,8 +58,6 @@ export default function AdSetDoc() {
   };
   
   
-
-  // 선택된 cId가 하나 이상일 때만 저장 버튼 활성화
   const isSaveButtonEnabled = selectedCIds.size > 0;
 
   return (

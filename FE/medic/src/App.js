@@ -50,6 +50,13 @@ import WriteFaqPage from "./pages/Customerpage/Announcement/WriteFaqPage";
 import FAQpage from "./pages/Customerpage/FAQpage";
 import AdAdviceListPage from "./pages/Adminstrator/AdAdviceListPage";
 import AdSetDoc from "./pages/Adminstrator/AdSetDoc";
+import AdAnalyzeListPage from "./pages/Adminstrator/AdAnalyzeListPage";
+import AnSetDoc from "./pages/Adminstrator/AnSetDoc";
+import TrSetDoc from "./pages/Adminstrator/TrSetDoc";
+import AdTranslateListPage from "./pages/Adminstrator/AdTranslateListPage";
+import AdDetailAdvice from "./pages/Adminstrator/AdDetailAdvice";
+import AdDetailAnalyze from "./pages/Adminstrator/AdDetailAnalyze";
+import AdDetailTranslate from "./pages/Adminstrator/AdDetailTranslate";
 
 export default function App(){
     return(
@@ -106,6 +113,15 @@ export default function App(){
                     <Route path='/medic/customer/faqwrite' element={<WriteFaqPage/>}/>
                     <Route path='/medic/adminstrator/docset/:index' element={<AdSetDoc/>}/>
                     <Route path='/medic/adminstrator/adlist' element={<AdAdviceListPage/>}/>
+                    <Route path='/medic/adminstrator/anlist' element={<AdAnalyzeListPage/>}/>
+                    <Route path='/medic/adminstrator/andocset/:index' element={<AnSetDoc/>}/>
+                    <Route path='/medic/adminstrator/trdocset/:index' element={<TrSetDoc/>}/>
+                    <Route path='/medic/adminstrator/trlist' element={<AdTranslateListPage/>}/>
+                    <Route path='/medic/adminstrator/addetail/:index' element={<AdDetailAdvice/>}/>
+                    <Route path='/medic/adminstrator/andetail/:index' element={<AdDetailAnalyze/>}/>
+                    <Route path='/medic/adminstrator/tndetail/:index' element={<AdDetailTranslate/>}/>
+
+
 
                 </Routes>
 

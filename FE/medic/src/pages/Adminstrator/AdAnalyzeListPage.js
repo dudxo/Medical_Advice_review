@@ -5,18 +5,19 @@ import { useNavigate } from "react-router-dom";
 
 
 export default function AdAnalyzeListPage() {
-  const [selectedStatus, setSelectedStatus] = useState('자문의뢰중');
+
   const [currentPage, setCurrentPage] = useState(1);
   const [allAnalyzeList, setAllAnalyzeList] = useState([]);
   const [assignmentDate, setAssignmentDate] = useState('');
   const [responseDate, setResponseDate] = useState('');
-  const [progressStatus, setProgressStatus] = useState('');
+  const [anProgressStatus, setAnProgressStatus] = useState('자문의뢰중');
   const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/analyze/all');
         setAllAnalyzeList(response.data);
+        console.log('resoponse',response);
       } catch (error) {
         console.error('분석 리스트를 가져오는 도중 에러 발생:', error);
       }
@@ -26,7 +27,10 @@ export default function AdAnalyzeListPage() {
   }, []);
 
    const btn_detail_analyze = async(index) => {
-    navigate('/')
+    navigate(`/medic/adminstrator/andetail/${index}`)
+}
+const btn_set_doctor = (index) => {
+  navigate(`/medic/adminstrator/andocset/${index}`);
 }
 
   const formatDate = (dateString) => {
@@ -38,26 +42,27 @@ export default function AdAnalyzeListPage() {
     return `${year}-${month}-${day}`;
   };
 
-  const handleStatusChange = (newStatus) => {
-    setSelectedStatus(newStatus);
-  };
+ 
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
 
-  const handleUpdateField = async (analyzeId) => {
+  const handleUpdateField = async () => {
     try {
-      await axios.put(`/analyze/update/${analyzeId}`, {
-        'adAnswerDate': assignmentDate,
-        'admDate': responseDate,
-        'progressStatus': progressStatus,
-      });
+      const updateAnalyzeList = allAnalyzeList.map(analyze=>({
+        anId: analyze.anId,
+        adMdDate : assignmentDate,
+        anAnswerDate: responseDate,
+        anProgressStatus : anProgressStatus
 
-      const response = await axios.get('/analyze/all');
-      setAllAnalyzeList(response.data);
+      }))
+     const response = await axios.put(`/an/update`,updateAnalyzeList)
+      navigate('/');
+
     } catch (error) {
-      console.error(`자문 업데이트 중 에러 발생:`, error);
+      console.error(`분석 업데이트 중 에러 발생:`, error);
+   
     }
   };
 
@@ -66,7 +71,7 @@ export default function AdAnalyzeListPage() {
       <div className={ad.ad_iconbox}>
         <h1>
           <i className="fa-solid fa-circle icon"></i>
-          자문의뢰 현황
+          분석의뢰 현황
         </h1>
       </div>
       <table className={ad.ad_table}>
@@ -74,12 +79,12 @@ export default function AdAnalyzeListPage() {
           <tr>
             <th className={ad.ad_th}>NO.</th>
             <th className={ad.ad_th}>이름</th>
-            <th className={ad.ad_th}>진단과목</th>
             <th className={ad.ad_th}>진단명</th>
             <th className={ad.ad_th}>의뢰신청일</th>
             <th className={ad.ad_th}>의뢰배정일</th>
             <th className={ad.ad_th}>의뢰분석일</th>
             <th className={ad.ad_th}>진행상태</th>
+            <th className={ad.ad_th}>전문의</th>
           </tr>
         </thead>
         <tbody>
@@ -88,40 +93,39 @@ export default function AdAnalyzeListPage() {
               {allAnalyzeList.map((analyze, index) => (
                 rowIndex === index && (
                   <React.Fragment key={index}>
-                    <td className={ad.ad_td} onClick={btn_detail_analyze(index)}>{index + 1}</td>
-                    <td className={ad.ad_td}>{analyze.anPtSub}</td>
+                    <td className={ad.ad_td} onClick={()=>btn_detail_analyze(index+1)}>{index + 1}</td>
+                    <td className={ad.ad_td}>{analyze.uname}</td>
                     <td className={ad.ad_td}>{analyze.anPtDiagnosis}</td>
+                    <td className={ad.ad_td}>{formatDate(analyze.anRegDate)}</td>
                     <td className={ad.ad_td}>
-                      {formatDate(analyze.adRegDate)}
-                    </td>
-                    <td className={ad.ad_td}>{analyze.assignmentDate}</td>
-                    <td className={ad.ad_td}>{analyze.responseDate}</td>
-                    <td className={ad.ad_td}>{analyze.progressStatus}</td>
-                    <td className={ad.ad_td}>
-                      <input
-                        type="date"
-                        value={analyze.assignmentDate}
-                        onChange={(e) => setAssignmentDate(e.target.value)}
-                      />
-                    </td>
-                    <td className={ad.ad_td}>
-                      <input
-                        type="date"
-                        value={analyze.responseDate}
-                        onChange={(e) => setResponseDate(e.target.value)}
-                      />
-                    </td>
-                    <td className={ad.ad_td}>
-                      <select
-                        value={analyze.progressStatus}
-                        onChange={(e) => setProgressStatus(e.target.value)}
-                      >
-                        <option value="자문의뢰중">자문의뢰중</option>
-                        <option value="자문배정중">자문배정중</option>
-                        <option value="결제하기">결제하기</option>
-                        <option value="자문완료">자문완료</option>
-                      </select>
-                    </td>
+                    <input
+                    type="date"
+                    value={formatDate(analyze.adMdDate)}
+                    onChange={(e) => setAssignmentDate(e.target.value)}
+                />
+              </td>
+              <td className={ad.ad_td}>
+              <input
+                type="date"
+                value={formatDate(analyze.anAnswerDate)}
+                disabled ={true}
+                onChange={(e) => setResponseDate(formatDate(e.target.value))}
+/>
+              </td>
+              <td className={ad.ad_td}>
+                <select
+                  value={analyze.anProgressStatus}
+                  onChange={(e) => setAnProgressStatus(e.target.value)}
+                >
+                  <option value="자문의뢰중">자문의뢰중</option>
+                  <option value="자문배정중">자문배정중</option>
+                  <option value="결제하기">결제하기</option>
+                  <option value="자문완료">자문완료</option>
+                </select>
+              </td>
+              <td className={ad.ad_td}>
+              <input type='text' value={analyze.cname} onClick={()=>btn_set_doctor(index+1)} />
+              </td>
                   </React.Fragment>
                 )
               ))}
@@ -142,7 +146,7 @@ export default function AdAnalyzeListPage() {
           ▶
         </button>
       </div>
-      <button onClick={handleUpdateField}>저장</button>
+      <button onClick={() => handleUpdateField()}>저장</button>
     </div>
   );
 }

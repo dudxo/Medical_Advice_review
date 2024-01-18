@@ -8,7 +8,7 @@
 
         const navigate = useNavigate()
 
-        const {userId} = useParams();
+        const {index} = useParams();
         const [adviceDetails, setAdviceDetails] = useState({});
 
         const [adQuestionTotal, setAdQuestionTotal] = useState(0);
@@ -23,16 +23,16 @@
         const [dayOptions, setDayOptions] = useState([]);
 
         const [admStartYear, setAdmStartYear] = useState('');
-const [admStartMonth, setAdmStartMonth] = useState('');
-const [admStartDay, setAdmStartDay] = useState('');
+        const [admStartMonth, setAdmStartMonth] = useState('');
+        const [admStartDay, setAdmStartDay] = useState('');
 
-const [admEndYear, setAdmEndYear] = useState('');
-const [admEndMonth, setAdmEndMonth] = useState('');
-const [admEndDay, setAdmEndDay] = useState('');
+        const [admEndYear, setAdmEndYear] = useState('');
+        const [admEndMonth, setAdmEndMonth] = useState('');
+        const [admEndDay, setAdmEndDay] = useState('');
 
-const [visitStartYear, setVisitStartYear] = useState('');
-const [visitStartMonth, setVisitStartMonth] = useState('');
-const [visitStartDay, setVisitStartDay] = useState('');
+        const [visitStartYear, setVisitStartYear] = useState('');
+        const [visitStartMonth, setVisitStartMonth] = useState('');
+       const [visitStartDay, setVisitStartDay] = useState('');
 
 const [visitEndYear, setVisitEndYear] = useState('');
 const [visitEndMonth, setVisitEndMonth] = useState('');
@@ -43,7 +43,7 @@ const [utel, setUtel] = useState('');
 const [uphone, setUphone] = useState('');
 const [uaddress, setUaddress] = useState('');
 
-const [insureYear, setInsureYear] = useState(2000);  // 예시로 2000년부터 시작하도록 설정
+const [insureYear, setInsureYear] = useState(2000);  
 const [insureMounth, setInsureMonth] = useState(1);
 const [insureDay, setInsureDay] = useState(1);
 const [todayYear, setTodayYear] = useState(new Date().getFullYear());
@@ -57,9 +57,19 @@ const [ptSsNum2, setPtSsNum2] = useState(0);
         useEffect(()=>{
             const fetchData = async() => {
                 try{
-                    const response = await axios.get('/advice/details/${userId}');
+                    const response = await axios.get(`/ad/detail/${index}`);
                     setAdviceDetails(response.data);
-
+                    console.log("response",response);
+                    console.log("insure",response.data.insureDate);
+                    
+                    const insure = response.data.insureDate.split('-');
+                    console.log("inseure",insure);
+                    setInsureYear(insure[0]);
+                    setInsureMonth(insure[1]);
+                    setInsureDay(insure[2]);
+                    console.log("inseure0",insureYear);
+                    console.log("inseure1",insureMounth);
+                    console.log("inseure2",insureDay);
                     const adm_start_parts = response.data.admStart.split('-');
                     setAdmStartYear(adm_start_parts[0]);
                     setAdmStartMonth(adm_start_parts[1]);
@@ -80,10 +90,6 @@ const [ptSsNum2, setPtSsNum2] = useState(0);
                     setVisitEndMonth(visit_end_parts[1]);
                     setVisitEndDay(visit_end_parts[2]);
         
-                    const insure = response.data.insureDate.split('-');
-                    setInsureYear(insure[0]);
-                    setInsureMonth(insure[1]);
-                    setInsureDay(insure[2]);
 
                     const ptSsNum = response.data.adPtSsNum.split('-');
                     setPtSsNum1(ptSsNum1[0]);
@@ -92,8 +98,10 @@ const [ptSsNum2, setPtSsNum2] = useState(0);
                 }catch(error){
                     console.error('유저 정보 에러:',error);
                 }
-            }
-        }, [])
+            } ;
+
+            fetchData();
+        }, []);
 
         const generateOptions = (start, end) => {
         const options = [];
@@ -126,6 +134,8 @@ const [ptSsNum2, setPtSsNum2] = useState(0);
         const btn_advice_list = async() => {
             navigate('/medic/adminstrator/adadvicelistpage')
         }
+
+
         return(
             <div className={advicerequest.advicerequest_wrap}>
                 <div className={advicerequest.iconbox}>
@@ -145,23 +155,23 @@ const [ptSsNum2, setPtSsNum2] = useState(0);
                     <div className={advicerequest.row_box}>
                         <div className={advicerequest.title_box}>의뢰자명</div>
                         <div className={advicerequest.input_box}>
-                            <input type="text" disabled={true} value={uname}/>
+                            <input type="text" disabled={true} value={adviceDetails.uname}/>
                         </div>
                     </div>
                     <div className={advicerequest.row_box}>
                         <div className={advicerequest.title_box}>일반전화</div>
                         <div className={advicerequest.input_box}>
-                            <input type="text" disabled={true} value={utel}/>
+                            <input type="text" disabled={true} value={adviceDetails.userTel}/>
                         </div>
                         <div className={advicerequest.title_box} style={{borderLeft : '1px solid black'}}>휴대전화</div>
                         <div className={advicerequest.input_box}>
-                            <input type="text" disabled={true} value={uphone}/>
+                            <input type="text" disabled={true} value={adviceDetails.userPhone}/>
                         </div>
                     </div>
                     <div className={advicerequest.row_box}>
                         <div className={advicerequest.title_box}>주소</div>
                         <div className={advicerequest.input_box}>
-                            <input type="text" disabled={true} value={uaddress}/>
+                            <input type="text" disabled={true} value={adviceDetails.userAddress}/>
                         </div>
                     </div>
                 </div>
@@ -197,7 +207,7 @@ const [ptSsNum2, setPtSsNum2] = useState(0);
                     <div className={advicerequest.row_box}>
                         <div className={advicerequest.title_box}>과거 진단이력</div>
                         <div className={advicerequest.input_box}>
-                            <input type="text" name="ad_ptrec" disabled={true} value={adviceDetails.ptRec}/>
+                            <input type="text" name="ad_ptrec" disabled={true} value={adviceDetails.adPtRec}/>
                         </div>
                     </div>
                     <div className={`${advicerequest.row_box}`}>
@@ -226,9 +236,7 @@ const [ptSsNum2, setPtSsNum2] = useState(0);
                         </div>
                         <div className={advicerequest.title_box} style={{borderLeft : '1px solid black'}}>계약일자</div>
                         <div className={advicerequest.input_box}>
-                            <select  disabled={true} value={insureYear}></select> -
-                            <select disabled={true} value={insureMounth}  ></select> -
-                            <select disabled={true} value={insureDay} ></select>
+                           <input type='text' name='insure_date' disabled={true} value={adviceDetails.insureDate}></input>
                         </div>
                     </div>
                     <div className={advicerequest.row_box}>
@@ -248,7 +256,7 @@ const [ptSsNum2, setPtSsNum2] = useState(0);
                     <div className={advicerequest.row_box} style={{height : '42px'}}>
                         <div className={advicerequest.title_box} >1차 치료 병원명</div>
                         <div className={advicerequest.input_box}>
-                            <input type="text" name="hospital" disabled={true} value={adviceDetails.hosptial} ></input>
+                            <input type="text" name="hospital" disabled={true} value={adviceDetails.hospital} ></input>
                         </div>
                     </div>
                     <div className={advicerequest.row_box}>
@@ -346,7 +354,7 @@ const [ptSsNum2, setPtSsNum2] = useState(0);
                             자문의뢰신청서
                         </div>
                         <div className={advicerequest.input_box}>
-                            <input type='file' disabled={true} value={adviceDetails.adReqForm} />
+                            <input type='file' disabled={true} />
                         </div>
                     </div>
                     <div className={advicerequest.row_box} style={{height : 'auto'}}>
@@ -354,7 +362,7 @@ const [ptSsNum2, setPtSsNum2] = useState(0);
                             진단서
                         </div>
                         <div className={advicerequest.input_box}>
-                            <input type='file' disabled={true} value={adviceDetails.adPtDiagnosis} />
+                            <input type='file' disabled={true}  />
                         </div>
                     </div>
                     <div className={advicerequest.row_box} style={{height : 'auto'}}>
@@ -362,7 +370,7 @@ const [ptSsNum2, setPtSsNum2] = useState(0);
                             의무기록지
                         </div>
                         <div className={advicerequest.input_box}>
-                            <input type='file' disabled={true} value={adviceDetails.adRecord} />
+                            <input type='file' disabled={true}  />
                         </div>
                     </div>
                     <div className={advicerequest.row_box} style={{height : 'auto'}}>
@@ -370,11 +378,11 @@ const [ptSsNum2, setPtSsNum2] = useState(0);
                             필름
                         </div>
                         <div className={advicerequest.input_box}>
-                            <input type='file' disabled={true} value={adviceDetails.adFilm} />
+                            <input type='file' disabled={true}  />
                         </div>
                     </div>
                     <div className={advicerequest.complete}>
-                        {/* <button type = "button" className={advicerequest.btt_complete} onClick={btn_advice_request}>자문 의뢰신청</button> */}
+                        
                         <button type = "button" className={advicerequest.btt_complete} onClick={btn_advice_list}>목록</button>
                     </div>
                 </div>

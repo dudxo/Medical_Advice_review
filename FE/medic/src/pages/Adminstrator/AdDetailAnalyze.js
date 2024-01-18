@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useNavigate,useParams } from 'react-router-dom';
 
 export default function AdDetailAnalyze(){
-    const {userId} = useParams();
+    const {index} = useParams();
     const [analyzeDetails, setAnalyzeDetails] = useState({});
 
 
@@ -36,9 +36,9 @@ export default function AdDetailAnalyze(){
     useEffect(()=>{
         const fetchData = async() => {
             try{
-                const response = await axios.get('/analyze/details/${userId}');
+                const response = await axios.get(`/an/detail/${index}`);
                 setAnalyzeDetails(response.data);
-
+                console.log("response",response);
                 const anptssnum = response.data.anPtSsNum.split('-');
                 setAnPtSsNum1(anptssnum[0]);
                 setAnPtSsNum2(anptssnum[1]);
@@ -49,6 +49,7 @@ export default function AdDetailAnalyze(){
                 console.error('유저 정보 에러:',error);
             }
         }
+        fetchData();
     }, [])
 
     // const getUserInfo = async() =>{

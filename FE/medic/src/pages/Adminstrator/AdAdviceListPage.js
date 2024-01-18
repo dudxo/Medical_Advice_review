@@ -12,7 +12,7 @@ export default function AdAdviceListPage() {
 
   const navigate = useNavigate();
   const btn_detail_advice = async(index) => {
-    navigate('/')
+    navigate(`/medic/adminstrator/addetail/${index}`)
 }
 
 const btn_set_doctor = (index) => {
@@ -58,9 +58,9 @@ const btn_set_doctor = (index) => {
     try {
       const updatedAdviceList = allAdviceList.map(advice => ({
         adId: advice.adId,
-        adAnswerDate: assignmentDate,
-        admDate: responseDate,
-        admProgressStatus: admProgressStatus,
+        adAnswerDate: responseDate,
+        admDate: assignmentDate,
+        admProgressStatus: admProgressStatus
       }));
   
       const response = await axios.put('/advice/update/', updatedAdviceList);
@@ -95,13 +95,17 @@ const btn_set_doctor = (index) => {
           </tr>
         </thead>
         <tbody>
+          {[...Array(7)].map((_,rowIndex)=>(
+            <tr key={rowIndex}>
           {allAdviceList.map((advice, index) => (
-            <tr key={index}>
-              <td className={ad.ad_td} onClick={() => btn_detail_advice(index)}>
+
+            rowIndex === index &&(
+              <React.Fragment key={index}>
+                 <td className={ad.ad_td} onClick={() => btn_detail_advice(index+1)}>
                 {index + 1}
               </td>
               <td className={ad.ad_td}>{advice.uname}</td>
-              <td className={ad.ad_td}>{advice.adPtName}</td>
+              <td className={ad.ad_td}>{advice.adPtDiagnosis}</td>
               <td className={ad.ad_td}>{formatDate(advice.adRegDate)}</td>
               <td className={ad.ad_td}>
                 <input
@@ -131,9 +135,10 @@ const btn_set_doctor = (index) => {
               
               <td className={ad.ad_td}>
               <input type='text' value={advice.cname} onClick={()=>btn_set_doctor(index+1)} />
-
               </td>
-
+              </React.Fragment>
+              )
+            ))}
             </tr>
           ))}
         </tbody>
