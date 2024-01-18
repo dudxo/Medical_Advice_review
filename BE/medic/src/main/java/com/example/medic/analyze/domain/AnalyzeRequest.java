@@ -3,6 +3,7 @@ package com.example.medic.analyze.domain;
 import com.example.medic.advice.domain.AdviceRequestList;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,6 +34,14 @@ public class AnalyzeRequest {
     @JsonIgnore
     private AnalyzeRequestList analyzeRequestList;
 
-
+    @Builder(toBuilder = true)
+    public AnalyzeRequest(String anQuestionContent, String anAnswerContent, Date anAnswerDate,
+                          AnalyzeRequestList analyzeRequestList, Long anQid) {
+        this.anQuestionContent = anQuestionContent;
+        this.anAnswerContent = anAnswerContent;
+        this.anAnswerDate = anAnswerDate;
+        this.analyzeRequestList = analyzeRequestList;
+        this.anQid = anQid;
+    }
 
 }

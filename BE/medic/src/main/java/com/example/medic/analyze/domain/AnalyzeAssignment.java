@@ -4,6 +4,7 @@ import com.example.medic.advice.domain.AdviceRequestList;
 import com.example.medic.consultative.domain.Consultative;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,6 +24,8 @@ public class AnalyzeAssignment {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date adMdDate;
 
+    private String anProgressStatus;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "anId")
     private AnalyzeRequestList analyzeRequestList;
@@ -32,6 +35,15 @@ public class AnalyzeAssignment {
     @JsonIgnore
     private Consultative consultative;
 
+    @Builder(toBuilder = true)
+    public AnalyzeAssignment(Date adMdDate, Consultative consultative, String anProgressStatus, Long anmId,
+                            AnalyzeRequestList analyzeRequestList) {
+        this.adMdDate = adMdDate;
+        this.consultative = consultative;
+        this.anProgressStatus = anProgressStatus;
+        this.analyzeRequestList = analyzeRequestList;
+        this.anmId = anmId;
 
+    }
 
 }

@@ -11,7 +11,8 @@ public class DocSetDto {
     private String hospName;
     private String hospTel;
 
-    public DocSetDto(String cName, String cPhone, String department, String hospName, String hospTel){
+    public DocSetDto(String cName, String cPhone, String department, String hospName, String hospTel, String cId){
+        this.cId= cId;
         this.cName =cName;
         this.cPhone = cPhone;
         this.department = department;

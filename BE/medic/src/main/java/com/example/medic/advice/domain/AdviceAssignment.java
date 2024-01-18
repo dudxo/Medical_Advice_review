@@ -16,7 +16,6 @@ import java.util.Date;
 @Entity
 @Getter
 @NoArgsConstructor
-@Setter
 public class AdviceAssignment {
 
     @Id
@@ -47,6 +46,7 @@ public class AdviceAssignment {
         this.consultative = consultative;
         this.admProgressStatus = admProgressStatus;
         this.adviceRequestList = adviceRequestList;
+        this.admId = admId;
 
     }
 

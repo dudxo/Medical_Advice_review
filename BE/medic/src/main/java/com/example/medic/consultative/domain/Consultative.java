@@ -23,7 +23,7 @@ public class Consultative {
 
     @Id
     @NotNull
-    private Long cId;
+    private String cId;
 
     @NotNull
     private String cPw;
