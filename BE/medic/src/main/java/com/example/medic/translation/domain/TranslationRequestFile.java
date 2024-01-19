@@ -6,12 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-<<<<<<< HEAD
-=======
+
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Scanner;
->>>>>>> feature-faqpage-m
+
 
 @Entity
 @Getter
@@ -30,7 +27,7 @@ public class TranslationRequestFile {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trId")
     private TranslationRequestList translationRequestList;
-<<<<<<< HEAD
+
 
     @Builder
     public TranslationRequestFile(Long tfId, String trMtl, TranslationRequestList translationRequestList) {
@@ -38,7 +35,7 @@ public class TranslationRequestFile {
         this.trMtl = trMtl;
         this.translationRequestList = translationRequestList;
     }
-=======
+
     @Builder(toBuilder = true)
     public TranslationRequestFile( LocalDate trAnswerDate,
                            Long tfId, TranslationRequestList translationRequestList) {
@@ -49,5 +46,4 @@ public class TranslationRequestFile {
     }
 
 
->>>>>>> feature-faqpage-m
 }

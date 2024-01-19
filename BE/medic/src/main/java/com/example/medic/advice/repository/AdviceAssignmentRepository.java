@@ -13,13 +13,13 @@ import java.util.List;
 
 public interface AdviceAssignmentRepository extends JpaRepository<AdviceAssignment, Long> {
 
-<<<<<<< HEAD
+
     int countAllByConsultative(Consultative consultative);
 
     List<AdviceRequestList> findAllAdviceRequestListByConsultative(Consultative consultative);
-=======
+
     @Query("SELECT aa FROM AdviceAssignment aa WHERE aa.adviceRequestList.adId = :adId")
     AdviceAssignment findByAdId(@Param("adId") Long adId);
->>>>>>> feature-faqpage-m
+
 
 }

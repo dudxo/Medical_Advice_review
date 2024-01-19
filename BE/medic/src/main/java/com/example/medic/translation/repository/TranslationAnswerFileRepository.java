@@ -8,9 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface TranslationAnswerFileRepository extends JpaRepository<TranslationAnswerFile,Long> {
-<<<<<<< HEAD
-    TranslationAnswerFile findByTranslationRequestList(TranslationRequestList translationRequestList);
-=======
 
->>>>>>> feature-faqpage-m
+    TranslationAnswerFile findByTranslationRequestList(TranslationRequestList translationRequestList);
+
 }

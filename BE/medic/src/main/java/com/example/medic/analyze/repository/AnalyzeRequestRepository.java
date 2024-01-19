@@ -10,11 +10,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface AnalyzeRequestRepository extends JpaRepository<AnalyzeRequest,Long> {
-<<<<<<< HEAD
+
 
     List<AnalyzeRequest> findAllByAnalyzeRequestList(AnalyzeRequestList analyzeRequestList);
-=======
+
     @Query("SELECT an FROM AnalyzeRequest an WHERE an.analyzeRequestList.anId = :anId")
     AnalyzeRequest findByAnId(@Param("anId") Long anId);
->>>>>>> feature-faqpage-m
+
 }
