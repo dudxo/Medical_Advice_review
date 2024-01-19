@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -26,16 +27,25 @@ public class AdviceQuestion {
     @NotNull
     private String adAnswerContent;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date adAnswerDate;
+
+    private LocalDate adAnswerDate;
 
     @ManyToOne
     @JoinColumn(name = "adId")
     @JsonIgnore
     private AdviceRequestList adviceRequestList;
 
+    @Builder
+    public AdviceQuestion(String adQuestionContent, String adAnswerContent, LocalDate adAnswerDate,
+                          AdviceRequestList adviceRequestList) {
+        this.adQuestionContent = adQuestionContent;
+        this.adAnswerContent = adAnswerContent;
+        this.adAnswerDate = adAnswerDate;
+        this.adviceRequestList = adviceRequestList;
+    }
+
     @Builder(toBuilder = true)
-    public AdviceQuestion(String adQuestionContent, String adAnswerContent, Date adAnswerDate,
+    public AdviceQuestion(String adQuestionContent, String adAnswerContent, LocalDate adAnswerDate,
                           AdviceRequestList adviceRequestList, Long adQid) {
         this.adQuestionContent = adQuestionContent;
         this.adAnswerContent = adAnswerContent;

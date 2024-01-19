@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -40,11 +41,10 @@ public class TranslationRequestList {
     @NotNull
     private String trEtc;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date trRegDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date trMdDate;
+    private LocalDate trRegDate;
+
+    private LocalDate trMdDate;
 
     @ManyToOne
     @JoinColumn(name = "client_Id")
@@ -62,7 +62,7 @@ public class TranslationRequestList {
 
     @Builder
     private TranslationRequestList(Long trId, String trPtName, String trPtSsNum, String trPtSub, String trPtDiagnosis,
-                                   String trPtDiagContent, String trEtc, Date trRegDate, Date trMdDate, Client client) {
+                                   String trPtDiagContent, String trEtc, LocalDate trRegDate, LocalDate trMdDate, Client client) {
         this.trId = trId;
         this.trPtName = trPtName;
         this.trPtSsNum = trPtSsNum;

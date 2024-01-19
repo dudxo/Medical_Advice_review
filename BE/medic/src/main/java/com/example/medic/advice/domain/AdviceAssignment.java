@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -23,8 +24,7 @@ public class AdviceAssignment {
     @NotNull
     private Long admId;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date admDate;
+    private LocalDate admDate;
 
     private String admProgressStatus;
 
@@ -39,8 +39,15 @@ public class AdviceAssignment {
     @JsonIgnore(value = false)
     private Consultative consultative;
 
+    @Builder
+    public AdviceAssignment(LocalDate admDate, Consultative consultative, AdviceRequestList adviceRequestList) {
+        this.admDate = admDate;
+        this.consultative = consultative;
+        this.adviceRequestList=adviceRequestList;
+
+    }
     @Builder(toBuilder = true)
-    public AdviceAssignment(Date admDate, Consultative consultative, String admProgressStatus, Long admId,
+    public AdviceAssignment(LocalDate admDate, Consultative consultative, String admProgressStatus, Long admId,
                             AdviceRequestList adviceRequestList) {
         this.admDate = admDate;
         this.consultative = consultative;

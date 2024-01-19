@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -20,8 +21,7 @@ public class TranslationAssignment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tamId;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date tamDate;
+    private LocalDate tamDate;
 
     private String trProgressStatus;
 
@@ -34,7 +34,7 @@ public class TranslationAssignment {
     @JsonIgnore
     private Consultative consultative;
     @Builder(toBuilder = true)
-    public TranslationAssignment(Date tamDate, Consultative consultative, String trProgressStatus, Long tamId
+    public TranslationAssignment(LocalDate tamDate, Consultative consultative, String trProgressStatus, Long tamId
                         , TranslationRequestList translationRequestList    ) {
         this.tamDate = tamDate;
         this.consultative = consultative;
