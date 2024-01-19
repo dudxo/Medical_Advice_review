@@ -17,6 +17,7 @@ import TranslateDetailpage from './pages/Translatepage/TranslateDetailpage'
 import CustomerInquirypage from './pages/Customerpage/CustomerInquirypage';
 import WriteCustomerInquiry from './pages/Customerpage/Customerinquiry/WriteCustomerInquiry'
 import FaultInfopage from './pages/MedicalLegalKnowledge/FaultInfopage'
+import FaultInfoWritepage from "./pages/MedicalLegalKnowledge/FaultInfoWritepage";
 import IndustrialAccidentInfopage from './pages/MedicalLegalKnowledge/IndustrialAccidentInfopage'
 import TrafficAccidentInfopage from'./pages/MedicalLegalKnowledge/TrafficAccidentInfopage'
 import WoundInfopage from'./pages/MedicalLegalKnowledge/WoundInfopage'
@@ -85,6 +86,7 @@ export default function App(){
                     <Route path='/medic/customer/announcement' element={<Announcementpage/>}/>
                     <Route path='/medic/customer/FAQ' element={<FAQpage/>}/>
                     <Route path='/medic/medicalknowledge/faultInfo' element={<FaultInfopage/>}/>
+                    <Route path='/medic/medicalknowledge/faultinfo/faultinfowrite' element={<FaultInfoWritepage/>}/>
                     <Route path='/medic/medicalknowledge/industrialAccidentInfo' element={<IndustrialAccidentInfopage/>}/>
                     <Route path='/medic/medicalknowledge/trafficAccidentInfo' element={<TrafficAccidentInfopage/>}/>
                     <Route path='/medic/medicalknowledge/woundInfo' element={<WoundInfopage/>}/>
@@ -103,8 +105,8 @@ export default function App(){
                     <Route path="/medic/consultative/assignmentAnalyzeDetail" element={<ConsultativeAnalyzeAssignmenDetail/>}/>
                     <Route path="/medic/consultative/assignmentTranslateDetail" element={<ConsultativeTranslateAssignmentDetail/>}/>
                     <Route path="/medic/knowledge/industrialaccidentdetails" element={<IndustrialAccidentDetail/>}/>
-                    <Route path="/medic/knowledge/faultinfodetails" element={<FaultInfoDetail/>}/>
-                    <Route path="/medic/knowledge/trafficaccidentdetails" element={<TrafficAccidentDetail/>}/>
+                    <Route path="/medic/medicalknowledge/faultinfo/faultinfodetails" element={<FaultInfoDetail/>}/>
+                    <Route path="/medic/medicalknowledge/faultinfo/trafficaccidentdetails" element={<TrafficAccidentDetail/>}/>
                     <Route path="/medic/mypage/modifymyinfo/modifyMyPw" element={<ModifyMyPwpage/>}/>
                     <Route path="/medic/adminstrator/docmanagement" element={<DocManagement/>}/>
                     <Route path="/medic/adminstrator/administratormypage" element={<AdministratorMypage/>}/>
