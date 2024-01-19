@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -39,4 +40,15 @@ public class AnalyzeRequest {
         this.anAnswerDate = anAnswerDate;
         this.analyzeRequestList = analyzeRequestList;
     }
+
+    @Builder(toBuilder = true)
+    public AnalyzeRequest(String anQuestionContent, String anAnswerContent, LocalDate anAnswerDate,
+                          AnalyzeRequestList analyzeRequestList, Long anQid) {
+        this.anQuestionContent = anQuestionContent;
+        this.anAnswerContent = anAnswerContent;
+        this.anAnswerDate = anAnswerDate;
+        this.analyzeRequestList = analyzeRequestList;
+        this.anQid = anQid;
+    }
+
 }

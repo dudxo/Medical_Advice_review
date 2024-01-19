@@ -10,6 +10,7 @@ import lombok.NonNull;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -26,6 +27,7 @@ public class AdviceQuestion {
     @NotNull
     private String adAnswerContent;
 
+
     private LocalDate adAnswerDate;
 
     @ManyToOne
@@ -40,5 +42,15 @@ public class AdviceQuestion {
         this.adAnswerContent = adAnswerContent;
         this.adAnswerDate = adAnswerDate;
         this.adviceRequestList = adviceRequestList;
+    }
+
+    @Builder(toBuilder = true)
+    public AdviceQuestion(String adQuestionContent, String adAnswerContent, LocalDate adAnswerDate,
+                          AdviceRequestList adviceRequestList, Long adQid) {
+        this.adQuestionContent = adQuestionContent;
+        this.adAnswerContent = adAnswerContent;
+        this.adAnswerDate = adAnswerDate;
+        this.adviceRequestList = adviceRequestList;
+        this.adQid = adQid;
     }
 }

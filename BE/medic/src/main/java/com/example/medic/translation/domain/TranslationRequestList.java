@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -57,9 +58,12 @@ public class TranslationRequestList {
     private TranslationAnswerFile translationAnswerFile;
 
     @Builder
+
     private TranslationRequestList(Long trId, String trPtName, String trPtSsNum, String trPtSub,
                                    String trPtDiagnosis, String trPtDiagContent, String trEtc,
                                    LocalDate trRegDate, LocalDate trMdDate, Client client) {
+
+
         this.trId = trId;
         this.trPtName = trPtName;
         this.trPtSsNum = trPtSsNum;

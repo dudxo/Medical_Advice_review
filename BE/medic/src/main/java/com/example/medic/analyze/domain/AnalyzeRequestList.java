@@ -43,7 +43,9 @@ public class AnalyzeRequestList {
     @NotNull
     private String anEtc;
 
+
     private LocalDate anRegDate;
+
 
     private LocalDate anMdDate;
 
@@ -61,9 +63,11 @@ public class AnalyzeRequestList {
     @OneToMany(mappedBy = "analyzeRequestList")
     private List<AnalyzeRequestFile> analyzeRequestFiles = new ArrayList<>();
 
-    @Builder
+    @Builder(toBuilder = true)
     private AnalyzeRequestList(Long anId, String anPtName, String anPtSsNum, String anPtSub, String anPtDiagnosis,
+
                                String anPtDiagContent, String anEtc, LocalDate anRegDate, LocalDate anMdDate, Client client){
+
         this.anId = anId;
         this.anPtName = anPtName;
         this.anPtSsNum = anPtSsNum;
@@ -75,4 +79,5 @@ public class AnalyzeRequestList {
         this.anMdDate = anMdDate;
         this.client = client;
     }
+
 }

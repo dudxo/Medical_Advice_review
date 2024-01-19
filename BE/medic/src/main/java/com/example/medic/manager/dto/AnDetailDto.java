@@ -1,0 +1,75 @@
+package com.example.medic.manager.dto;
+
+import com.sun.istack.NotNull;
+import lombok.Builder;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
+
+@Data
+public class AnDetailDto {
+
+    private String anPtName;
+
+    private String anPtSsNum;
+
+    private String anPtSub;
+    private String anPtDiagnosis;
+
+    private String anPtDiagContent;
+
+    private String anEtc;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date anRegDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date anMdDate;
+
+    private String uId;
+    private String uName;
+    private String userAddress;
+    private String userPhone;
+    private String userTel;
+
+    private String anReqForm;
+
+    private String anDiagnosis;
+
+    private String anRecord;
+
+    private String anFilm;
+
+    private String anOther;
+
+
+
+    @Builder
+    public AnDetailDto(String anPtName,String anPtSsNum, String anPtSub, String anPtDiagnosis, String anPtDiagContent
+                        ,String anEtc, Date anRegDate, Date anMdDate,  String uId, String uName, String userAddress, String userPhone, String userTel,
+                       String anReqForm, String anDiagnosis, String anRecord, String anFilm, String anOther){
+        this.anPtName = anPtName;
+        this.anPtSsNum = anPtSsNum;
+        this.anPtSub = anPtSub;
+        this.anPtDiagnosis = anPtDiagnosis;
+        this.anPtDiagContent = anPtDiagContent;
+        this.anEtc = anEtc;
+        this.anRegDate = anRegDate;
+        this.anMdDate = anMdDate;
+
+        this.uId = uId;
+        this.userAddress = userAddress;
+        this.userPhone = userPhone;
+        this.userTel = userTel;
+        this.uName = uName;
+
+        this.anReqForm = anReqForm;
+        this.anDiagnosis = anDiagnosis;
+        this.anRecord = anRecord;
+        this.anFilm = anFilm;
+        this.anOther=anOther;
+
+
+    }
+}

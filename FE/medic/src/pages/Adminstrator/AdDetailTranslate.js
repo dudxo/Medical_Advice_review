@@ -5,7 +5,7 @@ import { useNavigate , useParams } from 'react-router-dom';
 
 export default function AdDetailTranslate(){
 
-    const {userId} = useParams();
+    const {index} = useParams();
     const [translateDetails, setTranslateDetails] = useState({});
 
     const [uname, setUname] = useState('')
@@ -50,19 +50,19 @@ export default function AdDetailTranslate(){
     useEffect(()=>{
         const fetchData = async() => {
             try{
-                const response = await axios.get('/analyze/details/${userId}');
+                const response = await axios.get(`/tr/detail/${index}`);
                 setTranslateDetails(response.data);
-
-                const anptssnum = response.data.anPtSsNum.split('-');
+                console.log("response",response);
+                const anptssnum = response.data.trPtSsNum.split('-');
                 setTrptssnum1(anptssnum[0]);
                 setTrptssnum2(anptssnum[1]);
                 
-
                
             }catch(error){
                 console.error('유저 정보 에러:',error);
             }
         }
+        fetchData();
     }, [])
     const btn_translate_list = async() => {
         navigate('/medic/adminstrator/adtranslatelistpage')
@@ -87,23 +87,23 @@ export default function AdDetailTranslate(){
                 <div className={translaterequest.row_box}>
                     <div className={translaterequest.title_box}>의뢰자명</div>
                     <div className={translaterequest.input_box}>
-                        <input type="text" disabled={true} value={uname}/>
+                        <input type="text" disabled={true} value={translateDetails.uname}/>
                     </div>
                 </div>
                 <div className={translaterequest.row_box}>
                     <div className={translaterequest.title_box}>일반전화</div>
                     <div className={translaterequest.input_box}>
-                        <input type="text" disabled={true} value={utel}/>
+                        <input type="text" disabled={true} value={translateDetails.userTel}/>
                     </div>
                     <div className={translaterequest.title_box} style={{borderLeft : '1px solid black'}}>휴대전화</div>
                     <div className={translaterequest.input_box}>
-                        <input type="text" disabled={true} value={uphone}/>
+                        <input type="text" disabled={true} value={translateDetails.userPhone}/>
                     </div>
                 </div>
                 <div className={translaterequest.row_box}>
                     <div className={translaterequest.title_box}>주소</div>
                     <div className={translaterequest.input_box}>
-                        <input type="text" disabled={true} value={uaddress}/>
+                        <input type="text" disabled={true} value={translateDetails.userAddress}/>
                     </div>
                 </div>
              </div>
@@ -129,7 +129,7 @@ export default function AdDetailTranslate(){
                 <div className={translaterequest.row_box}>
                     <div className={translaterequest.title_box}>진단과목</div>
                     <div className={translaterequest.input_box}>
-                        <input type="text" name="tr_ptsub" disabled={true} value={trPtSub}/>
+                        <input type="text" name="tr_ptsub" disabled={true} value={translateDetails.trPtSub}/>
                     </div>
                     <div className={translaterequest.title_box} style={{borderLeft : '1px solid black'}}>진단명</div>
                     <div className={translaterequest.input_box}>
@@ -141,7 +141,7 @@ export default function AdDetailTranslate(){
                         진단 사항
                     </div>
                     <div className={translaterequest.input_box} style={{width : '400px', height : 'auto'}}>
-                        <textarea cols="50" rows="10" disabled={true} value={translateDetails.trPtCmt}/>   
+                        <textarea cols="50" rows="10" disabled={true} value={translateDetails.trPtDiagContent}/>   
                         <div className={translaterequest.count_box}>
                             <span>/500</span>
                         </div>
