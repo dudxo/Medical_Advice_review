@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -21,11 +22,9 @@ public class AnDetailDto {
 
     private String anEtc;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date anRegDate;
+    private LocalDate anRegDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date anMdDate;
+    private LocalDate anMdDate;
 
     private String uId;
     private String uName;
@@ -47,7 +46,7 @@ public class AnDetailDto {
 
     @Builder
     public AnDetailDto(String anPtName,String anPtSsNum, String anPtSub, String anPtDiagnosis, String anPtDiagContent
-                        ,String anEtc, Date anRegDate, Date anMdDate,  String uId, String uName, String userAddress, String userPhone, String userTel,
+                        ,String anEtc, LocalDate anRegDate, LocalDate anMdDate,  String uId, String uName, String userAddress, String userPhone, String userTel,
                        String anReqForm, String anDiagnosis, String anRecord, String anFilm, String anOther){
         this.anPtName = anPtName;
         this.anPtSsNum = anPtSsNum;

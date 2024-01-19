@@ -2,6 +2,7 @@ package com.example.medic.manager.dto;
 
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -9,15 +10,15 @@ public class TranslateListDto {
     private Long trId;
     private String trPtDiagnosis;
 
-    private Date trRegDate;
+    private LocalDate trRegDate;
     private String uName;
-    private Date tamDate;
-    private Date trAnswerDate;
+    private LocalDate tamDate;
+    private LocalDate trAnswerDate;
     private String trProgressStatus;
     private String cName;
 
     public TranslateListDto(Long trId,  String trPtDiagnosis,
-                          Date trRegDate, String uName, Date tamDate, Date trAnswerDate,
+                          LocalDate trRegDate, String uName, LocalDate tamDate, LocalDate trAnswerDate,
                           String trProgressStatus, String cName) {
         this.trId = trId;
         this.trPtDiagnosis = trPtDiagnosis;

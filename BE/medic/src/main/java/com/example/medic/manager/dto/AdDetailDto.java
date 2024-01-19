@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.StringJoiner;
@@ -31,11 +33,10 @@ public class AdDetailDto {
 
     private String adEtc;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date adRegDate;
+    private LocalDate adRegDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date adMdDate;
+
+    private LocalDate adMdDate;
 
     private String uId;
     private String uName;
@@ -62,14 +63,13 @@ public class AdDetailDto {
 
     private String adAnswerContent;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date adAnswerDate;
+    private LocalDate adAnswerDate;
 
 
     @Builder
     public AdDetailDto(String adPtName, String adPtSsNum, String adPtSub, String adPtDiagnosis,
                        String adPtRec, String adPtCmt, String insurance, String insureDate,
-                       String insureName, String adEtc, Date adRegDate, Date adMdDate,
+                       String insureName, String adEtc, LocalDate adRegDate, LocalDate adMdDate,
                        String uId, String uName, String userAddress, String userPhone, String userTel,
                         String hospital, String admStart, String admEnd, String visitStart, String visitEnd, String treatCmt,
                        int diagRound , List<String> adQuestionContent, String adAnswerContent) {

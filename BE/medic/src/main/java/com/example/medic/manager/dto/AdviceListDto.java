@@ -3,6 +3,7 @@ package com.example.medic.manager.dto;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -11,15 +12,15 @@ public class AdviceListDto {
     private Long adId;
     private String adPtDiagnosis;
 
-    private Date adRegDate;
+    private LocalDate adRegDate;
     private String uName;
-    private Date admDate;
-    private Date adAnswerDate;
+    private LocalDate admDate;
+    private LocalDate adAnswerDate;
     private String admProgressStatus;
     private String cName;
 
     public AdviceListDto(Long adId,   String adPtDiagnosis,
-                                 Date adRegDate, String uName, Date amdDate, Date adAnswerDate,
+                                 LocalDate adRegDate, String uName, LocalDate amdDate, LocalDate adAnswerDate,
                             String admProgressStatus, String cName) {
         this.adId = adId;
         this.adPtDiagnosis = adPtDiagnosis;
