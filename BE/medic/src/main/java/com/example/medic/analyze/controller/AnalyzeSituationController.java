@@ -1,6 +1,5 @@
 package com.example.medic.analyze.controller;
 
-import com.example.medic.advice.dto.AdviceSituationDto;
 import com.example.medic.analyze.dto.AnalyzeSituationDto;
 import com.example.medic.analyze.service.AnalyzeSituationService;
 import com.example.medic.client.dto.ClientInfoDto;
@@ -24,9 +23,9 @@ public class AnalyzeSituationController {
 
     @GetMapping("/analyze/list")
     public ResponseEntity<List<AnalyzeSituationDto>> getAnalyzeSituationList(
-            @RequestParam(name = "adPtSub", required = false) String adPtSub,
-            @RequestParam(name = "adPtDiagnosis", required = false) String adPtDiagnosis,
-            @RequestParam(name = "adRegDate", required = false) Date adRegDate,
+            @RequestParam(name = "anPtSub", required = false) String anPtSub,
+            @RequestParam(name = "anPtDiagnosis", required = false) String anPtDiagnosis,
+            @RequestParam(name = "anRegDate", required = false) Date anRegDate,
             HttpServletRequest request) {
 
         HttpSession session = request.getSession();
@@ -36,7 +35,7 @@ public class AnalyzeSituationController {
                 .uId(uid)
                 .build();
         try {
-            List<AnalyzeSituationDto> analyzeList = analyzeSituationService.getAnalyzeSituationList(adPtSub, adPtDiagnosis, adRegDate, clientInfoDto);
+            List<AnalyzeSituationDto> analyzeList = analyzeSituationService.getAnalyzeSituationList(anPtSub, anPtDiagnosis, anRegDate, clientInfoDto);
             return ResponseEntity.ok(analyzeList);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -54,7 +53,7 @@ public class AnalyzeSituationController {
         }
 
         try {
-            // AdviceRequestService를 통해 자문 의뢰 건수 조회
+            // anviceRequestService를 통해 자문 의뢰 건수 조회
             int analyzeRequestCount = analyzeSituationService.getAnalyzeCount(currentUid);
             return ResponseEntity.ok(analyzeRequestCount);
         } catch (Exception e) {
