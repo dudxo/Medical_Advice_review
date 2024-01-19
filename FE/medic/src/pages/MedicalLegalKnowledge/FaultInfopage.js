@@ -10,7 +10,7 @@ export default function FaultInfopage(){
     useEffect(() => {
         const getFaultInfos = async () => {
           try {
-            const resp = await axios.get('/get');
+            const resp = await axios.get('/find/mnInfoall');
             const data = resp.data.reverse()
             setFaultInfos(data);
             console.log(resp);
@@ -30,11 +30,11 @@ export default function FaultInfopage(){
 
   const medicWrite = () => {
     
-    navigate('/medic/admin/knowledge/writefaultinfo');
+    navigate('/medic/medicalknowledge/faultinfo/faultinfowrite');
   };
 
   const goToDetailPage = (faultInfoId) => {
-    navigate(`/medic/knowledge/faultinfodetails`, {state : {
+    navigate(`/medic/medicalknowledge/faultinfo/faultinfodetails`, {state : {
       faultInfoDetail : faultInfos[faultInfoId],
       faultInfoId : faultInfoId,
       faultInfos : faultInfos
@@ -61,12 +61,13 @@ export default function FaultInfopage(){
                 <th className={faultInfo.faultInfo_th}>등록일</th>
               </tr>
             </thead>
-            <tbody>
-              {faultInfos.map((faultInfo, index) => (
+            <tbody> 
+              {faultInfos.map((medicalNegligenceInfo, index) => (
                 <tr key={index} onClick={() => goToDetailPage(index)}>
-                  <td className={faultInfo.faultInfo_td}>{faultInfo.fiId}</td>
-                  <td className={faultInfo.faultInfo_td}>{faultInfo.fiName}</td>
-                  <td className={faultInfo.faultInfo_td}>{formatDateString(faultInfo.fiRegDate)}</td>
+                  <td className={faultInfo.faultInfo_td}>{medicalNegligenceInfo.mnId}</td>
+                  <td className={faultInfo.faultInfo_td}>{medicalNegligenceInfo.mnName}</td>
+                  <td className={faultInfo.faultInfo_td}>{medicalNegligenceInfo.mnInstitution}</td>
+                  <td className={faultInfo.faultInfo_td}>{formatDateString(medicalNegligenceInfo.mnRegdate)}</td>
                 </tr>
               ))}
             </tbody>
