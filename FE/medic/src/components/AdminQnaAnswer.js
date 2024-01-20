@@ -53,7 +53,7 @@ export default function AdminQnaAnswer({qaId}) {
     return(
       <>
       {
-        isWriteAnswer ? <AdminWriteQnaAnswer qaId={qaId} isUpdateAnswer = {isUpdateAnswer} answer = {answer}/> : <div className={customerinquirydetails.answerwrap}>
+        isWriteAnswer ? <AdminWriteQnaAnswer qaId={qaId} answer = {answer}/> : <div className={customerinquirydetails.answerwrap}>
         <div className={writecustomerinquiry.inquiry_title}>
             <h1>
                 <i className="fa-solid fa-circle icon"></i>
