@@ -2,30 +2,51 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import writecustomerinquiry from '../../../css/WriteCustomerInquiry.module.css';
 import { useLocation, useNavigate } from "react-router-dom";
-import AdminWriteQnaAnswer from "../../../components/AdminWriteQnaAnswer.js";
 import AdminQnaAnswer from '../../../components/AdminQnaAnswer.js'
 import UserQnaAnswer from '../../../components/UserQnaAnswer.js'
+import { Cookies } from "react-cookie";
+import AdminWriteQnaAnswer from "../../../components/AdminWriteQnaAnswer.js";
 
 export default function CustomerInquiryDetail(){
     const [detaillist, setDetaillist] = useState({});
+    const cookies = new Cookies()
     const navigate = useNavigate();
     const location = useLocation();
     const qaId = location.state.qaId
+    const uRole = cookies.get('uRole')
+
+    const [isManager, setIsManager] = useState(false)
+    const [isWriteAnswer, setIsWriteAnswer] = useState(false)
 
     const getInquiryDetail = async()=>{
         try {
             const response = await axios.get(`/qna/qnaDetail/${qaId}`);
             setDetaillist(response.data);
-            console.log(response)
             console.log(response.data)
         } catch (err) {
             console.log(err);
         }
     }
+    useEffect(()=>{
+        if(uRole ==='manager'){
+            setIsManager(true)
+        }else{
+            setIsManager(false)
+        }
+    }, [])
+    useEffect(()=>{
+        if(location.state.isWriteAnswer){
+            setIsWriteAnswer(location.state.isWriteAnswer)
+        }
+    }, [])
     useEffect(() => {
         getInquiryDetail()
     }, []);
-
+    const formatDateString = (dateString) => {
+        const date = new Date(dateString);
+        const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+        return formattedDate;
+    };
     return (
         <>
             <div className={writecustomerinquiry.writeform}>
@@ -41,7 +62,7 @@ export default function CustomerInquiryDetail(){
                         제목
                     </div>
                     <div className={writecustomerinquiry.write_titleinputbox}>
-                        {/* {detaillist.qaTitle} */}
+                        {detaillist.qaTitle}
                     </div>
                 </div>
                 <div className={writecustomerinquiry.write_rowbox}>
@@ -50,7 +71,7 @@ export default function CustomerInquiryDetail(){
                             작성자
                         </div>
                         <div className={writecustomerinquiry.write_writerinfocontent}>
-                            {/* {detaillist.qaWriter} */}
+                            {detaillist.uid}
                         </div>
                     </div> 
                     <div className={writecustomerinquiry.write_writerinfo}>
@@ -58,7 +79,7 @@ export default function CustomerInquiryDetail(){
                             작성일
                         </div>
                         <div className={writecustomerinquiry.write_writerinfocontent}>
-                            {/* {detaillist.qaDate} */}
+                            {formatDateString(detaillist.qaDate)}
                         </div>
                     </div>     
                 </div>
@@ -67,12 +88,24 @@ export default function CustomerInquiryDetail(){
                         <h3 style={{paddingLeft: '20px'}}>문의내용</h3>
                     </div>
                     <div className={writecustomerinquiry.write_content} >
-                        {/* {detaillist.qaContent} */}
+                        {detaillist.qaQuestion}
                     </div>  
                 </div>
             </div>
             </div>
-            <AdminWriteQnaAnswer/>
+            {
+                <>
+                {
+                    isManager ?   isWriteAnswer ? 
+                    <AdminWriteQnaAnswer qaId = {qaId}/>   
+                    :          
+                    <AdminQnaAnswer qaId = {qaId}/>                    
+                    :
+                    <UserQnaAnswer qaId = {qaId} QuestionInfo = {detaillist}/>
+                }
+                   
+                </>
+            }
         </>
       );
 }

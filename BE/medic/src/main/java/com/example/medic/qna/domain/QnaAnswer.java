@@ -34,7 +34,7 @@ public class QnaAnswer {
     @JsonIgnore
     private Qna qna;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "m_Id")
     @JsonIgnore
     private Manager manager;

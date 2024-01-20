@@ -14,6 +14,8 @@ import com.example.medic.qna.repository.QnaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 @RequiredArgsConstructor
 public class QnaAnswerService {
@@ -23,11 +25,12 @@ public class QnaAnswerService {
 
     //문의 답변 조회
     public QnaAnswerResponseDto findQAnswer(Long qaid){
-        QnaAnswer qnaAnswer = qnaAnswerRepository.findAnswerIdByQaId(qaid).orElse(null);
-        String mId = qnaAnswerRepository.findMIdByQaId(qaid).get();
+        QnaAnswer qnaAnswer = qnaAnswerRepository.findAnswerByQaId(qaid).orElse(null);
         if(qnaAnswer == null){
             return null;
         }
+        String mId = qnaAnswerRepository.findMIdByQaId(qaid).get();
+
         QnaAnswerResponseDto qnaAnswerResponseDto = QnaAnswerResponseDto.builder()
                 .qaAnswerId(qnaAnswer.getQaAnswerId())
                 .qaAnswer(qnaAnswer.getQaAnswer())
@@ -39,7 +42,8 @@ public class QnaAnswerService {
 
     //문의 답변 저장
     public QnaAnswer saveQAnswer(String currentMid, Long qaId, QnaAnswerRequestDto qnaAnswerRequestDto){
-        Manager manager = managerRepository.findById(currentMid).get();
+        Manager manager = managerRepository.findById(currentMid)
+                .orElseThrow(() -> new NoSuchElementException("해당 Manager를 찾을 수 없습니다."));
         Qna qna = qnaRepository.findById(qaId).get();
 
         QnaAnswer qnaAnswer = QnaAnswer.builder()
@@ -60,13 +64,14 @@ public class QnaAnswerService {
             throw new IllegalArgumentException("등록된 답변이 없습니다.");
         }
         QnaAnswer updateQnaAnswer = qnaAnswer.builder()
+                .qaAnswerId(qaAsId)
                 .qaAnswerDate(qnaAnswerRequestDto.getQaAnswerDate())
                 .qaAnswer(qnaAnswerRequestDto.getQaAnswer())
                 .qna(qna)
                 .manager(manager)
                 .build();
 
-        return qnaAnswerRepository.save(qnaAnswer);
+        return qnaAnswerRepository.save(updateQnaAnswer);
     }
     //문의 답변 삭제
     public String deleteQAnswer(Long qaAsId){

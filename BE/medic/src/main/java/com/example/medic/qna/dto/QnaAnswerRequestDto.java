@@ -13,15 +13,11 @@ import java.util.Date;
 public class QnaAnswerRequestDto {
     private String qaAnswer;    // Qna 답변글
     private Date qaAnswerDate;
-    private Qna qna;
-    private Manager manager;
 
     public static QnaAnswerRequestDto form(QnaAnswer qnaAnswer){
         return QnaAnswerRequestDto.builder()
                 .qaAnswer(qnaAnswer.getQaAnswer())
                 .qaAnswerDate(qnaAnswer.getQaAnswerDate())
-                .qna(qnaAnswer.getQna())
-                .manager(qnaAnswer.getManager())
                 .build();
     }
 }

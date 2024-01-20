@@ -76,6 +76,7 @@ public class QnaService {
             throw new IllegalArgumentException("등록된 게시물이 없습니다.");
         }
         Qna updateQna = qna.builder()
+                .qaId(qna.getQaId())
                 .qaDate(qnaRequestDto.getQaDate())
                 .qaTitle(qnaRequestDto.getQaTitle())
                 .qaSecret(qnaRequestDto.isQaSecret())
@@ -87,6 +88,12 @@ public class QnaService {
     }
 
     public String deleteQpost(Long qaid){
+        Long qaAnswerId = qnaAnswerRepository.findAnswerIdByQaId(qaid).orElse(null);
+        if(qaAnswerId == null){
+            qnaRepository.deleteById(qaid);
+            return "삭제되었습니다.";
+        }
+        qnaAnswerRepository.deleteById(qaAnswerId);
         qnaRepository.deleteById(qaid);
         return "삭제되었습니다.";
     }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import writecustomerinquiry from '../../../css/WriteCustomerInquiry.module.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 
 export default function WriteCustomerInquiry() {
@@ -9,12 +9,28 @@ export default function WriteCustomerInquiry() {
     const [inquiryQuestion, setInquiryQuestion] = useState('')
     const [isSecret, setIsSecret] = useState(false)
     const [questionCount, setQuestioncount] = useState(0)
-    const [writer, setWriter] = useState('조아빈');
+    const [writer, setWriter] = useState('');
     const [secretPw, setSecretPw] = useState('')
     const [inputTitle, setInputTitle] = useState('')
     const [isEmpty, setIsEmpty] = useState(true)
+    const [isUpdate, setIsUpdate] = useState(false)
+    const [qaId, setQaId] = useState(null)
 
     const navigate = useNavigate();
+    const location = useLocation();
+    //로컬스토리지 이용해서 수정
+    useEffect(()=>{
+        if(location.state){
+            setIsUpdate(location.state.updateQuestion)
+            setQaId(location.state.qaId)
+            const QuestionInfo = location.state.QuestionInfo
+            setInputTitle(QuestionInfo.qaTitle)
+            setIsSecret(QuestionInfo.qaSecret)
+            setSecretPw(QuestionInfo.qaPw)
+            setInquiryQuestion(QuestionInfo.qaQuestion)
+        }
+    }, [])
+
     const cookie = new Cookies()
     useEffect(()=>{
         currentTimer();
@@ -38,7 +54,7 @@ export default function WriteCustomerInquiry() {
             'qaPw' : secretPw
         }
         try{
-            const response = await axios.post('/qna/writeqna', InquiryInfo)
+            await axios.post('/qna/writeqna', InquiryInfo)
             navigate('/medic/customer/customerInquiry');
         } catch(err){
             console.log(err)
@@ -58,6 +74,23 @@ export default function WriteCustomerInquiry() {
     const input_questiontitle = e => {
         setInputTitle(e.target.value)
     }
+    const btn_updatequestion = async(e) =>{
+        const today = new Date()
+        const updateqna = {
+            'qaTitle' : inputTitle,
+            'qaQuestion' : inquiryQuestion,
+            'qaDate' : today,
+            'qaSecret' : isSecret,
+            'qaPw' : secretPw
+        }
+        try{
+            await axios.put(`/qna/updateqna/${qaId}`, updateqna)
+            alert('수정되었습니다.')
+            navigate('/medic/customer/customerinquiry/')
+        } catch(err){
+            console.log(err)
+        }
+    }
   return (
     <div className={writecustomerinquiry.writeform}>
       <div className={writecustomerinquiry.inquiry_title}>
@@ -72,7 +105,7 @@ export default function WriteCustomerInquiry() {
                 제목
             </div>
             <div className={writecustomerinquiry.write_titleinputbox}>
-                <input className={writecustomerinquiry.write_titleinput} onChange={input_questiontitle}/>
+                <input className={writecustomerinquiry.write_titleinput} value={inputTitle} onChange={input_questiontitle}/>
             </div>
         </div>
         <div className={writecustomerinquiry.write_rowbox}>
@@ -99,6 +132,7 @@ export default function WriteCustomerInquiry() {
                 <div className={writecustomerinquiry.write_writerinfocontent} style={{paddingLeft : '5px'}}>
                     <input
                         type='checkbox'
+                        checked = {isSecret}
                         onChange={e => {
                             setIsSecret(isSecret => !isSecret);
                             if (!isSecret) {
@@ -110,6 +144,7 @@ export default function WriteCustomerInquiry() {
                         type='password'
                         maxLength={4}
                         disabled={!isSecret}
+                        value={secretPw}
                         style={{
                             height : '20px'
                         }}
@@ -131,6 +166,7 @@ export default function WriteCustomerInquiry() {
             className={writecustomerinquiry.write_content} 
             cols={60} 
             rows={50} 
+            value={inquiryQuestion}
             onChange={e => {
                 setInquiryQuestion(e.target.value)
                 setQuestioncount(e.target.value.length)
@@ -141,7 +177,18 @@ export default function WriteCustomerInquiry() {
         </div>
       </div>
       <div className={writecustomerinquiry.btn_writequestionbox}>
-        <button className={writecustomerinquiry.btn_writequestion} disabled={isEmpty} onClick={btn_writequestion}>작성</button>
+        {
+            <>
+            {
+                isUpdate ?
+                <button className={writecustomerinquiry.btn_writequestion} disabled={isEmpty} onClick={btn_updatequestion}>수정</button>
+                :
+                <button className={writecustomerinquiry.btn_writequestion} disabled={isEmpty} onClick={btn_writequestion}>작성</button>
+            }
+               
+            </>
+        }
+        
         <button className={writecustomerinquiry.btn_writequestion} onClick={btn_questionlist}>목록</button>
       </div>
     </div>
