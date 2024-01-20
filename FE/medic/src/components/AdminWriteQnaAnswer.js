@@ -1,30 +1,71 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import customerinquirydetails from '../css/CustomerInquiryDetails.module.css'
 import writecustomerinquiry from '../css/WriteCustomerInquiry.module.css';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import AdminQnaAnswer from "./AdminQnaAnswer";
 
-export default function AdminWriteQnaAnswer() {
-    const [answer, setAnswer] = useState("");
+export default function AdminWriteQnaAnswer({qaId, answer}) {
+    const [qaAnswer, setQaAnswer] = useState("");
+    const [isAnswer, setIsAnswer] = useState(false)
     const navigate = useNavigate()
 
+    useEffect(() => {
+        if(answer){
+            setQaAnswer(answer.qaAnswer)
+        }
+    }, [])
     const handleAnswerChange = (e) => {
-        setAnswer(e.target.value);
+        setQaAnswer(e.target.value);
       };
-    
+    const currentTimer = () => {
+        const date = new Date();
+        const year = date.getFullYear()
+        const month = String(date.getMonth() + 1).slice(-2);;
+        const day = String(date.getDate()).slice(-2);
+        const today = year + '-' + month + '-' + day;
+        return today
+    };
       const btn_post_answer = async() => {
-        const answer = {'qaAnswer' : answer}
+        const today = new Date()
+        const Adminanswer = {
+            'qaAnswer' : qaAnswer,
+            'qaAnswerDate' : today
+        }
         try{
-          const response = await axios.post('/sadf/', answer)
+          if(window.confirm('답변을 작성하시겠습니까?')){
+            await axios.post(`/qnaAnswer/writeAnswer/${qaId}`, Adminanswer)
+            alert('작성되었습니다.')
+          }
+          setIsAnswer(true)
         } catch(err){
           console.log(err)
         }
       };
+      const btn_update_answer = async() => {
+        const today = new Date()
+        const AdminUpdateAnswer = {
+            'qaAnswer' : qaAnswer,
+            'qaAnswerDate' : today
+        }
+        try{
+            if(window.confirm('답변을 수정하시겠습니까?')){
+              await axios.put(`/qnaAnswer/updateAnswer/${qaId}/${answer.qaAnswerId}`, AdminUpdateAnswer)
+              alert('작성되었습니다.')
+            }
+            setIsAnswer(true)
+          } catch(err){
+            console.log(err)
+          }
+      }
       const btn_goto_inquirylist = e => {
         navigate('/medic/customer/customerInquiry')
       }
     return(
-        <div className={customerinquirydetails.answerwrap}>
+        <>
+            {
+                isAnswer ? <AdminQnaAnswer qaId={qaId}/> :
+                <div className={customerinquirydetails.answerwrap}>
             <div className={writecustomerinquiry.inquiry_title}>
                 <h1>
                     <i className="fa-solid fa-circle icon"></i>
@@ -35,15 +76,27 @@ export default function AdminWriteQnaAnswer() {
                 <textarea
                     className={customerinquirydetails.answerInput}
                     placeholder="답변을 작성하세요..."
+                    value={qaAnswer}
                     onChange={handleAnswerChange}
                 />
                 <div className={customerinquirydetails.answerButtonbox}>
-                    <button 
+                    {
+                        answer 
+                        ? 
+                        <button 
+                        className={customerinquirydetails.answerButton}
+                        onClick={btn_update_answer}
+                        >
+                        답변 수정
+                        </button>
+                        :
+                        <button 
                         className={customerinquirydetails.answerButton}
                         onClick={btn_post_answer}
-                    >
+                        >
                         답변 등록
-                    </button>
+                        </button>
+                    }
                     <button
                         className={customerinquirydetails.answerButton}
                         onClick={btn_goto_inquirylist}
@@ -53,5 +106,8 @@ export default function AdminWriteQnaAnswer() {
                 </div>
             </div>
         </div>
+            }
+        </>
+        
     )
 }

@@ -1,90 +1,130 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import joinpage from '../../css/Joinpage.module.css'
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Cookies } from "react-cookie";
 
 
 export default function ModifyMyInfopage(){
-    const [uId, setUId] = useState('')
-    const [uRole, setURole] = useState('');   //역할
-    const [uPw, setUPw] = useState('')      //pw
-    const [uName, setUName] = useState('') //name
-    const [uEmail, setUEmail] = useState('') //email
-    const [userTel, setUserTel] = useState('') //tel
-    const [userPhone, setUserPhone] = useState('') //
-    const [zipcodeNum, setZipcodeNum] = useState('')
-    const [zipcode, setZipcode] = useState('')
-    const [detailAddress, setDetailAddress] = useState('')
-    const [userAddress, setUserAddress] = useState('')
+    const location = useLocation()
+    const myInfo = location.state.myInfo
 
-    const [company, setCompany] = useState('') //업체명
-    const [ceo, setCeo] = useState('') //대표자명
-    const [cpTel, setCpTel] = useState('') //회사 전화번호
-    const [cpFx, setCpFx] = useState('') //회사 팩스번호
-    const [cpNum, setCpNum] = useState('') //회사 사업자번호
-    const [cpZipcodeNum, setCpZipcodeNum] = useState('')
-    const [cpZipcode, setCpZipcode] = useState('')
-    const [detailCpAddress, setDetailCpAddress] = useState('')
-    const [cpAddress, setCpAddress] = useState('') //회사 주소
+    const [uId, setUId] = useState(myInfo.uId)
+    const [uRole, setURole] = useState(myInfo.urole);   //역할
+    const [uPw, setUPw] = useState(myInfo.uPw)      //pw
+    const [uName, setUName] = useState(myInfo.uName) //name
+    const [uEmail, setUEmail] = useState(myInfo.uEmail) //email
+    const [userTel, setUserTel] = useState(myInfo.userTel) //tel
+    const [userPhone, setUserPhone] = useState(myInfo.userPhone) //
+    const [zipcodeNum, setZipcodeNum] = useState(myInfo.zipcodeNum)
+    const [zipcode, setZipcode] = useState(myInfo.zipCode)
+    const [detailAddress, setDetailAddress] = useState(myInfo.detailAddress)
+    const [userAddress, setUserAddress] = useState(myInfo.userAddress)
+
+    const [company, setCompany] = useState(myInfo.company) //업체명
+    const [ceo, setCeo] = useState(myInfo.ceo) //대표자명
+    const [cpTel, setCpTel] = useState(myInfo.cpTel) //회사 전화번호
+    const [cpFx, setCpFx] = useState(myInfo.cpFx) //회사 팩스번호
+    const [cpNum, setCpNum] = useState(myInfo.cpNum) //회사 사업자번호
+    const [cpZipcodeNum, setCpZipcodeNum] = useState(myInfo.cpZipcodeNum)
+    const [cpZipcode, setCpZipcode] = useState(myInfo.cpZipcode)
+    const [detailCpAddress, setDetailCpAddress] = useState(myInfo.detailCpAddress)
+    const [cpAddress, setCpAddress] = useState(myInfo.cpAddress) //회사 주소
     const [infoEmpty, setInfoEmpty] = useState(false)
 
     const navigate = useNavigate()
     const cookie = new Cookies()
 
-    const getAddress = (uadd, cadd) => {
-        if (uadd && cadd) {
-            const uAdd = uadd.split(' ');
-            const cAdd = cadd.split(' ');
-            console.log(uAdd, cAdd)
-            setZipcodeNum(uAdd[0]);
-            setZipcode(uAdd[1]);
-            setDetailAddress(uAdd[2]);
-            setCpZipcodeNum(cAdd[0]);
-            setCpZipcode(cAdd[1]);
-            setDetailCpAddress(cAdd[2]);
+    // 유저 역할 검사
+    const [generalUser, setGeneralUser] = useState(false)
+    const [insuranceCo, setInsuranceCo] = useState(false)
+    const [deductionSc, setDeductionSc] = useState(false)
+    const [adjusterCp, setAdjusterCp] = useState(false)
+    const [adjusterOc, setAdjusterOc] = useState(false)
+    const [lawfirm, setLawfirm] = useState(false)
+    const [laborCp, setlaborCp] = useState(false)
+
+    
+    const selectUserRole = (user_role) => {
+        switch (user_role) {
+            case 'general_user':
+                setGeneralUser(true)
+                setInsuranceCo(false)
+                setDeductionSc(false)
+                setAdjusterCp(false)
+                setAdjusterOc(false)
+                setLawfirm(false)
+                setlaborCp(false)
+                break;
+            case 'insurance_co':
+                setGeneralUser(false)
+                setInsuranceCo(true)
+                setDeductionSc(false)
+                setAdjusterCp(false)
+                setAdjusterOc(false)
+                setLawfirm(false)
+                setlaborCp(false)
+                break;
+            case 'deduction_sc':
+                setGeneralUser(false)
+                setInsuranceCo(false)
+                setDeductionSc(true)
+                setAdjusterCp(false)
+                setAdjusterOc(false)
+                setLawfirm(false)
+                setlaborCp(false)
+                break;
+            case 'adjuster_cp':
+                setGeneralUser(false)
+                setInsuranceCo(false)
+                setDeductionSc(false)
+                setAdjusterCp(true)
+                setAdjusterOc(false)
+                setLawfirm(false)
+                setlaborCp(false)
+                break;
+            case 'adjuster_oc':
+                setGeneralUser(false)
+                setInsuranceCo(false)
+                setDeductionSc(false)
+                setAdjusterCp(false)
+                setAdjusterOc(true)
+                setLawfirm(false)
+                setlaborCp(false)
+                break;
+            case 'lawfirm':
+                setGeneralUser(false)
+                setInsuranceCo(false)
+                setDeductionSc(false)
+                setAdjusterCp(false)
+                setAdjusterOc(false)
+                setLawfirm(true)
+                setlaborCp(false)
+                break;
+            case 'labor_cp':
+                setGeneralUser(false)
+                setInsuranceCo(false)
+                setDeductionSc(false)
+                setAdjusterCp(false)
+                setAdjusterOc(false)
+                setLawfirm(false)
+                setlaborCp(true)
+                break;
+            default:
+                break;
         }
-    }
-    // const selectUserRole = (user_role) => {
-    //     switch (user_role) {
-    //         case 'general_user':
-    //             setURole('general_user');
-    //             break;
-    //         case 'insurance_co':
-    //             setURole('insurance_co');
-    //             break;
-    //         case 'deduction_sc':
-    //             setURole('deduction_sc');
-    //             break;
-    //         case 'adjuster_cp':
-    //             setURole('adjuster_cp');
-    //             break;
-    //         case 'adjuster_oc':
-    //             setURole('adjuster_oc');
-    //             break;
-    //         case 'lawfirm':
-    //             setURole('lawfirm');
-    //             break;
-    //         case 'labor_cp':
-    //             setURole('labor_cp');
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // };
+    };
     const getMyInfo = async () => {
         try {
             const response = await axios.get('/userInfoAll');
             const myInfo = response.data;
             console.log(myInfo);
             setUId(myInfo.uid);
-            setURole(myInfo.uRole);
             setUPw(myInfo.upw);
             setUName(myInfo.name);
             setUEmail(myInfo.uemail);
             setUserTel(myInfo.userTel);
             setUserPhone(myInfo.userPhone);
-            getAddress(myInfo.userAddress, myInfo.cpAddress);
             setCompany(myInfo.company);
             setCeo(myInfo.ceo);
             setCpTel(myInfo.cpTel);
@@ -97,6 +137,7 @@ export default function ModifyMyInfopage(){
     
     useEffect(()=>{
         getMyInfo();
+        selectUserRole(myInfo.urole);
     }, [])
     
     useEffect(()=>{
@@ -108,8 +149,8 @@ export default function ModifyMyInfopage(){
     }, [uRole,  uPw,  uEmail,  userTel,  userPhone,  userAddress,  company,  ceo,  cpTel,  cpFx,  cpNum,  cpAddress])
 
     const radio_select_userRole = e => {
+        selectUserRole(e.target.value)
         setURole(e.target.value)
-        console.log(e.target.value)
     }
     const changeMyPw = e => {
         navigate('/medic/mypage/modifymyinfo/modifyMyPw', {state:{upw : uPw}})
@@ -131,6 +172,7 @@ export default function ModifyMyInfopage(){
     }
     const input_details_zipcode = e => {
         const uadd = zipcodeNum + " " + zipcode + " " + e.target.value
+        setDetailAddress(e.target.value)
         setUserAddress(uadd)
     }
     const input_cpname = e => {
@@ -156,6 +198,7 @@ export default function ModifyMyInfopage(){
     }
     const input_cp_details_zipcode = e => {
         const cpadd = cpZipcodeNum + " " + cpZipcode + " " + e.target.value
+        setDetailCpAddress(e.target.value)
         setCpAddress(cpadd)
     }
     const user_modify = async(userInfo) => {
@@ -169,22 +212,24 @@ export default function ModifyMyInfopage(){
     }
 
     const btn_progrm_modify = e => {
-        console.log(1)
-        e.preventDefault()
-        const userInfo = {
-            'uRole' : uRole,
-            'uEmail' : uEmail,
-            'userTel' : userTel,
-            'userPhone' : userPhone,
-            'userAddress' : userAddress,
-            'company' : company,
-            'ceo' : ceo,
-            'cpTel' : cpTel,
-            'cpFx' : cpFx,
-            'cpNum' : cpNum,
-            'cpAddress' : cpAddress
-        } 
-        user_modify(userInfo)
+        if(window.confirm("수정하시겠습니까?")){
+            e.preventDefault()
+            const userInfo = {
+                'uRole' : uRole,
+                'uEmail' : uEmail,
+                'userTel' : userTel,
+                'userPhone' : userPhone,
+                'userAddress' : userAddress,
+                'company' : company,
+                'ceo' : ceo,
+                'cpTel' : cpTel,
+                'cpFx' : cpFx,
+                'cpNum' : cpNum,
+                'cpAddress' : cpAddress
+            } 
+            user_modify(userInfo)
+        }
+        
     }
     const btn_progrm_deleteuser = async() => {
         try{
@@ -223,13 +268,13 @@ export default function ModifyMyInfopage(){
                             회원구분
                         </td>
                         <td colSpan="3" className={joinpage.joinpage_td}>
-                        <input type="radio" name="user_role" value="general_user" checked={uRole === 'general_user'} onChange={radio_select_userRole} />일반회원
-                        <input type="radio" name="user_role" value="insurance_co" checked={uRole === 'insurance_co'} onChange={radio_select_userRole} />보험사
-                        <input type="radio" name="user_role" value="deduction_sc" checked={uRole === 'deduction_sc'} onChange={radio_select_userRole} />공제회
-                        <input type="radio" name="user_role" value="adjuster_cp" checked={uRole === 'adjuster_cp'} onChange={radio_select_userRole} />손해사정법인
-                        <input type="radio" name="user_role" value="adjuster_oc" checked={uRole === 'adjuster_oc'} onChange={radio_select_userRole} />손해사정사무소
-                        <input type="radio" name="user_role" value="lawfirm" checked={uRole === 'lawfirm'} onChange={radio_select_userRole} />법무법인
-                        <input type="radio" name="user_role" value="labor_cp" checked={uRole === 'labor_cp'} onChange={radio_select_userRole} />노무법인
+                        <input type="radio" name="user_role" value="general_user" checked={generalUser} onChange={radio_select_userRole} />일반회원
+                        <input type="radio" name="user_role" value="insurance_co" checked={insuranceCo} onChange={radio_select_userRole} />보험사
+                        <input type="radio" name="user_role" value="deduction_sc" checked={deductionSc} onChange={radio_select_userRole} />공제회
+                        <input type="radio" name="user_role" value="adjuster_cp" checked={adjusterCp} onChange={radio_select_userRole} />손해사정법인
+                        <input type="radio" name="user_role" value="adjuster_oc" checked={adjusterOc} onChange={radio_select_userRole} />손해사정사무소
+                        <input type="radio" name="user_role" value="lawfirm" checked={lawfirm} onChange={radio_select_userRole} />법무법인
+                        <input type="radio" name="user_role" value="labor_cp" checked={laborCp} onChange={radio_select_userRole} />노무법인
                         </td>
                     </tr>
 

@@ -37,8 +37,8 @@ public class Manager {
     @NotNull
     private String mgrPhone;
 
-    @OneToOne(mappedBy = "manager")
-    private QnaAnswer qnaAnswer;
+    @OneToMany(mappedBy = "manager")
+    private List<QnaAnswer> qnaAnswer;
 
     @OneToMany(mappedBy = "manager")
     private List<Faq> faqs = new ArrayList<>();

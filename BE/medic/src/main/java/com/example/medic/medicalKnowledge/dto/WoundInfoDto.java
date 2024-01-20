@@ -1,7 +1,6 @@
 package com.example.medic.medicalKnowledge.dto;
 
 import com.example.medic.manager.domain.Manager;
-import com.example.medic.medicalKnowledge.domain.TrafficAccidentInfo;
 import com.example.medic.medicalKnowledge.domain.WoundInfo;
 import lombok.Builder;
 import lombok.Data;

@@ -50,6 +50,7 @@ public class LoginController {
             HttpSession session = httpServletRequest.getSession(true);
             // 세션에 userId를 넣어줌
             String uId = client.getUId();
+            String uRole = client.getURole();
             session.setAttribute("uId", client.getUId());
             session.setMaxInactiveInterval(1800);
 
@@ -57,8 +58,13 @@ public class LoginController {
 
             // 쿠키에 uId 설정
             Cookie uIdCookie = new Cookie("uId", uId);
+            Cookie uRoleCookie = new Cookie("uRole", uRole);
+
             uIdCookie.setMaxAge(1800);
+            uRoleCookie.setMaxAge(1800);
+
             httpServletResponse.addCookie(uIdCookie);
+            httpServletResponse.addCookie(uRoleCookie);
 
             return new ResponseEntity<>("로그인 성공 - 세션 ID: " + session.getId(), HttpStatus.OK);
         } catch (NotCorrespondingIdException e) {
