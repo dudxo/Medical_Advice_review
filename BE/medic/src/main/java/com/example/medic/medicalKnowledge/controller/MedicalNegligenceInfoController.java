@@ -68,4 +68,17 @@ public class MedicalNegligenceInfoController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    /**
+     * 검색 기능
+     */
+    @GetMapping("/search/mninfo")
+    public ResponseEntity<List<MedicalNegligenceInfo>> searchMedicalNegligenceInfo(@RequestParam String keyword) {
+        try {
+            List<MedicalNegligenceInfo> searchResults = medicalNegligenceInfoService.searchMedicalNegligenceInfo(keyword);
+            return ResponseEntity.ok(searchResults);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
