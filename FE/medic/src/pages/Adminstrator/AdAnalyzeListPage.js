@@ -3,7 +3,6 @@ import axios from 'axios';
 import ad from '../../css/AdAdviceListPage.module.css';
 import { useNavigate } from "react-router-dom";
 
-
 export default function AdAnalyzeListPage() {
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -11,13 +10,16 @@ export default function AdAnalyzeListPage() {
   const [assignmentDate, setAssignmentDate] = useState('');
   const [responseDate, setResponseDate] = useState('');
   const [anProgressStatus, setAnProgressStatus] = useState('자문의뢰중');
+  const itemsPerPage = 7;
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/analyze/all');
+        console.log("res",response);
         setAllAnalyzeList(response.data);
-        console.log('resoponse',response);
+   
       } catch (error) {
         console.error('분석 리스트를 가져오는 도중 에러 발생:', error);
       }
@@ -26,43 +28,64 @@ export default function AdAnalyzeListPage() {
     fetchData();
   }, []);
 
-   const btn_detail_analyze = async(index) => {
-    navigate(`/medic/adminstrator/andetail/${index}`)
-}
-const btn_set_doctor = (index) => {
-  navigate(`/medic/adminstrator/andocset/${index}`);
-}
+  const handleInputChange = (index, field, value) => {
+    const updatedAnalyzeList = allAnalyzeList.map((analyze, i) => {
+      if (i === (currentPage - 1) * itemsPerPage + index) {
+        return {
+          ...analyze,
+          [field]: value,
+        };
+      }
+      return analyze;
+    });
+
+    setAllAnalyzeList(updatedAnalyzeList);
+  };
+
+  const calculateNo = (index) => {
+    return (currentPage - 1) * itemsPerPage + index + 1;
+  };
+
+  const btn_detail_analyze = async (index) => {
+    navigate(`/medic/adminstrator/andetail/${index}`);
+  };
+
+  const btn_set_doctor = (index) => {
+    navigate(`/medic/adminstrator/andocset/${index}`);
+  };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-
+  
     return `${year}-${month}-${day}`;
   };
-
- 
-
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
 
   const handleUpdateField = async () => {
     try {
-      const updateAnalyzeList = allAnalyzeList.map(analyze=>({
-        anId: analyze.anId,
-        adMdDate : assignmentDate,
-        anAnswerDate: responseDate,
-        anProgressStatus : anProgressStatus
+      const updateAnalyzeList = allAnalyzeList.map((analyze, i) => {
+        if (i === (currentPage - 1) * itemsPerPage) {
+          return {
+            ...analyze,
+            adMdDate : formatDate(responseDate),
+            anAnswerDate: responseDate,
+            anProgressStatus: anProgressStatus,
+          };
+        }
+        return analyze;
+      });
 
-      }))
-     const response = await axios.put(`/an/update`,updateAnalyzeList)
+      console.log('Request Data:', updateAnalyzeList);
+
+      const response = await axios.put(`/an/update`, updateAnalyzeList);
       navigate('/');
-
     } catch (error) {
       console.error(`분석 업데이트 중 에러 발생:`, error);
-   
     }
   };
 
@@ -88,29 +111,26 @@ const btn_set_doctor = (index) => {
           </tr>
         </thead>
         <tbody>
-          {[...Array(7)].map((_, rowIndex) => (
-            <tr key={rowIndex}>
-              {allAnalyzeList.map((analyze, index) => (
-                rowIndex === index && (
-                  <React.Fragment key={index}>
-                    <td className={ad.ad_td} onClick={()=>btn_detail_analyze(index+1)}>{index + 1}</td>
-                    <td className={ad.ad_td}>{analyze.uname}</td>
-                    <td className={ad.ad_td}>{analyze.anPtDiagnosis}</td>
-                    <td className={ad.ad_td}>{formatDate(analyze.anRegDate)}</td>
-                    <td className={ad.ad_td}>
-                    <input
-                    type="date"
-                    value={formatDate(analyze.adMdDate)}
-                    onChange={(e) => setAssignmentDate(e.target.value)}
+          {allAnalyzeList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((analyze, index) => (
+            <tr key={index}>
+              <td className={ad.ad_td} onClick={() => btn_detail_analyze(calculateNo(index))}>{calculateNo(index)}</td>
+              <td className={ad.ad_td}>{analyze.uname}</td>
+              <td className={ad.ad_td}>{analyze.anPtDiagnosis}</td>
+              <td className={ad.ad_td}>{formatDate(analyze.anRegDate)}</td>
+              <td className={ad.ad_td}>
+                <input
+                  type="date"
+                  value={formatDate(analyze.adMdDate)}
+                  onChange={(e) => handleInputChange(index, 'adMdDate', e.target.value)}
                 />
               </td>
               <td className={ad.ad_td}>
-              <input
-                type="date"
-                value={formatDate(analyze.anAnswerDate)}
-                disabled ={true}
-                onChange={(e) => setResponseDate(formatDate(e.target.value))}
-/>
+                <input
+                  type="date"
+                  value={formatDate(analyze.anAnswerDate)}
+                  disabled={true}
+                  onChange={(e) => setResponseDate(formatDate(e.target.value))}
+                />
               </td>
               <td className={ad.ad_td}>
                 <select
@@ -124,11 +144,8 @@ const btn_set_doctor = (index) => {
                 </select>
               </td>
               <td className={ad.ad_td}>
-              <input type='text' value={analyze.cname} onClick={()=>btn_set_doctor(index+1)} />
+                <input type='text' value={analyze.cname} onClick={() => btn_set_doctor(calculateNo(index))} />
               </td>
-                  </React.Fragment>
-                )
-              ))}
             </tr>
           ))}
         </tbody>
@@ -137,7 +154,7 @@ const btn_set_doctor = (index) => {
         <button className={ad.ad_paginationButton} onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
           ◀
         </button>
-        {[...Array(10)].map((_, index) => (
+        {[...Array(Math.ceil(allAnalyzeList.length / itemsPerPage))].map((_, index) => (
           <button key={index} className={ad.ad_paginationButton} onClick={() => handlePageChange(index + 1)} disabled={currentPage === index + 1}>
             {index + 1}
           </button>
@@ -150,3 +167,4 @@ const btn_set_doctor = (index) => {
     </div>
   );
 }
+ 

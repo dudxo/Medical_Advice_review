@@ -50,14 +50,15 @@ public class AdviceAssignment {
 
         }
 
-    @Builder(toBuilder = true)
-    public AdviceAssignment(LocalDate admDate, Consultative consultative, String admProgressStatus, Long admId,
-                            AdviceRequestList adviceRequestList) {
+
+    public void updateStatusAndAdmDate(LocalDate admDate, String admProgressStatus) {
         this.admDate = admDate;
-        this.consultative = consultative;
         this.admProgressStatus = admProgressStatus;
-        this.adviceRequestList = adviceRequestList;
-        this.admId = admId;
+
+    }
+    public void updateDoc( Consultative consultative
+                                       ) {
+        this.consultative = consultative;
 
     }
 

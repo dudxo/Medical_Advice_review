@@ -41,14 +41,9 @@ public class AnalyzeRequest {
         this.analyzeRequestList = analyzeRequestList;
     }
 
-    @Builder(toBuilder = true)
-    public AnalyzeRequest(String anQuestionContent, String anAnswerContent, LocalDate anAnswerDate,
-                          AnalyzeRequestList analyzeRequestList, Long anQid) {
-        this.anQuestionContent = anQuestionContent;
-        this.anAnswerContent = anAnswerContent;
+
+    public void updateAdAnswerDate(LocalDate anAnswerDate) {
         this.anAnswerDate = anAnswerDate;
-        this.analyzeRequestList = analyzeRequestList;
-        this.anQid = anQid;
     }
 
 }

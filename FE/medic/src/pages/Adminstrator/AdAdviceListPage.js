@@ -9,23 +9,24 @@ export default function AdAdviceListPage() {
   const [assignmentDate, setAssignmentDate] = useState('');
   const [responseDate, setResponseDate] = useState('');
   const [admProgressStatus, setProgressStatus] = useState('자문의뢰중');
+  const itemsPerPage = 7;
 
   const navigate = useNavigate();
-  const btn_detail_advice = async(index) => {
-    navigate(`/medic/adminstrator/addetail/${index}`)
-}
 
-const btn_set_doctor = (index) => {
-  navigate(`/medic/adminstrator/docset/${index}`);
-}
+  const btn_detail_advice = async(index) => {
+    navigate(`/medic/adminstrator/addetail/${index}`);
+  };
+
+  const btn_set_doctor = (index) => {
+    navigate(`/medic/adminstrator/docset/${index}`);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/advice/all');
         console.log(response);
-       
-         setAllAdviceList(response.data);
+        setAllAdviceList(response.data);
       } catch (error) {
         console.error('자문 리스트를 가져오는 도중 에러 발생:', error);
       }
@@ -43,11 +44,26 @@ const btn_set_doctor = (index) => {
     return `${year}-${month}-${day}`;
   };
 
+  const handleInputChange = (index, field, value) => {
+    const updatedAdviceList = allAdviceList.map((advice, i) => {
+      if (i === (currentPage - 1) * itemsPerPage + index) {
+        return {
+          ...advice,
+          [field]: value,
+        };
+      }
+      return advice;
+    });
   
-  
+    setAllAdviceList(updatedAdviceList);
+  };
   const parseDateString = (formattedDate) => {
     const [year, month, day] = formattedDate.split('-');
     return new Date(year, month - 1, day);
+  };
+
+  const calculateNo = (index) => {
+    return (currentPage - 1) * itemsPerPage + index + 1;
   };
 
   const handlePageChange = (newPage) => {
@@ -56,17 +72,24 @@ const btn_set_doctor = (index) => {
 
   const handleUpdateField = async () => {
     try {
-      const updatedAdviceList = allAdviceList.map(advice => ({
-        adId: advice.adId,
-        adAnswerDate: responseDate,
-        admDate: assignmentDate,
-        admProgressStatus: admProgressStatus
-      }));
-  
+      const updatedAdviceList = allAdviceList.map((advice, i) => {
+        if (i === currentPage - 2) {
+          return {
+            ...advice,
+            adAnswerDate: responseDate,
+            admDate: assignmentDate,
+            admProgressStatus: admProgressStatus
+          };
+        }
+        return advice;
+      });
+
+      console.log('Request Data:', updatedAdviceList);
+
       const response = await axios.put('/advice/update/', updatedAdviceList);
-  
-      console.log('Update response:', response.data,assignmentDate);
-  
+
+      console.log('Update response:', response.data, assignmentDate);
+
       navigate('/');
     } catch (error) {
       console.error(`자문 업데이트 중 에러 발생:`, error);
@@ -95,14 +118,10 @@ const btn_set_doctor = (index) => {
           </tr>
         </thead>
         <tbody>
-          {[...Array(7)].map((_,rowIndex)=>(
-            <tr key={rowIndex}>
-          {allAdviceList.map((advice, index) => (
-
-            rowIndex === index &&(
-              <React.Fragment key={index}>
-                 <td className={ad.ad_td} onClick={() => btn_detail_advice(index+1)}>
-                {index + 1}
+          {allAdviceList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((advice, index) => (
+            <tr key={index}>
+              <td className={ad.ad_td} onClick={() => btn_detail_advice(calculateNo(index))}>
+                {calculateNo(index)}
               </td>
               <td className={ad.ad_td}>{advice.uname}</td>
               <td className={ad.ad_td}>{advice.adPtDiagnosis}</td>
@@ -110,21 +129,20 @@ const btn_set_doctor = (index) => {
               <td className={ad.ad_td}>
                 <input
                   type="date"
-                  value={advice.amdDate}
-                  onChange={(e) => setAssignmentDate(e.target.value)}
+                  value={formatDate(advice.admDate)}
+                  onChange={(e) => handleInputChange(index, 'admDate', e.target.value)}
                 />
               </td>
               <td className={ad.ad_td}>
-              <input
-                type="date"
-                value={formatDate(advice.adAnswerDate)}
-                onChange={(e) => setResponseDate(formatDate(e.target.value))}
-/>
+                <input
+                  type="date"
+                  value={formatDate(advice.adAnswerDate)}
+                />
               </td>
               <td className={ad.ad_td}>
                 <select
                   value={advice.admProgressStatus}
-                  onChange={(e) => setProgressStatus(e.target.value)}
+                  onChange={(e) => handleInputChange(index, 'admProgressStatus', e.target.value)}
                 >
                   <option value="자문의뢰중">자문의뢰중</option>
                   <option value="자문배정중">자문배정중</option>
@@ -132,13 +150,9 @@ const btn_set_doctor = (index) => {
                   <option value="자문완료">자문완료</option>
                 </select>
               </td>
-              
               <td className={ad.ad_td}>
-              <input type='text' value={advice.cname} onClick={()=>btn_set_doctor(index+1)} />
+                <input type='text' value={advice.cname} onClick={() => btn_set_doctor(calculateNo(index))} />
               </td>
-              </React.Fragment>
-              )
-            ))}
             </tr>
           ))}
         </tbody>
@@ -151,7 +165,7 @@ const btn_set_doctor = (index) => {
         >
           ◀
         </button>
-        {[...Array(10)].map((_, index) => (
+        {[...Array(Math.ceil(allAdviceList.length / itemsPerPage))].map((_, index) => (
           <button
             key={index}
             className={ad.ad_paginationButton}
@@ -168,7 +182,7 @@ const btn_set_doctor = (index) => {
           ▶
         </button>
       </div>
-      <button onClick={() => handleUpdateField(currentPage - 1)}>저장</button>
+      <button onClick={handleUpdateField}>저장</button>
     </div>
   );
 }

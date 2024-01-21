@@ -101,18 +101,16 @@ public class TrAllListService {
 
             if (translationAssignment != null) {
 
-                TranslationAssignment translationAssignment1 = translationAssignment.toBuilder()
-                        .tamDate(translationAssignment.getTamDate())
-                        .trProgressStatus(translationAssignment.getTrProgressStatus())
-                        .build();
-                translationAssignmentRepository.save(translationAssignment1);
+                translationAssignment.updateStatusAndAdmDate(translateListDto.getTamDate(),translateListDto.getTrProgressStatus());
+
+                translationAssignmentRepository.save(translationAssignment);
             }
             if (translationRequestFile != null) {
-                TranslationRequestFile translationRequestFile1 = translationRequestFile.toBuilder()
-                        .trAnswerDate(translateListDto.getTrAnswerDate())
-                        .build();
 
-                translationRequestFileRepository.save(translationRequestFile1);
+                translationRequestFile.updateAdAnswerDate(translateListDto.getTrAnswerDate());
+
+
+                translationRequestFileRepository.save(translationRequestFile);
             }
         }
 
@@ -158,11 +156,11 @@ public class TrAllListService {
 
            TranslationAssignment translationAssignment = translationAssignmentRepository.findByTrId(translationRequestList.getTrId()) ;
             Consultative consultative = consultativeRepository.findById(dto.getCId()).get();
-            TranslationAssignment translationAssignment1 =translationAssignment.toBuilder()
-                    .consultative(consultative)
-                    .build();
 
-            translationAssignmentRepository.save(translationAssignment1);
+            translationAssignment.updateDoc(consultative);
+
+
+            translationAssignmentRepository.save(translationAssignment);
             return true;
         }catch (Exception e){
             return false;
