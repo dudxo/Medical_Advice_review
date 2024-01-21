@@ -69,4 +69,11 @@ public class MedicalNegligenceInfoService {
         Optional<MedicalNegligenceInfo> medicalNegligenceInfo = medicalNegligenceInfoRepository.findById(mnid);
         return medicalNegligenceInfo.orElseThrow(() -> new NoSuchElementException());
     }
+
+    /**
+     * 검색 기능
+     */
+    public List<MedicalNegligenceInfo> searchMedicalNegligenceInfo(String keyword) {
+        return medicalNegligenceInfoRepository.findByMnNameContaining(keyword);
+    }
 }
