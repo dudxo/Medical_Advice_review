@@ -2,12 +2,9 @@ package com.example.medic.advice.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Builder

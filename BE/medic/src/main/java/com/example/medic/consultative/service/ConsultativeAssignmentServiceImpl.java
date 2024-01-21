@@ -148,7 +148,7 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
                 .adDiagnosis(findAdviceFile.getAdDiagnosis())
                 .adRecord(findAdviceFile.getAdRecord())
                 .adFilm(findAdviceFile.getAdFilm())
-                .adOther(findAdviceFile.getAdOther())
+//                .adOther(findAdviceFile.getAdOther())
                 .build();
     }
 

@@ -6,17 +6,21 @@ import com.example.medic.advice.repository.*;
 import com.example.medic.client.domain.Client;
 import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.client.service.ClientService;
+import com.example.medic.files.handler.FileHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.PersistenceException;
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -29,7 +33,7 @@ public class AdviceService {
     private final AdviceQuestionRepository adviceQuestionRepository;
     private final AdviceRequestListRepository adviceRequestListRepository;
     private final DiagnosisRecordRepository diagnosisRecordRepository;
-
+    private final FileHandler fileHandler;
 
     private final ClientService clientService;
 
@@ -37,7 +41,7 @@ public class AdviceService {
      * @return 자문 의뢰 신청 저장
      */
     @Transactional
-    public boolean saveAdviceRequest(AllAdviceRequestDto allAdviceRequestDto, ClientInfoDto clientInfoDto) {
+    public boolean saveAdviceRequest(AllAdviceRequestDto allAdviceRequestDto, ClientInfoDto clientInfoDto, List<MultipartFile> multipartFiles) {
         Client client = clientService.findClient(clientInfoDto.getUId());
         AdviceFileRequestDto parseAdviceFileRequestDto = splitRequestToFileDto(allAdviceRequestDto);
         AdviceQuestionRequestDto parseAdviceQuestionRequestDto = splitRequestToQuestionDto(allAdviceRequestDto);
@@ -46,13 +50,13 @@ public class AdviceService {
 
         try{
 
-            AdviceRequestList savedAdviceRequestList = saveAdviceRequestList(parseAdviceRequestListDto, client);
-            saveAdviceFile(parseAdviceFileRequestDto, savedAdviceRequestList);
-            saveAdviceQuestion(parseAdviceQuestionRequestDto, savedAdviceRequestList);
-            saveAdviceDiagnosisRecord(parseDiagnosisRecordRequestDto, savedAdviceRequestList);
+//            AdviceRequestList savedAdviceRequestList = saveAdviceRequestList(parseAdviceRequestListDto, client);
+//            saveAdviceFile(parseAdviceFileRequestDto, savedAdviceRequestList, multipartFiles);
+//            saveAdviceQuestion(parseAdviceQuestionRequestDto, savedAdviceRequestList);
+//            saveAdviceDiagnosisRecord(parseDiagnosisRecordRequestDto, savedAdviceRequestList);
 
             AdviceRequestList adviceRequestList = saveAdviceRequestList(parseAdviceRequestListDto, client);
-            saveAdviceFile(parseAdviceFileRequestDto,adviceRequestList);
+            saveAdviceFile(parseAdviceFileRequestDto,adviceRequestList, multipartFiles);
             saveAdviceQuestion(parseAdviceQuestionRequestDto, adviceRequestList);
             saveAdviceDiagnosisRecord(parseDiagnosisRecordRequestDto, adviceRequestList);
             AdviceAssignment adviceAssignment = AdviceAssignment.builder()
@@ -179,21 +183,26 @@ public class AdviceService {
      * 자문 의뢰 신청 파일 저장
      */
     public void saveAdviceFile(AdviceFileRequestDto parseAdviceFileRequestDto,
-                               AdviceRequestList adviceRequestList) throws PersistenceException {
+                               AdviceRequestList adviceRequestList, List<MultipartFile> multipartFiles) throws PersistenceException {
 
         try {
-            AdviceFile adviceFile = AdviceFile.builder()
-                    .adReqForm(parseAdviceFileRequestDto.getAdReqForm())
-                    .adDiagnosis(parseAdviceFileRequestDto.getAdDiagnosis())
-                    .adRecord(parseAdviceFileRequestDto.getAdRecord())
-                    .adFilm(parseAdviceFileRequestDto.getAdFilm())
-                    .adOther(parseAdviceFileRequestDto.getAdOther())
-                    .adviceRequestList(adviceRequestList)
-                    .build();
-            adviceFileRepository.save(adviceFile);
+            if(multipartFiles.size() !=0) {
+                Path projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/adivcerequest/");
+                List<String> files = fileHandler.parseFile(projectPath, multipartFiles);
+                AdviceFile adviceFile = AdviceFile.builder()
+                        .adReqForm(files.get(0))
+                        .adDiagnosis(files.get(1))
+                        .adRecord(files.get(2))
+                        .adFilm(files.get(3))
+                        .adviceRequestList(adviceRequestList)
+                        .build();
+                adviceFileRepository.save(adviceFile);
+            }
         }catch (PersistenceException p){
             logger.info("자문 파일 저장 실패");
             throw new PersistenceException();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
