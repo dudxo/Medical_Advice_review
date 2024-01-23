@@ -1,5 +1,6 @@
 package com.example.medic.medicalKnowledge.service;
 
+import com.example.medic.medicalKnowledge.domain.IndustrialAccidentInfo;
 import com.example.medic.medicalKnowledge.domain.TrafficAccidentInfo;
 import com.example.medic.medicalKnowledge.dto.TrafficAccidentInfoDto;
 import com.example.medic.medicalKnowledge.repository.TrafficAccidentInfoJpaRepository;
@@ -68,5 +69,12 @@ public class TrafficAccidentInfoService {
     public TrafficAccidentInfo findTrafficAccidentInfo(Long taid){
         Optional<TrafficAccidentInfo> trafficAccidentInfo = trafficAccidentInfoJpaRepository.findById(taid);
         return trafficAccidentInfo.orElseThrow(() -> new NoSuchElementException());
+    }
+
+    /**
+     * 검색 기능
+     */
+    public List<TrafficAccidentInfo> searchTrafficAccidentInfo(String keyword) {
+        return trafficAccidentInfoJpaRepository.findByTaNameContaining(keyword);
     }
 }
