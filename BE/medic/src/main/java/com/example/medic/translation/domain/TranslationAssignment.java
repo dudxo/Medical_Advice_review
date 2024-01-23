@@ -33,14 +33,15 @@ public class TranslationAssignment {
     @JoinColumn(name = "cId")
     @JsonIgnore
     private Consultative consultative;
-    @Builder(toBuilder = true)
-    public TranslationAssignment(LocalDate tamDate, Consultative consultative, String trProgressStatus, Long tamId
-                        , TranslationRequestList translationRequestList    ) {
+
+    public void updateStatusAndAdmDate(LocalDate tamDate, String trProgressStatus) {
         this.tamDate = tamDate;
-        this.consultative = consultative;
         this.trProgressStatus = trProgressStatus;
-        this.tamId = tamId;
-        this.translationRequestList = translationRequestList;
+
+    }
+    public void updateDoc( Consultative consultative
+    ) {
+        this.consultative = consultative;
 
     }
 

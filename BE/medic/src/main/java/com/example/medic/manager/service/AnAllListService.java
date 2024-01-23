@@ -84,7 +84,7 @@ public class AnAllListService {
                 analyzeRequestList.getAnPtDiagnosis(),
                 analyzeRequestList.getAnRegDate(),
                 clientName,
-                (analyzeRequestList.getAnalyzeAssignment() != null && analyzeRequestList.getAnalyzeAssignment().getAdMdDate() != null) ? analyzeRequestList.getAnalyzeAssignment().getAdMdDate() : null,
+               analyzeRequestList.getAnMdDate(),
                 analyzeRequest.getAnAnswerDate()
                 ,admProgressStatus
                 ,cName
@@ -104,19 +104,14 @@ public class AnAllListService {
 
             if (analyzeAssignment != null) {
 
-                AnalyzeAssignment analyzeAssignment1 = analyzeAssignment.toBuilder()
-                        .anProgressStatus(analyzeListDto.getAnProgressStatus())
-                        .adMdDate(analyzeListDto.getAdMdDate())
-                        .build();
-                analyzeAssignmentRepository.save(analyzeAssignment1);
+                analyzeAssignment.updateStatusAndAdmDate(analyzeListDto.getAdMdDate(),analyzeListDto.getAnProgressStatus());
+                analyzeAssignmentRepository.save(analyzeAssignment);
             }
 
             if (analyzeRequest != null) {
-                AnalyzeRequest analyzeRequest1 = analyzeRequest.toBuilder()
-                        .anAnswerDate(analyzeListDto.getAnAnswerDate())
-                        .build();
+                analyzeRequest.updateAdAnswerDate(analyzeRequest.getAnAnswerDate());
 
-               analyzeRequestRepository.save(analyzeRequest1);
+               analyzeRequestRepository.save(analyzeRequest);
             }
         }
 

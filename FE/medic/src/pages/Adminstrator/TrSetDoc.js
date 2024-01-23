@@ -9,8 +9,10 @@ export default function TrSetDoc() {
   const [selectedCIds, setSelectedCIds] = useState(new Set());
   const { index } = useParams();
   const {cId} = useState();
-  console.info('adId',index);
   const navigate = useNavigate();
+  const itemsPerPage = 7;
+  const [selectedCId, setSelectedCId] = useState(null);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,24 +33,17 @@ export default function TrSetDoc() {
   };
 
   const handleCheckboxChange = (cId) => {
-    setSelectedCIds((prevSelectedCIds) => {
-      const newSelectedCIds = new Set(prevSelectedCIds);
-      if (newSelectedCIds.has(cId)) {
-        newSelectedCIds.delete(cId);
-      } else {
-        newSelectedCIds.add(cId);
-      }
-      return newSelectedCIds;
-    });
+    setSelectedCId((prevSelectedCId) => (prevSelectedCId === cId ? null : cId));
   };
 
   const handleSave = async () => {
     try {
 
-      const selectedCId = Array.from(selectedCIds)[0];
-      if (selectedCId !== undefined) {
+      
+      if (selectedCId !== null) {
         const response = await axios.post(`/tr/set/doc/${index}`, { cId: selectedCId });
         console.log('저장 응답:', response.data);
+        navigate('/medic/adminstrator/trlist');
       } else {
         console.error('선택된 cId가 없습니다.');
       }
@@ -57,8 +52,12 @@ export default function TrSetDoc() {
     }
   };
   
-  
-  const isSaveButtonEnabled = selectedCIds.size > 0;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const totalPages = Math.ceil(allDocList.length / itemsPerPage);
+
+  const isSaveButtonEnabled = selectedCId !== null;
+
 
   return (
     <div className={ad.ad_contents}>
@@ -84,7 +83,7 @@ export default function TrSetDoc() {
         <tbody>
           {allDocList.map((advice, index) => (
             <tr key={index}>
-              <td className={ad.ad_td}>{index + 1}</td>
+              <td className={ad.ad_td}>{startIndex + index + 1}</td>
               <td className={ad.ad_td}>{advice.cid}</td>
               <td className={ad.ad_td}>{advice.cname}</td>
               <td className={ad.ad_td}>{advice.cphone}</td>
@@ -94,7 +93,7 @@ export default function TrSetDoc() {
               <td className={ad.ad_td}>
                 <input
                   type="checkbox"
-                  checked={selectedCIds.has(advice.cid)}
+                  checked={selectedCId===advice.cid}
                   onChange={() => handleCheckboxChange(advice.cid)}
                 />
               </td>
@@ -110,23 +109,26 @@ export default function TrSetDoc() {
         >
           ◀
         </button>
-        {[...Array(10)].map((_, index) => (
+        {[...Array(totalPages)].map((_, pageIndex) => (
           <button
-            key={index}
+            key={pageIndex}
             className={ad.ad_paginationButton}
-            onClick={() => handlePageChange(index + 1)}
-            disabled={currentPage === index + 1}
+            onClick={() => handlePageChange(pageIndex + 1)}
+            disabled={currentPage === pageIndex + 1}
           >
-            {index + 1}
+            {pageIndex + 1}
           </button>
         ))}
         <button className={ad.ad_paginationButton} onClick={() => handlePageChange(currentPage + 1)}>
           ▶
         </button>
       </div>
-      <button onClick={handleSave} disabled={!isSaveButtonEnabled}>
+      <div className={ad.ad_complete}>
+      <button className={ad.ad_complete} onClick={handleSave} disabled={!isSaveButtonEnabled}>
         저장
       </button>
+      </div>
     </div>
+
   );
 }

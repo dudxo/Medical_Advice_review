@@ -55,6 +55,7 @@ public class AdviceService {
             saveAdviceFile(parseAdviceFileRequestDto,adviceRequestList);
             saveAdviceQuestion(parseAdviceQuestionRequestDto, adviceRequestList);
             saveAdviceDiagnosisRecord(parseDiagnosisRecordRequestDto, adviceRequestList);
+
             AdviceAssignment adviceAssignment = AdviceAssignment.builder()
                     .adviceRequestList(adviceRequestList)
                     .build();

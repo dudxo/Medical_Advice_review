@@ -27,7 +27,6 @@ public class AdListAllController {
     public ResponseEntity<List<AdviceListDto>> adGetAllList(){
         try{
             List<AdviceListDto> getAllAdList = adAllListService.adList();
-            logger.info("condot:{}",getAllAdList);
             return ResponseEntity.ok(getAllAdList);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -39,7 +38,9 @@ public class AdListAllController {
      */
     @PutMapping("/advice/update")
     public ResponseEntity<Integer> updateAdvice(@RequestBody List<AdviceListDto> adviceListDtos){
-        logger.info("adviceListDtos:{}",adviceListDtos);
+        for (AdviceListDto adviceListDto : adviceListDtos){
+//            logger.info("adviceListDtos:{}",adviceListDto.getAdmDate());
+        }
         adAllListService.updateAdviceList(adviceListDtos);
         return ResponseEntity.ok(1);
     }

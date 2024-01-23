@@ -47,4 +47,14 @@ public class AnalyzeAssignment {
 
     }
 
-}
+    public void updateStatusAndAdmDate(LocalDate admDate, String admProgressStatus) {
+        this.adMdDate = admDate;
+        this.anProgressStatus = anProgressStatus;
+
+    }
+    public void updateDoc( Consultative consultative
+    ) {
+        this.consultative = consultative;
+    }
+
+    }
