@@ -1,5 +1,6 @@
 package com.example.medic.medicalKnowledge.controller;
 
+import com.example.medic.medicalKnowledge.domain.IndustrialAccidentInfo;
 import com.example.medic.medicalKnowledge.domain.WoundInfo;
 import com.example.medic.medicalKnowledge.dto.WoundInfoDto;
 import com.example.medic.medicalKnowledge.service.WoundInfoService;
@@ -70,4 +71,16 @@ public class WoundInfoController {
         }
     }
 
+    /**
+     * 검색 기능
+     */
+    @GetMapping("/search/mninfo")
+    public ResponseEntity<List<WoundInfo>> searchWoundInfo(@RequestParam String keyword) {
+        try {
+            List<WoundInfo> searchResults = woundInfoService.searchWoundInfo(keyword);
+            return ResponseEntity.ok(searchResults);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

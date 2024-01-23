@@ -1,5 +1,6 @@
 package com.example.medic.medicalKnowledge.service;
 
+import com.example.medic.medicalKnowledge.domain.IndustrialAccidentInfo;
 import com.example.medic.medicalKnowledge.domain.WoundInfo;
 import com.example.medic.medicalKnowledge.dto.WoundInfoDto;
 import com.example.medic.medicalKnowledge.repository.WoundInfoRepository;
@@ -68,5 +69,12 @@ public class WoundInfoService {
     public WoundInfo findWoundInfo(Long woid){
         Optional<WoundInfo> woundInfo = woundInfoRepository.findById(woid);
         return woundInfo.orElseThrow(() -> new NoSuchElementException());
+    }
+
+    /**
+     * 검색 기능
+     */
+    public List<WoundInfo> searchWoundInfo(String keyword) {
+        return woundInfoRepository.findByWoNameContaining(keyword);
     }
 }
