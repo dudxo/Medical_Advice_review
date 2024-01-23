@@ -13,6 +13,8 @@ export default function TrafficAccidentDetailInfopage(){
 
   const [prevTitle, setPrevTitle] = useState('');
   const [nextTitle, setNextTitle] = useState('');
+  const [prevWriter, setPrevWriter] = useState('');
+  const [nextWriter, setNextWriter] = useState('');
   const [prevDate, setPrevDate] = useState('');
   const [nextDate, setNextDate] = useState('');
 
@@ -21,11 +23,13 @@ export default function TrafficAccidentDetailInfopage(){
       setNextTitle('이전글이 없습니다.');
     } else {
       setNextTitle(trafficAccidentInfos[trafficAccidentInfoId - 1].taName);
+      setNextWriter(trafficAccidentInfos[trafficAccidentInfoId - 1].taInstitution)
       setNextDate(trafficAccidentInfos[trafficAccidentInfoId - 1].taRegdate);
     }
 
     if (trafficAccidentInfoId < trafficAccidentInfos.length - 1) {
       setPrevTitle(trafficAccidentInfos[trafficAccidentInfoId + 1].taName);
+      setPrevWriter(trafficAccidentInfos[trafficAccidentInfoId + 1].taInstitution)
       setPrevDate(trafficAccidentInfos[trafficAccidentInfoId + 1].taRegdate);
     } else {
       setPrevTitle('다음글이 없습니다.');
@@ -57,7 +61,7 @@ export default function TrafficAccidentDetailInfopage(){
             <th className={trafficAccidentDetail.trafficaccidentdetail_th}>제목</th>
             <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{trafficAccidentInfoDetail.taName}</td>
             <th className={trafficAccidentDetail.trafficaccidentdetail_th}>등록일</th>
-            <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{formatDateString(trafficAccidentInfoDetail.taRegDate)}</td>
+            <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{formatDateString(trafficAccidentInfoDetail.taRegdate)}</td>
           </tr>
           <th className={trafficAccidentDetail.trafficaccidentdetail_th}>내용</th>
           <td colSpan="3" className={trafficAccidentDetail.trafficaccidentdetail_td}>
@@ -71,13 +75,13 @@ export default function TrafficAccidentDetailInfopage(){
             <tr>
               <th className={trafficAccidentDetail.trafficaccidentdetail_th}>이전글</th>
               <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{prevTitle}</td>
-              <td className={trafficAccidentDetail.trafficaccidentdetail_td}>건강관리공단</td>
+              <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{prevWriter}</td>
               <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{formatDateString(prevDate)}</td>
             </tr>
             <tr>
               <th className={trafficAccidentDetail.trafficaccidentdetail_th}>다음글</th>
               <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{nextTitle}</td>
-              <td className={trafficAccidentDetail.trafficaccidentdetail_td}>건강관리공단</td>
+              <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{nextWriter}</td>
               <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{formatDateString(nextDate)}</td>
             </tr>
           </table>
@@ -85,6 +89,12 @@ export default function TrafficAccidentDetailInfopage(){
         <div className={trafficAccidentDetail.complete}>
           <button type="button" onClick={medicTrafficAccident} className={trafficAccidentDetail.btt_write}>
             목록
+          </button>
+          <button type="button" onClick={medicTrafficAccident} className={trafficAccidentDetail.btt_write}>
+            수정
+          </button>
+          <button type="button" onClick={medicTrafficAccident} className={trafficAccidentDetail.btt_write}>
+            삭제
           </button>
         </div>
       </form>
