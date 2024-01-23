@@ -74,9 +74,9 @@ public class IndustrialAccidentInfoController {
      * 검색 기능
      */
     @GetMapping("/search/mninfo")
-    public ResponseEntity<List<IndustrialAccidentInfo>> searchMedicalNegligenceInfo(@RequestParam String keyword) {
+    public ResponseEntity<List<IndustrialAccidentInfo>> searchIndustrialAccidentInfo(@RequestParam String keyword) {
         try {
-            List<IndustrialAccidentInfo> searchResults = industrialAccidentInfoService.searchMedicalNegligenceInfo(keyword);
+            List<IndustrialAccidentInfo> searchResults = industrialAccidentInfoService.searchIndustrialAccidentInfo(keyword);
             return ResponseEntity.ok(searchResults);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

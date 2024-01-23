@@ -77,7 +77,7 @@ public class IndustrialAccidentInfoService {
     /**
      * 검색 기능
      */
-    public List<IndustrialAccidentInfo> searchMedicalNegligenceInfo(String keyword) {
+    public List<IndustrialAccidentInfo> searchIndustrialAccidentInfo(String keyword) {
         return industrialAccidentInfoRepository.findByIaNameContaining(keyword);
     }
 }
