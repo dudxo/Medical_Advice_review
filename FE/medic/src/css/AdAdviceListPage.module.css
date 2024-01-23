@@ -22,6 +22,12 @@
     font-weight: bold;
     font-size: 20px;
   }
+
+  .ad_doc{
+    width: 1%;
+    border: 1px solid #ddd;
+    padding: 1px;
+  }
   
   .ad_th:first-child,
   .adviceList_td:first-child {
@@ -57,3 +63,18 @@
     text-align: center;
     width: 950px;
   }
+
+  div.ad_complete {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.ad_complete {
+    display: inline-block;
+    font-size: 1.2rem;
+    background-color: #3cb371;
+    height: 50px;
+    width: 180px;
+    border: none;
+    border-radius: 20px;
+}

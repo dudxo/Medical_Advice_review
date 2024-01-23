@@ -144,12 +144,14 @@ const AdTranslateListPage = () => {
                 </select>
               </td>
               <td className={ad.ad_td}>
-                <input
-                  type='text'
-                  value={trans.cname}
-                  onClick={() => btn_set_doctor(calculateNo(index))}
-                />
-              </td>
+  <span
+    
+    onClick={() => btn_set_doctor(calculateNo(index))}
+  >
+    {trans.cname||''}
+  </span>
+</td>
+
             </tr>
           ))}
         </tbody>
@@ -167,7 +169,9 @@ const AdTranslateListPage = () => {
           ▶
         </button>
       </div>
-      <button onClick={handleUpdateField}>저장</button>
+      <div className={ad.ad_complete}>
+      <button className={ad.ad_complete} onClick={handleUpdateField}>저장</button>
+      </div>
     </div>
   );
 };

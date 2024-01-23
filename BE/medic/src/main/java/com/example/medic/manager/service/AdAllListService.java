@@ -12,7 +12,6 @@ import com.example.medic.consultative.domain.Consultative;
 import com.example.medic.consultative.repository.ConsultativeRepository;
 import com.example.medic.manager.dto.AdDetailDto;
 import com.example.medic.manager.dto.AdviceListDto;
-import com.example.medic.manager.dto.AnDetailDto;
 import com.example.medic.manager.dto.DocSetDto;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.asm.Advice;
@@ -90,7 +89,6 @@ public class AdAllListService {
                 adviceQuestion.getAdAnswerDate()
                 ,admProgressStatus
                 ,cName
-                , adviceAssignment.getAdmId()
         );
     }
 
@@ -102,19 +100,18 @@ public class AdAllListService {
 
         for (AdviceListDto adviceListDto : adviceListDtos) {
             Long adviceId = adviceListDto.getAdId();
-            logger.info("adId:{}",adviceId);
-            logger.info("adviceListDto:{}",adviceListDto.getAdmProgressStatus());
+
             AdviceAssignment adviceAssignment = adviceAssignmentRepository.findByAdId(adviceId);
             AdviceQuestion adviceQuestion = adviceQuestionRepository.findByAdId(adviceId);
 
             if (adviceAssignment != null) {
-                        adviceAssignment.updateStatusAndAdmDate(adviceListDto.getAdMdDate(),adviceListDto.getAdmProgressStatus());
 
+                adviceAssignment.updateStatusAndAdmDate(adviceListDto.getAdmDate(),adviceListDto.getAdmProgressStatus());
                 adviceAssignmentRepository.save(adviceAssignment);
             }
             if (adviceQuestion != null) {
-
                 adviceQuestion.updateAdAnswerDate(adviceListDto.getAdAnswerDate());
+
                 adviceQuestionRepository.save(adviceQuestion);
             }
         }
@@ -148,6 +145,7 @@ public class AdAllListService {
                 consultative.getHospName(),
                 consultative.getHospTel(),
                 consultative.getCId()
+
         );
     }
 
@@ -160,7 +158,6 @@ public class AdAllListService {
 
             AdviceAssignment adviceAssignment = adviceAssignmentRepository.findByAdId(adviceRequestList.getAdId()) ;
             Consultative consultative = consultativeRepository.findById(dto.getCId()).get();
-
             adviceAssignment.updateDoc(consultative);
 
             adviceAssignmentRepository.save(adviceAssignment);
@@ -212,6 +209,4 @@ public class AdAllListService {
                 .build();
         return adDetailDto;
     }
-
-
 }

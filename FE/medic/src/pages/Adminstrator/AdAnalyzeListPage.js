@@ -144,8 +144,13 @@ export default function AdAnalyzeListPage() {
                 </select>
               </td>
               <td className={ad.ad_td}>
-                <input type='text' value={analyze.cname} onClick={() => btn_set_doctor(calculateNo(index))} />
-              </td>
+      <span
+    onClick={() => btn_set_doctor(calculateNo(index))}
+  >
+    {analyze.cname||''}
+  </span>
+</td>
+
             </tr>
           ))}
         </tbody>
@@ -163,7 +168,9 @@ export default function AdAnalyzeListPage() {
           ▶
         </button>
       </div>
-      <button onClick={() => handleUpdateField()}>저장</button>
+      <div className={ad.ad_complete}>
+      <button className={ad.ad_complete} onClick={() => handleUpdateField()}>저장</button>
+      </div>
     </div>
   );
 }

@@ -141,7 +141,7 @@ export default function AdAdviceListPage() {
               </td>
               <td className={ad.ad_td}>
                 <select
-                  value={advice.admProgressStatus}
+                  value={advice.admProgressStatus || '자문의뢰중'}
                   onChange={(e) => handleInputChange(index, 'admProgressStatus', e.target.value)}
                 >
                   <option value="자문의뢰중">자문의뢰중</option>
@@ -151,8 +151,14 @@ export default function AdAdviceListPage() {
                 </select>
               </td>
               <td className={ad.ad_td}>
-                <input type='text' value={advice.cname} onClick={() => btn_set_doctor(calculateNo(index))} />
-              </td>
+  <span
+    className="your-custom-style"
+    onClick={() => btn_set_doctor(calculateNo(index))}
+  >
+    {advice.cname||''}
+  </span>
+</td>
+
             </tr>
           ))}
         </tbody>
@@ -181,8 +187,11 @@ export default function AdAdviceListPage() {
         >
           ▶
         </button>
+      </div >
+      <div className={ad.ad_complete}>
+      <button className={ad.ad_complete} onClick={handleUpdateField}>저장</button>
       </div>
-      <button onClick={handleUpdateField}>저장</button>
+
     </div>
   );
 }

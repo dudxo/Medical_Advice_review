@@ -1,6 +1,5 @@
 package com.example.medic.manager.dto;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -15,24 +14,21 @@ public class AdviceListDto {
 
     private LocalDate adRegDate;
     private String uName;
-    private LocalDate adMdDate;
+    private LocalDate admDate;
     private LocalDate adAnswerDate;
     private String admProgressStatus;
     private String cName;
-    private Long admId;
 
-    @Builder
     public AdviceListDto(Long adId,   String adPtDiagnosis,
-                                 LocalDate adRegDate, String uName, LocalDate adMdDate, LocalDate adAnswerDate,
-                            String admProgressStatus, String cName, Long admId) {
+                                 LocalDate adRegDate, String uName, LocalDate amdDate, LocalDate adAnswerDate,
+                            String admProgressStatus, String cName) {
         this.adId = adId;
         this.adPtDiagnosis = adPtDiagnosis;
         this.adRegDate = adRegDate;
         this.uName = uName;
-        this.adMdDate = adMdDate;
+        this.admDate = amdDate;
         this.adAnswerDate = adAnswerDate;
         this.admProgressStatus = admProgressStatus;
         this.cName = cName;
-        this.admId=admId;
     }
 }
