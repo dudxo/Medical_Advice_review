@@ -1,6 +1,7 @@
 package com.example.medic.medicalKnowledge.controller;
 
 import com.example.medic.medicalKnowledge.domain.IndustrialAccidentInfo;
+import com.example.medic.medicalKnowledge.domain.MedicalNegligenceInfo;
 import com.example.medic.medicalKnowledge.dto.IndustrialAccidentInfoDto;
 import com.example.medic.medicalKnowledge.service.IndustrialAccidentInfoService;
 import lombok.AllArgsConstructor;
@@ -66,6 +67,19 @@ public class IndustrialAccidentInfoController {
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * 검색 기능
+     */
+    @GetMapping("/search/mninfo")
+    public ResponseEntity<List<IndustrialAccidentInfo>> searchMedicalNegligenceInfo(@RequestParam String keyword) {
+        try {
+            List<IndustrialAccidentInfo> searchResults = industrialAccidentInfoService.searchMedicalNegligenceInfo(keyword);
+            return ResponseEntity.ok(searchResults);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

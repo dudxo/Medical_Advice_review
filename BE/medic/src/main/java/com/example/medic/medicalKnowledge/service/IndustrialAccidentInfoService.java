@@ -2,6 +2,7 @@ package com.example.medic.medicalKnowledge.service;
 
 import com.example.medic.client.domain.Client;
 import com.example.medic.medicalKnowledge.domain.IndustrialAccidentInfo;
+import com.example.medic.medicalKnowledge.domain.MedicalNegligenceInfo;
 import com.example.medic.medicalKnowledge.dto.IndustrialAccidentInfoDto;
 import com.example.medic.medicalKnowledge.repository.IndustrialAccidentInfoRepository;
 import com.example.medic.qna.domain.Announcement;
@@ -71,5 +72,12 @@ public class IndustrialAccidentInfoService {
     public IndustrialAccidentInfo findIndustrialAccidentInfo(Long iaid){
         Optional<IndustrialAccidentInfo> industrialAccidentInfo = industrialAccidentInfoRepository.findById(iaid);
         return industrialAccidentInfo.orElseThrow(() -> new NoSuchElementException());
+    }
+
+    /**
+     * 검색 기능
+     */
+    public List<IndustrialAccidentInfo> searchMedicalNegligenceInfo(String keyword) {
+        return industrialAccidentInfoRepository.findByIaNameContaining(keyword);
     }
 }
