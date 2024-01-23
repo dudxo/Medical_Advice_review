@@ -4,13 +4,14 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export default function TrafficAccidentInfopage(){
+  const [searchKeyword, setSearchKeyword] = useState("");
   const [trafficAccidentInfos, setTrafficAccidentInfos] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const getTrafficAccidentInfos = async () => {
       try {
-        const resp = await axios.get('/get');
+        const resp = await axios.get('/find/taInfoall');
         const data = resp.data.reverse()
         setTrafficAccidentInfos(data);
         console.log(resp);
@@ -22,6 +23,16 @@ export default function TrafficAccidentInfopage(){
     getTrafficAccidentInfos();
   }, []);
 
+  const searchTrafficAccidentInfo = async () => {
+    try {
+      const resp = await axios.get(`/search/tainfo?keyword=${searchKeyword}`);
+      const data = resp.data;
+      setTrafficAccidentInfos(data);
+    } catch (error) {
+      console.error(' 정보 검색:', error);
+    }
+  };
+
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
@@ -30,7 +41,7 @@ export default function TrafficAccidentInfopage(){
 
   const medicWrite = () => {
     
-    navigate('/medic/admin/knowledge/writetrafficaccident');
+    navigate('/medic/medicalknowledge/trafficAccidentInfo/writetrafficAccident');
   };
 
   const goToDetailPage = (trafficAccidentInfoId) => {
@@ -50,6 +61,15 @@ export default function TrafficAccidentInfopage(){
           교통사고 정보
         </h2>
       </div>
+      <div>
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요"
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+        />
+        <button onClick={searchTrafficAccidentInfo}>검색</button>
+      </div>
       <br />
       <div className={trafficAccident.tb}>
         <table className={trafficAccident.trafficAccident_table}>
@@ -66,7 +86,8 @@ export default function TrafficAccidentInfopage(){
               <tr key={index} onClick={() => goToDetailPage(index)}>
                 <td className={trafficAccident.trafficAccident_td}>{trafficAccidentInfo.taId}</td>
                 <td className={trafficAccident.trafficAccident_td}>{trafficAccidentInfo.taName}</td>
-                <td className={trafficAccident.trafficAccident_td}>{formatDateString(trafficAccidentInfo.taRegDate)}</td>
+                <td className={trafficAccident.trafficAccident_td}>{trafficAccidentInfo.taInstitution}</td>
+                <td className={trafficAccident.trafficAccident_td}>{formatDateString(trafficAccidentInfo.taRegdate)}</td>
               </tr>
             ))}
           </tbody>

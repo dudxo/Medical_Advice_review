@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import faultinfowrite from '../../css/FaultInfoWritepage.module.css';
+import faultinfowrite from '../../css/TrafficAccidentWritepage.module.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 
-export default function FaultInfoWritepage() {
+export default function TrafficAccidentWritepage() {
     const [timer, setTimer] = useState("");
-    const [faultWrite, setFaultWrite] = useState('')
+    const [trafficWrite, setTrafficWrite] = useState('')
     const [questionCount, setQuestionCount] = useState(0)
     const [writer, setWriter] = useState('');
     const [postTitle, setPostTitle] = useState('')
@@ -19,21 +19,21 @@ export default function FaultInfoWritepage() {
 
     const btn_writePost = async()=> {
         const today = new Date();
-        const FaultInfo = {
-            'mnName' : postTitle,
-            'mnInstitution' : writer,
-            'mnContent' : faultWrite,
-            'mnRegDate' : today,
+        const TrafficAccidentInfo = {
+            'taName' : postTitle,
+            'taInstitution' : writer,
+            'taContent' : trafficWrite,
+            'taRegDate' : today,
         }
         try{
-            const response = await axios.post('/post/mninfo', FaultInfo)
-            navigate('/medic/medicalknowledge/faultInfo');
+            const response = await axios.post('/post/tainfo', TrafficAccidentInfo)
+            navigate('/medic/medicalknowledge/trafficAccidentInfo');
         } catch(err){
             console.log(err)
         }
     };
     const btn_postlist = e => {
-        navigate('/medic/medicalknowledge/faultInfo')
+        navigate('/medic/medicalknowledge/trafficAccidentInfo/writetrafficAccident')
     }
     const currentTimer = () => {
         const date = new Date();
@@ -54,7 +54,7 @@ export default function FaultInfoWritepage() {
       <div className={faultinfowrite.fault_title}>
         <h1>
           <i className="fa-solid fa-circle icon"></i>
-          의료과실 정보 작성
+          교통사고 정보 작성
         </h1>
       </div>
       <div className={faultinfowrite.write_table}>
@@ -93,7 +93,7 @@ export default function FaultInfoWritepage() {
             cols={60} 
             rows={50} 
             onChange={e => {
-                setFaultWrite(e.target.value)
+                setTrafficWrite(e.target.value)
                 setQuestionCount(e.target.value.length)
                 }} maxLength={300}></textarea>
             <div className={faultinfowrite.contentcount}>

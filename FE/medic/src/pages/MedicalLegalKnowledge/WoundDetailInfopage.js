@@ -13,6 +13,8 @@ export default function WoundAccidentDetailInfopage(){
 
   const [prevTitle, setPrevTitle] = useState('');
   const [nextTitle, setNextTitle] = useState('');
+  const [prevWriter, setPrevWriter] = useState('');
+  const [nextWriter, setNextWriter] = useState('');
   const [prevDate, setPrevDate] = useState('');
   const [nextDate, setNextDate] = useState('');
 
@@ -21,11 +23,13 @@ export default function WoundAccidentDetailInfopage(){
       setNextTitle('이전글이 없습니다.');
     } else {
       setNextTitle(woundInfos[woundInfoId - 1].woName);
+      setNextWriter(woundInfos[woundInfoId - 1].woInstitution);
       setNextDate(woundInfos[woundInfoId - 1].woRegdate);
     }
 
     if (woundInfoId < woundInfos.length - 1) {
       setPrevTitle(woundInfos[woundInfoId + 1].woName);
+      setPrevWriter(woundInfos[woundInfoId + 1].woInstitution);
       setPrevDate(woundInfos[woundInfoId + 1].woRegdate);
     } else {
       setPrevTitle('다음글이 없습니다.');
@@ -57,7 +61,7 @@ export default function WoundAccidentDetailInfopage(){
             <th className={woundAccidentDetail.wounddetail_th}>제목</th>
             <td className={woundAccidentDetail.wounddetail_td}>{woundInfoDetail.woName}</td>
             <th className={woundAccidentDetail.wounddetail_th}>등록일</th>
-            <td className={woundAccidentDetail.wounddetail_td}>{formatDateString(woundInfoDetail.woRegDate)}</td>
+            <td className={woundAccidentDetail.wounddetail_td}>{formatDateString(woundInfoDetail.woRegdate)}</td>
           </tr>
           <th className={woundAccidentDetail.wounddetail_th}>내용</th>
           <td colSpan="3" className={woundAccidentDetail.wounddetail_td}>
@@ -71,13 +75,13 @@ export default function WoundAccidentDetailInfopage(){
             <tr>
               <th className={woundAccidentDetail.wounddetail_th}>이전글</th>
               <td className={woundAccidentDetail.wounddetail_td}>{prevTitle}</td>
-              <td className={woundAccidentDetail.wounddetail_td}>건강관리공단</td>
+              <td className={woundAccidentDetail.wounddetail_td}>{prevWriter}</td>
               <td className={woundAccidentDetail.wounddetail_td}>{formatDateString(prevDate)}</td>
             </tr>
             <tr>
               <th className={woundAccidentDetail.wounddetail_th}>다음글</th>
               <td className={woundAccidentDetail.wounddetail_td}>{nextTitle}</td>
-              <td className={woundAccidentDetail.wounddetail_td}>건강관리공단</td>
+              <td className={woundAccidentDetail.wounddetail_td}>{nextWriter}</td>
               <td className={woundAccidentDetail.wounddetail_td}>{formatDateString(nextDate)}</td>
             </tr>
           </table>
@@ -85,6 +89,12 @@ export default function WoundAccidentDetailInfopage(){
         <div className={woundAccidentDetail.complete}>
           <button type="button" onClick={medicWound} className={woundAccidentDetail.btt_write}>
             목록
+          </button>
+          <button type="button" onClick={medicWound} className={woundAccidentDetail.btt_write}>
+            수정
+          </button>
+          <button type="button" onClick={medicWound} className={woundAccidentDetail.btt_write}>
+            삭제
           </button>
         </div>
       </form>

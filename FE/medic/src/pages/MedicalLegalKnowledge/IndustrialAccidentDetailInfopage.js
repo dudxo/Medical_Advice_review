@@ -13,6 +13,8 @@ export default function IndustrialAccidentDetailInfopage(){
 
   const [prevTitle, setPrevTitle] = useState('');
   const [nextTitle, setNextTitle] = useState('');
+  const [prevWriter, setPrevWriter] = useState('');
+  const [nextWriter, setNextWriter] = useState('');
   const [prevDate, setPrevDate] = useState('');
   const [nextDate, setNextDate] = useState('');
 
@@ -21,12 +23,14 @@ export default function IndustrialAccidentDetailInfopage(){
       setNextTitle('이전글이 없습니다.');
     } else {
       setNextTitle(industrialAccidentInfos[industrialAccidentInfoId - 1].iaName);
-      setNextDate(industrialAccidentInfos[industrialAccidentInfoId - 1].iaRegdate);
+      setNextWriter(industrialAccidentInfos[industrialAccidentInfoId - 1].iaInstitution);
+      setNextDate(industrialAccidentInfos[industrialAccidentInfoId - 1].iaRegDate);
     }
 
     if (industrialAccidentInfoId < industrialAccidentInfos.length - 1) {
       setPrevTitle(industrialAccidentInfos[industrialAccidentInfoId + 1].iaName);
-      setPrevDate(industrialAccidentInfos[industrialAccidentInfoId + 1].iaRegdate);
+      setPrevWriter(industrialAccidentInfos[industrialAccidentInfoId + 1].iaInstitution);
+      setPrevDate(industrialAccidentInfos[industrialAccidentInfoId + 1].iaRegDate);
     } else {
       setPrevTitle('다음글이 없습니다.');
     }
@@ -71,13 +75,13 @@ export default function IndustrialAccidentDetailInfopage(){
             <tr>
               <th className={industrialAccidentDetail.industrialaccidentdetail_th}>이전글</th>
               <td className={industrialAccidentDetail.industrialaccidentdetail_td}>{prevTitle}</td>
-              <td className={industrialAccidentDetail.industrialaccidentdetail_td}>건강관리공단</td>
+              <td className={industrialAccidentDetail.industrialaccidentdetail_td}>{prevWriter}</td>
               <td className={industrialAccidentDetail.industrialaccidentdetail_td}>{formatDateString(prevDate)}</td>
             </tr>
             <tr>
               <th className={industrialAccidentDetail.industrialaccidentdetail_th}>다음글</th>
               <td className={industrialAccidentDetail.industrialaccidentdetail_td}>{nextTitle}</td>
-              <td className={industrialAccidentDetail.industrialaccidentdetail_td}>건강관리공단</td>
+              <td className={industrialAccidentDetail.industrialaccidentdetail_td}>{nextWriter}</td>
               <td className={industrialAccidentDetail.industrialaccidentdetail_td}>{formatDateString(nextDate)}</td>
             </tr>
           </table>
@@ -85,6 +89,12 @@ export default function IndustrialAccidentDetailInfopage(){
         <div className={industrialAccidentDetail.complete}>
           <button type="button" onClick={medicIndustrialAccident} className={industrialAccidentDetail.btt_write}>
             목록
+          </button>
+          <button type="button" onClick={medicIndustrialAccident} className={industrialAccidentDetail.btt_write}>
+            수정
+          </button>
+          <button type="button" onClick={medicIndustrialAccident} className={industrialAccidentDetail.btt_write}>
+            삭제
           </button>
         </div>
       </form>
