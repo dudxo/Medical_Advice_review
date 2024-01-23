@@ -74,7 +74,7 @@ public class WoundInfoController {
     /**
      * 검색 기능
      */
-    @GetMapping("/search/mninfo")
+    @GetMapping("/search/woinfo")
     public ResponseEntity<List<WoundInfo>> searchWoundInfo(@RequestParam String keyword) {
         try {
             List<WoundInfo> searchResults = woundInfoService.searchWoundInfo(keyword);

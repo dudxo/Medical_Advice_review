@@ -51,7 +51,7 @@ public class TrafficAccidentInfoController {
     }
 
     //수정
-    @PutMapping("/update/mninfo/{taid}")
+    @PutMapping("/update/tainfo/{taid}")
     public ResponseEntity<String> updateTrafficAccidentInfo(@PathVariable Long taid, @RequestBody TrafficAccidentInfoDto trafficAccidentInfoDto){
         try{
             trafficAccidentInfoService.updateTrafficAccidentInfo(taid, trafficAccidentInfoDto);
@@ -61,7 +61,7 @@ public class TrafficAccidentInfoController {
         }
     }
     //삭제
-    @DeleteMapping("/delete/mninfo/{taid}")
+    @DeleteMapping("/delete/tainfo/{taid}")
     public ResponseEntity<String> deleteTrafficAccidentInfo(@PathVariable Long taid){
         try{
             trafficAccidentInfoService.deleteTrafficAccidentInfo(taid);
@@ -74,7 +74,7 @@ public class TrafficAccidentInfoController {
     /**
      * 검색 기능
      */
-    @GetMapping("/search/mninfo")
+    @GetMapping("/search/tainfo")
     public ResponseEntity<List<TrafficAccidentInfo>> searchTrafficAccidentInfo(@RequestParam String keyword) {
         try {
             List<TrafficAccidentInfo> searchResults = trafficAccidentInfoService.searchTrafficAccidentInfo(keyword);

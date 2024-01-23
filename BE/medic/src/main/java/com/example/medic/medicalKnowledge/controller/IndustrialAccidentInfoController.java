@@ -73,7 +73,7 @@ public class IndustrialAccidentInfoController {
     /**
      * 검색 기능
      */
-    @GetMapping("/search/mninfo")
+    @GetMapping("/search/industacident")
     public ResponseEntity<List<IndustrialAccidentInfo>> searchIndustrialAccidentInfo(@RequestParam String keyword) {
         try {
             List<IndustrialAccidentInfo> searchResults = industrialAccidentInfoService.searchIndustrialAccidentInfo(keyword);
