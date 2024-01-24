@@ -1,12 +1,16 @@
 package com.example.medic.qna.service;
 
+import com.example.medic.manager.controller.AdListAllController;
 import com.example.medic.manager.domain.Manager;
 import com.example.medic.manager.repository.ManagerRepository;
 import com.example.medic.qna.domain.Faq;
 import com.example.medic.qna.dto.FaqSituationDto;
 import com.example.medic.qna.repository.FaqRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,28 +20,20 @@ import java.util.List;
 public class FaqSituationService {
     private final FaqRepository faqRepository;
     private final ManagerRepository managerRepository;
+    private static final Logger logger = LoggerFactory.getLogger(FaqSituationService.class);
 
-    public List<FaqSituationDto> faqSituationList(){
+
+    public List<Faq> faqSituationList(){
         List<Faq> faq = faqRepository.findAll();
-        List<FaqSituationDto> faqSituationDtos = new ArrayList<>();
-
-        for (Faq faq1 : faq){
-            FaqSituationDto faqSituationDto = FaqSituationDto.builder()
-                    .faqId(faq1.getFaqId())
-                    .faqAnswer(faq1.getFaqAnswer())
-                    .faqDate(faq1.getFaqDate())
-                    .faqMdDate(faq1.getFaqMdDate())
-                    .faqQuestion(faq1.getFaqQuestion())
-                    .build();
-            faqSituationDtos.add(faqSituationDto);
-        }
-        return faqSituationDtos;
+        return faq;
     }
-
+    @Transactional
     public Boolean writeFaq(String mId , FaqSituationDto faqSituationDto) {
         try {
-
             Manager manager = managerRepository.findById(mId).get();
+            logger.info("manager1:{}",manager);
+            logger.info("midd:{}",mId);
+            logger.info("managerrole:{}",manager.getMRole());
             if(manager.getMRole().equals("관리자")){
                 Faq faq = Faq.builder()
                         .faqAnswer(faqSituationDto.getFaqAnswer())
@@ -46,7 +42,6 @@ public class FaqSituationService {
                         .faqMdDate(faqSituationDto.getFaqMdDate())
                         .manager(manager)
                         .build();
-
                 faqRepository.save(faq);
                 return true;
             }

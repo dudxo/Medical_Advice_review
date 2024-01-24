@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import writeannoucement from '../../../css/WriteAnnouncement.module.css';
+import writeannoucement from '../../../css/WriteCustomerInquiry.module.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
@@ -9,7 +9,8 @@ export default function WriteFaqPage  ()  {
   const [faq_titile, setFaqTitle] = useState('')
   const [faqAnswer, setFaqAnswer] = useState('')
   const [faqCount, setFaqContentcount] = useState(0)
-  const [writer, setWriter] = useState('');
+  const [writer, setWriter] = useState('1');
+  
 
   const navigate = useNavigate();
   const cookie = new Cookies()
@@ -18,20 +19,27 @@ export default function WriteFaqPage  ()  {
     setWriter(cookie.get('mId'))
   }, [])
 
-  const medicannounce = async()=> {
+  const faqWrite = async()=> {
     const today = new Date();
-    const AnnoucementInfo = {
+    const FaqSituationDto = {
       'faqQuestion' : faq_titile,
       'faqDate' : today,
       'faqAnswer' : faqAnswer
     }
     try{
-      const response = axios.post('/write/faq/${writer}', AnnoucementInfo)
-      navigate('/medic/customer/announcement');
+      console.log(FaqSituationDto)
+      const response = axios.post(`/write/faq/${'1'}`, FaqSituationDto)
+      navigate('/medic/customer/FAQ');
     } catch(err){
       console.log(err)
     }
   };
+
+  const faqList = async()=>{
+    navigate('/medic/customer/FAQ');  
+  }
+
+
 
   const currentTimer = () => {
     const date = new Date();
@@ -50,13 +58,74 @@ export default function WriteFaqPage  ()  {
   }
   return (
     <div className={writeannoucement.writeform}>
-      <div className={writeannoucement.announce_title}>
+      <div className={writeannoucement.inquiry_title}>
         <h2>
           <i className="fa-solid fa-circle icon"></i>
             자주 묻는 질문 작성
         </h2>
       </div>
       <br/>
+
+      <div className={writeannoucement.write_table}>
+        <div className={writeannoucement.write_rowbox}>
+          <div className={writeannoucement.write_title}>
+            질문
+            </div>
+            <div className={writeannoucement.write_titleinputbox}>
+              <input className={writeannoucement.write_titleinput} onChange={input_faq_titile} ></input>
+            </div>
+          </div>
+        <div className={writeannoucement.write_rowbox}>
+          <div className={writeannoucement.write_writerinfo}>
+            <div className={writeannoucement.write_title}>
+            작성자
+            </div>
+            <div className={writeannoucement.write_writerinfocontent}>
+              {writer}
+            </div>
+          </div>
+          
+          <div className={writeannoucement.write_writerinfo}>
+          <div className={writeannoucement.write_title}> 
+              작성일
+          </div>
+          <div className={writeannoucement.write_writerinfocontent}>
+            {timer}
+          </div>
+          </div>
+          <div className={writeannoucement.write_writerinfo}>
+            <div className={writeannoucement.write_title} >
+              비밀번호
+            </div>
+         
+          <div className={writeannoucement.write_writerinfocontent}>
+          <input
+          type='password'
+          ></input>
+          </div>
+          </div>
+        </div>
+
+        <div className={`${writeannoucement.write_rowbox} ${writeannoucement.write_contentrowbox}`}>
+          <div className={`${writeannoucement.write_contenttitle} ${writeannoucement.write_title}`}>
+              <h3 style={{paddingLeft:'20px'}}> 답변내용 </h3>
+          </div>
+          <textarea
+          className={writeannoucement.write_content}
+          cols={60}
+          rows={50}
+          onChange={e => {
+            input_faq_Answer(e.target.value)
+          }} maxLength={300}
+          >
+
+          </textarea>
+        </div>
+        
+
+      </div>  
+
+{/* 
         <table className={writeannoucement.write_table}>
           <tbody>
             <tr>
@@ -79,9 +148,11 @@ export default function WriteFaqPage  ()  {
               </td>
             </tr>
           </tbody>
-        </table>
-        <div className={writeannoucement.complete}>
-          <button type="button" onClick={medicannounce} className={writeannoucement.btt_write}>글쓰기 완료</button>
+        </table> */}
+        <div className={writeannoucement.btn_writequestionbox}>
+          <button type="button" onClick={faqWrite} className={writeannoucement.btn_writequestion}>작성</button>
+          <button type="button" onClick={faqWrite} className={writeannoucement.btn_writequestion}>목록</button>
+
         </div>
     </div>
   );
