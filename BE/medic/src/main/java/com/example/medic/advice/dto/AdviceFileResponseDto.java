@@ -14,11 +14,13 @@ public class AdviceFileResponseDto {
 
     private String adFilm;
 
+    private String adOther;
     @Builder
-    public AdviceFileResponseDto(String adReqForm, String adDiagnosis, String adRecord, String adFilm) {
+    public AdviceFileResponseDto(String adReqForm, String adDiagnosis, String adRecord, String adFilm, String adOther) {
         this.adReqForm = adReqForm;
         this.adDiagnosis = adDiagnosis;
         this.adRecord = adRecord;
         this.adFilm = adFilm;
+        this.adOther = adOther;
     }
 }

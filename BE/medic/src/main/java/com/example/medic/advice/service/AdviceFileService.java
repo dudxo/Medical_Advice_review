@@ -28,7 +28,7 @@ public class AdviceFileService {
         Long fileId = adviceFileRepository.findByFileId(adId);
         AdviceFile adviceFile = adviceFileRepository.findById(fileId)
                 .orElseThrow(() -> new NoSuchElementException("AdviceFile not found with id: " + fileId));
-        
+
         if (adviceFile != null) {
             String baseUrl = "file:" + System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/";
             Resource resource = null;
@@ -44,6 +44,9 @@ public class AdviceFileService {
                     return resource;
                 case "adFilm":
                     resource = new UrlResource(baseUrl + adviceFile.getAdFilm());
+                    return resource;
+                case "adOther":
+                    resource = new UrlResource(baseUrl + adviceFile.getAdOther());
                     return resource;
                 default:
                     throw new IllegalArgumentException("Invalid file type: " + fileType);

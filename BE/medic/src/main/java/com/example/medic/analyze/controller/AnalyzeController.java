@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -27,7 +28,7 @@ public class AnalyzeController {
 
     public ResponseEntity<String> saveAnalyzeRequest(@RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles,
                                                      @RequestPart(name = "dto") AnalyzeRequestDto analyzeRequestDto,
-                                                     HttpServletRequest request) {
+                                                     HttpServletRequest request) throws IOException {
         HttpSession session = request.getSession();
         String findUId = (String) session.getAttribute("uId");
 

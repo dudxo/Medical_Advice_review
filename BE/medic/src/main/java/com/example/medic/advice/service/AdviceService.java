@@ -39,9 +39,9 @@ public class AdviceService {
      * @return 자문 의뢰 신청 저장
      */
     @Transactional
-    public boolean saveAdviceRequest(AllAdviceRequestDto allAdviceRequestDto, ClientInfoDto clientInfoDto, List<MultipartFile> multipartFiles) {
+    public boolean saveAdviceRequest(AllAdviceRequestDto allAdviceRequestDto, ClientInfoDto clientInfoDto, List<MultipartFile> multipartFiles) throws IOException {
         Client client = clientService.findClient(clientInfoDto.getUId());
-//        AdviceFileRequestDto parseAdviceFileRequestDto = splitRequestToFileDto(allAdviceRequestDto);
+        AdviceFileRequestDto parseAdviceFileRequestDto = splitRequestToFileDto(multipartFiles);
         AdviceQuestionRequestDto parseAdviceQuestionRequestDto = splitRequestToQuestionDto(allAdviceRequestDto);
         AdviceRequestListDto parseAdviceRequestListDto = splitRequestToRequestListDto(allAdviceRequestDto);
         DiagnosisRecordRequestDto parseDiagnosisRecordRequestDto = parseDiagnosisRecordRequestDto(allAdviceRequestDto);
@@ -49,7 +49,7 @@ public class AdviceService {
         try{
 
             AdviceRequestList savedAdviceRequestList = saveAdviceRequestList(parseAdviceRequestListDto, client);
-            saveAdviceFile(savedAdviceRequestList, multipartFiles);
+            saveAdviceFile(savedAdviceRequestList, parseAdviceFileRequestDto);
             saveAdviceQuestion(parseAdviceQuestionRequestDto, savedAdviceRequestList);
             saveAdviceDiagnosisRecord(parseDiagnosisRecordRequestDto, savedAdviceRequestList);
 
@@ -66,18 +66,23 @@ public class AdviceService {
     }
 
 
-//    /**
-//     * @return 자문 의뢰 신청 파일 변환
-//     */
-//    public AdviceFileRequestDto splitRequestToFileDto(AllAdviceRequestDto allAdviceRequestDto) {
-//        return AdviceFileRequestDto.builder()
-//                .adReqForm(allAdviceRequestDto.getAdReqForm())
-//                .adDiagnosis(allAdviceRequestDto.getAdDiagnosis())
-//                .adRecord(allAdviceRequestDto.getAdRecord())
-//                .adFilm(allAdviceRequestDto.getAdFilm())
-//                .adOther(allAdviceRequestDto.getAdOther())
-//                .build();
-//    }
+    /**
+     * @return 자문 의뢰 신청 파일 변환
+     */
+    public AdviceFileRequestDto splitRequestToFileDto(List<MultipartFile> multipartFiles) throws IOException {
+        if(multipartFiles.size() !=0) {
+            Path projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/");
+            List<String> files = fileHandler.parseFile(projectPath, multipartFiles);
+            return AdviceFileRequestDto.builder()
+                    .adReqForm(files.get(0))
+                    .adDiagnosis(files.get(1))
+                    .adRecord(files.get(2))
+                    .adFilm(files.get(3))
+                    .adOther(files.get(4))
+                    .build();
+        }
+        return null;
+    }
 
     /**
      * @return 자문 의뢰 신청 질문지 변환
@@ -176,25 +181,18 @@ public class AdviceService {
     /**
      * 자문 의뢰 신청 파일 저장
      */
-    public void saveAdviceFile(AdviceRequestList adviceRequestList, List<MultipartFile> multipartFiles) throws PersistenceException {
-
+    public void saveAdviceFile(AdviceRequestList adviceRequestList, AdviceFileRequestDto adviceFileRequestDto) throws PersistenceException {
         try {
-            if(multipartFiles.size() !=0) {
-                Path projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/");
-                List<String> files = fileHandler.parseFile(projectPath, multipartFiles);
                 AdviceFile adviceFile = AdviceFile.builder()
-                        .adReqForm(files.get(0))
-                        .adDiagnosis(files.get(1))
-                        .adRecord(files.get(2))
-                        .adFilm(files.get(3))
+                        .adReqForm(adviceFileRequestDto.getAdReqForm())
+                        .adDiagnosis(adviceFileRequestDto.getAdDiagnosis())
+                        .adRecord(adviceFileRequestDto.getAdRecord())
+                        .adFilm(adviceFileRequestDto.getAdFilm())
+                        .adOther(adviceFileRequestDto.getAdOther())
                         .adviceRequestList(adviceRequestList)
                         .build();
                 adviceFileRepository.save(adviceFile);
-            }
-        }catch (PersistenceException p){
-            logger.info("자문 파일 저장 실패");
-            throw new PersistenceException();
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
