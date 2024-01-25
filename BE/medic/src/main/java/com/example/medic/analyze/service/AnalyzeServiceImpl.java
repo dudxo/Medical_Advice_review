@@ -91,7 +91,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
      */
     public AnalyzeRequestFileDto splitRequestToRequestFileDto(List<MultipartFile> multipartFiles) throws IOException {
         if(multipartFiles.size() !=0) {
-            Path projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/");
+            Path projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/analyzerequest/");
             List<String> files = fileHandler.parseFile(projectPath, multipartFiles);
             return AnalyzeRequestFileDto.builder()
                     .anReqForm(files.get(0))
