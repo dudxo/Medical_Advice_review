@@ -57,6 +57,7 @@ export default function AdviceRequestpage(){
     const [visit_endDay, setVisitendDay] = useState('')
 
     const navigate = useNavigate()
+    const allAdviceRequest = new FormData()
 
     const getUserInfo = async() =>{
         try{
@@ -258,8 +259,14 @@ export default function AdviceRequestpage(){
         const admEnd = adm_endYear + '-' + adm_endMonth + '-' + adm_endDay
         const visitStart = visit_startYear + '-' + visit_startMonth + '-' + visit_startMonth
         const visitEnd = visit_endYear + '-' + visit_endMonth + '-' + visit_endDay
-    
-        const adviceRequest = {
+        const fileInputs = document.querySelectorAll('input[type="file"]');
+        fileInputs.forEach((fileInput) => {
+            const files = fileInput.files;
+            for (let i = 0; i < files.length; i++) {
+                allAdviceRequest.append('files', files[i]);
+            }
+        });
+        allAdviceRequest.append("dto", new Blob([JSON.stringify({
             "adPtName" : ad_ptname,
             "adPtSsNum" : adPtSsNum,
             "adPtSub" : ad_ptsub,
@@ -279,9 +286,16 @@ export default function AdviceRequestpage(){
             "visitEnd" : visitEnd,
             "treatCmt" : treat_cmt,
             "diagRound" : 1
+          })], { type: "application/json" }));
+          for (let key of allAdviceRequest.keys()) {
+            console.log(key, ":", allAdviceRequest.get(key));
         }
         try{
-            const response = axios.post('/advice/request', adviceRequest)
+            const response = axios.post('/advice/request', allAdviceRequest,{
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
             alert('자문의뢰 신청이 완료되었습니다.')
             navigate('/')
         } catch(err){
@@ -511,7 +525,7 @@ export default function AdviceRequestpage(){
                         자문의뢰신청서
                     </div>
                     <div className={advicerequest.input_box}>
-                        <input type='file'/>
+                        <input type='file' accept="image/*"/>
                     </div>
                 </div>
                 <div className={advicerequest.row_box} style={{height : 'auto'}}>
@@ -519,7 +533,7 @@ export default function AdviceRequestpage(){
                         진단서
                     </div>
                     <div className={advicerequest.input_box}>
-                        <input type='file'/>
+                        <input type='file' accept="image/*"/>
                     </div>
                 </div>
                 <div className={advicerequest.row_box} style={{height : 'auto'}}>
@@ -527,7 +541,7 @@ export default function AdviceRequestpage(){
                         의무기록지
                     </div>
                     <div className={advicerequest.input_box}>
-                        <input type='file'/>
+                        <input type='file' accept="image/*"/>
                     </div>
                 </div>
                 <div className={advicerequest.row_box} style={{height : 'auto'}}>
@@ -535,7 +549,15 @@ export default function AdviceRequestpage(){
                         필름
                     </div>
                     <div className={advicerequest.input_box}>
-                        <input type='file'/>
+                        <input type='file' accept="image/*"/>
+                    </div>
+                </div>
+                <div className={advicerequest.row_box} style={{height : 'auto'}}>
+                    <div className={advicerequest.title_box}>
+                        기타 자료
+                    </div>
+                    <div className={advicerequest.input_box}>
+                        <input type='file' accept="image/*"/>
                     </div>
                 </div>
                 <div className={advicerequest.complete}>

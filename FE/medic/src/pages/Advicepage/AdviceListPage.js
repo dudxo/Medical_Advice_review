@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import advicelist from '../../css/AdviceListPage.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 
@@ -9,12 +9,12 @@ export default function AdviceListPage() {
   const [selectedStatus, setSelectedStatus] = useState('자문의뢰중');
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 추가
   const [adviceList, setAdviceList] = useState([]);
-
+  const navigate = useNavigate()
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/advice/list');
-        console.log(response)
+        console.log(response.data)
         setAdviceList(response.data);
       } catch (error) {
         console.error('Error fetching advice list:', error);
@@ -41,7 +41,9 @@ export default function AdviceListPage() {
     setCurrentPage(newPage);
   };
 
-
+  const btn_adviceDetail = (index) => {
+    navigate(`/medic/advice/adviceDetail/`, {state : {adId : index + 1}});
+  };
   return (
     <div className={advicelist.contents}>
         <div className={advicelist.iconbox}>
@@ -68,10 +70,8 @@ export default function AdviceListPage() {
                 {adviceList.map((advice, index) => (
                     rowIndex === index && (
                     <React.Fragment key={index}>
-                        <td className={advicelist.adviceList_td}>
-                          <Link to={`/medic/advice/adviceDetail/`}>
+                        <td className={advicelist.adviceList_td} onClick={(e) => btn_adviceDetail(advice.adId)}>
                             {index + 1} 
-                          </Link>
                         </td>
                         <td className={advicelist.adviceList_td}>{advice.adPtSub}</td>
                         <td className={advicelist.adviceList_td}>{advice.adPtDiagnosis}</td>

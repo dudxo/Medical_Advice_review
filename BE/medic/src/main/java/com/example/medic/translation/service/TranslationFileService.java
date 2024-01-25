@@ -14,6 +14,10 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class TranslationFileService {
     private final TranslationRequestFileRepository translationRequestFileRepository;
+
+    /**
+     * @return 번역의뢰 파일조회
+     */
     public Resource findTranslationFile(Long trId, String fileType) throws MalformedURLException {
         Long fileId = translationRequestFileRepository.findByFileId(trId);
         TranslationRequestFile translationRequestFile = translationRequestFileRepository.findById(fileId)
