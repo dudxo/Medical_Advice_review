@@ -2,6 +2,8 @@ package com.example.medic.medicalKnowledge.controller;
 
 import com.example.medic.medicalKnowledge.domain.MedicalNegligenceInfo;
 import com.example.medic.medicalKnowledge.dto.MedicalNegligenceInfoDto;
+import com.example.medic.medicalKnowledge.repository.MedicalNegligenceInfoRepository.NextMedicalNegligenceInfoDto;
+import com.example.medic.medicalKnowledge.repository.MedicalNegligenceInfoRepository.PrevMedicalNegligenceInfoDto;
 import com.example.medic.medicalKnowledge.service.MedicalNegligenceInfoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,6 +39,28 @@ public class MedicalNegligenceInfoController {
         }
     }
 
+    //이전 글 조회
+    @GetMapping("/find/mninfo/detail/prev/{mnid}")
+    public ResponseEntity<PrevMedicalNegligenceInfoDto> findPrevMedicalNegligenceInfo(@PathVariable Long mnid){
+        try{
+            PrevMedicalNegligenceInfoDto prevMedicalNegligenceInfoDto = medicalNegligenceInfoService.findPrevMedicalNegligenceInfo(mnid);
+            return ResponseEntity.ok(prevMedicalNegligenceInfoDto);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    //다음 글 조회
+    @GetMapping("/find/mninfo/detail/next/{mnid}")
+    public ResponseEntity<NextMedicalNegligenceInfoDto> findNextMedicalNegligenceInfo(@PathVariable Long mnid){
+        try{
+            NextMedicalNegligenceInfoDto nextMedicalNegligenceInfoDto = medicalNegligenceInfoService.findNextMedicalNegligenceInfo(mnid);
+            return ResponseEntity.ok(nextMedicalNegligenceInfoDto);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     //등록
     @PostMapping("/post/mninfo")
     public ResponseEntity<String> insertMedicalNegligenceInfo(@RequestBody MedicalNegligenceInfoDto medicalNegligenceInfoDto){
@@ -59,7 +83,7 @@ public class MedicalNegligenceInfoController {
         }
     }
     //삭제
-    @DeleteMapping("/delete/mninfo/{mnid}")
+    @PostMapping("/delete/mninfo/{mnid}")
     public ResponseEntity<String> deleteMedicalNegligenceInfo(@PathVariable Long mnid){
         try{
             medicalNegligenceInfoService.deleteMedicalNegligenceInfo(mnid);

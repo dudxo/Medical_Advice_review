@@ -1,9 +1,10 @@
 package com.example.medic.medicalKnowledge.service;
 
-import com.example.medic.medicalKnowledge.domain.IndustrialAccidentInfo;
 import com.example.medic.medicalKnowledge.domain.TrafficAccidentInfo;
 import com.example.medic.medicalKnowledge.dto.TrafficAccidentInfoDto;
 import com.example.medic.medicalKnowledge.repository.TrafficAccidentInfoJpaRepository;
+import com.example.medic.medicalKnowledge.repository.TrafficAccidentInfoJpaRepository.PrevTrafficAccidentInfoDto;
+import com.example.medic.medicalKnowledge.repository.TrafficAccidentInfoJpaRepository.NextTrafficAccidentInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -76,5 +77,21 @@ public class TrafficAccidentInfoService {
      */
     public List<TrafficAccidentInfo> searchTrafficAccidentInfo(String keyword) {
         return trafficAccidentInfoJpaRepository.findByTaNameContaining(keyword);
+    }
+
+    /**
+     * 이전 글 찾기
+     */
+    public PrevTrafficAccidentInfoDto findPrevTrafficAccidentInfo(Long woid) {
+        PrevTrafficAccidentInfoDto prevTrafficAccidentInfoDto = trafficAccidentInfoJpaRepository.findPrevTrafficAccident(woid);
+        return prevTrafficAccidentInfoDto;
+    }
+
+    /**
+     * 다음 글 찾기
+     */
+    public NextTrafficAccidentInfoDto findNextTrafficAccidentInfo(Long woid) {
+        NextTrafficAccidentInfoDto nextTrafficAccidentInfoDto = trafficAccidentInfoJpaRepository.findNextTrafficAccident(woid);
+        return nextTrafficAccidentInfoDto;
     }
 }
