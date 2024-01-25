@@ -1,5 +1,6 @@
 package com.example.medic.analyze.service;
 
+import com.example.medic.advice.dto.AdviceFileRequestDto;
 import com.example.medic.analyze.domain.AnalyzeRequest;
 import com.example.medic.analyze.domain.AnalyzeRequestFile;
 import com.example.medic.analyze.domain.AnalyzeRequestList;
@@ -13,13 +14,18 @@ import com.example.medic.analyze.repository.AnalyzeRequestRepository;
 import com.example.medic.client.domain.Client;
 import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.client.service.ClientService;
+import com.example.medic.files.handler.FileHandler;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.PersistenceException;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,16 +40,16 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private final AnalyzeRequestRepository analyzeRequestRepository;
     private final AnalyzeRequestFileRepository analyzeRequestFileRepository;
     private final ClientService clientService;
-
+    private final FileHandler fileHandler;
     /**
      * @return 분석 의뢰 신청 저장
      */
     @Transactional
-    public boolean saveAnalyzeRequest(AnalyzeRequestDto requestDto, ClientInfoDto clientInfoDto) {
+    public boolean saveAnalyzeRequest(AnalyzeRequestDto requestDto, ClientInfoDto clientInfoDto, List<MultipartFile> multipartFiles) throws IOException {
         Client currentClient = clientService.findClient(clientInfoDto.getUId());
         AnalyzeRequestListDto analyzeRequestListDto = splitRequestToRequestListDto(requestDto);
         AnalyzeQuestionDto analyzeQuestionDtoList = splitRequestToQuestionDto(requestDto);
-        AnalyzeRequestFileDto analyzeRequestFileDto = splitRequestToRequestFileDto(requestDto);
+        AnalyzeRequestFileDto analyzeRequestFileDto = splitRequestToRequestFileDto(multipartFiles);
 
         try{
             AnalyzeRequestList savedAnalyzeRequestList = saveAnalyzeRequestList(analyzeRequestListDto, currentClient);
@@ -83,14 +89,19 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     /**
      * @return 요청 받은 분석 의뢰 파일 변환
      */
-    public AnalyzeRequestFileDto splitRequestToRequestFileDto(AnalyzeRequestDto analyzeRequestDto) {
-        return AnalyzeRequestFileDto.builder()
-                .anReqForm(analyzeRequestDto.getAnReqForm())
-                .anDiagnosis(analyzeRequestDto.getAnDiagnosis())
-                .anRecord(analyzeRequestDto.getAnRecord())
-                .anFilm(analyzeRequestDto.getAnFilm())
-                .anOther(analyzeRequestDto.getAnOther())
-                .build();
+    public AnalyzeRequestFileDto splitRequestToRequestFileDto(List<MultipartFile> multipartFiles) throws IOException {
+        if(multipartFiles.size() !=0) {
+            Path projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/analyzerequest/");
+            List<String> files = fileHandler.parseFile(projectPath, multipartFiles);
+            return AnalyzeRequestFileDto.builder()
+                    .anReqForm(files.get(0))
+                    .anDiagnosis(files.get(1))
+                    .anRecord(files.get(2))
+                    .anFilm(files.get(3))
+                    .anOther(files.get(4))
+                    .build();
+        }
+        return null;
     }
 
 
@@ -100,7 +111,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
      */
     @Transactional
     public AnalyzeRequestList saveAnalyzeRequestList(AnalyzeRequestListDto analyzeRequestListDto,
-                                        Client client) throws PersistenceException {
+                                                     Client client) throws PersistenceException {
         try {
             AnalyzeRequestList analyzeRequestList = AnalyzeRequestList.builder()
                     .anPtName(analyzeRequestListDto.getAnPtName())

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import adviceDetail from '../../css/AdviceDetailpage.module.css'
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import {useLocation, useParams, useNavigate } from 'react-router-dom';
 
 
 export default function AdviceDetailpage(){
     const navigate = useNavigate();
+    const location = useLocation();
     const startYear = 1960;
 
     const {index} = useParams();
@@ -51,7 +52,10 @@ export default function AdviceDetailpage(){
     const [handleQuestionTotalChange, setHandleQuestionTotalChange] = useState(() => {});
     const [handleQuestionContentChange, setHandleQuestionContentChange] = useState(() => {});
 
-
+    const [imageError, setImageError] = useState(false);
+    const [filepath, setFilepath] = useState({})
+    
+    const adId = location.state.adId
 
     const getAdviceRequest = async() => {
         try{
@@ -125,6 +129,7 @@ export default function AdviceDetailpage(){
     const medicAdviceList = () => {
         navigate('/medic/advice/adviceList');
     };
+
 
     return(
         <div className={adviceDetail.adviceDetail_wrap}>
@@ -318,7 +323,11 @@ export default function AdviceDetailpage(){
                         자문의뢰신청서
                     </div>
                     <div className={adviceDetail.input_box}>
-                        <input type='file' disabled={true} />
+                        <img
+                            src={`http://localhost:8080/advice/findrequestfile/${adId}/adReqForm`}
+                            style={{ display: imageError ? 'none' : 'block' }}
+                            alt="Attachment"
+                        />
                     </div>
                 </div>
                 <div className={adviceDetail.row_box} style={{height : 'auto'}}>
@@ -326,7 +335,11 @@ export default function AdviceDetailpage(){
                         진단서
                     </div>
                     <div className={adviceDetail.input_box}>
-                        <input type='file' disabled={true} />
+                        <img
+                            src={`http://localhost:8080/advice/findrequestfile/${adId}/adDiagnosis`}
+                            style={{ display: imageError ? 'none' : 'block' }}
+                            alt="Attachment"
+                        />
                     </div>
                 </div>
                 <div className={adviceDetail.row_box} style={{height : 'auto'}}>
@@ -334,7 +347,11 @@ export default function AdviceDetailpage(){
                         의무기록지
                     </div>
                     <div className={adviceDetail.input_box}>
-                        <input type='file' disabled={true} />
+                        <img
+                            src={`http://localhost:8080/advice/findrequestfile/${adId}/adRecord`}
+                            style={{ display: imageError ? 'none' : 'block' }}
+                            alt="Attachment"
+                        />
                     </div>
                 </div>
                 <div className={adviceDetail.row_box} style={{height : 'auto'}}>
@@ -342,7 +359,23 @@ export default function AdviceDetailpage(){
                         필름
                     </div>
                     <div className={adviceDetail.input_box}>
-                        <input type='file' disabled={true} />
+                        <img
+                            src={`http://localhost:8080/advice/findrequestfile/${adId}/adFilm`}
+                            style={{ display: imageError ? 'none' : 'block' }}
+                            alt="Attachment"
+                        />
+                    </div>
+                </div>
+                <div className={adviceDetail.row_box} style={{height : 'auto'}}>
+                    <div className={adviceDetail.title_box}>
+                        기타 자료
+                    </div>
+                    <div className={adviceDetail.input_box}>
+                        <img
+                            src={`http://localhost:8080/advice/findrequestfile/${adId}/adOther`}
+                            style={{ display: imageError ? 'none' : 'block' }}
+                            alt="Attachment"
+                        />
                     </div>
                 </div>
                 <div className={adviceDetail.complete}>

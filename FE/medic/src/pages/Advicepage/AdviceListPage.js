@@ -53,7 +53,9 @@ export default function AdviceListPage() {
     setCurrentPage(newPage);
   };
 
-
+  const btn_adviceDetail = (index) => {
+    navigate(`/medic/advice/adviceDetail/`, {state : {adId : index + 1}});
+  };
   return (
     <div className={advicelist.contents}>
         <div className={advicelist.iconbox}>
@@ -75,22 +77,22 @@ export default function AdviceListPage() {
           </tr>
           </thead>
           <tbody>
-  {adviceList.map((adviceRequestList, index) => (
-    <tr key={index}>
-      <React.Fragment>
-        <td className={advicelist.adviceList_td} onClick={() => btn_detail_advice(adviceRequestList.adId)}>
-          {adviceList.length - index}
-        </td>
-        <td className={advicelist.adviceList_td}>{adviceRequestList.adPtSub}</td>
-        <td className={advicelist.adviceList_td}>{adviceRequestList.adPtDiagnosis}</td>
-        <td className={advicelist.adviceList_td}>{formatDate(adviceRequestList.adRegDate)}</td>
-        <td className={advicelist.adviceList_td}>{formatDate(adviceRequestList.admDate)}</td>
-        <td className={advicelist.adviceList_td}>{formatDate(adviceRequestList.adAnswerDate)}</td>
-        <td className={advicelist.adviceList_td}>{adviceRequestList.admProgressStatus}</td>
-      </React.Fragment>
-    </tr>
-  ))}
-</tbody>
+            {adviceList.map((adviceRequestList, index) => (
+              <tr key={index}>
+                <React.Fragment>
+                  <td className={advicelist.adviceList_td} onClick={() => btn_detail_advice(adviceRequestList.adId)}>
+                    {adviceList.length - index}
+                  </td>
+                  <td className={advicelist.adviceList_td}>{adviceRequestList.adPtSub}</td>
+                  <td className={advicelist.adviceList_td}>{adviceRequestList.adPtDiagnosis}</td>
+                  <td className={advicelist.adviceList_td}>{formatDate(adviceRequestList.adRegDate)}</td>
+                  <td className={advicelist.adviceList_td}>{formatDate(adviceRequestList.admDate)}</td>
+                  <td className={advicelist.adviceList_td}>{formatDate(adviceRequestList.adAnswerDate)}</td>
+                  <td className={advicelist.adviceList_td}>{adviceRequestList.admProgressStatus}</td>
+                </React.Fragment>
+              </tr>
+            ))}
+          </tbody>
       </table>
       <div className={advicelist.pagination}>
         <button className={advicelist.paginationButton} onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
