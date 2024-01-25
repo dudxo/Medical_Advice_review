@@ -5,22 +5,33 @@ import { useNavigate } from 'react-router-dom';
 
 export default function WoundInfopage(){
   const [woundInfos, setWoundInfos] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     const getWoundInfos = async () => {
       try {
-        const resp = await axios.get('/get');
+        const resp = await axios.get('/find/woInfoall');
         const data = resp.data.reverse()
         setWoundInfos(data);
         console.log(resp);
       } catch (error) {
-        console.error('상해 정보 리스트 불러오기:', error);
+        console.error('상해정보 리스트 불러오기:', error);
       }
     };
 
     getWoundInfos();
   }, []);
+
+  const searchWoundInfo = async () => {
+    try {
+      const resp = await axios.get(`/search/woinfo?keyword=${searchKeyword}`);
+      const data = resp.data;
+      setWoundInfos(data);
+    } catch (error) {
+      console.error('상해 정보 검색:', error);
+    }
+  };
 
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
@@ -30,16 +41,13 @@ export default function WoundInfopage(){
 
   const medicWrite = () => {
     
-    navigate('/medic/admin/knowledge/writewound');
+    navigate('/medic/medicalknowledge/woundInfo/writewound');
   };
 
   const goToDetailPage = (woundInfoId) => {
     navigate(`/medic/knowledge/wounddetails`, {state : {
-      woundInfoDetail : woundInfos[woundInfoId],
-      woundInfoId : woundInfoId,
-      woundInfos : woundInfos
+      woundInfoId : woundInfoId
     }});
-    console.log(woundInfos[woundInfoId])
   };
 
   return (
@@ -49,6 +57,15 @@ export default function WoundInfopage(){
           <i className="fa-solid fa-circle icon"></i>
           상해 정보
         </h2>
+      </div>
+      <div>
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요"
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+        />
+        <button onClick={searchWoundInfo}>검색</button>
       </div>
       <br />
       <div className={wound.tb}>
@@ -63,10 +80,11 @@ export default function WoundInfopage(){
           </thead>
           <tbody>
             {woundInfos.map((woundInfo, index) => (
-              <tr key={index} onClick={() => goToDetailPage(index)}>
-                <td className={wound.wound_td}>{woundInfo.wId}</td>
-                <td className={wound.wound_td}>{woundInfo.wName}</td>
-                <td className={wound.wound_td}>{formatDateString(woundInfo.wRegDate)}</td>
+              <tr key={index} onClick={() => goToDetailPage(woundInfo.woId)}>
+                <td className={wound.wound_td}>{woundInfo.woId}</td>
+                <td className={wound.wound_td}>{woundInfo.woName}</td>
+                <td className={wound.wound_td}>{woundInfo.woInstitution}</td>
+                <td className={wound.wound_td}>{formatDateString(woundInfo.woRegdate)}</td>
               </tr>
             ))}
           </tbody>

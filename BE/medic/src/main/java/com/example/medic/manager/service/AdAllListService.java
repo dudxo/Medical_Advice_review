@@ -106,18 +106,13 @@ public class AdAllListService {
 
             if (adviceAssignment != null) {
 
-                AdviceAssignment adviceAssignment1 = adviceAssignment.toBuilder()
-                        .admDate(adviceListDto.getAdmDate())
-                        .admProgressStatus(adviceListDto.getAdmProgressStatus())
-                        .build();
-                adviceAssignmentRepository.save(adviceAssignment1);
+                adviceAssignment.updateStatusAndAdmDate(adviceListDto.getAdmDate(),adviceListDto.getAdmProgressStatus());
+                adviceAssignmentRepository.save(adviceAssignment);
             }
             if (adviceQuestion != null) {
-                AdviceQuestion adviceQuestion1 = adviceQuestion.toBuilder()
-                        .adAnswerDate(adviceListDto.getAdAnswerDate())
-                        .build();
+                adviceQuestion.updateAdAnswerDate(adviceListDto.getAdAnswerDate());
 
-                adviceQuestionRepository.save(adviceQuestion1);
+                adviceQuestionRepository.save(adviceQuestion);
             }
         }
 
@@ -163,11 +158,9 @@ public class AdAllListService {
 
             AdviceAssignment adviceAssignment = adviceAssignmentRepository.findByAdId(adviceRequestList.getAdId()) ;
             Consultative consultative = consultativeRepository.findById(dto.getCId()).get();
-            AdviceAssignment adviceAssignment1 = adviceAssignment.toBuilder()
-                    .consultative(consultative)
-                    .build();
+            adviceAssignment.updateDoc(consultative);
 
-            adviceAssignmentRepository.save(adviceAssignment1);
+            adviceAssignmentRepository.save(adviceAssignment);
             return true;
         }catch (Exception e){
             return false;

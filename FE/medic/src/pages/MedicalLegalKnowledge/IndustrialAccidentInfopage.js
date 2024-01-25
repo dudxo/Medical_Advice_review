@@ -5,12 +5,13 @@ import { useNavigate } from 'react-router-dom';
 
 export default function IndustrialAccidentInfopage(){
   const [industrialAccidentInfos, setIndustrialAccidentInfos] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     const getIndustrialAccidentInfos = async () => {
       try {
-        const resp = await axios.get('/get');
+        const resp = await axios.get('/find/industaccidentall');
         const data = resp.data.reverse()
         setIndustrialAccidentInfos(data);
         console.log(resp);
@@ -22,6 +23,16 @@ export default function IndustrialAccidentInfopage(){
     getIndustrialAccidentInfos();
   }, []);
 
+  const searchIndustrialAccidentInfo = async () => {
+    try {
+      const resp = await axios.get(`/search/industacident?keyword=${searchKeyword}`);
+      const data = resp.data;
+      setIndustrialAccidentInfos(data);
+    } catch (error) {
+      console.error('산업재해 정보 검색:', error);
+    }
+  };
+
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
@@ -30,16 +41,13 @@ export default function IndustrialAccidentInfopage(){
 
   const medicWrite = () => {
     
-    navigate('/medic/admin/knowledge/writeindustrialaccident');
+    navigate('/medic/admin/knowledge/industrialAccidentInfo/writeindustrialaccident');
   };
 
   const goToDetailPage = (industrialAccidentInfoId) => {
     navigate(`/medic/knowledge/industrialaccidentdetails`, {state : {
-      industrialAccidentInfoDetail : industrialAccidentInfos[industrialAccidentInfoId],
-      industrialAccidentInfoId : industrialAccidentInfoId,
-      industrialAccidentInfos : industrialAccidentInfos
+      industrialAccidentInfoId : industrialAccidentInfoId
     }});
-    console.log(industrialAccidentInfos[industrialAccidentInfoId])
   };
 
   return (
@@ -49,6 +57,15 @@ export default function IndustrialAccidentInfopage(){
           <i className="fa-solid fa-circle icon"></i>
           산업재해정보
         </h2>
+      </div>
+      <div>
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요"
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+        />
+        <button onClick={searchIndustrialAccidentInfo}>검색</button>
       </div>
       <br />
       <div className={industrialAccident.tb}>
@@ -63,9 +80,10 @@ export default function IndustrialAccidentInfopage(){
           </thead>
           <tbody>
             {industrialAccidentInfos.map((industrialAccidentInfo, index) => (
-              <tr key={index} onClick={() => goToDetailPage(index)}>
+              <tr key={index} onClick={() => goToDetailPage(industrialAccidentInfo.iaId)}>
                 <td className={industrialAccident.industrialAccident_td}>{industrialAccidentInfo.iaId}</td>
                 <td className={industrialAccident.industrialAccident_td}>{industrialAccidentInfo.iaName}</td>
+                <td className={industrialAccident.industrialAccident_td}>{industrialAccidentInfo.iaInstitution}</td>
                 <td className={industrialAccident.industrialAccident_td}>{formatDateString(industrialAccidentInfo.iaRegDate)}</td>
               </tr>
             ))}

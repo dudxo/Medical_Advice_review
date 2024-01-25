@@ -36,13 +36,9 @@ public class TranslationRequestFile {
         this.translationRequestList = translationRequestList;
     }
 
-    @Builder(toBuilder = true)
-    public TranslationRequestFile( LocalDate trAnswerDate,
-                           Long tfId, TranslationRequestList translationRequestList) {
-       this.trAnswerDate = trAnswerDate;
-       this.tfId = tfId;
-       this.translationRequestList = translationRequestList;
 
+    public void updateAdAnswerDate(LocalDate trAnswerDate) {
+        this.trAnswerDate = trAnswerDate;
     }
 
 

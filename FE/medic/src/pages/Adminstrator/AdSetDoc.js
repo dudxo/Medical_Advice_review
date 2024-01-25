@@ -6,11 +6,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 export default function AdSetDoc() {
   const [currentPage, setCurrentPage] = useState(1);
   const [allDocList, setAllDocList] = useState([]);
-  const [selectedCIds, setSelectedCIds] = useState(new Set());
+  const [selectedCId, setSelectedCId] = useState(null);
   const { index } = useParams();
-  const {cId} = useState();
-  console.info('adId',index);
   const navigate = useNavigate();
+  const itemsPerPage = 7;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,23 +30,14 @@ export default function AdSetDoc() {
   };
 
   const handleCheckboxChange = (cId) => {
-    setSelectedCIds((prevSelectedCIds) => {
-      const newSelectedCIds = new Set(prevSelectedCIds);
-      if (newSelectedCIds.has(cId)) {
-        newSelectedCIds.delete(cId);
-      } else {
-        newSelectedCIds.add(cId);
-      }
-      return newSelectedCIds;
-    });
+    setSelectedCId((prevSelectedCId) => (prevSelectedCId === cId ? null : cId));
   };
 
   const handleSave = async () => {
     try {
-      // 선택된 cId 목록 중 첫 번째 값을 가져와서 백엔드로 전송
-      const selectedCId = Array.from(selectedCIds)[0];
-      if (selectedCId !== undefined) {
+      if (selectedCId !== null) {
         const response = await axios.post(`/ad/set/doc/${index}`, { cId: selectedCId });
+        navigate('/medic/administrator/adlist');
         console.log('저장 응답:', response.data);
       } else {
         console.error('선택된 cId가 없습니다.');
@@ -56,11 +46,13 @@ export default function AdSetDoc() {
       console.error('저장 중 에러 발생:', error);
     }
   };
-  
-  
 
-  // 선택된 cId가 하나 이상일 때만 저장 버튼 활성화
-  const isSaveButtonEnabled = selectedCIds.size > 0;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const totalPages = Math.ceil(allDocList.length / itemsPerPage);
+
+  // 선택된 cId가 있는지 여부에 따라 버튼 활성화 여부 결정
+  const isSaveButtonEnabled = selectedCId !== null;
 
   return (
     <div className={ad.ad_contents}>
@@ -84,9 +76,9 @@ export default function AdSetDoc() {
           </tr>
         </thead>
         <tbody>
-          {allDocList.map((advice, index) => (
+          {allDocList.slice(startIndex, endIndex).map((advice, index) => (
             <tr key={index}>
-              <td className={ad.ad_td}>{index + 1}</td>
+              <td className={ad.ad_td}>{startIndex + index + 1}</td>
               <td className={ad.ad_td}>{advice.cid}</td>
               <td className={ad.ad_td}>{advice.cname}</td>
               <td className={ad.ad_td}>{advice.cphone}</td>
@@ -96,7 +88,7 @@ export default function AdSetDoc() {
               <td className={ad.ad_td}>
                 <input
                   type="checkbox"
-                  checked={selectedCIds.has(advice.cid)}
+                  checked={selectedCId === advice.cid}
                   onChange={() => handleCheckboxChange(advice.cid)}
                 />
               </td>
@@ -112,23 +104,25 @@ export default function AdSetDoc() {
         >
           ◀
         </button>
-        {[...Array(10)].map((_, index) => (
+        {[...Array(totalPages)].map((_, pageIndex) => (
           <button
-            key={index}
+            key={pageIndex}
             className={ad.ad_paginationButton}
-            onClick={() => handlePageChange(index + 1)}
-            disabled={currentPage === index + 1}
+            onClick={() => handlePageChange(pageIndex + 1)}
+            disabled={currentPage === pageIndex + 1}
           >
-            {index + 1}
+            {pageIndex + 1}
           </button>
         ))}
         <button className={ad.ad_paginationButton} onClick={() => handlePageChange(currentPage + 1)}>
           ▶
         </button>
       </div>
-      <button onClick={handleSave} disabled={!isSaveButtonEnabled}>
-        저장
-      </button>
+      <div className={ad.ad_complete}>
+        <button className={ad.ad_complete} onClick={handleSave} disabled={!isSaveButtonEnabled}>
+          저장
+        </button>
+      </div>
     </div>
   );
 }

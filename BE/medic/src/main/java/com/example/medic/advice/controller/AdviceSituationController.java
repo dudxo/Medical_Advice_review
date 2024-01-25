@@ -21,11 +21,7 @@ public class AdviceSituationController {
     private final AdviceSituationService adviceSituationService;
 
     @GetMapping("/advice/list")
-    public ResponseEntity<List<AdviceSituationDto>> getAdviceSituationList(
-            @RequestParam(name = "adPtSub", required = false) String adPtSub,
-            @RequestParam(name = "adPtDiagnosis", required = false) String adPtDiagnosis,
-            @RequestParam(name = "adRegDate", required = false) Date adRegDate,
-            HttpServletRequest request) {
+    public ResponseEntity<List<AdviceSituationDto>> getAdviceSituationList(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         String uid = (String) session.getAttribute("uId");
@@ -34,7 +30,7 @@ public class AdviceSituationController {
                 .uId(uid)
                 .build();
         try {
-            List<AdviceSituationDto> adviceList = adviceSituationService.getAdviceSituationList(adPtSub, adPtDiagnosis, adRegDate, clientInfoDto);
+            List<AdviceSituationDto> adviceList = adviceSituationService.getAdviceSituationList(clientInfoDto);
             return ResponseEntity.ok(adviceList);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

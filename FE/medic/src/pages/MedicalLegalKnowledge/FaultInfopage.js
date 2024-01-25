@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function FaultInfopage(){
     const [faultInfos, setFaultInfos] = useState([]);
+    const [searchKeyword, setSearchKeyword] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,6 +23,16 @@ export default function FaultInfopage(){
         getFaultInfos();
   }, []);
 
+  const searchMedicalNegligenceInfo = async () => {
+    try {
+      const resp = await axios.get(`/search/mninfo?keyword=${searchKeyword}`);
+      const data = resp.data;
+      setFaultInfos(data);
+    } catch (error) {
+      console.error('의료과실 정보 검색:', error);
+    }
+  };
+
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
@@ -35,11 +46,8 @@ export default function FaultInfopage(){
 
   const goToDetailPage = (faultInfoId) => {
     navigate(`/medic/medicalknowledge/faultinfo/faultinfodetails`, {state : {
-      faultInfoDetail : faultInfos[faultInfoId],
-      faultInfoId : faultInfoId,
-      faultInfos : faultInfos
+      faultInfoId : faultInfoId
     }});
-    console.log(faultInfos[faultInfoId])
   };
 
     return(
@@ -50,6 +58,15 @@ export default function FaultInfopage(){
             의료과실정보
           </h2>
         </div>
+        <div>
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요"
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+        />
+        <button onClick={searchMedicalNegligenceInfo}>검색</button>
+      </div>
         <br />
         <div className={faultInfo.tb}>
           <table className={faultInfo.faultInfo_table}>
@@ -63,7 +80,7 @@ export default function FaultInfopage(){
             </thead>
             <tbody> 
               {faultInfos.map((medicalNegligenceInfo, index) => (
-                <tr key={index} onClick={() => goToDetailPage(index)}>
+                <tr key={index} onClick={() => goToDetailPage(medicalNegligenceInfo.mnId)}>
                   <td className={faultInfo.faultInfo_td}>{medicalNegligenceInfo.mnId}</td>
                   <td className={faultInfo.faultInfo_td}>{medicalNegligenceInfo.mnName}</td>
                   <td className={faultInfo.faultInfo_td}>{medicalNegligenceInfo.mnInstitution}</td>

@@ -6,6 +6,7 @@ import com.example.medic.advice.repository.*;
 import com.example.medic.client.domain.Client;
 import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.client.service.ClientService;
+import com.example.medic.manager.dto.AdDetailDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -14,9 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -51,12 +50,8 @@ public class AdviceService {
             saveAdviceQuestion(parseAdviceQuestionRequestDto, savedAdviceRequestList);
             saveAdviceDiagnosisRecord(parseDiagnosisRecordRequestDto, savedAdviceRequestList);
 
-            AdviceRequestList adviceRequestList = saveAdviceRequestList(parseAdviceRequestListDto, client);
-            saveAdviceFile(parseAdviceFileRequestDto,adviceRequestList);
-            saveAdviceQuestion(parseAdviceQuestionRequestDto, adviceRequestList);
-            saveAdviceDiagnosisRecord(parseDiagnosisRecordRequestDto, adviceRequestList);
             AdviceAssignment adviceAssignment = AdviceAssignment.builder()
-                    .adviceRequestList(adviceRequestList)
+                    .adviceRequestList(savedAdviceRequestList)
                     .build();
             adviceAssignmentRepository.save(adviceAssignment);
 
@@ -218,5 +213,43 @@ public class AdviceService {
             logger.info("진료 기록 저장 실패");
             throw new PersistenceException();
         }
+    }
+
+    /**
+     * 자문의뢰 상세 조회
+     */
+    public AllAdviceRequestDto getAdviceRequestDetail(Long adId){
+        AdviceRequestList adviceRequestList = adviceRequestListRepository.findById(adId).get();
+
+
+
+        AllAdviceRequestDto allAdviceRequestDto = AllAdviceRequestDto.builder()
+                .adId(adviceRequestList.getAdId())
+                .adEtc(adviceRequestList.getAdEtc())
+                .adMdDate(adviceRequestList.getAdMdDate())
+                .adPtCmt(adviceRequestList.getAdPtCmt())
+                .adPtSub(adviceRequestList.getAdPtSub())
+                .adPtDiagnosis(adviceRequestList.getAdPtDiagnosis())
+                .adPtName(adviceRequestList.getAdPtName())
+                .adPtRec(adviceRequestList.getAdPtRec())
+                .adRegDate(adviceRequestList.getAdRegDate())
+                .adPtSsNum(adviceRequestList.getAdPtSsNum())
+                .adMdDate(adviceRequestList.getAdMdDate())
+                .insureDate(adviceRequestList.getInsureDate())
+                .insureName(adviceRequestList.getInsureName())
+                .insurance(adviceRequestList.getInsurance())
+                .hospital(adviceRequestList.getDiagnosisRecords().get(0).getHospital())
+                .admStart(adviceRequestList.getDiagnosisRecords().get(0).getAdmStart())
+                .admEnd(adviceRequestList.getDiagnosisRecords().get(0).getAdmEnd())
+                .visitStart(adviceRequestList.getDiagnosisRecords().get(0).getVisitStart())
+                .visitEnd(adviceRequestList.getDiagnosisRecords().get(0).getVisitEnd())
+                .treatCmt(adviceRequestList.getDiagnosisRecords().get(0).getTreatCmt())
+                .diagRound(adviceRequestList.getDiagnosisRecords().get(0).getDiagRound())
+                .adQuestionContent(Collections.singletonList(adviceRequestList.getAdviceQuestions().get(0).getAdQuestionContent()))
+                .adAnswerContent(Collections.singletonList(adviceRequestList.getAdviceQuestions().get(0).getAdAnswerContent()))
+
+
+                .build();
+        return allAdviceRequestDto;
     }
 }

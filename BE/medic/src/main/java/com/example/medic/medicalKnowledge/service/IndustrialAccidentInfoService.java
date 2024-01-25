@@ -1,11 +1,10 @@
 package com.example.medic.medicalKnowledge.service;
 
-import com.example.medic.client.domain.Client;
 import com.example.medic.medicalKnowledge.domain.IndustrialAccidentInfo;
 import com.example.medic.medicalKnowledge.dto.IndustrialAccidentInfoDto;
 import com.example.medic.medicalKnowledge.repository.IndustrialAccidentInfoRepository;
-import com.example.medic.qna.domain.Announcement;
-import lombok.Builder;
+import com.example.medic.medicalKnowledge.repository.IndustrialAccidentInfoRepository.PrevIndustrialAccidentInfoDto;
+import com.example.medic.medicalKnowledge.repository.IndustrialAccidentInfoRepository.NextIndustrialAccidentInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -71,5 +70,28 @@ public class IndustrialAccidentInfoService {
     public IndustrialAccidentInfo findIndustrialAccidentInfo(Long iaid){
         Optional<IndustrialAccidentInfo> industrialAccidentInfo = industrialAccidentInfoRepository.findById(iaid);
         return industrialAccidentInfo.orElseThrow(() -> new NoSuchElementException());
+    }
+
+    /**
+     * 검색 기능
+     */
+    public List<IndustrialAccidentInfo> searchIndustrialAccidentInfo(String keyword) {
+        return industrialAccidentInfoRepository.findByIaNameContaining(keyword);
+    }
+
+    /**
+     * 이전 글 찾기
+     */
+    public PrevIndustrialAccidentInfoDto findPrevIndustrialAccidentInfo(Long woid) {
+        PrevIndustrialAccidentInfoDto prevIndustrialAccidentInfoDto = industrialAccidentInfoRepository.findPrevIndustrialAccident(woid);
+        return prevIndustrialAccidentInfoDto;
+    }
+
+    /**
+     * 다음 글 찾기
+     */
+    public NextIndustrialAccidentInfoDto findNextIndustrialAccidentInfo(Long woid) {
+        NextIndustrialAccidentInfoDto nextIndustrialAccident = industrialAccidentInfoRepository.findNextIndustrialAccident(woid);
+        return nextIndustrialAccident;
     }
 }

@@ -7,38 +7,73 @@ export default function WoundAccidentDetailInfopage(){
   const navigate = useNavigate();
   const location = useLocation();
 
-  const woundInfoDetail = location.state.woundInfoDetail; // 상세 게시글 번호
   const woundInfoId = location.state.woundInfoId;   // 상세 게시글 번호 리스트
-  const woundInfos = location.state.woundInfos;   // 산업재해정보 리스트
 
+  const [prevNum, setPrevNum] = useState('');
+  const [nextNum, setNextNum] = useState('');
   const [prevTitle, setPrevTitle] = useState('');
   const [nextTitle, setNextTitle] = useState('');
+  const [prevWriter, setPrevWriter] = useState('');
+  const [nextWriter, setNextWriter] = useState('');
   const [prevDate, setPrevDate] = useState('');
   const [nextDate, setNextDate] = useState('');
+  const [woundInfoDetail, setWoundInfoDetail] = useState([]);
 
   useEffect(() => {
-    if (woundInfoId === 0) {
-      setNextTitle('이전글이 없습니다.');
-    } else {
-      setNextTitle(woundInfos[woundInfoId - 1].woName);
-      setNextDate(woundInfos[woundInfoId - 1].woRegdate);
-    }
+    const getWoundInfos = async (woundInfoId) => {
+        
+        // 본문 게시물 내용 상세 조회
+        const resp = await axios.get(`/find/woinfo/detail/${woundInfoId}`);
+        const data = resp.data;
+        setWoundInfoDetail(data);
 
-    if (woundInfoId < woundInfos.length - 1) {
-      setPrevTitle(woundInfos[woundInfoId + 1].woName);
-      setPrevDate(woundInfos[woundInfoId + 1].woRegdate);
-    } else {
-      setPrevTitle('다음글이 없습니다.');
-    }
-  }, [woundInfoId, woundInfos]);
+        // 본문 게시물 이전글 정보 조회
+        const prev = await axios.get(`/find/woinfo/detail/prev/${woundInfoId}`)
+        const prevData = prev.data;
+        setPrevNum(prevData.prevNum); // 이전 글 번호 값
+        setPrevTitle(prevData.prevTitle);
+        setPrevWriter(prevData.prevWriter);
+        setPrevDate(prevData.prevDate);
+
+        // 본문 게시물 다음글 정보 조회
+        const next = await axios.get(`/find/woinfo/detail/next/${woundInfoId}`)
+        const nextData = next.data;
+        setNextNum(nextData.nextNum);  // 다음 글 번호 값
+        setNextTitle(nextData.nextTitle);
+        setNextWriter(nextData.nextWriter);
+        setNextDate(nextData.nextDate);
+    };
+    getWoundInfos(woundInfoId);
+
+  }, [woundInfoId]);
 
   const formatDateString = (dateString) => {
+    if(dateString === '-'){
+      return '-';
+    }
     const date = new Date(dateString);
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
     return formattedDate;
   };
 
+  // 이전 또는 다음 글 이동
+  // 이동할 글이 없으면 무반응
+  const goToDetailPage = (woundInfoId) => {
+    if(woundInfoId === '0'){
+      return;
+    }
+    navigate(`/medic/knowledge/wounddetails`, {state : {
+      woundInfoId : woundInfoId
+    }});
+  };
+
   const medicWound = () => {
+    navigate('/medic/medicalknowledge/woundInfo');
+  };
+
+  const deleteWound = async(woundInfoId)=> {
+    const response = await axios.post(`/delete/woinfo/${woundInfoId}`);
+    // 삭제 응답에 따른 이동 여부 판단 로직 필요
     navigate('/medic/medicalknowledge/woundInfo');
   };
 
@@ -57,7 +92,7 @@ export default function WoundAccidentDetailInfopage(){
             <th className={woundAccidentDetail.wounddetail_th}>제목</th>
             <td className={woundAccidentDetail.wounddetail_td}>{woundInfoDetail.woName}</td>
             <th className={woundAccidentDetail.wounddetail_th}>등록일</th>
-            <td className={woundAccidentDetail.wounddetail_td}>{formatDateString(woundInfoDetail.woRegDate)}</td>
+            <td className={woundAccidentDetail.wounddetail_td}>{formatDateString(woundInfoDetail.woRegdate)}</td>
           </tr>
           <th className={woundAccidentDetail.wounddetail_th}>내용</th>
           <td colSpan="3" className={woundAccidentDetail.wounddetail_td}>
@@ -68,16 +103,16 @@ export default function WoundAccidentDetailInfopage(){
         <br />
         <div className={woundAccidentDetail.secondTable}>
           <table className={woundAccidentDetail.wounddetail_table}>
-            <tr>
+            <tr onClick={() => goToDetailPage(prevNum)}>
               <th className={woundAccidentDetail.wounddetail_th}>이전글</th>
               <td className={woundAccidentDetail.wounddetail_td}>{prevTitle}</td>
-              <td className={woundAccidentDetail.wounddetail_td}>건강관리공단</td>
+              <td className={woundAccidentDetail.wounddetail_td}>{prevWriter}</td>
               <td className={woundAccidentDetail.wounddetail_td}>{formatDateString(prevDate)}</td>
             </tr>
-            <tr>
+            <tr onClick={() => goToDetailPage(nextNum)}>
               <th className={woundAccidentDetail.wounddetail_th}>다음글</th>
               <td className={woundAccidentDetail.wounddetail_td}>{nextTitle}</td>
-              <td className={woundAccidentDetail.wounddetail_td}>건강관리공단</td>
+              <td className={woundAccidentDetail.wounddetail_td}>{nextWriter}</td>
               <td className={woundAccidentDetail.wounddetail_td}>{formatDateString(nextDate)}</td>
             </tr>
           </table>
@@ -85,6 +120,12 @@ export default function WoundAccidentDetailInfopage(){
         <div className={woundAccidentDetail.complete}>
           <button type="button" onClick={medicWound} className={woundAccidentDetail.btt_write}>
             목록
+          </button>
+          <button type="button" onClick={medicWound} className={woundAccidentDetail.btt_write}>
+            수정
+          </button>
+          <button type="button" onClick={() => deleteWound(woundInfoId)} className={woundAccidentDetail.btt_write}>
+            삭제
           </button>
         </div>
       </form>

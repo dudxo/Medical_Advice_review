@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -43,4 +44,6 @@ public class AnalyzeRequestFile {
         this.anOther = anOther;
         this.analyzeRequestList = analyzeRequestList;
     }
+
+
 }

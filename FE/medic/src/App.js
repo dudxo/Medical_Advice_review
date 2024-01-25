@@ -19,8 +19,11 @@ import WriteCustomerInquiry from './pages/Customerpage/Customerinquiry/WriteCust
 import FaultInfopage from './pages/MedicalLegalKnowledge/FaultInfopage'
 import FaultInfoWritepage from "./pages/MedicalLegalKnowledge/FaultInfoWritepage";
 import IndustrialAccidentInfopage from './pages/MedicalLegalKnowledge/IndustrialAccidentInfopage'
+import IndustrialAccidentWritepage from './pages/MedicalLegalKnowledge/IndustrialAccidentWritepage'
 import TrafficAccidentInfopage from'./pages/MedicalLegalKnowledge/TrafficAccidentInfopage'
+import TrafficAccidentWritepage from'./pages/MedicalLegalKnowledge/TrafficAccidentWritepage'
 import WoundInfopage from'./pages/MedicalLegalKnowledge/WoundInfopage'
+import WoundWritepage from'./pages/MedicalLegalKnowledge/WoundWritepage'
 import Mypage from './pages/Mypage/Mypage'
 import ConsultativeMypage from './pages/Mypage/ConsultativeMypage'
 import Header from "./components/Header";
@@ -41,6 +44,7 @@ import ConsultativeTranslateAssignmentDetail from "./pages/Consultativepage/Cons
 import IndustrialAccidentDetail from "./pages/MedicalLegalKnowledge/IndustrialAccidentDetailInfopage";
 import FaultInfoDetail from "./pages/MedicalLegalKnowledge/FaultInfoDetailpage";
 import TrafficAccidentDetail from "./pages/MedicalLegalKnowledge/TrafficAccidentDetailInfopage";
+import WoundDetail from "./pages/MedicalLegalKnowledge/WoundDetailInfopage";
 import ModifyMyPwpage from "./pages/Mypage/ModifyMyPwpage";
 import AdministratorMypage from "./pages/Adminstrator/AdministratorMypage";
 import DocManagement from "./pages/Adminstrator/DocManagement";
@@ -73,7 +77,7 @@ export default function App(){
                     <Route path='/medicsignup' element={<Joinpage/>}/>
                     <Route path='/medic/advice/adviceRequest' element={<AdviceRequestpage/>}/>
                     <Route path='/medic/advice/adviceList' element={<AdviceListpage/>}/>
-                    <Route path='/medic/advice/adviceDetail' element={<AdviceDetailpage/>}/>
+                    <Route path='/medic/advice/adviceDetail/:index' element={<AdviceDetailpage/>}/>
                     <Route path='/medic/analyze/analyzeRequest' element={<AnalyzeRequestpage/>}/>
                     <Route path='/medic/analyze/analyzeList' element={<AnalyzeListpage/>}/>
                     <Route path='/medic/analyze/analyzeDetail' element={<AnalyzeDetailpage/>}/>
@@ -88,8 +92,11 @@ export default function App(){
                     <Route path='/medic/medicalknowledge/faultInfo' element={<FaultInfopage/>}/>
                     <Route path='/medic/medicalknowledge/faultinfo/faultinfowrite' element={<FaultInfoWritepage/>}/>
                     <Route path='/medic/medicalknowledge/industrialAccidentInfo' element={<IndustrialAccidentInfopage/>}/>
+                    <Route path='/medic/admin/knowledge/industrialAccidentInfo/writeindustrialaccident' element={<IndustrialAccidentWritepage/>}/>
                     <Route path='/medic/medicalknowledge/trafficAccidentInfo' element={<TrafficAccidentInfopage/>}/>
+                    <Route path='/medic/medicalknowledge/trafficAccidentInfo/writetrafficAccident' element={<TrafficAccidentWritepage/>}/>
                     <Route path='/medic/medicalknowledge/woundInfo' element={<WoundInfopage/>}/>
+                    <Route path='/medic/medicalknowledge/woundInfo/writewound' element={<WoundWritepage/>}/>
                     <Route path='/medic/mypage' element={<Mypage/>}/>
                     <Route path='/medic/consultativeMypage' element={<ConsultativeMypage/>}/>
                     <Route path='/medic/customer/announcement/announcementdetails' element={<AnnouncementDetail/>}/>
@@ -106,7 +113,8 @@ export default function App(){
                     <Route path="/medic/consultative/assignmentTranslateDetail" element={<ConsultativeTranslateAssignmentDetail/>}/>
                     <Route path="/medic/knowledge/industrialaccidentdetails" element={<IndustrialAccidentDetail/>}/>
                     <Route path="/medic/medicalknowledge/faultinfo/faultinfodetails" element={<FaultInfoDetail/>}/>
-                    <Route path="/medic/medicalknowledge/faultinfo/trafficaccidentdetails" element={<TrafficAccidentDetail/>}/>
+                    <Route path="/medic/knowledge/trafficaccidentdetails" element={<TrafficAccidentDetail/>}/>
+                    <Route path="/medic/knowledge/wounddetails" element={<WoundDetail/>}/>
                     <Route path="/medic/mypage/modifymyinfo/modifyMyPw" element={<ModifyMyPwpage/>}/>
                     <Route path="/medic/adminstrator/docmanagement" element={<DocManagement/>}/>
                     <Route path="/medic/adminstrator/administratormypage" element={<AdministratorMypage/>}/>

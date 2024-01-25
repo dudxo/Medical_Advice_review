@@ -44,13 +44,7 @@ public class AdviceQuestion {
         this.adviceRequestList = adviceRequestList;
     }
 
-    @Builder(toBuilder = true)
-    public AdviceQuestion(String adQuestionContent, String adAnswerContent, LocalDate adAnswerDate,
-                          AdviceRequestList adviceRequestList, Long adQid) {
-        this.adQuestionContent = adQuestionContent;
-        this.adAnswerContent = adAnswerContent;
+    public void updateAdAnswerDate(LocalDate adAnswerDate) {
         this.adAnswerDate = adAnswerDate;
-        this.adviceRequestList = adviceRequestList;
-        this.adQid = adQid;
     }
 }
