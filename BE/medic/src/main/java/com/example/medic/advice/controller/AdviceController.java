@@ -1,14 +1,14 @@
 package com.example.medic.advice.controller;
 
+import com.example.medic.advice.domain.AdviceRequestList;
 import com.example.medic.advice.dto.AllAdviceRequestDto;
 import com.example.medic.advice.service.AdviceService;
 import com.example.medic.client.dto.ClientInfoDto;
+import com.example.medic.medicalKnowledge.domain.MedicalNegligenceInfo;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,5 +32,18 @@ public class AdviceController {
           return  ResponseEntity.ok().body("saved");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
+    }
+
+    /**
+     * 자문의뢰 상세조회
+     */
+    @GetMapping("/advice/adviceDetail/{adId}")
+    public ResponseEntity<AllAdviceRequestDto> findAdviceDetail(@PathVariable Long adId){
+        try{
+            AllAdviceRequestDto allAdviceRequestDto = adviceService.getAdviceRequestDetail(adId);
+            return ResponseEntity.ok(allAdviceRequestDto);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

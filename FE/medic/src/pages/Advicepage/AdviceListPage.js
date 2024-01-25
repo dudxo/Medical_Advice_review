@@ -89,9 +89,6 @@ export default function AdviceListPage() {
                             <option value="자문완료">자문완료</option>
                         </select>
                         </td> */}
-                    </React.Fragment>
-                    )
-                ))}
                 </tr>
             ))}
 </tbody>
