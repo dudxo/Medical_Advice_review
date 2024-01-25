@@ -16,16 +16,21 @@ import java.util.Date;
 @Builder
 public class AdviceSituationDto {
 
+    private Long adId;
     private String adPtSub;
     private String adPtDiagnosis;
     private LocalDate adRegDate;
-    private Long adId;
+    private LocalDate admDate;
+    private LocalDate adAnswerDate;
+    private String admProgressStatus;
 
-    public static AdviceSituationDto from(AdviceRequestList adviceRequestList) {
-        return AdviceSituationDto.builder()
-                .adPtSub(adviceRequestList.getAdPtSub())
-                .adPtDiagnosis(adviceRequestList.getAdPtDiagnosis())
-                .adRegDate(adviceRequestList.getAdRegDate())
-                .build();
+    public AdviceSituationDto(Long adId, String adPtSub, String adPtDiagnosis, LocalDate adRegDate, LocalDate admDate, LocalDate adAnswerDate, String admProgressStatus) {
+        this.adId = adId;
+        this.adPtSub = adPtSub;
+        this.adPtDiagnosis = adPtDiagnosis;
+        this.adRegDate = adRegDate;
+        this.admDate = admDate;
+        this.adAnswerDate = adAnswerDate;
+        this.admProgressStatus = admProgressStatus;
     }
 }
