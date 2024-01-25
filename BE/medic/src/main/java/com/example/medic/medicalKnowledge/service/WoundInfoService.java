@@ -1,10 +1,13 @@
 package com.example.medic.medicalKnowledge.service;
 
-import com.example.medic.medicalKnowledge.domain.IndustrialAccidentInfo;
 import com.example.medic.medicalKnowledge.domain.WoundInfo;
 import com.example.medic.medicalKnowledge.dto.WoundInfoDto;
 import com.example.medic.medicalKnowledge.repository.WoundInfoRepository;
+import com.example.medic.medicalKnowledge.repository.WoundInfoRepository.PrevWoundInfoDto;
+import com.example.medic.medicalKnowledge.repository.WoundInfoRepository.NextWoundInfoDto;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +18,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class WoundInfoService {
     private final WoundInfoRepository woundInfoRepository;
+    private final Logger logger = LoggerFactory.getLogger(WoundInfoService.class);
+
     public List<WoundInfo> getAllWoundInfo(){
         return woundInfoRepository.findAll();
     }
@@ -76,5 +81,21 @@ public class WoundInfoService {
      */
     public List<WoundInfo> searchWoundInfo(String keyword) {
         return woundInfoRepository.findByWoNameContaining(keyword);
+    }
+
+    /**
+     * 이전 글 찾기
+     */
+    public PrevWoundInfoDto findPrevWoundInfo(Long woid) {
+        PrevWoundInfoDto prevWoundInfo = woundInfoRepository.findPrevWound(woid);
+        return prevWoundInfo;
+    }
+
+    /**
+     * 다음 글 찾기
+     */
+    public NextWoundInfoDto findNextWoundInfo(Long woid) {
+        NextWoundInfoDto nextWoundinfo = woundInfoRepository.findNextWound(woid);
+        return nextWoundinfo;
     }
 }
