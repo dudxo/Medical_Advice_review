@@ -14,4 +14,6 @@ public interface TranslationRequestFileRepository extends JpaRepository<Translat
     @Query("SELECT tr FROM TranslationRequestFile tr WHERE tr.translationRequestList.trId = :trId")
     TranslationRequestFile findByTrId(@Param("trId") Long trId);
 
+    @Query("SELECT trf.tfId FROM TranslationRequestFile trf WHERE trf.translationRequestList.trId = :trId")
+    Long findByFileId(Long trId);
 }

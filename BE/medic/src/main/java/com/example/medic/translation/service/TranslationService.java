@@ -6,12 +6,16 @@ import com.example.medic.translation.domain.TranslationRequestList;
 import com.example.medic.translation.dto.TranslationFileDto;
 import com.example.medic.translation.dto.TranslationRequestDto;
 import com.example.medic.translation.dto.TranslationListDto;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 public interface TranslationService {
 
-    boolean saveTranslationRequest(TranslationRequestDto requestDto, ClientInfoDto clientInfoDto);
+    boolean saveTranslationRequest(TranslationRequestDto requestDto, ClientInfoDto clientInfoDto, List<MultipartFile> multipartFiles) throws IOException;
 
-    TranslationFileDto splitRequestToTranslationFileDto(TranslationRequestDto request);
+    TranslationFileDto splitRequestToTranslationFileDto(List<MultipartFile> multipartFiles) throws IOException;
 
     TranslationListDto splitRequestToTranslationListDto(TranslationRequestDto request);
 

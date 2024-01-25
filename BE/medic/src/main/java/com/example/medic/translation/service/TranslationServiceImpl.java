@@ -1,8 +1,10 @@
 package com.example.medic.translation.service;
 
+import com.example.medic.analyze.dto.AnalyzeRequestFileDto;
 import com.example.medic.client.domain.Client;
 import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.client.service.ClientService;
+import com.example.medic.files.handler.FileHandler;
 import com.example.medic.translation.domain.TranslationRequestFile;
 import com.example.medic.translation.domain.TranslationRequestList;
 import com.example.medic.translation.dto.TranslationFileDto;
@@ -15,9 +17,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.PersistenceException;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -27,16 +35,17 @@ public class TranslationServiceImpl implements TranslationService {
     private final TranslationRequestFileRepository translationRequestFileRepository;
     private final TranslationRequestListRepository translationRequestListRepository;
     private final ClientService clientService;
+    private final FileHandler fileHandler;
 
     /**
      * @return 번역 의뢰 신청 저장
      */
     @Override
     @Transactional
-    public boolean saveTranslationRequest(TranslationRequestDto requestDto, ClientInfoDto clientInfoDto) {
+    public boolean saveTranslationRequest(TranslationRequestDto requestDto, ClientInfoDto clientInfoDto, List<MultipartFile> multipartFiles) throws IOException {
         Client currentClient = clientService.findClient(clientInfoDto.getUId());
         TranslationListDto translationListDto = splitRequestToTranslationListDto(requestDto);
-        TranslationFileDto translationFileDto = splitRequestToTranslationFileDto(requestDto);
+        TranslationFileDto translationFileDto = splitRequestToTranslationFileDto(multipartFiles);
 
         try {
             TranslationRequestList savedTranslationList = saveTranslationList(translationListDto, currentClient);
@@ -52,10 +61,15 @@ public class TranslationServiceImpl implements TranslationService {
      * @return 요청 받은 번역 의뢰 파일 변환
      */
     @Override
-    public TranslationFileDto splitRequestToTranslationFileDto(TranslationRequestDto request) {
-        return TranslationFileDto.builder()
-                .trMtl(request.getTrMtl())
-                .build();
+    public TranslationFileDto splitRequestToTranslationFileDto(List<MultipartFile> multipartFiles) throws IOException {
+        if(multipartFiles.size() !=0) {
+            Path projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translationrequest/");
+            List<String> files = fileHandler.parseFile(projectPath, multipartFiles);
+            return TranslationFileDto.builder()
+                    .trMtl(files.get(0))
+                    .build();
+        }
+        return null;
     }
 
     /**

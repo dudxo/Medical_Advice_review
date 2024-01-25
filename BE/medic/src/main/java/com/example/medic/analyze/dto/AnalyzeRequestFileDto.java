@@ -7,8 +7,6 @@ import lombok.Getter;
 @Builder
 public class AnalyzeRequestFileDto {
 
-    private Long anfId;
-
     private String anReqForm;
 
     private String anDiagnosis;

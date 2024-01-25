@@ -46,10 +46,13 @@ public class AnalyzeController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
     }
 
+    /**
+     * @return 분석의뢰 파일 조회
+     */
     @GetMapping("analyze/findrequestfile/{anId}/{filename}")
     public ResponseEntity<?> findAnalyzeFile(@PathVariable Long anId, @PathVariable String filename) {
         try {
-            Resource fileResource = analyzeFileService.findAdviceRequestFile(anId, filename);
+            Resource fileResource = analyzeFileService.findAnalyzeRequestFile(anId, filename);
             if (fileResource != null) {
                 return ResponseEntity.ok()
                         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileResource.getFilename() + "\"")

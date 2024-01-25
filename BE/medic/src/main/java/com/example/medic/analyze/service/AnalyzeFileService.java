@@ -1,6 +1,5 @@
 package com.example.medic.analyze.service;
 
-import com.example.medic.advice.domain.AdviceFile;
 import com.example.medic.analyze.domain.AnalyzeRequestFile;
 import com.example.medic.analyze.repository.AnalyzeRequestFileRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +7,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.PersistenceException;
 import java.net.MalformedURLException;
 import java.util.NoSuchElementException;
 
@@ -16,7 +16,10 @@ import java.util.NoSuchElementException;
 public class AnalyzeFileService {
     private final AnalyzeRequestFileRepository analyzeRequestFileRepository;
 
-    public Resource findAdviceRequestFile(Long anId, String fileType) throws MalformedURLException {
+    /**
+     * 분석의뢰 파일 조회
+     */
+    public Resource findAnalyzeRequestFile(Long anId, String fileType) throws MalformedURLException {
         Long fileId = analyzeRequestFileRepository.findByFileId(anId);
         AnalyzeRequestFile analyzeRequestFile = analyzeRequestFileRepository.findById(fileId)
                 .orElseThrow(() -> new NoSuchElementException("AdviceFile not found with id: " + fileId));
@@ -46,5 +49,4 @@ public class AnalyzeFileService {
         }
         return null;
     }
-
 }

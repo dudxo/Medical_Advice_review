@@ -51,6 +51,9 @@ public class AdviceController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
     }
 
+    /**
+     * 자문의뢰 파일 조회
+     */
     @GetMapping("advice/findrequestfile/{adId}/{filename}")
     public ResponseEntity<?> findAdviceRequestFile(@PathVariable Long adId, @PathVariable String filename) {
         try {

@@ -23,7 +23,9 @@ import java.util.NoSuchElementException;
 public class AdviceFileService {
     private AdviceFileRepository adviceFileRepository;
 
-    //요청 file 조회
+    /**
+     * 자문의뢰 파일조회
+     */
     public Resource findAdviceRequestFile(Long adId, String fileType) throws MalformedURLException {
         Long fileId = adviceFileRepository.findByFileId(adId);
         AdviceFile adviceFile = adviceFileRepository.findById(fileId)

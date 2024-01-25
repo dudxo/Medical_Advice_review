@@ -7,7 +7,5 @@ import lombok.Getter;
 @Builder
 public class TranslationFileDto {
 
-    private Long tfId;
-
     private String trMtl;
 }
