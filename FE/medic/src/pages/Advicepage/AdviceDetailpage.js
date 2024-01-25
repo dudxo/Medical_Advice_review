@@ -1,10 +1,131 @@
 import React, { useState, useEffect } from 'react';
 import adviceDetail from '../../css/AdviceDetailpage.module.css'
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 
 export default function AdviceDetailpage(){
+    const navigate = useNavigate();
+    const startYear = 1960;
+
+    const {index} = useParams();
+
+    const [uname, setUname] = useState('')
+    const [utel, setUtel] = useState('')
+    const [uphone, setUphone] = useState('')
+    const [uaddress, setUaddress] = useState('')
+
+    const [adPtName, setAdPtName] = useState('')
+    const [ad_ptssnum, setAdptssnum] = useState('');
+    const [ad_ptsub, setAdptsub] = useState('');
+    const [ad_ptdiagnosis, setAdptdiagnosis] = useState('')
+    const [ad_ptrec, setAdptrec] = useState('')
+    const [ad_ptcmt, setAdptcmt] = useState('')
+    
+    // 보험사
+    const [insurance ,setInsurance] = useState('')
+    const [insureDate, setInsureDate] = useState('')
+    const [insure_name, setInsurename] = useState('')
+    
+    // 진료기록
+    const [hospital, setHospital] = useState('')
+    const [admStart ,setAdmstart] = useState('')
+    const [admEnd, setAdmend] = useState('')
+    const [treat_cmt ,setTreatcmt] = useState('')
+
+    //기타사항
+    const [adEtcValue, setAdEtcValue] = useState('');
+
+    const [selectedYear, setSelectedYear] = useState(startYear);
+    const [selectedMonth, setSelectedMonth] = useState(1);
+    const [selectedDay, setSelectedDay] = useState(1);
+    const [dayOptions, setDayOptions] = useState([]);
+    const [adQuestionTotal, setAdQuestionTotal] = useState(1);
+    const [adQuestionContents, setAdQuestionContents] = useState([]);
+    const [adAnswerContent, setAdAnswerContent] = useState([])
+    const [contents_count, setContentscount] = useState(0)
+
+    const [visitStart ,setVisitstart] = useState('')
+    const [visitEnd, setVisitend] = useState('')
+
+    const [handleQuestionTotalChange, setHandleQuestionTotalChange] = useState(() => {});
+    const [handleQuestionContentChange, setHandleQuestionContentChange] = useState(() => {});
+
+
+
+    const getAdviceRequest = async() => {
+        try{
+            const response = await axios.get(`/advice/adviceDetail/${index}`)
+            console.log(response.data)
+            setAdPtName(response.data.adPtName)
+            setAdptssnum(response.data.adPtSsNum)
+            setAdptsub(response.data.adPtSub)
+            setAdptdiagnosis(response.data.adPtDiagnosis)
+            setAdptrec(response.data.adPtRec)
+            setAdptcmt(response.data.adPtCmt)
+            setInsurance(response.data.insurance)
+            setInsureDate(response.data.insureDate)
+            setInsurename(response.data.insureName)
+            setHospital(response.data.hospital)
+            setAdmstart(response.data.admStart)
+            setAdmend(response.data.admEnd)
+            setTreatcmt(response.data.treatCmt)
+            setVisitstart(response.data.visitStart)
+            setVisitend(response.data.visitEnd)
+            setAdEtcValue(response.data.adEtc)
+            setAdQuestionContents(response.data.adQuestionContent)
+            setAdAnswerContent(response.data.adAnswerContent)
+    } catch(err){
+        console.log(err)
+    }  
+}
+    const getUserInfo = async() =>{
+        try{
+            const response = await axios.get('/userInfo')
+            console.log(response.data)
+            setUname(response.data.name)
+            setUtel(response.data.userTel)
+            setUphone(response.data.userPhone)
+            setUaddress(response.data.userAddress)
+        } catch(err){
+            console.log(err)
+        }  
+    }
+
+    useEffect(()=>{
+        getUserInfo()
+        getAdviceRequest()
+    },{index})
+
+    const renderQuestionInputs = () => {
+        return adQuestionContents.map((content, index) => (
+        <div className={adviceDetail.row_box} style={{height : 'auto'}} key={index}>
+            <div className={adviceDetail.title_box}>
+            질문 {index + 1} 입력
+            </div>
+            <div className={adviceDetail.input_box}>
+            <input
+                type="text"
+                name={`adQuestionContent_${index}`}
+                value={content}
+                readOnly
+                maxLength={300}
+            />
+            </div>
+        </div>
+        ));
+    };
+
+    const formatDateString = (dateString) => {
+        const date = new Date(dateString);
+        const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+        return formattedDate;
+    };
+
+    const medicAdviceList = () => {
+        navigate('/medic/advice/adviceList');
+    };
+
     return(
         <div className={adviceDetail.adviceDetail_wrap}>
             <div className={adviceDetail.iconbox}>
@@ -22,17 +143,17 @@ export default function AdviceDetailpage(){
              <div className={adviceDetail.request_usertable}>
                 <div className={adviceDetail.row_box}>
                     <div className={adviceDetail.title_box}>의뢰자명</div>
-                    <div className={adviceDetail.input_box}>송경훈</div>
+                    <div className={adviceDetail.input_box}><input type="text" disabled={true} value={uname}/></div>
                 </div>
                 <div className={adviceDetail.row_box}>
                     <div className={adviceDetail.title_box}>일반전화</div>
-                    <div className={adviceDetail.input_box}>010-0000-0000</div>
+                    <div className={adviceDetail.input_box}><input type="text" disabled={true} value={utel}/></div>
                     <div className={adviceDetail.title_box} style={{borderLeft : '1px solid black'}}>휴대전화</div>
-                    <div className={adviceDetail.input_box}>010-0000-0000</div>
+                    <div className={adviceDetail.input_box}><input type="text" disabled={true} value={uphone}/></div>
                 </div>
                 <div className={adviceDetail.row_box}>
                     <div className={adviceDetail.title_box}>주소</div>
-                    <div className={adviceDetail.input_box}>부천</div>
+                    <div className={adviceDetail.input_box}><input type="text" disabled={true} value={uaddress}/></div>
                 </div>
              </div>
              <div className={adviceDetail.iconbox}>
@@ -44,28 +165,26 @@ export default function AdviceDetailpage(){
             <div className={adviceDetail.request_patienttable}>
                 <div className={`${adviceDetail.row_box} ${adviceDetail.patient_box}`}>
                     <div className={`${adviceDetail.title_box} ${adviceDetail.patient_box}`}>환자명</div>
-                    <div className={`${adviceDetail.input_box} ${adviceDetail.patient_box}`}>자바</div>
+                    <div className={`${adviceDetail.input_box} ${adviceDetail.patient_box}`}>{adPtName}</div>
                     <div className={`${adviceDetail.title_box} ${adviceDetail.patient_box}`} style={{borderLeft : '1px solid black'}}>주민등록번호</div>
                     <div className={`${adviceDetail.input_box} ${adviceDetail.input_ptssnumbox} ${adviceDetail.patient_box}`}>
-                        000000
-                         -
-                        0000000
+                        {ad_ptssnum}
                     </div>
                 </div>
                 <div className={adviceDetail.row_box}>
                     <div className={adviceDetail.title_box}>진단과목</div>
                     <div className={adviceDetail.input_box}>
-                        정형외과
+                        {ad_ptsub}
                     </div>
                     <div className={adviceDetail.title_box} style={{borderLeft : '1px solid black'}}>진단명</div>
                     <div className={adviceDetail.input_box}>
-                        골절
+                        {ad_ptdiagnosis}
                     </div>
                 </div>
                 <div className={adviceDetail.row_box}>
                     <div className={adviceDetail.title_box}>과거 진단이력</div>
                     <div className={adviceDetail.input_box}>
-                        인대
+                        {ad_ptrec}
                     </div>
                 </div>
                 <div className={`${adviceDetail.row_box}`}>
@@ -73,10 +192,7 @@ export default function AdviceDetailpage(){
                         내용
                     </div>
                     <div className={adviceDetail.input_box} style={{width : '400px', height : 'auto'}}>
-                        안녕하세요
-                        <div className={adviceDetail.count_box}>
-                            /500
-                        </div>
+                        {ad_ptcmt}
                     </div>
                 </div>
             </div>
@@ -90,19 +206,17 @@ export default function AdviceDetailpage(){
                 <div className={adviceDetail.row_box}>
                     <div className={adviceDetail.title_box}>보험사명</div>
                     <div className={adviceDetail.input_box}>
-                        하나보험
+                        {insurance}
                     </div>
                     <div className={adviceDetail.title_box} style={{borderLeft : '1px solid black'}}>계약일자</div>
                     <div className={adviceDetail.input_box}>
-                        2000 -
-                        01 -
-                        02
+                        {insureDate}
                     </div>
                 </div>
                 <div className={adviceDetail.row_box}>
                     <div className={adviceDetail.title_box}>보험계약명</div>
                     <div className={adviceDetail.input_box}>
-                        생명보험
+                        {insure_name}
                     </div>
                 </div>
             </div>
@@ -116,22 +230,18 @@ export default function AdviceDetailpage(){
                 <div className={adviceDetail.row_box} style={{height : '42px'}}>
                     <div className={adviceDetail.title_box} >1차 치료 병원명</div>
                     <div className={adviceDetail.input_box}>
-                        남서울병원
+                        {hospital}
                     </div>
                 </div>
                 <div className={adviceDetail.row_box}>
                     <div className={adviceDetail.title_box} style={{height : '92px'}}>입원 치료기간</div>
                     <div className={adviceDetail.input_box} style={{display:'flex', flexDirection:'column' ,width: '600px', alignItems : 'space-between', height : '80px'}}>
                         <div className={adviceDetail.datebox}>
-                            2000년
-                            1월
-                            2일
+                            {admStart}
                         </div>                       
                         ~
                         <div className={adviceDetail.datebox}>
-                            2000년
-                            1월
-                            3일
+                            {admEnd}
                         </div>                       
                     </div>
                 </div>
@@ -139,15 +249,11 @@ export default function AdviceDetailpage(){
                     <div className={adviceDetail.title_box} style={{height : '92px'}}>통원 치료기간</div>
                     <div className={adviceDetail.input_box} style={{display:'flex', flexDirection:'column' ,width: '600px', justifyContent : 'start', alignItems : 'space-between', height : '80px'}}>
                         <div className={adviceDetail.datebox}>
-                            2000년
-                            2월
-                            1일
+                            {visitStart}
                         </div>                       
                         ~
                         <div className={adviceDetail.datebox}>
-                            2000년
-                            2월
-                            2일
+                            {visitEnd}
                         </div>                       
                     </div>
                 </div>
@@ -156,10 +262,7 @@ export default function AdviceDetailpage(){
                         치료사항
                     </div>
                     <div className={adviceDetail.input_box} style={{width : '400px', height : 'auto'}}>
-                        물리치료
-                        <div className={adviceDetail.count_box}>
-                           /300
-                        </div>
+                        {treat_cmt}
                     </div>
                 </div>
             </div>
@@ -173,10 +276,7 @@ export default function AdviceDetailpage(){
                 <div className={adviceDetail.row_box} >
                     <div className={adviceDetail.title_box} style={{height : '130px'}}>기타사항</div>
                     <div className={adviceDetail.input_box} style={{width : '400px'}}>
-                        없음
-                        <div className={adviceDetail.count_box}>
-                            /300
-                        </div>
+                        {adEtcValue}
                     </div>
                 </div>
             </div>
@@ -189,10 +289,10 @@ export default function AdviceDetailpage(){
             <div className = {adviceDetail.request_questiontable}>
                 <div className={adviceDetail.row_box} style={{height : 'auto'}}>
                     <div className={adviceDetail.title_box}>
-                        질문 항목수
+                        질문 항목
                     </div>
                     <div className={adviceDetail.input_box}>
-                        1개
+                    {renderQuestionInputs()}
                     </div>
                 </div>
                 </div>
@@ -202,7 +302,7 @@ export default function AdviceDetailpage(){
                         전문의 답변
                     </div>
                     <div className={adviceDetail.input_box}>
-                        답변입니다.
+                        {adAnswerContent}
                     </div>
                 </div>
                 </div>
@@ -218,7 +318,7 @@ export default function AdviceDetailpage(){
                         자문의뢰신청서
                     </div>
                     <div className={adviceDetail.input_box}>
-                        파일
+                        <input type='file' disabled={true} />
                     </div>
                 </div>
                 <div className={adviceDetail.row_box} style={{height : 'auto'}}>
@@ -226,7 +326,7 @@ export default function AdviceDetailpage(){
                         진단서
                     </div>
                     <div className={adviceDetail.input_box}>
-                        파일
+                        <input type='file' disabled={true} />
                     </div>
                 </div>
                 <div className={adviceDetail.row_box} style={{height : 'auto'}}>
@@ -234,7 +334,7 @@ export default function AdviceDetailpage(){
                         의무기록지
                     </div>
                     <div className={adviceDetail.input_box}>
-                        파일
+                        <input type='file' disabled={true} />
                     </div>
                 </div>
                 <div className={adviceDetail.row_box} style={{height : 'auto'}}>
@@ -242,7 +342,7 @@ export default function AdviceDetailpage(){
                         필름
                     </div>
                     <div className={adviceDetail.input_box}>
-                       파일
+                        <input type='file' disabled={true} />
                     </div>
                 </div>
                 <div className={adviceDetail.complete}>

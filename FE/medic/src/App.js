@@ -77,7 +77,7 @@ export default function App(){
                     <Route path='/medicsignup' element={<Joinpage/>}/>
                     <Route path='/medic/advice/adviceRequest' element={<AdviceRequestpage/>}/>
                     <Route path='/medic/advice/adviceList' element={<AdviceListpage/>}/>
-                    <Route path='/medic/advice/adviceDetail' element={<AdviceDetailpage/>}/>
+                    <Route path='/medic/advice/adviceDetail/:index' element={<AdviceDetailpage/>}/>
                     <Route path='/medic/analyze/analyzeRequest' element={<AnalyzeRequestpage/>}/>
                     <Route path='/medic/analyze/analyzeList' element={<AnalyzeListpage/>}/>
                     <Route path='/medic/analyze/analyzeDetail' element={<AnalyzeDetailpage/>}/>
