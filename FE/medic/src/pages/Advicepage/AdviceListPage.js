@@ -1,21 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import advicelist from '../../css/AdviceListPage.module.css';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 
 export default function AdviceListPage() {
   const [selectedStatus, setSelectedStatus] = useState('자문의뢰중');
+  const [assignmentDate, setAssignmentDate] = useState('');
+  const [responseDate, setResponseDate] = useState('');
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 추가
   const [adviceList, setAdviceList] = useState([]);
+  const navigate = useNavigate();
+
+  const btn_detail_advice = async(adId) => {
+    navigate(`/medic/advice/adviceDetail/${adId}`)
+}
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/advice/list');
-        console.log(response)
-        setAdviceList(response.data);
+        const resp = await axios.get('/advice/list');
+        const data = resp.data.reverse()
+        setAdviceList(data);
+        console.log(resp)
       } catch (error) {
         console.error('Error fetching advice list:', error);
       }
@@ -25,6 +33,10 @@ export default function AdviceListPage() {
   }, []);
   
   const formatDate = (dateString) => {
+    if (!dateString) {
+      return '';
+    }
+
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -32,7 +44,7 @@ export default function AdviceListPage() {
   
     return `${year}-${month}-${day}`;
   };
-  
+
   const handleStatusChange = (newStatus) => {
     setSelectedStatus(newStatus);
   };
@@ -62,35 +74,22 @@ export default function AdviceListPage() {
             <th className={advicelist.adviceList_th}>진행상태</th>
           </tr>
           </thead>
-        <tbody>
-            {[...Array(7)].map((_, rowIndex) => (
-                <tr key={rowIndex}>
-                {adviceList.map((advice, index) => (
-                    rowIndex === index && (
-                    <React.Fragment key={index}>
-                        <td className={advicelist.adviceList_td}>
-                          <Link to={`/medic/advice/adviceDetail/`}>
-                            {index + 1} 
-                          </Link>
-                        </td>
-                        <td className={advicelist.adviceList_td}>{advice.adPtSub}</td>
-                        <td className={advicelist.adviceList_td}>{advice.adPtDiagnosis}</td>
-                        <td className={advicelist.adviceList_td}>
-                            {formatDate(advice.adRegDate)}
-                        </td>
-                        <td className={advicelist.adviceList_td}>{'의뢰배정일'}</td>
-                        <td className={advicelist.adviceList_td}>{'의뢰자문일'}</td>
-                        <td className={advicelist.adviceList_td}>{'자문의뢰중'}</td>
-                        {/* <td className={advicelist.adviceList_td}>
-                        <select value={selectedStatus} onChange={(e) => handleStatusChange(e.target.value)}>
-                            <option value="자문의뢰중">자문의뢰중</option>
-                            <option value="자문배정중">자문배정중</option>
-                            <option value="결제하기">결제하기</option>
-                            <option value="자문완료">자문완료</option>
-                        </select>
-                        </td> */}
-                </tr>
-            ))}
+          <tbody>
+  {adviceList.map((adviceRequestList, index) => (
+    <tr key={index}>
+      <React.Fragment>
+        <td className={advicelist.adviceList_td} onClick={() => btn_detail_advice(adviceRequestList.adId)}>
+          {adviceList.length - index}
+        </td>
+        <td className={advicelist.adviceList_td}>{adviceRequestList.adPtSub}</td>
+        <td className={advicelist.adviceList_td}>{adviceRequestList.adPtDiagnosis}</td>
+        <td className={advicelist.adviceList_td}>{formatDate(adviceRequestList.adRegDate)}</td>
+        <td className={advicelist.adviceList_td}>{formatDate(adviceRequestList.admDate)}</td>
+        <td className={advicelist.adviceList_td}>{formatDate(adviceRequestList.adAnswerDate)}</td>
+        <td className={advicelist.adviceList_td}>{adviceRequestList.admProgressStatus}</td>
+      </React.Fragment>
+    </tr>
+  ))}
 </tbody>
       </table>
       <div className={advicelist.pagination}>
