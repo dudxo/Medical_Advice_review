@@ -46,11 +46,8 @@ export default function WoundInfopage(){
 
   const goToDetailPage = (woundInfoId) => {
     navigate(`/medic/knowledge/wounddetails`, {state : {
-      woundInfoDetail : woundInfos[woundInfoId],
-      woundInfoId : woundInfoId,
-      woundInfos : woundInfos
+      woundInfoId : woundInfoId
     }});
-    console.log(woundInfos[woundInfoId])
   };
 
   return (
@@ -83,7 +80,7 @@ export default function WoundInfopage(){
           </thead>
           <tbody>
             {woundInfos.map((woundInfo, index) => (
-              <tr key={index} onClick={() => goToDetailPage(index)}>
+              <tr key={index} onClick={() => goToDetailPage(woundInfo.woId)}>
                 <td className={wound.wound_td}>{woundInfo.woId}</td>
                 <td className={wound.wound_td}>{woundInfo.woName}</td>
                 <td className={wound.wound_td}>{woundInfo.woInstitution}</td>

@@ -3,7 +3,8 @@ package com.example.medic.medicalKnowledge.service;
 import com.example.medic.medicalKnowledge.domain.MedicalNegligenceInfo;
 import com.example.medic.medicalKnowledge.dto.MedicalNegligenceInfoDto;
 import com.example.medic.medicalKnowledge.repository.MedicalNegligenceInfoRepository;
-import lombok.RequiredArgsConstructor;
+import com.example.medic.medicalKnowledge.repository.MedicalNegligenceInfoRepository.NextMedicalNegligenceInfoDto;
+import com.example.medic.medicalKnowledge.repository.MedicalNegligenceInfoRepository.PrevMedicalNegligenceInfoDto;import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -75,5 +76,21 @@ public class MedicalNegligenceInfoService {
      */
     public List<MedicalNegligenceInfo> searchMedicalNegligenceInfo(String keyword) {
         return medicalNegligenceInfoRepository.findByMnNameContaining(keyword);
+    }
+
+    /**
+     * 이전 글 찾기
+     */
+    public PrevMedicalNegligenceInfoDto findPrevMedicalNegligenceInfo(Long mnid) {
+        PrevMedicalNegligenceInfoDto prevMedicalNegligenceInfoDto = medicalNegligenceInfoRepository.findPrevMedicalNegligence(mnid);
+        return prevMedicalNegligenceInfoDto;
+    }
+
+    /**
+     * 다음 글 찾기
+     */
+    public NextMedicalNegligenceInfoDto findNextMedicalNegligenceInfo(Long mnid) {
+        NextMedicalNegligenceInfoDto nextMedicalNegligenceInfoDto = medicalNegligenceInfoRepository.findNextMedicalNegligence(mnid);
+        return nextMedicalNegligenceInfoDto;
     }
 }

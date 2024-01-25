@@ -46,11 +46,8 @@ export default function IndustrialAccidentInfopage(){
 
   const goToDetailPage = (industrialAccidentInfoId) => {
     navigate(`/medic/knowledge/industrialaccidentdetails`, {state : {
-      industrialAccidentInfoDetail : industrialAccidentInfos[industrialAccidentInfoId],
-      industrialAccidentInfoId : industrialAccidentInfoId,
-      industrialAccidentInfos : industrialAccidentInfos
+      industrialAccidentInfoId : industrialAccidentInfoId
     }});
-    console.log(industrialAccidentInfos[industrialAccidentInfoId])
   };
 
   return (
@@ -83,7 +80,7 @@ export default function IndustrialAccidentInfopage(){
           </thead>
           <tbody>
             {industrialAccidentInfos.map((industrialAccidentInfo, index) => (
-              <tr key={index} onClick={() => goToDetailPage(index)}>
+              <tr key={index} onClick={() => goToDetailPage(industrialAccidentInfo.iaId)}>
                 <td className={industrialAccident.industrialAccident_td}>{industrialAccidentInfo.iaId}</td>
                 <td className={industrialAccident.industrialAccident_td}>{industrialAccidentInfo.iaName}</td>
                 <td className={industrialAccident.industrialAccident_td}>{industrialAccidentInfo.iaInstitution}</td>

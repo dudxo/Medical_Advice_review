@@ -29,7 +29,7 @@ export default function TrafficAccidentInfopage(){
       const data = resp.data;
       setTrafficAccidentInfos(data);
     } catch (error) {
-      console.error(' 정보 검색:', error);
+      console.error('교통사고 정보 검색:', error);
     }
   };
 
@@ -46,11 +46,8 @@ export default function TrafficAccidentInfopage(){
 
   const goToDetailPage = (trafficAccidentInfoId) => {
     navigate(`/medic/knowledge/trafficaccidentdetails`, {state : {
-      trafficAccidentInfoDetail : trafficAccidentInfos[trafficAccidentInfoId],
-      trafficAccidentInfoId : trafficAccidentInfoId,
-      trafficAccidentInfos : trafficAccidentInfos
+      trafficAccidentInfoId : trafficAccidentInfoId
     }});
-    console.log(trafficAccidentInfos[trafficAccidentInfoId])
   };
 
   return (
@@ -83,7 +80,7 @@ export default function TrafficAccidentInfopage(){
           </thead>
           <tbody>
             {trafficAccidentInfos.map((trafficAccidentInfo, index) => (
-              <tr key={index} onClick={() => goToDetailPage(index)}>
+              <tr key={index} onClick={() => goToDetailPage(trafficAccidentInfo.taId)}>
                 <td className={trafficAccident.trafficAccident_td}>{trafficAccidentInfo.taId}</td>
                 <td className={trafficAccident.trafficAccident_td}>{trafficAccidentInfo.taName}</td>
                 <td className={trafficAccident.trafficAccident_td}>{trafficAccidentInfo.taInstitution}</td>

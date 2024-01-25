@@ -7,42 +7,73 @@ export default function TrafficAccidentDetailInfopage(){
   const navigate = useNavigate();
   const location = useLocation();
 
-  const trafficAccidentInfoDetail = location.state.trafficAccidentInfoDetail; // 상세 게시글 번호
   const trafficAccidentInfoId = location.state.trafficAccidentInfoId;   // 상세 게시글 번호 리스트
-  const trafficAccidentInfos = location.state.trafficAccidentInfos;   // 산업재해정보 리스트
 
+  const [prevNum, setPrevNum] = useState('');
+  const [nextNum, setNextNum] = useState('');
   const [prevTitle, setPrevTitle] = useState('');
   const [nextTitle, setNextTitle] = useState('');
   const [prevWriter, setPrevWriter] = useState('');
   const [nextWriter, setNextWriter] = useState('');
   const [prevDate, setPrevDate] = useState('');
   const [nextDate, setNextDate] = useState('');
+  const [trafficAccidentInfoDetail, setTrafficAccidentInfoDetail] = useState([]);
 
   useEffect(() => {
-    if (trafficAccidentInfoId === 0) {
-      setNextTitle('이전글이 없습니다.');
-    } else {
-      setNextTitle(trafficAccidentInfos[trafficAccidentInfoId - 1].taName);
-      setNextWriter(trafficAccidentInfos[trafficAccidentInfoId - 1].taInstitution)
-      setNextDate(trafficAccidentInfos[trafficAccidentInfoId - 1].taRegdate);
-    }
+    const getTrafficAccidentInfos = async (trafficAccidentInfoId) => {
+        
+      // 본문 게시물 내용 상세 조회
+      const resp = await axios.get(`/find/tainfo/detail/${trafficAccidentInfoId}`);
+      const data = resp.data;
+      setTrafficAccidentInfoDetail(data);
 
-    if (trafficAccidentInfoId < trafficAccidentInfos.length - 1) {
-      setPrevTitle(trafficAccidentInfos[trafficAccidentInfoId + 1].taName);
-      setPrevWriter(trafficAccidentInfos[trafficAccidentInfoId + 1].taInstitution)
-      setPrevDate(trafficAccidentInfos[trafficAccidentInfoId + 1].taRegdate);
-    } else {
-      setPrevTitle('다음글이 없습니다.');
-    }
-  }, [trafficAccidentInfoId, trafficAccidentInfos]);
+      // 본문 게시물 이전글 정보 조회
+      const prev = await axios.get(`/find/tainfo/detail/prev/${trafficAccidentInfoId}`)
+      const prevData = prev.data;
+      setPrevNum(prevData.prevNum); // 이전 글 번호 값
+      setPrevTitle(prevData.prevTitle);
+      setPrevWriter(prevData.prevWriter);
+      setPrevDate(prevData.prevDate);
+
+      // 본문 게시물 다음글 정보 조회
+      const next = await axios.get(`/find/tainfo/detail/next/${trafficAccidentInfoId}`)
+      const nextData = next.data;
+      setNextNum(nextData.nextNum);  // 다음 글 번호 값
+      setNextTitle(nextData.nextTitle);
+      setNextWriter(nextData.nextWriter);
+      setNextDate(nextData.nextDate);
+    };
+    getTrafficAccidentInfos(trafficAccidentInfoId);
+
+  }, [trafficAccidentInfoId]);
 
   const formatDateString = (dateString) => {
+    if(dateString === '-'){
+      return '-';
+    }
     const date = new Date(dateString);
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
     return formattedDate;
   };
 
+  // 이전 또는 다음 글 이동
+  // 이동할 글이 없으면 무반응
+  const goToDetailPage = (trafficAccidentInfoId) => {
+    if(trafficAccidentInfoId === '0'){
+      return;
+    }
+    navigate(`/medic/knowledge/trafficaccidentdetails`, {state : {
+      trafficAccidentInfoId : trafficAccidentInfoId
+    }});
+  };
+
   const medicTrafficAccident = () => {
+    navigate('/medic/medicalknowledge/trafficAccidentInfo');
+  };
+
+  const deleteTrafficAccident = async(trafficAccidentInfoId)=> {
+    const response = await axios.post(`/delete/tainfo/${trafficAccidentInfoId}`);
+    // 삭제 응답에 따른 이동 여부 판단 로직 필요
     navigate('/medic/medicalknowledge/trafficAccidentInfo');
   };
 
@@ -72,13 +103,13 @@ export default function TrafficAccidentDetailInfopage(){
         <br />
         <div className={trafficAccidentDetail.secondTable}>
           <table className={trafficAccidentDetail.trafficaccidentdetail_table}>
-            <tr>
+          <tr onClick={() => goToDetailPage(prevNum)}>
               <th className={trafficAccidentDetail.trafficaccidentdetail_th}>이전글</th>
               <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{prevTitle}</td>
               <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{prevWriter}</td>
               <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{formatDateString(prevDate)}</td>
             </tr>
-            <tr>
+            <tr onClick={() => goToDetailPage(nextNum)}>
               <th className={trafficAccidentDetail.trafficaccidentdetail_th}>다음글</th>
               <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{nextTitle}</td>
               <td className={trafficAccidentDetail.trafficaccidentdetail_td}>{nextWriter}</td>
@@ -93,7 +124,7 @@ export default function TrafficAccidentDetailInfopage(){
           <button type="button" onClick={medicTrafficAccident} className={trafficAccidentDetail.btt_write}>
             수정
           </button>
-          <button type="button" onClick={medicTrafficAccident} className={trafficAccidentDetail.btt_write}>
+          <button type="button" onClick={() => deleteTrafficAccident(trafficAccidentInfoId)} className={trafficAccidentDetail.btt_write}>
             삭제
           </button>
         </div>

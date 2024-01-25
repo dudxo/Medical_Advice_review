@@ -46,11 +46,8 @@ export default function FaultInfopage(){
 
   const goToDetailPage = (faultInfoId) => {
     navigate(`/medic/medicalknowledge/faultinfo/faultinfodetails`, {state : {
-      faultInfoDetail : faultInfos[faultInfoId],
-      faultInfoId : faultInfoId,
-      faultInfos : faultInfos
+      faultInfoId : faultInfoId
     }});
-    console.log(faultInfos[faultInfoId])
   };
 
     return(
@@ -83,7 +80,7 @@ export default function FaultInfopage(){
             </thead>
             <tbody> 
               {faultInfos.map((medicalNegligenceInfo, index) => (
-                <tr key={index} onClick={() => goToDetailPage(index)}>
+                <tr key={index} onClick={() => goToDetailPage(medicalNegligenceInfo.mnId)}>
                   <td className={faultInfo.faultInfo_td}>{medicalNegligenceInfo.mnId}</td>
                   <td className={faultInfo.faultInfo_td}>{medicalNegligenceInfo.mnName}</td>
                   <td className={faultInfo.faultInfo_td}>{medicalNegligenceInfo.mnInstitution}</td>

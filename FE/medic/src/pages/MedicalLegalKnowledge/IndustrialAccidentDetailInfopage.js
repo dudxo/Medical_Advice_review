@@ -7,42 +7,74 @@ export default function IndustrialAccidentDetailInfopage(){
   const navigate = useNavigate();
   const location = useLocation();
 
-  const industrialAccidentInfoDetail = location.state.industrialAccidentInfoDetail; // 상세 게시글 번호
   const industrialAccidentInfoId = location.state.industrialAccidentInfoId;   // 상세 게시글 번호 리스트
-  const industrialAccidentInfos = location.state.industrialAccidentInfos;   // 산업재해정보 리스트
 
+
+  const [prevNum, setPrevNum] = useState('');
+  const [nextNum, setNextNum] = useState('');
   const [prevTitle, setPrevTitle] = useState('');
   const [nextTitle, setNextTitle] = useState('');
   const [prevWriter, setPrevWriter] = useState('');
   const [nextWriter, setNextWriter] = useState('');
   const [prevDate, setPrevDate] = useState('');
   const [nextDate, setNextDate] = useState('');
+  const [industrialAccidentInfoDetail, setIndustrialAccidentInfoDetail] = useState([]);
 
   useEffect(() => {
-    if (industrialAccidentInfoId === 0) {
-      setNextTitle('이전글이 없습니다.');
-    } else {
-      setNextTitle(industrialAccidentInfos[industrialAccidentInfoId - 1].iaName);
-      setNextWriter(industrialAccidentInfos[industrialAccidentInfoId - 1].iaInstitution);
-      setNextDate(industrialAccidentInfos[industrialAccidentInfoId - 1].iaRegDate);
-    }
+    const getIndustrialAccidentInfos = async (industrialAccidentInfoId) => {
+        
+      // 본문 게시물 내용 상세 조회
+      const resp = await axios.get(`/find/industacident/detail/${industrialAccidentInfoId}`);
+      const data = resp.data;
+      setIndustrialAccidentInfoDetail(data);
 
-    if (industrialAccidentInfoId < industrialAccidentInfos.length - 1) {
-      setPrevTitle(industrialAccidentInfos[industrialAccidentInfoId + 1].iaName);
-      setPrevWriter(industrialAccidentInfos[industrialAccidentInfoId + 1].iaInstitution);
-      setPrevDate(industrialAccidentInfos[industrialAccidentInfoId + 1].iaRegDate);
-    } else {
-      setPrevTitle('다음글이 없습니다.');
-    }
-  }, [industrialAccidentInfoId, industrialAccidentInfos]);
+      // 본문 게시물 이전글 정보 조회
+      const prev = await axios.get(`/find/industacident/detail/prev/${industrialAccidentInfoId}`)
+      const prevData = prev.data;
+      setPrevNum(prevData.prevNum); // 이전 글 번호 값
+      setPrevTitle(prevData.prevTitle);
+      setPrevWriter(prevData.prevWriter);
+      setPrevDate(prevData.prevDate);
+
+      // 본문 게시물 다음글 정보 조회
+      const next = await axios.get(`/find/industacident/detail/next/${industrialAccidentInfoId}`)
+      const nextData = next.data;
+      setNextNum(nextData.nextNum);  // 다음 글 번호 값
+      setNextTitle(nextData.nextTitle);
+      setNextWriter(nextData.nextWriter);
+      setNextDate(nextData.nextDate);
+  };
+  getIndustrialAccidentInfos(industrialAccidentInfoId);
+  }, [industrialAccidentInfoId]);
 
   const formatDateString = (dateString) => {
+    if(dateString === '-'){
+      return '-';
+    }
     const date = new Date(dateString);
     const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
     return formattedDate;
   };
 
+  // 이전 또는 다음 글 이동
+  // 이동할 글이 없으면 무반응
+  const goToDetailPage = (industrialAccidentInfoId) => {
+    if(industrialAccidentInfoId === '0'){
+      return;
+    }
+    navigate(`/medic/knowledge/industrialaccidentdetails`, {state : {
+      industrialAccidentInfoId : industrialAccidentInfoId
+    }});
+  };
+
+
   const medicIndustrialAccident = () => {
+    navigate('/medic/medicalknowledge/industrialAccidentInfo');
+  };
+
+  const deleteIndustrialAccident = async(industrialAccidentInfoId)=> {
+    const response = await axios.post(`/delete/industacident/${industrialAccidentInfoId}`);
+    // 삭제 응답에 따른 이동 여부 판단 로직 필요
     navigate('/medic/medicalknowledge/industrialAccidentInfo');
   };
 
@@ -72,13 +104,13 @@ export default function IndustrialAccidentDetailInfopage(){
         <br />
         <div className={industrialAccidentDetail.secondTable}>
           <table className={industrialAccidentDetail.industrialaccidentdetail_table}>
-            <tr>
+            <tr onClick={() => goToDetailPage(prevNum)}>
               <th className={industrialAccidentDetail.industrialaccidentdetail_th}>이전글</th>
               <td className={industrialAccidentDetail.industrialaccidentdetail_td}>{prevTitle}</td>
               <td className={industrialAccidentDetail.industrialaccidentdetail_td}>{prevWriter}</td>
               <td className={industrialAccidentDetail.industrialaccidentdetail_td}>{formatDateString(prevDate)}</td>
             </tr>
-            <tr>
+            <tr onClick={() => goToDetailPage(nextNum)}>
               <th className={industrialAccidentDetail.industrialaccidentdetail_th}>다음글</th>
               <td className={industrialAccidentDetail.industrialaccidentdetail_td}>{nextTitle}</td>
               <td className={industrialAccidentDetail.industrialaccidentdetail_td}>{nextWriter}</td>
@@ -93,7 +125,7 @@ export default function IndustrialAccidentDetailInfopage(){
           <button type="button" onClick={medicIndustrialAccident} className={industrialAccidentDetail.btt_write}>
             수정
           </button>
-          <button type="button" onClick={medicIndustrialAccident} className={industrialAccidentDetail.btt_write}>
+          <button type="button" onClick={() => deleteIndustrialAccident(industrialAccidentInfoId)} className={industrialAccidentDetail.btt_write}>
             삭제
           </button>
         </div>
