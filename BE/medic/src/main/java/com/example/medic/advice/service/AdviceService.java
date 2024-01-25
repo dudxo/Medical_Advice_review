@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.PersistenceException;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,7 +25,6 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 public class AdviceService {
-
     private final Logger logger = LoggerFactory.getLogger(AdviceService.class);
     private final AdviceAssignmentRepository adviceAssignmentRepository;
     private final AdviceFileRepository adviceFileRepository;
@@ -43,24 +41,20 @@ public class AdviceService {
     @Transactional
     public boolean saveAdviceRequest(AllAdviceRequestDto allAdviceRequestDto, ClientInfoDto clientInfoDto, List<MultipartFile> multipartFiles) {
         Client client = clientService.findClient(clientInfoDto.getUId());
-        AdviceFileRequestDto parseAdviceFileRequestDto = splitRequestToFileDto(allAdviceRequestDto);
+//        AdviceFileRequestDto parseAdviceFileRequestDto = splitRequestToFileDto(allAdviceRequestDto);
         AdviceQuestionRequestDto parseAdviceQuestionRequestDto = splitRequestToQuestionDto(allAdviceRequestDto);
         AdviceRequestListDto parseAdviceRequestListDto = splitRequestToRequestListDto(allAdviceRequestDto);
         DiagnosisRecordRequestDto parseDiagnosisRecordRequestDto = parseDiagnosisRecordRequestDto(allAdviceRequestDto);
 
         try{
 
-//            AdviceRequestList savedAdviceRequestList = saveAdviceRequestList(parseAdviceRequestListDto, client);
-//            saveAdviceFile(parseAdviceFileRequestDto, savedAdviceRequestList, multipartFiles);
-//            saveAdviceQuestion(parseAdviceQuestionRequestDto, savedAdviceRequestList);
-//            saveAdviceDiagnosisRecord(parseDiagnosisRecordRequestDto, savedAdviceRequestList);
+            AdviceRequestList savedAdviceRequestList = saveAdviceRequestList(parseAdviceRequestListDto, client);
+            saveAdviceFile(savedAdviceRequestList, multipartFiles);
+            saveAdviceQuestion(parseAdviceQuestionRequestDto, savedAdviceRequestList);
+            saveAdviceDiagnosisRecord(parseDiagnosisRecordRequestDto, savedAdviceRequestList);
 
-            AdviceRequestList adviceRequestList = saveAdviceRequestList(parseAdviceRequestListDto, client);
-            saveAdviceFile(parseAdviceFileRequestDto,adviceRequestList, multipartFiles);
-            saveAdviceQuestion(parseAdviceQuestionRequestDto, adviceRequestList);
-            saveAdviceDiagnosisRecord(parseDiagnosisRecordRequestDto, adviceRequestList);
             AdviceAssignment adviceAssignment = AdviceAssignment.builder()
-                    .adviceRequestList(adviceRequestList)
+                    .adviceRequestList(savedAdviceRequestList)
                     .build();
             adviceAssignmentRepository.save(adviceAssignment);
 
@@ -72,18 +66,18 @@ public class AdviceService {
     }
 
 
-    /**
-     * @return 자문 의뢰 신청 파일 변환
-     */
-    public AdviceFileRequestDto splitRequestToFileDto(AllAdviceRequestDto allAdviceRequestDto) {
-        return AdviceFileRequestDto.builder()
-                .adReqForm(allAdviceRequestDto.getAdReqForm())
-                .adDiagnosis(allAdviceRequestDto.getAdDiagnosis())
-                .adRecord(allAdviceRequestDto.getAdRecord())
-                .adFilm(allAdviceRequestDto.getAdFilm())
-                .adOther(allAdviceRequestDto.getAdOther())
-                .build();
-    }
+//    /**
+//     * @return 자문 의뢰 신청 파일 변환
+//     */
+//    public AdviceFileRequestDto splitRequestToFileDto(AllAdviceRequestDto allAdviceRequestDto) {
+//        return AdviceFileRequestDto.builder()
+//                .adReqForm(allAdviceRequestDto.getAdReqForm())
+//                .adDiagnosis(allAdviceRequestDto.getAdDiagnosis())
+//                .adRecord(allAdviceRequestDto.getAdRecord())
+//                .adFilm(allAdviceRequestDto.getAdFilm())
+//                .adOther(allAdviceRequestDto.getAdOther())
+//                .build();
+//    }
 
     /**
      * @return 자문 의뢰 신청 질문지 변환
@@ -182,12 +176,11 @@ public class AdviceService {
     /**
      * 자문 의뢰 신청 파일 저장
      */
-    public void saveAdviceFile(AdviceFileRequestDto parseAdviceFileRequestDto,
-                               AdviceRequestList adviceRequestList, List<MultipartFile> multipartFiles) throws PersistenceException {
+    public void saveAdviceFile(AdviceRequestList adviceRequestList, List<MultipartFile> multipartFiles) throws PersistenceException {
 
         try {
             if(multipartFiles.size() !=0) {
-                Path projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/adivcerequest/");
+                Path projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/");
                 List<String> files = fileHandler.parseFile(projectPath, multipartFiles);
                 AdviceFile adviceFile = AdviceFile.builder()
                         .adReqForm(files.get(0))

@@ -1,6 +1,7 @@
 package com.example.medic.advice.controller;
 
 import com.example.medic.advice.domain.AdviceFile;
+import com.example.medic.advice.dto.AdviceFileResponseDto;
 import com.example.medic.advice.dto.AllAdviceRequestDto;
 import com.example.medic.advice.repository.AdviceFileRepository;
 import com.example.medic.advice.repository.AdviceRequestListRepository;
@@ -9,6 +10,7 @@ import com.example.medic.advice.service.AdviceService;
 import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.files.handler.FileHandler;
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -49,22 +51,21 @@ public class AdviceController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
     }
 
-    @GetMapping("/advice/findrequestfile/{adId}")
-    public ResponseEntity<?> findAdviceRequestFile(@PathVariable Long adId, @RequestBody String filetype) {
+    @GetMapping("advice/findrequestfile/{adId}/{filename}")
+    public ResponseEntity<?> findAdviceRequestFile(@PathVariable Long adId, @PathVariable String filename) {
         try {
-            UrlResource fileResource = adviceFileService.findAdviceRequestFile(adId, filetype);
-
-            if (fileResource != null && fileResource.exists()) {
+            Resource fileResource = adviceFileService.findAdviceRequestFile(adId, filename);
+            if (fileResource != null) {
                 return ResponseEntity.ok()
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileResource.getFilename())
-                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileResource.getFilename() + "\"")
                         .body(fileResource);
             } else {
+                System.out.println(64);
                 return ResponseEntity.notFound().build();
             }
-        } catch (Exception e) {
-            // Handle exceptions appropriately (e.g., log the error)
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
         }
     }
 }

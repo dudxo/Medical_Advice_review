@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.PersistenceException;
 import java.time.LocalDate;
@@ -39,7 +40,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
      * @return 분석 의뢰 신청 저장
      */
     @Transactional
-    public boolean saveAnalyzeRequest(AnalyzeRequestDto requestDto, ClientInfoDto clientInfoDto) {
+    public boolean saveAnalyzeRequest(AnalyzeRequestDto requestDto, ClientInfoDto clientInfoDto, List<MultipartFile> multipartFiles) {
         Client currentClient = clientService.findClient(clientInfoDto.getUId());
         AnalyzeRequestListDto analyzeRequestListDto = splitRequestToRequestListDto(requestDto);
         AnalyzeQuestionDto analyzeQuestionDtoList = splitRequestToQuestionDto(requestDto);
@@ -100,7 +101,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
      */
     @Transactional
     public AnalyzeRequestList saveAnalyzeRequestList(AnalyzeRequestListDto analyzeRequestListDto,
-                                        Client client) throws PersistenceException {
+                                                     Client client) throws PersistenceException {
         try {
             AnalyzeRequestList analyzeRequestList = AnalyzeRequestList.builder()
                     .anPtName(analyzeRequestListDto.getAnPtName())
