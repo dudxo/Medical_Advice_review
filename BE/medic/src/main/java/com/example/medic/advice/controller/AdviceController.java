@@ -46,4 +46,17 @@ public class AdviceController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    /**
+     * 자문의뢰 수정
+     */
+    @PutMapping("/advice/adviceDetail/update/{adId}")
+    public ResponseEntity<String> updateAdviceRequestList(@PathVariable Long adId, @RequestBody AllAdviceRequestDto allAdviceRequestDto) {
+        boolean result = adviceService.updateAdvice(adId, allAdviceRequestDto);
+        if (result) {
+            return ResponseEntity.ok("Advice updated successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to update advice.");
+        }
+    }
 }
