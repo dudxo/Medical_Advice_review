@@ -21,12 +21,11 @@ public class TranslationSituationController {
 
     private final TranslationSituationService translationSituationService;
 
+    /**
+     * 번역의뢰 현황 조회
+     */
     @GetMapping("/translation/list")
-    public ResponseEntity<List<TranslationSituationDto>> getTranslationSituationList(
-            @RequestParam(name = "trPtSub", required = false) String trPtSub,
-            @RequestParam(name = "trPtDiagnosis", required = false) String trPtDiagnosis,
-            @RequestParam(name = "trRegDate", required = false) Date trRegDate,
-            HttpServletRequest request) {
+    public ResponseEntity<List<TranslationSituationDto>> getTranslationSituationList(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         String uid = (String) session.getAttribute("uId");
@@ -35,7 +34,7 @@ public class TranslationSituationController {
                 .uId(uid)
                 .build();
         try {
-            List<TranslationSituationDto> translationList = translationSituationService.getTranslationSituationList(trPtSub, trPtDiagnosis, trRegDate, clientInfoDto);
+            List<TranslationSituationDto> translationList = translationSituationService.getTranslationSituationList(clientInfoDto);
             return ResponseEntity.ok(translationList);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
