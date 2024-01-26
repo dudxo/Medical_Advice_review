@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import translatelist from '../../css/TranslateListpage.module.css';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function TranslateListPage() {
   const [selectedStatus, setSelectedStatus] = useState('번역의뢰중');
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 추가
   const [translateList, setTranslateList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/translation/list');
-        console.log(response)
-        setTranslateList(response.data);
+        const resp = await axios.get('/translation/list');
+        const data = resp.data.reverse()
+        setTranslateList(data);
+        console.log(resp)
       } catch (error) {
         console.error('Error fetching translation list:', error);
       }
@@ -22,6 +25,10 @@ export default function TranslateListPage() {
     fetchData();
   }, []);
   
+  const btn_detail_translate = async(trId) => {
+    navigate(`/medic/translate/translateDetail/${trId}`)
+  }
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -61,33 +68,21 @@ export default function TranslateListPage() {
           </tr>
           </thead>
         <tbody>
-            {[...Array(7)].map((_, rowIndex) => (
-                <tr key={rowIndex}>
-                {translateList.map((translation, index) => (
-                    rowIndex === index && (
-                    <React.Fragment key={index}>
-                        <td className={translatelist.translateList_td}>{index + 1}</td>
-                        <td className={translatelist.translateList_td}>{translation.trPtSub}</td>
-                        <td className={translatelist.translateList_td}>{translation.trPtDiagnoze}</td>
-                        <td className={translatelist.translateList_td}>
-                            {formatDate(translation.trRegDate)}
-                        </td>
-                        <td className={translatelist.translateList_td}>{'의뢰배정일'}</td>
-                        <td className={translatelist.translateList_td}>{'의뢰번역일'}</td>
-                        <td className={translatelist.translateList_td}>{'번역의뢰중'}</td>
-                        {/* <td className={analyzelist.analyzeList_td}>
-                        <select value={selectedStatus} onChange={(e) => handleStatusChange(e.target.value)}>
-                            <option value="자문의뢰중">자문의뢰중</option>
-                            <option value="자문배정중">자문배정중</option>
-                            <option value="결제하기">결제하기</option>
-                            <option value="자문완료">자문완료</option>
-                        </select>
-                        </td> */}
-                    </React.Fragment>
-                    )
-                ))}
-                </tr>
-            ))}
+            {translateList.map((translateRequestList, index) => (
+    <tr key={index}>
+      <React.Fragment>
+        <td className={translatelist.translateList_td} onClick={() => btn_detail_translate(translateRequestList.trId)}>
+          {translatelist.length - index}
+        </td>
+        <td className={translatelist.translateList_td}>{translateRequestList.trPtSub}</td>
+        <td className={translatelist.translateList_td}>{translateRequestList.trPtDiagnosis}</td>
+        <td className={translatelist.translateList_td}>{formatDate(translateRequestList.trRegDate)}</td>
+        <td className={translatelist.translateList_td}>{formatDate(translateRequestList.tamDate)}</td>
+        <td className={translatelist.translateList_td}>{formatDate(translateRequestList.trAnswerDate)}</td>
+        <td className={translatelist.translateList_td}>{translateRequestList.trProgressStatus}</td>
+      </React.Fragment>
+    </tr>
+  ))}
 </tbody>
       </table>
       <div className={translatelist.pagination}>
