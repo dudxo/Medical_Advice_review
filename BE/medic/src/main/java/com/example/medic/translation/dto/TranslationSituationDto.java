@@ -10,16 +10,22 @@ import java.time.LocalDate;
 @Builder
 public class TranslationSituationDto {
 
+    private Long trId;
     private String trPtSub;
     private String trPtDiagnosis;
     private LocalDate trRegDate;
-    private Long trId;
+    private LocalDate tamDate;
+    private LocalDate trAnswerDate;
+    private String trProgressStatus;
 
-    public static TranslationSituationDto from(TranslationRequestList translationRequestList) {
-        return TranslationSituationDto.builder()
-                .trPtSub(translationRequestList.getTrPtSub())
-                .trPtDiagnosis(translationRequestList.getTrPtDiagnosis())
-                .trRegDate(translationRequestList.getTrRegDate())
-                .build();
+    public TranslationSituationDto(Long trId, String trPtSub, String trPtDiagnosis, LocalDate trRegDate, LocalDate tamDate,
+                                   LocalDate trAnswerDate, String trProgressStatus) {
+        this.trId = trId;
+        this.trPtSub = trPtSub;
+        this.trPtDiagnosis = trPtDiagnosis;
+        this.trRegDate = trRegDate;
+        this.tamDate = tamDate;
+        this.trAnswerDate = trAnswerDate;
+        this.trProgressStatus = trProgressStatus;
     }
 }
