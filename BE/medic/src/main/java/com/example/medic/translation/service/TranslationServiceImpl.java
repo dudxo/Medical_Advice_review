@@ -8,6 +8,7 @@ import com.example.medic.translation.domain.TranslationRequestList;
 import com.example.medic.translation.dto.TranslationFileDto;
 import com.example.medic.translation.dto.TranslationListDto;
 import com.example.medic.translation.dto.TranslationRequestDto;
+import com.example.medic.translation.dto.TranslationResponseDto;
 import com.example.medic.translation.repository.TranslationRequestFileRepository;
 import com.example.medic.translation.repository.TranslationRequestListRepository;
 import lombok.RequiredArgsConstructor;
@@ -116,5 +117,24 @@ public class TranslationServiceImpl implements TranslationService {
             throw new PersistenceException();
         }
 
+    }
+
+    /**
+     * 번역의뢰 상세 조회
+     */
+    public TranslationResponseDto getTranslationDetail(Long trId) {
+        TranslationRequestList translationRequestList = translationRequestListRepository.findById(trId).get();
+
+        TranslationResponseDto translationResponseDto = TranslationResponseDto.builder()
+                .trId(translationRequestList.getTrId())
+                .trPtName(translationRequestList.getTrPtName())
+                .trPtSsNum(translationRequestList.getTrPtSsNum())
+                .trPtSub(translationRequestList.getTrPtSub())
+                .trPtDiagnosis(translationRequestList.getTrPtDiagnosis())
+                .trPtDiagContent(translationRequestList.getTrPtDiagContent())
+                .trEtc(translationRequestList.getTrEtc())
+                .build();
+
+        return translationResponseDto;
     }
 }

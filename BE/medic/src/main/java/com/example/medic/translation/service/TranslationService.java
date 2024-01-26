@@ -1,11 +1,13 @@
 package com.example.medic.translation.service;
 
+import com.example.medic.analyze.dto.AnalyzeResponseDto;
 import com.example.medic.client.domain.Client;
 import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.translation.domain.TranslationRequestList;
 import com.example.medic.translation.dto.TranslationFileDto;
 import com.example.medic.translation.dto.TranslationRequestDto;
 import com.example.medic.translation.dto.TranslationListDto;
+import com.example.medic.translation.dto.TranslationResponseDto;
 
 public interface TranslationService {
 
@@ -18,4 +20,6 @@ public interface TranslationService {
     TranslationRequestList saveTranslationList(TranslationListDto translationListDto, Client client);
 
     void saveTranslationFile(TranslationRequestList translationRequestList, TranslationFileDto translationFileDto);
+
+    TranslationResponseDto getTranslationDetail(Long trId);
 }
