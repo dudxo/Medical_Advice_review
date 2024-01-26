@@ -42,4 +42,13 @@ public class AdviceFile {
         this.adOther = adOther;
         this.adviceRequestList = adviceRequestList;
     }
+
+    public void updateAdviceFile(String adReqForm, String adDiagnosis, String adRecord, String adFilm,
+                      String adOther) {
+        this.adReqForm = adReqForm;
+        this.adDiagnosis = adDiagnosis;
+        this.adRecord = adRecord;
+        this.adFilm = adFilm;
+        this.adOther = adOther;
+    }
 }
