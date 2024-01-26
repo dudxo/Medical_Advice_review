@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import analyzelist from '../../css/AnalyzeListpage.module.css';
+import { useNavigate } from 'react-router-dom';
+
 
 
 export default function AnalyzeListPage() {
   const [selectedStatus, setSelectedStatus] = useState('분석의뢰중');
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 추가
   const [analyzeList, setAnalyzeList] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/analyze/list');
-        console.log(response)
-        setAnalyzeList(response.data);
+        const resp = await axios.get('/analyze/list');
+        const data = resp.data.reverse()
+        setAnalyzeList(data);
+        console.log(resp)
       } catch (error) {
         console.error('Error fetching analyze list:', error);
       }
@@ -30,6 +34,10 @@ export default function AnalyzeListPage() {
   
     return `${year}-${month}-${day}`;
   };
+
+  const btn_detail_analyze = async(anId) => {
+    navigate(`/medic/analyze/analyzeDetail/${anId}`)
+  }
   
   const handleStatusChange = (newStatus) => {
     setSelectedStatus(newStatus);
@@ -61,33 +69,21 @@ export default function AnalyzeListPage() {
           </tr>
           </thead>
         <tbody>
-            {[...Array(7)].map((_, rowIndex) => (
-                <tr key={rowIndex}>
-                {analyzeList.map((analyze, index) => (
-                    rowIndex === index && (
-                    <React.Fragment key={index}>
-                        <td className={analyzelist.analyzeList_td}>{index + 1}</td>
-                        <td className={analyzelist.analyzeList_td}>{analyze.anPtSub}</td>
-                        <td className={analyzelist.analyzeList_td}>{analyze.anPtDiagnoze}</td>
-                        <td className={analyzelist.analyzeList_td}>
-                            {formatDate(analyze.anRegDate)}
-                        </td>
-                        <td className={analyzelist.analyzelist_td}>{'의뢰배정일'}</td>
-                        <td className={analyzelist.analyzelist_td}>{'의뢰분석일'}</td>
-                        <td className={analyzelist.analyzelist_td}>{'분석의뢰중'}</td>
-                        {/* <td className={analyzelist.analyzeList_td}>
-                        <select value={selectedStatus} onChange={(e) => handleStatusChange(e.target.value)}>
-                            <option value="자문의뢰중">자문의뢰중</option>
-                            <option value="자문배정중">자문배정중</option>
-                            <option value="결제하기">결제하기</option>
-                            <option value="자문완료">자문완료</option>
-                        </select>
-                        </td> */}
-                    </React.Fragment>
-                    )
-                ))}
-                </tr>
-            ))}
+            {analyzeList.map((analyzeRequestList, index) => (
+    <tr key={index}>
+      <React.Fragment>
+        <td className={analyzelist.adviceList_td} onClick={() => btn_detail_analyze(analyzeRequestList.adId)}>
+          {analyzeList.length - index}
+        </td>
+        <td className={analyzelist.analyzeList_td}>{analyzeRequestList.anPtSub}</td>
+        <td className={analyzelist.analyzeList_td}>{analyzeRequestList.anPtDiagnosis}</td>
+        <td className={analyzelist.analyzeList_td}>{formatDate(analyzeRequestList.anRegDate)}</td>
+        <td className={analyzelist.analyzeList_td}>{formatDate(analyzeRequestList.adMdDate)}</td>
+        <td className={analyzelist.analyzeList_td}>{formatDate(analyzeRequestList.anAnswerDate)}</td>
+        <td className={analyzelist.analyzeList_td}>{analyzeRequestList.anProgressStatus}</td>
+      </React.Fragment>
+    </tr>
+  ))}
 </tbody>
       </table>
       <div className={analyzelist.pagination}>

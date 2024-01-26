@@ -120,7 +120,7 @@ export default function AnalyzeRequestpage(){
           const an_PtSsNum = an_ptssnum1 + an_ptssnum2
           const today = new Date()
 
-          const analyzeequest = {
+          const analyzerequest = {
               "anPtName" : an_ptname,
               "anPtSsNum" : an_PtSsNum,
               "anPtSub" : an_ptsub,
