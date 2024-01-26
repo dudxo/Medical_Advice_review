@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
 import java.util.*;
 
@@ -43,7 +44,7 @@ public class AdviceService {
         AdviceRequestListDto parseAdviceRequestListDto = splitRequestToRequestListDto(allAdviceRequestDto);
         DiagnosisRecordRequestDto parseDiagnosisRecordRequestDto = parseDiagnosisRecordRequestDto(allAdviceRequestDto);
 
-        try{
+        try {
 
             AdviceRequestList savedAdviceRequestList = saveAdviceRequestList(parseAdviceRequestListDto, client);
             saveAdviceFile(parseAdviceFileRequestDto, savedAdviceRequestList);
@@ -56,7 +57,7 @@ public class AdviceService {
             adviceAssignmentRepository.save(adviceAssignment);
 
             return true;
-        }catch (PersistenceException p){
+        } catch (PersistenceException p) {
             logger.info("자문 의뢰 신청 저장 실패");
             return false;
         }
@@ -145,7 +146,7 @@ public class AdviceService {
                     .build();
             adviceRequestListRepository.save(adviceRequestList);
             return adviceRequestList;
-        }catch (PersistenceException p){
+        } catch (PersistenceException p) {
             logger.info("자문 의뢰 내역 저장 실패");
             throw new PersistenceException();
         }
@@ -155,16 +156,16 @@ public class AdviceService {
      * 자문 의뢰 신청 질문 저장
      */
     public void saveAdviceQuestion(AdviceQuestionRequestDto parseAdviceQuestionRequestDto,
-                                      AdviceRequestList adviceRequestList) throws PersistenceException {
+                                   AdviceRequestList adviceRequestList) throws PersistenceException {
         try {
-            for(String questionContent : parseAdviceQuestionRequestDto.getAdQuestionContent()){
+            for (String questionContent : parseAdviceQuestionRequestDto.getAdQuestionContent()) {
                 AdviceQuestion adviceQuestionRequest = AdviceQuestion.builder()
                         .adQuestionContent(questionContent)
                         .adviceRequestList(adviceRequestList)
                         .build();
                 adviceQuestionRepository.save(adviceQuestionRequest);
             }
-        }catch (PersistenceException p){
+        } catch (PersistenceException p) {
             logger.info("자문 내역 질문지 저장 실패");
             throw new PersistenceException();
         }
@@ -186,7 +187,7 @@ public class AdviceService {
                     .adviceRequestList(adviceRequestList)
                     .build();
             adviceFileRepository.save(adviceFile);
-        }catch (PersistenceException p){
+        } catch (PersistenceException p) {
             logger.info("자문 파일 저장 실패");
             throw new PersistenceException();
         }
@@ -197,7 +198,7 @@ public class AdviceService {
      */
     public void saveAdviceDiagnosisRecord(DiagnosisRecordRequestDto parseDiagnosisRecordRequestDto,
                                           AdviceRequestList adviceRequestList) throws PersistenceException {
-        try{
+        try {
             DiagnosisRecord diagnosisRecord = DiagnosisRecord.builder()
                     .hospital(parseDiagnosisRecordRequestDto.getHospital())
                     .admStart(parseDiagnosisRecordRequestDto.getAdmStart())
@@ -209,7 +210,7 @@ public class AdviceService {
                     .adviceRequestList(adviceRequestList)
                     .build();
             diagnosisRecordRepository.save(diagnosisRecord);
-        }catch (PersistenceException p){
+        } catch (PersistenceException p) {
             logger.info("진료 기록 저장 실패");
             throw new PersistenceException();
         }
@@ -218,9 +219,8 @@ public class AdviceService {
     /**
      * 자문의뢰 상세 조회
      */
-    public AllAdviceRequestDto getAdviceRequestDetail(Long adId){
+    public AllAdviceRequestDto getAdviceRequestDetail(Long adId) {
         AdviceRequestList adviceRequestList = adviceRequestListRepository.findById(adId).get();
-
 
 
         AllAdviceRequestDto allAdviceRequestDto = AllAdviceRequestDto.builder()
@@ -251,5 +251,53 @@ public class AdviceService {
 
                 .build();
         return allAdviceRequestDto;
+    }
+
+    /**
+     * 자문의뢰 수정
+     */
+    @Transactional
+    public boolean updateAdvice(Long adId, AllAdviceRequestDto allAdviceRequestDto) {
+        try {
+            AdviceRequestList adviceRequestList = adviceRequestListRepository.findById(adId).orElse(null);
+            if (adviceRequestList == null) {
+                logger.info("해당 자문 의뢰를 찾을 수 없습니다. ID: {}", adId);
+                return false;
+            }
+            updateAdviceRequestList(adviceRequestList, allAdviceRequestDto);
+            updateAdviceFile(adviceRequestList, allAdviceRequestDto);
+            updateDiagnosisRecord(adviceRequestList, allAdviceRequestDto);
+
+            return true;
+        } catch (PersistenceException p) {
+            logger.info("자문 의뢰 업데이트 실패");
+            return false;
+        }
+    }
+
+    private void updateAdviceRequestList(AdviceRequestList adviceRequestList, AllAdviceRequestDto allAdviceRequestDto) {
+        adviceRequestList.updateAdvice(allAdviceRequestDto.getAdPtName(), allAdviceRequestDto.getAdPtSsNum(),
+                allAdviceRequestDto.getAdPtSub(), allAdviceRequestDto.getAdPtDiagnosis(), allAdviceRequestDto.getAdPtRec(),
+                allAdviceRequestDto.getAdPtCmt(), allAdviceRequestDto.getInsurance(), allAdviceRequestDto.getInsureDate(),
+                allAdviceRequestDto.getInsureName(), allAdviceRequestDto.getAdEtc(), allAdviceRequestDto.getAdRegDate(),
+                allAdviceRequestDto.getAdMdDate());
+
+        adviceRequestListRepository.save(adviceRequestList);
+    }
+
+    private void updateAdviceFile(AdviceRequestList adviceRequestList, AllAdviceRequestDto allAdviceRequestDto) {
+        AdviceFile adviceFile = adviceFileRepository.findByAdviceRequestList(adviceRequestList);
+        adviceFile.updateAdviceFile(allAdviceRequestDto.getAdReqForm(), allAdviceRequestDto.getAdDiagnosis(),
+                allAdviceRequestDto.getAdRecord(), allAdviceRequestDto.getAdFilm(), allAdviceRequestDto.getAdOther());
+
+        adviceFileRepository.save(adviceFile);
+    }
+
+    private void updateDiagnosisRecord(AdviceRequestList adviceRequestList, AllAdviceRequestDto allAdviceRequestDto) {
+        DiagnosisRecord diagnosisRecord = diagnosisRecordRepository.findByAdviceRequestList(adviceRequestList);
+        diagnosisRecord.updateDiagnosisRecord(allAdviceRequestDto.getHospital(), allAdviceRequestDto.getAdmStart(),
+                allAdviceRequestDto.getAdmEnd(), allAdviceRequestDto.getVisitStart(), allAdviceRequestDto.getVisitEnd(),
+                allAdviceRequestDto.getTreatCmt(), allAdviceRequestDto.getDiagRound());
+        diagnosisRecordRepository.save(diagnosisRecord);
     }
 }
