@@ -3,7 +3,7 @@ import translateDetail from '../../css/TranslateDetailpage.module.css'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export default function translateDetailpage(){
+export default function TranslateDetailpage(){
     const [imageError, setImageError] = useState(false);
     return(
         <div className={translateDetail.translateDetail_wrap}>
@@ -130,7 +130,15 @@ export default function translateDetailpage(){
                         번역 자료
                     </div>
                     <div className={translateDetail.input_box}>
-                        파일
+                        <button>
+                            <a
+                                href={`http://localhost:8080/translateanswer/findrequestfile/${index}`}
+                                style={{ display: imageError ? 'none' : 'block' }}
+                                download="adRecord.zip"
+                            >
+                                다운로드
+                            </a>
+                        </button>
                     </div>
                 </div>
                 <div className={translateDetail.complete}>

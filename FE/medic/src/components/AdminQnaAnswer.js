@@ -67,36 +67,41 @@ export default function AdminQnaAnswer({qaId}) {
                 
                 answer.qaAnswer ? 
                 <>
+                <div className={customerinquirydetails.useranswerButtonbox}>
                   <button className={customerinquirydetails.answerButton} 
-                  onClick={btn_update_answer}
-                  >
-                    답변수정
-                  </button>
-                  <button
-                          className={customerinquirydetails.answerButton}
-                          onClick={btn_goto_inquirylist}
-                      >
-                        목록
-                  </button>
-                  <button className={customerinquirydetails.answerButton} 
-                  onClick={btn_delete_answer}
-                  >
-                    답변삭제
-                  </button>
+                    onClick={btn_update_answer}
+                    >
+                      답변수정
+                    </button>
+                    <button
+                            className={customerinquirydetails.answerButton}
+                            onClick={btn_goto_inquirylist}
+                        >
+                          목록
+                    </button>
+                    <button className={customerinquirydetails.answerButton} 
+                    onClick={btn_delete_answer}
+                    >
+                      답변삭제
+                    </button>
+                  </div>
                   </>
                 : 
                 <>
-                  <button className={customerinquirydetails.answerButton} 
-                  onClick={btn_write_answer}
-                  >
-                    답변작성
-                  </button>
-                  <button
-                          className={customerinquirydetails.answerButton}
-                          onClick={btn_goto_inquirylist}
+                  <div className={writecustomerinquiry.btn_writequestionbox}>
+                    <button className={customerinquirydetails.answerButton} 
+                      onClick={btn_write_answer}
                       >
-                        목록
-                  </button>
+                        답변작성
+                      </button>
+                      <button
+                              className={customerinquirydetails.answerButton}
+                              onClick={btn_goto_inquirylist}
+                          >
+                            목록
+                    </button>
+                 </div>
+                  
                   </>
               }
     </div>

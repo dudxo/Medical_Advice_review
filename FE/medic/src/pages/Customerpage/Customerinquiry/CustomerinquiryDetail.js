@@ -58,7 +58,7 @@ export default function CustomerInquiryDetail(){
                 </div>
             <div className={writecustomerinquiry.write_table}>
                 <div className={writecustomerinquiry.write_rowbox}>
-                    <div className={writecustomerinquiry.write_title}>
+                    <div className={writecustomerinquiry.write_title} style={{width : '96.5px'}}>
                         제목
                     </div>
                     <div className={writecustomerinquiry.write_titleinputbox}>

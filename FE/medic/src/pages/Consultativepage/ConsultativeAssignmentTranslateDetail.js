@@ -25,6 +25,9 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
     //기타사항
     const [trEtcValue, setTrEtcValue] = useState('');
     const allTranslateRequest = new FormData()
+
+    //답변
+    const [answerFile, setAnswerFile] = useEffect(false)
     const getUserInfo = async() =>{
         try{
             const response = await axios.get('/consultative/assignment/translate/${translateIndex.id}/details')
@@ -48,17 +51,15 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
     useEffect(()=>{
         getUserInfo()
     }, [])
+    const isAnswerFile = e => {
+        if(e.target.value !== null){
+            setAnswerFile(true)
+        }
+    }
 
-    const isFormValid = () => {
-        // 답변 파일이 업로드 되었는지 유효성 확인 로직 구현 필요
-      
-        // 모든 조건을 만족하면 true를 반환
-        return isadAnswerContentsInfoValid;
-    };
-    
     const btn_advice_request = async() => {
          // 유효성 검사
-        if (!isFormValid()) {
+        if (answerFile) {
             alert('입력값을 확인해주세요.');
             return;
         }
@@ -67,12 +68,12 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
         fileInputs.forEach((fileInput) => {
             const files = fileInput.files;
             for (let i = 0; i < files.length; i++) {
-                allTranslateRequest.append('files', files[i]);
+                translateAnswer.append('files', files[i]);
             }
         });
         
         try{
-            const response = axios.post('/advice/request', allTranslateRequest, {
+            const response = axios.post(`/translate/answer/${trId}`, translateAnswer, {
                 headers : {
                     "Content-Type" : 'multipart/form-data',
                 },
@@ -193,13 +194,22 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
                         번역 요청자료
                     </div>
                     <div className={translaterequest.input_box}>
-                        <input type='file' accept='application/zip'/>
+                        {/*해당 번역의뢰 long id 가져오는거 필요*/}
+                        <button>
+                            <a
+                                href={`http://localhost:8080/translation/findrequestfile/${trId}`}
+                                style={{ display: imageError ? 'none' : 'block' }}
+                                download="adRecord.zip"
+                            >
+                                다운로드
+                            </a>
+                        </button>
                     </div>
                     <div className={translaterequest.title_box}>
                         번역자료
                     </div>
                     <div className={translaterequest.input_box}>
-                        <input type='file'/>
+                        <input type='file' accept='application/zip' onChange={isAnswerFile}/>
                     </div>
                 </div>
                 <div className={translaterequest.complete}>
