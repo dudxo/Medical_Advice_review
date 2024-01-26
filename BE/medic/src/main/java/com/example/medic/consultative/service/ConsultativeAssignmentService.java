@@ -9,7 +9,9 @@ import com.example.medic.consultative.dto.ConsultativeDto;
 import com.example.medic.translation.dto.TranslationRequestDto;
 import com.example.medic.translation.dto.TranslationResponseDto;
 import com.example.medic.translation.dto.TranslationSituationDto;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ConsultativeAssignmentService {
@@ -25,4 +27,6 @@ public interface ConsultativeAssignmentService {
     List<TranslationSituationDto> findAllAssigmentTranslation(ConsultativeDto consultativeDto);
 
     TranslationResponseDto findAssignmentTranslationDetail(ConsultativeDto consultativeDto, TranslationRequestDto translationRequestDto);
+
+    boolean saveTranslationAnswerFile(ConsultativeDto consultativeDto, List<MultipartFile> multipartFiles, Long trId) throws IOException;
 }

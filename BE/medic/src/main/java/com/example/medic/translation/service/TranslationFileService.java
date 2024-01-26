@@ -18,7 +18,7 @@ public class TranslationFileService {
     /**
      * @return 번역의뢰 파일조회
      */
-    public Resource findTranslationFile(Long trId, String fileType) throws MalformedURLException {
+    public Resource findTranslationFile(Long trId) throws MalformedURLException {
         Long fileId = translationRequestFileRepository.findByFileId(trId);
         TranslationRequestFile translationRequestFile = translationRequestFileRepository.findById(fileId)
                 .orElseThrow(() -> new NoSuchElementException("AdviceFile not found with id: " + fileId));
@@ -29,7 +29,7 @@ public class TranslationFileService {
                 Resource resource = new UrlResource(baseUrl + translationRequestFile.getTrMtl());
                 return resource;
             } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Invalid file type: " + fileType);
+                throw new IllegalArgumentException("Invalid file type: ");
             }
         }
         return null;

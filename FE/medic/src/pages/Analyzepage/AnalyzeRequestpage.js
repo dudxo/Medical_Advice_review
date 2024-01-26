@@ -26,6 +26,7 @@ export default function AnalyzeRequestpage(){
     const [contents_count, setContentscount] = useState(0)
 
     const navigate = useNavigate()
+    const allAnalyzeRequest = new FormData()
 
     const getUserInfo = async() =>{
         try{
@@ -120,18 +121,29 @@ export default function AnalyzeRequestpage(){
           const an_PtSsNum = an_ptssnum1 + an_ptssnum2
           const today = new Date()
 
-          const analyzeequest = {
-              "anPtName" : an_ptname,
-              "anPtSsNum" : an_PtSsNum,
-              "anPtSub" : an_ptsub,
-              "anPtDiagnosis" : an_ptdiagnosis,
-              "anPtDiagContent" : an_ptdiagcontent,
-              "anEtc" : anEtcValue,
-              "anRegDate" : today,
-              "anQuestionContent" : anQuestionContents,
-          }
+          const fileInputs = document.querySelectorAll('input[type="file"]');
+            fileInputs.forEach((fileInput) => {
+                const files = fileInput.files;
+                for (let i = 0; i < files.length; i++) {
+                    allAnalyzeRequest.append('files', files[i]);
+                }
+            });
+            allAnalyzeRequest.append("dto", new Blob([JSON.stringify({
+                "anPtName" : an_ptname,
+                "anPtSsNum" : an_PtSsNum,
+                "anPtSub" : an_ptsub,
+                "anPtDiagnosis" : an_ptdiagnosis,
+                "anPtDiagContent" : an_ptdiagcontent,
+                "anEtc" : anEtcValue,
+                "anRegDate" : today,
+                "anQuestionContent" : anQuestionContents,
+            })], {type : "application/json"}))
           try{
-              const response = axios.post('/analyze/request', analyzerequest)
+              const response = axios.post('/analyze/request', allAnalyzeRequest, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
               alert('분석의뢰 신청이 완료되었습니다.')
               navigate('/')
           } catch(err){
@@ -273,7 +285,7 @@ export default function AnalyzeRequestpage(){
                         분석의뢰신청서
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file'/>
+                        <input type='file' accept="image/*"/>
                     </div>
                 </div>
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
@@ -281,7 +293,7 @@ export default function AnalyzeRequestpage(){
                         진단서
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file'/>
+                        <input type='file' accept="image/*"/>
                     </div>
                 </div>
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
@@ -289,7 +301,7 @@ export default function AnalyzeRequestpage(){
                         의무기록지
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file'/>
+                        <input type='file' accept="image/*"/>
                     </div>
                 </div>
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
@@ -297,7 +309,7 @@ export default function AnalyzeRequestpage(){
                         필름
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file'/>
+                        <input type='file' accept="image/*"/>
                     </div>
                 </div>
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
@@ -305,7 +317,7 @@ export default function AnalyzeRequestpage(){
                         기타자료
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file'/>
+                        <input type='file' accept="image/*"/>
                     </div>
                 </div>
                 <div className={analyzerequest.complete}>

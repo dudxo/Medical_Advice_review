@@ -15,7 +15,7 @@ import java.util.UUID;
 import java.nio.file.Files;
 @Component
 public class FileHandler {
-    private final List<String> extensions = new ArrayList<>(List.of("jpeg", "png", "gif", "mp4", "mp3", "m4a", "mpeg", "wav", "wma"));
+    private final List<String> extensions = new ArrayList<>(List.of("jpeg", "png", "gif", "mp4", "mp3", "m4a", "mpeg", "wav", "wma", "zip"));
 
     public List<String> parseFile(Path path, List<MultipartFile> multipartFiles) throws IOException {
 

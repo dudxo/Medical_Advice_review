@@ -14,23 +14,30 @@ import com.example.medic.analyze.repository.AnalyzeAssignmentRepository;
 import com.example.medic.analyze.repository.AnalyzeRequestFileRepository;
 import com.example.medic.analyze.repository.AnalyzeRequestListRepository;
 import com.example.medic.analyze.repository.AnalyzeRequestRepository;
+import com.example.medic.analyze.service.AnalyzeServiceImpl;
 import com.example.medic.client.domain.Client;
 import com.example.medic.consultative.domain.Consultative;
 import com.example.medic.consultative.dto.ConsultativeDto;
 import com.example.medic.consultative.repository.ConsultativeRepository;
+import com.example.medic.files.handler.FileHandler;
 import com.example.medic.translation.domain.TranslationAnswerFile;
 import com.example.medic.translation.domain.TranslationRequestFile;
 import com.example.medic.translation.domain.TranslationRequestList;
-import com.example.medic.translation.dto.TranslationRequestDto;
-import com.example.medic.translation.dto.TranslationResponseDto;
-import com.example.medic.translation.dto.TranslationSituationDto;
+import com.example.medic.translation.dto.*;
 import com.example.medic.translation.repository.TranslationAnswerFileRepository;
 import com.example.medic.translation.repository.TranslationAssignmentRepository;
 import com.example.medic.translation.repository.TranslationRequestFileRepository;
 import com.example.medic.translation.repository.TranslationRequestListRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.PersistenceException;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -39,6 +46,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignmentService{
 
+    private final Logger logger = LoggerFactory.getLogger(ConsultativeAssignmentServiceImpl.class);
     private final ConsultativeRepository consultativeRepository;
     private final AdviceAssignmentRepository adviceAssignmentRepository;
     private final AdviceRequestListRepository adviceRequestListRepository;
@@ -53,7 +61,7 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
     private final TranslationRequestListRepository translationRequestListRepository;
     private final TranslationRequestFileRepository translationRequestFileRepository;
     private final TranslationAnswerFileRepository translationAnswerFileRepository;
-
+    private final FileHandler fileHandler;
     /**
      * @return 배정 받은 자문 의뢰 목록 조회
      */
@@ -309,5 +317,37 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
                 .trMtl(findTranslationRequestFile.getTrMtl())
                 .trAnswer(findTranslationAnswerFile.getTrAnswer())
                 .build();
+    }
+
+    @Override
+    public boolean saveTranslationAnswerFile(ConsultativeDto consultativeDto, List<MultipartFile> multipartFiles, Long trId) throws IOException {
+        Consultative consultative = consultativeRepository.findById(consultativeDto.getCId()).get();
+        TranslationRequestList translationRequestList = translationRequestListRepository.findById(trId).get();
+        TranslationAnswerFileRequestDto translationAnswerFileRequestDto = splitTranslationAnswerFile(multipartFiles);
+
+        try{
+            TranslationAnswerFile translationAnswerFile = TranslationAnswerFile.builder()
+                    .trAnswer(translationAnswerFileRequestDto.getTrAnswer())
+                    .translationRequestList(translationRequestList)
+                    .consultative(consultative)
+                    .build();
+            translationAnswerFileRepository.save(translationAnswerFile);
+            return true;
+        } catch (
+        PersistenceException p){
+            logger.info("분석 의뢰 신청 저장 실패");
+            return false;
+        }
+    }
+
+    private TranslationAnswerFileRequestDto splitTranslationAnswerFile(List<MultipartFile> multipartFiles) throws IOException {
+        if(multipartFiles.size() !=0) {
+            Path projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translateanswer/");
+            List<String> files = fileHandler.parseFile(projectPath, multipartFiles);
+            return TranslationAnswerFileRequestDto.builder()
+                    .trAnswer(files.get(0))
+                    .build();
+        }
+        return null;
     }
 }

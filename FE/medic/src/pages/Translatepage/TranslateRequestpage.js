@@ -24,6 +24,7 @@ export default function TranslateRequestpage(){
     const [contents_count, setContentscount] = useState(0)
 
     const navigate = useNavigate()
+    const allTranslateRequest = new FormData()
 
     const getUserInfo = async() =>{
         try{
@@ -85,18 +86,28 @@ export default function TranslateRequestpage(){
           }
           const tr_PtSsNum = tr_ptssnum1 + tr_ptssnum2
           const today = new Date()
-
-          const translateRequest = {
-              "trPtName" : tr_ptname,
+          const fileInputs = document.querySelectorAll('input[type="file"]');
+          fileInputs.forEach((fileInput) => {
+              const files = fileInput.files;
+              for (let i = 0; i < files.length; i++) {
+                  allTranslateRequest.append('files', files[i]);
+              }
+          });
+          allTranslateRequest.append("dto", new Blob([JSON.stringify({
+            "trPtName" : tr_ptname,
               "trPtSsNum" : tr_PtSsNum,
               "trPtSub" : tr_ptsub,
               "trPtDiagnosis" : tr_ptdiagnosis,
               "trPtCmt" : tr_ptcmt,
               "trEtc" : trEtcValue,
               "trRegDate" : today,
-          }
+        })], {type : "application/json"}))
           try{
-              const response = axios.post('/translate/request', translaterequest)
+              const response = axios.post('/translate/request', allTranslateRequest, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
               alert('번역의뢰 신청이 완료되었습니다.')
               navigate('/')
           } catch(err){
@@ -220,7 +231,7 @@ export default function TranslateRequestpage(){
                         번역 요청자료
                     </div>
                     <div className={translaterequest.input_box}>
-                        <input type='file'/>
+                        <input type='file' accept='application/zip'/>
                     </div>
                 </div>
                 <div className={translaterequest.complete}>

@@ -27,6 +27,7 @@ public class TranslationController {
     /**
      * @return 번역 의뢰 신청 저장
      */
+    @PostMapping("/translate/request")
     public ResponseEntity<String> saveTranslationRequest(@RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles,
                                                          @RequestPart(name = "dto") TranslationRequestDto translationRequestDto,
                                                          HttpServletRequest request) throws IOException {
@@ -45,10 +46,10 @@ public class TranslationController {
     /**
      * @return 번역의뢰 파일 조회
      */
-    @GetMapping("translation/findrequestfile/{trId}/{filename}")
-    public ResponseEntity<?> findTranslationFile(@PathVariable Long trId, @PathVariable String filename) {
+    @GetMapping("translation/findrequestfile/{trId}")
+    public ResponseEntity<?> findTranslationFile(@PathVariable Long trId) {
         try {
-            Resource fileResource = translationFileService.findTranslationFile(trId, filename);
+            Resource fileResource = translationFileService.findTranslationFile(trId);
             if (fileResource != null) {
                 return ResponseEntity.ok()
                         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileResource.getFilename() + "\"")

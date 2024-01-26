@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export default function AnalyzeDetailpage(){
+    const [imageError, setImageError] = useState(false);
+    
     return(
         <div className={analyzeDetail.analyzeDetail_wrap}>
             <div className={analyzeDetail.iconbox}>
@@ -138,7 +140,15 @@ export default function AnalyzeDetailpage(){
                         분석의뢰신청서
                     </div>
                     <div className={analyzeDetail.input_box}>
-                        파일
+                        <button>
+                            <a
+                                href={`http://localhost:8080/analyze/findrequestfile/${index}/anReqForm`}
+                                download="anReqForm.jpg"
+                                style={{ display: imageError ? 'none' : 'block' }}
+                            >
+                                다운로드
+                            </a>
+                        </button>
                     </div>
                 </div>
                 <div className={analyzeDetail.row_box} style={{height : 'auto'}}>
@@ -146,7 +156,15 @@ export default function AnalyzeDetailpage(){
                         진단서
                     </div>
                     <div className={analyzeDetail.input_box}>
-                        파일
+                        <button>
+                            <a
+                                href={`http://localhost:8080/analyze/findrequestfile/${index}/anDiagnosis`}
+                                download="anDiagnosis.jpg"
+                                style={{ display: imageError ? 'none' : 'block' }}
+                            >
+                                다운로드
+                            </a>
+                        </button>
                     </div>
                 </div>
                 <div className={analyzeDetail.row_box} style={{height : 'auto'}}>
@@ -154,7 +172,15 @@ export default function AnalyzeDetailpage(){
                         의무기록지
                     </div>
                     <div className={analyzeDetail.input_box}>
-                        파일
+                        <button>
+                            <a
+                                href={`http://localhost:8080/analyze/findrequestfile/${index}/anRecord`}
+                                download="anRecord.jpg"
+                                style={{ display: imageError ? 'none' : 'block' }}
+                            >
+                                다운로드
+                            </a>
+                        </button>
                     </div>
                 </div>
                 <div className={analyzeDetail.row_box} style={{height : 'auto'}}>
@@ -162,7 +188,15 @@ export default function AnalyzeDetailpage(){
                         필름
                     </div>
                     <div className={analyzeDetail.input_box}>
-                        파일
+                        <button>
+                            <a
+                                href={`http://localhost:8080/analyze/findrequestfile/${index}/anFilm`}
+                                download="anFilm.jpg"
+                                style={{ display: imageError ? 'none' : 'block' }}
+                            >
+                                다운로드
+                            </a>
+                        </button>
                     </div>
                 </div>
                 <div className={analyzeDetail.row_box} style={{height : 'auto'}}>
@@ -170,7 +204,15 @@ export default function AnalyzeDetailpage(){
                         기타자료
                     </div>
                     <div className={analyzeDetail.input_box}>
-                        파일
+                        <button>
+                            <a
+                                href={`http://localhost:8080/analyze/findrequestfile/${index}/anOther`}
+                                download="anOther.jpg"
+                                style={{ display: imageError ? 'none' : 'block' }}
+                            >
+                                다운로드
+                            </a>
+                        </button>
                     </div>
                 </div>
                 <div className={analyzeDetail.complete}>

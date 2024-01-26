@@ -3,6 +3,7 @@ package com.example.medic.translation.domain;
 import com.example.medic.consultative.domain.Consultative;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,4 +29,11 @@ public class TranslationAnswerFile {
     @JoinColumn(name = "cId")
     @JsonIgnore
     private Consultative consultative;
+
+    @Builder TranslationAnswerFile(Long trAnswerId, String trAnswer, TranslationRequestList translationRequestList, Consultative consultative){
+        this.trAnswerId = trAnswerId;
+        this.trAnswer = trAnswer;
+        this.translationRequestList = translationRequestList;
+        this.consultative = consultative;
+    }
 }

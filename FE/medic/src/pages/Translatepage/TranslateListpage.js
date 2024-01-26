@@ -8,6 +8,7 @@ export default function TranslateListPage() {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 추가
   const [translateList, setTranslateList] = useState([]);
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -48,6 +49,7 @@ export default function TranslateListPage() {
                     번역의뢰 현황
                 </h1>
             </div>
+            
       <table className={translatelist.translateList_table}>
         <thead>
           <tr>

@@ -24,7 +24,7 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
    
     //기타사항
     const [trEtcValue, setTrEtcValue] = useState('');
-
+    const allTranslateRequest = new FormData()
     const getUserInfo = async() =>{
         try{
             const response = await axios.get('/consultative/assignment/translate/${translateIndex.id}/details')
@@ -63,10 +63,20 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
             return;
         }
     
-        /** 번역자료 서버로 통신하는 로직 구현 필요*/
-
+        const fileInputs = document.querySelectorAll('input[type="file"]');
+        fileInputs.forEach((fileInput) => {
+            const files = fileInput.files;
+            for (let i = 0; i < files.length; i++) {
+                allTranslateRequest.append('files', files[i]);
+            }
+        });
+        
         try{
-            const response = axios.post('/advice/request', translateRequest)
+            const response = axios.post('/advice/request', allTranslateRequest, {
+                headers : {
+                    "Content-Type" : 'multipart/form-data',
+                },
+            })
             alert('번역의뢰 답변이 저장되었습니다.')
             navigate('/')
         } catch(err){
@@ -183,7 +193,7 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
                         번역 요청자료
                     </div>
                     <div className={translaterequest.input_box}>
-                        <input type='file'/>
+                        <input type='file' accept='application/zip'/>
                     </div>
                     <div className={translaterequest.title_box}>
                         번역자료

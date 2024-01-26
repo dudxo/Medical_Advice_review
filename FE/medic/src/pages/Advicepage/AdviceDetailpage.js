@@ -55,7 +55,6 @@ export default function AdviceDetailpage(){
     const [imageError, setImageError] = useState(false);
     const [filepath, setFilepath] = useState({})
     
-    const adId = location.state.adId
 
     const getAdviceRequest = async() => {
         try{
@@ -323,11 +322,16 @@ export default function AdviceDetailpage(){
                         자문의뢰신청서
                     </div>
                     <div className={adviceDetail.input_box}>
-                        <img
-                            src={`http://localhost:8080/advice/findrequestfile/${adId}/adReqForm`}
-                            style={{ display: imageError ? 'none' : 'block' }}
-                            alt="Attachment"
-                        />
+                        <button>
+                            <a
+                                href={`http://localhost:8080/advice/findrequestfile/${index}/adReqForm`}
+                                download="adReqForm.jpg"
+                                style={{ display: imageError ? 'none' : 'block' }}
+                            >
+                                다운로드
+                            </a>
+                        </button>
+                        
                     </div>
                 </div>
                 <div className={adviceDetail.row_box} style={{height : 'auto'}}>
@@ -335,23 +339,31 @@ export default function AdviceDetailpage(){
                         진단서
                     </div>
                     <div className={adviceDetail.input_box}>
-                        <img
-                            src={`http://localhost:8080/advice/findrequestfile/${adId}/adDiagnosis`}
-                            style={{ display: imageError ? 'none' : 'block' }}
-                            alt="Attachment"
-                        />
+                        <button>
+                            <a
+                                href={`http://localhost:8080/advice/findrequestfile/${index}/adDiagnosis`}
+                                style={{ display: imageError ? 'none' : 'block' }}
+                                download="adDiagnosis.jpg"
+                            >
+                            다운로드
+                            </a>
+                        </button>
                     </div>
                 </div>
-                <div className={adviceDetail.row_box} style={{height : 'auto'}}>
+                 <div className={adviceDetail.row_box} style={{height : 'auto'}}>
                     <div className={adviceDetail.title_box}>
                         의무기록지
                     </div>
                     <div className={adviceDetail.input_box}>
-                        <img
-                            src={`http://localhost:8080/advice/findrequestfile/${adId}/adRecord`}
-                            style={{ display: imageError ? 'none' : 'block' }}
-                            alt="Attachment"
-                        />
+                        <button>
+                            <a
+                                href={`http://localhost:8080/advice/findrequestfile/${index}/adRecord`}
+                                style={{ display: imageError ? 'none' : 'block' }}
+                                download="adRecord.jpg"
+                            >
+                                다운로드
+                            </a>
+                        </button>
                     </div>
                 </div>
                 <div className={adviceDetail.row_box} style={{height : 'auto'}}>
@@ -359,11 +371,13 @@ export default function AdviceDetailpage(){
                         필름
                     </div>
                     <div className={adviceDetail.input_box}>
-                        <img
-                            src={`http://localhost:8080/advice/findrequestfile/${adId}/adFilm`}
-                            style={{ display: imageError ? 'none' : 'block' }}
-                            alt="Attachment"
-                        />
+                        <button>
+                            <a
+                                href={`http://localhost:8080/advice/findrequestfile/${index}/adFilm`}
+                                style={{ display: imageError ? 'none' : 'block' }}
+                                download="adFilm.jpg"
+                            >다운로드</a>
+                        </button>
                     </div>
                 </div>
                 <div className={adviceDetail.row_box} style={{height : 'auto'}}>
@@ -371,11 +385,13 @@ export default function AdviceDetailpage(){
                         기타 자료
                     </div>
                     <div className={adviceDetail.input_box}>
-                        <img
-                            src={`http://localhost:8080/advice/findrequestfile/${adId}/adOther`}
-                            style={{ display: imageError ? 'none' : 'block' }}
-                            alt="Attachment"
-                        />
+                        <button>
+                            <a
+                                href={`http://localhost:8080/advice/findrequestfile/${index}/adOther`}
+                                style={{ display: imageError ? 'none' : 'block' }}
+                                download="adOther.jpg"
+                            >다운로드</a>
+                        </button>
                     </div>
                 </div>
                 <div className={adviceDetail.complete}>
