@@ -1,12 +1,11 @@
 package com.example.medic.analyze.service;
 
+import com.example.medic.analyze.domain.AnalyzeAssignment;
 import com.example.medic.analyze.domain.AnalyzeRequest;
 import com.example.medic.analyze.domain.AnalyzeRequestFile;
 import com.example.medic.analyze.domain.AnalyzeRequestList;
-import com.example.medic.analyze.dto.AnalyzeQuestionDto;
-import com.example.medic.analyze.dto.AnalyzeRequestDto;
-import com.example.medic.analyze.dto.AnalyzeRequestFileDto;
-import com.example.medic.analyze.dto.AnalyzeRequestListDto;
+import com.example.medic.analyze.dto.*;
+import com.example.medic.analyze.repository.AnalyzeAssignmentRepository;
 import com.example.medic.analyze.repository.AnalyzeRequestFileRepository;
 import com.example.medic.analyze.repository.AnalyzeRequestListRepository;
 import com.example.medic.analyze.repository.AnalyzeRequestRepository;
@@ -22,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.PersistenceException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +33,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     private final AnalyzeRequestListRepository analyzeRequestListRepository;
     private final AnalyzeRequestRepository analyzeRequestRepository;
     private final AnalyzeRequestFileRepository analyzeRequestFileRepository;
+    private final AnalyzeAssignmentRepository analyzeAssignmentRepository;
     private final ClientService clientService;
 
     /**
@@ -49,6 +50,12 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             AnalyzeRequestList savedAnalyzeRequestList = saveAnalyzeRequestList(analyzeRequestListDto, currentClient);
             saveAnalyzeQuestion(savedAnalyzeRequestList, analyzeQuestionDtoList);
             saveAnalyzeFile(savedAnalyzeRequestList, analyzeRequestFileDto);
+
+            AnalyzeAssignment analyzeAssignment = AnalyzeAssignment.builder()
+                    .analyzeRequestList(savedAnalyzeRequestList)
+                    .build();
+            analyzeAssignmentRepository.save(analyzeAssignment);
+
             return true;
         } catch (PersistenceException p){
             logger.info("분석 의뢰 신청 저장 실패");
@@ -161,5 +168,26 @@ public class AnalyzeServiceImpl implements AnalyzeService {
             logger.info("분석 의뢰 파일 저장 실패");
             throw new PersistenceException();
         }
+    }
+
+    /**
+     * 분석의뢰 상세 조회
+     */
+    public AnalyzeResponseDto getAnalyzeRequestDetail(Long anId) {
+        AnalyzeRequestList analyzeRequestList = analyzeRequestListRepository.findById(anId).get();
+
+        AnalyzeResponseDto analyzeResponseDto = AnalyzeResponseDto.builder()
+                .anId(analyzeRequestList.getAnId())
+                .anEtc(analyzeRequestList.getAnEtc())
+                .anPtName(analyzeRequestList.getAnPtName())
+                .anPtSub(analyzeRequestList.getAnPtSub())
+                .anPtSsNum(analyzeRequestList.getAnPtSsNum())
+                .anPtDiagnosis(analyzeRequestList.getAnPtDiagnosis())
+                .anPtDiagContent(analyzeRequestList.getAnPtDiagContent())
+                .anQuestionContent(Collections.singletonList(analyzeRequestList.getAnalyzeRequests().get(0).getAnQuestionContent()))
+                .anAnswerContent(Collections.singletonList(analyzeRequestList.getAnalyzeRequests().get(0).getAnAnswerContent()))
+                .build();
+
+        return analyzeResponseDto;
     }
 }
