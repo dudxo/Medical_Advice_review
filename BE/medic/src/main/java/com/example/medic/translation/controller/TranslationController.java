@@ -1,8 +1,10 @@
 package com.example.medic.translation.controller;
 
+import com.example.medic.advice.dto.AllAdviceRequestDto;
 import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.translation.dto.TranslationRequestDto;
 import com.example.medic.translation.service.TranslationFileService;
+import com.example.medic.translation.dto.TranslationResponseDto;
 import com.example.medic.translation.service.TranslationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -12,6 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -61,6 +67,19 @@ public class TranslationController {
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).build();
+        }
+    }
+
+    /**
+     * 변역의뢰 상세 조회
+     */
+    @GetMapping("/translate/translateDetail/{trId}")
+    public ResponseEntity<TranslationResponseDto> findTranslationDetail(@PathVariable Long trId){
+        try{
+            TranslationResponseDto translationResponseDto = translationServiceImpl.getTranslationDetail(trId);
+            return ResponseEntity.ok(translationResponseDto);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
         }
     }
 }

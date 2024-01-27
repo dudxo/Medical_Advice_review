@@ -5,10 +5,11 @@ import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -47,4 +48,5 @@ public class AdviceQuestion {
     public void updateAdAnswerDate(LocalDate adAnswerDate) {
         this.adAnswerDate = adAnswerDate;
     }
+
 }

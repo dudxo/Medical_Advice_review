@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -21,6 +22,8 @@ public class TranslationAnswerFile {
 
     private String trAnswer;
 
+    private LocalDate trAnswerDate;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trId")
     private TranslationRequestList translationRequestList;
@@ -30,10 +33,21 @@ public class TranslationAnswerFile {
     @JsonIgnore
     private Consultative consultative;
 
-    @Builder TranslationAnswerFile(Long trAnswerId, String trAnswer, TranslationRequestList translationRequestList, Consultative consultative){
+    @Builder
+    TranslationAnswerFile(Long trAnswerId, String trAnswer, TranslationRequestList translationRequestList, Consultative consultative) {
         this.trAnswerId = trAnswerId;
         this.trAnswer = trAnswer;
         this.translationRequestList = translationRequestList;
         this.consultative = consultative;
     }
+
+
+    @Builder
+    public TranslationAnswerFile(Long trAnswerId, String trAnswer, LocalDate trAnswerDate, TranslationRequestList translationRequestList) {
+        this.trAnswerId = trAnswerId;
+        this.trAnswer = trAnswer;
+        this.trAnswerDate = trAnswerDate;
+        this.translationRequestList = translationRequestList;
+    }
 }
+

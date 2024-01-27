@@ -1,10 +1,7 @@
 package com.example.medic.analyze.service;
 
 import com.example.medic.analyze.domain.AnalyzeRequestList;
-import com.example.medic.analyze.dto.AnalyzeQuestionDto;
-import com.example.medic.analyze.dto.AnalyzeRequestDto;
-import com.example.medic.analyze.dto.AnalyzeRequestFileDto;
-import com.example.medic.analyze.dto.AnalyzeRequestListDto;
+import com.example.medic.analyze.dto.*;
 import com.example.medic.client.domain.Client;
 import com.example.medic.client.dto.ClientInfoDto;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,4 +26,6 @@ public interface AnalyzeService {
 
     void saveAnalyzeFile(AnalyzeRequestList savedAnalyzeRequestList,
                          AnalyzeRequestFileDto analyzeRequestFileDto);
+
+    AnalyzeResponseDto getAnalyzeRequestDetail(Long anId);
 }

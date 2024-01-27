@@ -138,6 +138,7 @@ export default function AnalyzeRequestpage(){
                 "anRegDate" : today,
                 "anQuestionContent" : anQuestionContents,
             })], {type : "application/json"}))
+
           try{
               const response = axios.post('/analyze/request', allAnalyzeRequest, {
                 headers: {

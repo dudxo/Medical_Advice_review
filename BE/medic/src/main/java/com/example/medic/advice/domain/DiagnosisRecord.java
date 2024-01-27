@@ -57,4 +57,15 @@ public class DiagnosisRecord {
         this.diagRound = diagRound;
         this.adviceRequestList = adviceRequestList;
     }
+
+    public void updateDiagnosisRecord(String hospital, String admStart, String admEnd, String visitStart,
+                           String visitEnd, String treatCmt, int diagRound) {
+        this.hospital = hospital;
+        this.admStart = admStart;
+        this.admEnd = admEnd;
+        this.visitStart = visitStart;
+        this.visitEnd = visitEnd;
+        this.treatCmt = treatCmt;
+        this.diagRound = diagRound;
+    }
 }

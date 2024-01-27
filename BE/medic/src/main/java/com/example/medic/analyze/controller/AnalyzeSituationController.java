@@ -1,5 +1,6 @@
 package com.example.medic.analyze.controller;
 
+import com.example.medic.advice.dto.AdviceSituationDto;
 import com.example.medic.analyze.dto.AnalyzeSituationDto;
 import com.example.medic.analyze.service.AnalyzeSituationService;
 import com.example.medic.client.dto.ClientInfoDto;
@@ -22,11 +23,7 @@ public class AnalyzeSituationController {
     private final AnalyzeSituationService analyzeSituationService;
 
     @GetMapping("/analyze/list")
-    public ResponseEntity<List<AnalyzeSituationDto>> getAnalyzeSituationList(
-            @RequestParam(name = "anPtSub", required = false) String anPtSub,
-            @RequestParam(name = "anPtDiagnosis", required = false) String anPtDiagnosis,
-            @RequestParam(name = "anRegDate", required = false) Date anRegDate,
-            HttpServletRequest request) {
+    public ResponseEntity<List<AnalyzeSituationDto>> getAnalyzeSituationList(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
         String uid = (String) session.getAttribute("uId");
@@ -35,7 +32,7 @@ public class AnalyzeSituationController {
                 .uId(uid)
                 .build();
         try {
-            List<AnalyzeSituationDto> analyzeList = analyzeSituationService.getAnalyzeSituationList(anPtSub, anPtDiagnosis, anRegDate, clientInfoDto);
+            List<AnalyzeSituationDto> analyzeList = analyzeSituationService.getAnalyzeSituationList(clientInfoDto);
             return ResponseEntity.ok(analyzeList);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

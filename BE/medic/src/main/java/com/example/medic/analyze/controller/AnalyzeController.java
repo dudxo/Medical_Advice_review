@@ -1,7 +1,9 @@
 package com.example.medic.analyze.controller;
 
+import com.example.medic.advice.dto.AllAdviceRequestDto;
 import com.example.medic.analyze.dto.AnalyzeRequestDto;
 import com.example.medic.analyze.service.AnalyzeFileService;
+import com.example.medic.analyze.dto.AnalyzeResponseDto;
 import com.example.medic.analyze.service.AnalyzeServiceImpl;
 import com.example.medic.client.dto.ClientInfoDto;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -27,6 +33,7 @@ public class AnalyzeController {
     /**
      * @return 분석 의뢰 저장
      */
+
 
     @PostMapping("analyze/request")
     public ResponseEntity<String> saveAnalyzeRequest(@RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles,
@@ -62,6 +69,16 @@ public class AnalyzeController {
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).build();
+        }
+    }
+
+    @GetMapping("/analyze/analyzeDetail/{anId}")
+    public ResponseEntity<AnalyzeResponseDto> findAnalyzeDetail(@PathVariable Long anId){
+        try{
+            AnalyzeResponseDto analyzeResponseDto = analyzeService.getAnalyzeRequestDetail(anId);
+            return ResponseEntity.ok(analyzeResponseDto);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
         }
     }
 }
