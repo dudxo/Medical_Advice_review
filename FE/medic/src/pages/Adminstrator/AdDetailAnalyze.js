@@ -29,6 +29,9 @@ export default function AdDetailAnalyze(){
     const [contentsCount, setContentscount] = useState(0)
     const [anptssnum1, setAnPtSsNum1] = useState(0);
     const [anptssnum2, setAnPtSsNum2] = useState(0);
+
+
+    const [anQuestion, setAnQuestion] = useState(0);
     
 
     const navigate = useNavigate()
@@ -39,10 +42,12 @@ export default function AdDetailAnalyze(){
                 const response = await axios.get(`/an/detail/${index}`);
                 setAnalyzeDetails(response.data);
                 console.log("response",response);
+                console.log("response1",response.data.analyzeRequests);
                 const anptssnum = response.data.anPtSsNum.split('-');
+                setAnQuestion(response.data.analyzeRequestList);
                 setAnPtSsNum1(anptssnum[0]);
                 setAnPtSsNum2(anptssnum[1]);
-                
+            
 
                
             }catch(error){
@@ -64,6 +69,48 @@ export default function AdDetailAnalyze(){
     //         console.log(err)
     //     }  
     // }
+    const renderQuestionInputs = () => {
+        if (!anQuestion || anQuestion.length === 0) {
+            return null; // 또는 다른 처리를 수행하거나 빈 배열을 반환
+          }
+        return anQuestion.map((question, index) => (
+            
+          <div className={analyzerequest.row_box} style={{ height: 'auto' }} key={index}>
+            <div className={analyzerequest.title_box}>
+              질문 {index + 1} 입력
+            </div>
+            <div className={analyzerequest.input_box}>
+              <input
+                type="text"
+                value={question.anQuestionContent || ''}
+                maxLength={300}
+              />
+            </div>
+          </div>
+        ));
+      };
+
+      const renderAnswerInputs = () => {
+        if (!anQuestion || anQuestion.length === 0) {
+            return null; // 또는 다른 처리를 수행하거나 빈 배열을 반환
+          }
+        return anQuestion.map((question, index) => (
+          <div className={analyzerequest.row_box} style={{ height: 'auto' }} key={index}>
+            <div className={analyzerequest.title_box}>
+              질문 {index + 1} 입력
+            </div>
+            <div className={analyzerequest.input_box}>
+              <input
+                type="text"
+                value={question.anQuestionContent || ''}
+                maxLength={300}
+              />
+            </div>
+          </div>
+        ));
+      };
+
+
 
  
       
@@ -90,23 +137,23 @@ export default function AdDetailAnalyze(){
                 <div className={analyzerequest.row_box}>
                     <div className={analyzerequest.title_box}>의뢰자명</div>
                     <div className={analyzerequest.input_box}>
-                        <input type="text" disabled={true} value={uname}/>
+                        <input type="text" disabled={true} value={analyzeDetails.uname}/>
                     </div>
                 </div>
                 <div className={analyzerequest.row_box}>
                     <div className={analyzerequest.title_box}>일반전화</div>
                     <div className={analyzerequest.input_box}>
-                        <input type="text" disabled={true} value={utel}/>
+                        <input type="text" disabled={true} value={analyzeDetails.userTel}/>
                     </div>
                     <div className={analyzerequest.title_box} style={{borderLeft : '1px solid black'}}>휴대전화</div>
                     <div className={analyzerequest.input_box}>
-                        <input type="text" disabled={true} value={uphone}/>
+                        <input type="text" disabled={true} value={analyzeDetails.userPhone}/>
                     </div>
                 </div>
                 <div className={analyzerequest.row_box}>
                     <div className={analyzerequest.title_box}>주소</div>
                     <div className={analyzerequest.input_box}>
-                        <input type="text" disabled={true} value={uaddress}/>
+                        <input type="text" disabled={true} value={analyzeDetails.userAddress}/>
                     </div>
                 </div>
              </div>
@@ -182,15 +229,37 @@ export default function AdDetailAnalyze(){
                     <div className={analyzerequest.input_box}>
                         <input
                             type="text"
-                            name="anQuestionTotal"
                             disabled={true}
-                            value={analyzeDetails.anQuestionContents}
-                            
-                        />
+                            value={anQuestion ? anQuestion.length : 0}                        />
                     </div>
                 </div>
-                  
+                {renderQuestionInputs()}
                 </div>
+
+                <div className={analyzerequest.iconbox} style={{marginTop : '50px'}}>
+                    <h3>
+                        <i className="fa-solid fa-circle icon"></i>
+                        전문의 답변
+                    </h3>
+                    </div>
+
+                <div className = {analyzerequest.request_questiontable}>
+                <div className={analyzerequest.row_box} style={{height : 'auto'}}>
+                    <div className={analyzerequest.title_box}>
+                        답변 항목수
+                    </div>
+                    <div className={analyzerequest.input_box}>
+                        <input
+                            type="text"
+                            name="anQuestionTotal"
+                            disabled={true}
+                            value={anQuestion ? anQuestion.length : 0}                        />
+                    </div>
+                </div>
+                {renderAnswerInputs()}
+                </div>
+
+
              <div className={analyzerequest.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>

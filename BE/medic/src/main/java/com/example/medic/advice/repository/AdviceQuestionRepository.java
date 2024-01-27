@@ -15,4 +15,6 @@ public interface AdviceQuestionRepository extends JpaRepository<AdviceQuestion, 
 
     @Query("SELECT aa FROM AdviceQuestion aa WHERE aa.adviceRequestList.adId = :adId")
     List<AdviceQuestion> findByAdIds(@Param("adId") Long adId);
+
+
 }

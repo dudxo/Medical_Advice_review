@@ -356,7 +356,7 @@
                         <div className={advicerequest.input_box}>
                             <input
                                 type="text"
-                                value={questionCount.length}
+                                value={questionCount.length||0}
                                 disabled={true}
                             />
                         </div>
