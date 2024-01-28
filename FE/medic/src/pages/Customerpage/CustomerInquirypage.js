@@ -2,16 +2,27 @@ import React, { useEffect, useState } from "react";
 import cusinquiry from '../../css/CustomerInquirypage.module.css'
 import {useNavigate} from 'react-router-dom'
 import axios from "axios";
+import { Cookies } from "react-cookie";
+import QaPasswordModal from "./Customerinquiry/QaPassordModal";
 
 export default function CustomerInquirypage(){
     const [quiryList, setQuiryList] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    //비밀 게시글 검사
+    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+    const [selectedQaId, setSelectedQaId] = useState(null);
 
     const itemsPerPage = 7;
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const visibleQuiryList = quiryList.reverse().slice(startIndex, startIndex + itemsPerPage);
+    
+    // 팝업 모달이 열릴 때와 닫힐 때의 동작을 유지하기 위해 역순으로 매핑
+    const reverseQuiryList = [...quiryList].reverse();
+    const visibleQuiryList = reverseQuiryList.slice(startIndex, startIndex + itemsPerPage);
 
     const navigate = useNavigate();
+    const cookie = new Cookies();
 
     const handlePageChange = (newPage) => {
       const totalPages = Math.ceil(quiryList.length / itemsPerPage);
@@ -19,6 +30,38 @@ export default function CustomerInquirypage(){
       if (newPage > 0 && newPage <= totalPages) {
         setCurrentPage(newPage);
       }
+    };
+    // 비밀번호 확인 모달을 열기
+    const openPasswordModal = (qaId) => {
+        setSelectedQaId(qaId);
+        setIsPasswordModalOpen(true);
+    };
+
+    // 비밀번호 확인 모달을 닫기
+    const closePasswordModal = () => {
+        setSelectedQaId(null);
+        setIsPasswordModalOpen(false);
+    };
+
+    // 비밀번호 확인 후 처리
+    const handlePasswordSubmit = async (qaPw) => {
+        // 비밀번호를 서버로 전송하여 확인하고 처리하는 로직 추가
+        const qaPassword = {
+            qaPw : qaPw
+        }
+        try {
+            const response = await axios.post(`/qna/checkpassword/${selectedQaId}`, qaPassword);
+            if (response.data) {
+                alert('확인되었습니다.')
+                btn_inquiryDetail(selectedQaId);
+            } else {
+                alert('비밀번호가 일치하지 않습니다.');
+            }
+        } catch (error) {
+            console.error('비밀번호 확인 중 에러:', error);
+        }
+    
+        closePasswordModal(); // 비밀번호 확인 후 모달 닫기
     };
 
     const btn_write_inquiry = e => {
@@ -38,6 +81,11 @@ export default function CustomerInquirypage(){
                 const response = await axios.get('/qna/findAllQna');
                 console.log(response.data)
                 setQuiryList(response.data);
+                if(cookie.get('uRole') == 'admin'){
+                    setIsAdmin(true)
+                } else{
+                    setIsAdmin(false)
+                }
               } catch (err) {
                 console.log(err);
               }
@@ -71,9 +119,20 @@ export default function CustomerInquirypage(){
                 <div className={`${cusinquiry.quirylist_no} ${cusinquiry.list_content}`}>
                     {quiry.qaId}
                 </div>
-                <div className={`${cusinquiry.quirylist_question} ${cusinquiry.list_content}`} onClick={()=>btn_inquiryDetail(quiry.qaId)}>
-                    {quiry.qaTitle}
-                </div>
+                <>
+                    
+                    {
+                        quiry.qaSecret && !isAdmin ? 
+                        <div className={`${cusinquiry.quirylist_question} ${cusinquiry.list_content}`} onClick={()=>openPasswordModal(quiry.qaId)}>
+                            <i className="fa-solid fa-lock" style={{fontSize : '16px'}}></i> {'비밀 게시글입니다.'}
+                        </div>
+                        : 
+                        <div className={`${cusinquiry.quirylist_question} ${cusinquiry.list_content}`} onClick={()=>btn_inquiryDetail(quiry.qaId)}>
+                            {quiry.qaTitle}
+                        </div>
+                    }
+                </>
+               
                 <div className={`${cusinquiry.quirylist_writedate} ${cusinquiry.list_content}`}>
                     {formatDateString(quiry.qaDate)}
                 </div>
@@ -111,6 +170,11 @@ export default function CustomerInquirypage(){
             ▶
             </button>
         </div>
+        <QaPasswordModal
+            isOpen={isPasswordModalOpen}
+            onRequestClose={closePasswordModal}
+            onPasswordSubmit={handlePasswordSubmit}
+        />
         </div>
     );
 }

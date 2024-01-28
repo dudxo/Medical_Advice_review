@@ -136,7 +136,7 @@ export default function WriteCustomerInquiry() {
                         onChange={e => {
                             setIsSecret(isSecret => !isSecret);
                             if (!isSecret) {
-                                setSecretPw(''); // Clear the password when unchecked
+                                setSecretPw('');
                             }
                         }}
                     />
