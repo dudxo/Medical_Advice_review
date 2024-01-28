@@ -22,15 +22,23 @@
   }
   
   .answerInput {
-    width: 100%;
+    width: 830px;
     height: 150px;
     margin-bottom: 10px;
     padding: 10px;
     font-size: 16px;
   }
+  .answertext{
+    padding: 20px;
+  }
+  .answerButton_wrap{
+    display: flex;
+    justify-content: center;
+    width: 850px;
+  }
   .answerButtonbox{
     display: flex;
-    width: 250px;
+    width: 300px;
     justify-content: space-around;
     align-items: center;
   }

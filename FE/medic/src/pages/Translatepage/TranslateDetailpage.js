@@ -25,7 +25,6 @@ export default function TranslateDetailpage(){
     const [translateData, setTranslateData] = useState({});
     const [isEditMode, setIsEditMode] = useState(false);
     const [updatedData, setUpdatedData] = useState({});
-    const [imageError, setImageError] = useState(false);
 
 
     const fetchData = async () => {
@@ -231,7 +230,6 @@ export default function TranslateDetailpage(){
                         <button>
                             <a
                                 href={`http://localhost:8080/translation/findrequestfile/${index}`}
-                                style={{ display: imageError ? 'none' : 'block' }}
                                 download="adRecord.zip"
                             >
                                 다운로드
@@ -244,7 +242,14 @@ export default function TranslateDetailpage(){
                         번역 자료
                     </div>
                     <div className={translateDetail.input_box}>
-                    <input type='file' disabled={true} />
+                        <button>
+                            <a
+                                href={`http://localhost:8080/translateanswer/findrequestfile/${index}`}
+                                download="adRecord.zip"
+                            >
+                                다운로드
+                            </a>
+                        </button>
                     </div>
                 </div>
                 <div className={translateDetail.complete}>

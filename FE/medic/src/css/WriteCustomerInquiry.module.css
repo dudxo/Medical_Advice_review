@@ -22,6 +22,8 @@
     height: 40px;
     display: flex;
     border: 1px solid #ddd;
+    border-left: none;
+    border-right: none;
 }
 .write_titleinputbox{
     display: flex;
@@ -38,6 +40,7 @@
 .write_writerinfo{
     display: flex;
     align-items: center;
+    width: 283px;
 }
 .write_title{
     width: 100px;
@@ -65,6 +68,12 @@
     width: 850px;
     justify-content: start;
 }
+.write_contentbox{
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .write_content{
     padding: 20px 20px 20px 20px;
 }
@@ -78,3 +87,22 @@
     display: flex;
     justify-content: end;
 }
+.btn_writequestionbox{
+    display: flex;
+    width: 300px;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .btn_writequestion {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    width: 100px;
+    &:hover {
+      background-color: #0056b3;
+    }
+  }

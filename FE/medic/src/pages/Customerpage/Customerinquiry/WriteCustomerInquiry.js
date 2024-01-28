@@ -101,7 +101,7 @@ export default function WriteCustomerInquiry() {
       </div>
       <div className={writecustomerinquiry.write_table}>
         <div className={writecustomerinquiry.write_rowbox}>
-            <div className={writecustomerinquiry.write_title}>
+            <div className={writecustomerinquiry.write_title} style={{width : '96.5px'}}>
                 제목
             </div>
             <div className={writecustomerinquiry.write_titleinputbox}>
@@ -136,7 +136,7 @@ export default function WriteCustomerInquiry() {
                         onChange={e => {
                             setIsSecret(isSecret => !isSecret);
                             if (!isSecret) {
-                                setSecretPw(''); // Clear the password when unchecked
+                                setSecretPw('');
                             }
                         }}
                     />
@@ -146,7 +146,8 @@ export default function WriteCustomerInquiry() {
                         disabled={!isSecret}
                         value={secretPw}
                         style={{
-                            height : '20px'
+                            height : '20px',
+                            width : '140px'
                         }}
                         onChange={e => {
                             if (!isSecret) {
@@ -162,18 +163,20 @@ export default function WriteCustomerInquiry() {
             <div className={`${writecustomerinquiry.write_contenttitle} ${writecustomerinquiry.write_title}`}>
                 <h3 style={{paddingLeft: '20px'}}>문의내용</h3>
             </div>
-            <textarea 
-            className={writecustomerinquiry.write_content} 
-            cols={60} 
-            rows={50} 
-            value={inquiryQuestion}
-            onChange={e => {
-                setInquiryQuestion(e.target.value)
-                setQuestioncount(e.target.value.length)
-                }} maxLength={300}></textarea>
+            <div className={writecustomerinquiry.write_contentbox}>
+                <textarea 
+                className={writecustomerinquiry.write_content} 
+                cols={60} 
+                rows={50} 
+                value={inquiryQuestion}
+                onChange={e => {
+                    setInquiryQuestion(e.target.value)
+                    setQuestioncount(e.target.value.length)
+                    }} maxLength={300}></textarea>
+            </div>
             <div className={writecustomerinquiry.contentcount}>
                 {questionCount}/300
-            </div>         
+            </div>   
         </div>
       </div>
       <div className={writecustomerinquiry.btn_writequestionbox}>
@@ -188,7 +191,6 @@ export default function WriteCustomerInquiry() {
                
             </>
         }
-        
         <button className={writecustomerinquiry.btn_writequestion} onClick={btn_questionlist}>목록</button>
       </div>
     </div>

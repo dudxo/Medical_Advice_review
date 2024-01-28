@@ -3,6 +3,7 @@ package com.example.medic.qna.service;
 import com.example.medic.client.domain.Client;
 import com.example.medic.client.repository.ClientRepository;
 import com.example.medic.qna.domain.Qna;
+import com.example.medic.qna.dto.QnaPasswordDto;
 import com.example.medic.qna.dto.QnaRequestDto;
 import com.example.medic.qna.dto.QnaResponseDto;
 import com.example.medic.qna.repository.QnaAnswerRepository;
@@ -87,6 +88,11 @@ public class QnaService {
         return qnaRepository.save(updateQna);
     }
 
+    /**
+     *
+     * 문의 게시글 삭제
+     */
+
     public String deleteQpost(Long qaid){
         Long qaAnswerId = qnaAnswerRepository.findAnswerIdByQaId(qaid).orElse(null);
         if(qaAnswerId == null){
@@ -96,5 +102,23 @@ public class QnaService {
         qnaAnswerRepository.deleteById(qaAnswerId);
         qnaRepository.deleteById(qaid);
         return "삭제되었습니다.";
+    }
+
+    /**
+     *
+     * 문의 게시글 비밀번호 유효성검사
+     */
+    public boolean checkpasswordQpost(Long qaId, QnaPasswordDto qnaPasswordDto){
+        try{
+            String qaPw = qnaPasswordDto.getQaPw();
+            String checkPw = qnaRepository.findCheckPw(qaId).get();
+            if(checkPw.equals(qaPw)){
+                return true;
+            }else {
+                return false;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("문의 게시글 비밀번호 검사 중 오류 발생");
+        }
     }
 }

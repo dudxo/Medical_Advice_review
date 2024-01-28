@@ -13,4 +13,7 @@ public interface QnaRepository extends JpaRepository<Qna,Long> {
     int findByClient_UId(String uId);
     @Query("SELECT q.client.uId FROM Qna q WHERE q.qaId = :qaId")
     Optional<String> findUserIdByQaId(@Param("qaId") Long qaId);
+
+    @Query("SELECT q.qaPw FROM Qna q WHERE q.qaId = :qaId")
+    Optional<String> findCheckPw(Long qaId);
 }

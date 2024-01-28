@@ -1,6 +1,7 @@
 package com.example.medic.qna.controller;
 
 import com.example.medic.qna.domain.Qna;
+import com.example.medic.qna.dto.QnaPasswordDto;
 import com.example.medic.qna.dto.QnaRequestDto;
 import com.example.medic.qna.dto.QnaResponseDto;
 import com.example.medic.qna.repository.QnaRepository;
@@ -50,6 +51,10 @@ public class QnaController {
             return new ResponseEntity<>("Error" + e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * Qna 상세조회
+     */
     @GetMapping("/qna/qnaDetail/{qaId}")
     public ResponseEntity<QnaResponseDto> findQPost(@PathVariable Long qaId){
         try{
@@ -59,6 +64,21 @@ public class QnaController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    /**
+     *
+     * Qna 비밀 게시글 비밀번호 검사
+     */
+    @PostMapping("/qna/checkpassword/{qaId}")
+    public ResponseEntity<Boolean> checkpasswordQpost(@PathVariable Long qaId, @RequestBody QnaPasswordDto qnaPasswordDto){
+        try{
+            boolean checkpw = qnaService.checkpasswordQpost(qaId, qnaPasswordDto);
+            return ResponseEntity.ok(checkpw);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     //Qna 게시글 작성
     @PostMapping("/qna/writeqna")
     public ResponseEntity<String> writeQPost(HttpServletRequest request, @RequestBody QnaRequestDto qnaRequestDto){
