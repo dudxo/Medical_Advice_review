@@ -107,8 +107,8 @@ export default function App(){
                     <Route path="/medic/adminstrator/docmanagement" element={<DocManagement/>}/>
                     <Route path="/medic/adminstrator/administratormypage" element={<AdministratorMypage/>}/>
                     <Route path="/medic/adminstrator/usermanagement" element={<UserManagement/>}/>
-                    <Route path="/medic/adminstrator/docedit" element={<DocEdit/>}/>
-                    <Route path="/medic/adminstrator/useredit" element={<UserEdit/>}/>
+                    <Route path="/medic/adminstrator/docedit/:index" element={<DocEdit/>}/>
+                    <Route path="/medic/adminstrator/useredit/:index" element={<UserEdit/>}/>
                     <Route path='/medic/customer/faqdetail' element={<FaqDetailPage/>}/>
                     <Route path='/medic/customer/faqwrite' element={<WriteFaqPage/>}/>
                     <Route path='/medic/adminstrator/docset/:index' element={<AdSetDoc/>}/>

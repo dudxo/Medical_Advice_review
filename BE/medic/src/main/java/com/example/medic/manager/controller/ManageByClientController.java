@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class ManageByClientController {
     /**
      * 일반 회원 목록 조회
      */
+    @GetMapping("/user/management")
     public ResponseEntity<List<ManagedClientInfoDto>> findAllClient() {
         List<ManagedClientInfoDto> response = clientManagementService.findAllClient();
         if (response == null) {
