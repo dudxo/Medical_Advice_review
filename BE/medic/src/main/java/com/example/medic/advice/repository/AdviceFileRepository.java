@@ -9,10 +9,12 @@ import org.springframework.data.repository.query.Param;
 
 
 public interface AdviceFileRepository  extends JpaRepository<AdviceFile, Long> {
+
     AdviceFile findByAdviceRequestList(AdviceRequestList adviceRequestList);
     @Query("SELECT adf.fid FROM AdviceFile adf WHERE adf.adviceRequestList.adId = :adId")
     Long findByFileId(Long adId);
 
     @Query("SELECT af FROM AdviceFile af JOIN af.adviceRequestList arl WHERE arl.adId = :adId")
     AdviceFile findByAdviceRequestId(@Param("adId") Long adId);
+
 }

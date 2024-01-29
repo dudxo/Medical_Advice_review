@@ -4,12 +4,24 @@ import user from '../../css/UserEdit.module.css';
 import { useNavigate, useLocation } from "react-router-dom";
 
 
-export default function Joinpage() {
+export default function UserEdit() {
 
   const location = useLocation();
   // const selectedUser = JSON.parse(localStorage.getItem('selectedUser')) || {};
+  const [useredit,setUserEdit] = useState([]);
+  // const useredit = location.state?.useredit || {};
 
-  const useredit = location.state.useredit;
+ useEffect(()=> {
+  const fetchUserData = async()=>{
+    try{
+      const response = await axios.get('/user/detail');
+      console.log(response);
+      setUserEdit(response.data);
+    }catch(error){
+      console.error('유저 정보를 가져오는 도중 에러 발생')
+    }
+  }
+ })
 
   // 회원 정보 상태 초기화
   const [userInfo, setUserInfo] = useState({
@@ -17,7 +29,7 @@ export default function Joinpage() {
     uId: useredit.uId || '',
     uPw: useredit.uPw || '',
     uName: useredit.uName || '',
-    uEmail: useredit.uEmail || '',
+    uEmail: useredit.uEmail || '',  
     userTel: useredit.userTel || '',
     userPhone: useredit.userPhone || '',
     userAddress: useredit.userAddress || '',

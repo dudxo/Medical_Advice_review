@@ -174,8 +174,9 @@ public class AdAllListService {
     public AdDetailDto adDetailDto(Long adId){
         AdviceRequestList adviceRequestList = adviceRequestListRepository.findById(adId).get();
         Client client = adviceRequestList.getClient();
+        List<AdviceQuestion> adviceQuestion = adviceQuestionRepository.findByAdIds(adId);
 
-
+        logger.info("adviceQuestion:{}",adviceQuestion.get(0));
         AdDetailDto adDetailDto = AdDetailDto.builder()
                 .adEtc(adviceRequestList.getAdEtc())
                 .adMdDate(adviceRequestList.getAdMdDate())
@@ -202,11 +203,11 @@ public class AdAllListService {
                 .visitEnd(adviceRequestList.getDiagnosisRecords().get(0).getVisitEnd())
                 .treatCmt(adviceRequestList.getDiagnosisRecords().get(0).getTreatCmt())
                 .diagRound(adviceRequestList.getDiagnosisRecords().get(0).getDiagRound())
+                .adviceQuestions(adviceQuestion)
 //                .adQuestionContent(allAdQuestionContents)
 //                .adAnswerContent(adviceRequestList.getAdviceQuestions().get(0).getAdAnswerContent())
-
-
                 .build();
         return adDetailDto;
     }
+
 }

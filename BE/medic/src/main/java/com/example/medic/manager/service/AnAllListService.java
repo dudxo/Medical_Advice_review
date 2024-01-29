@@ -173,6 +173,8 @@ public class AnAllListService {
     public AnDetailDto anDetailDto(Long anId){
         AnalyzeRequestList analyzeRequestList = analyzeRequestListRepository.findById(anId).get();
         Client client = analyzeRequestList.getClient();
+        List<AnalyzeRequest> analyzeRequests = analyzeRequestRepository.findByAnIds(anId);
+        logger.info("anaana:{}",analyzeRequests.get(0).getAnAnswerContent());
 
        AnDetailDto anDetailDto = AnDetailDto.builder()
                .uId(client.getUId())
@@ -194,7 +196,7 @@ public class AnAllListService {
                .anRecord(analyzeRequestList.getAnalyzeRequestFiles().get(0).getAnRecord())
                .anReqForm(analyzeRequestList.getAnalyzeRequestFiles().get(0).getAnReqForm())
                .anRegDate(analyzeRequestList.getAnRegDate())
-
+               .analyzeRequests(analyzeRequests)
                .build();
 
        return anDetailDto;

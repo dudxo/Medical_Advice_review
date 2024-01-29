@@ -34,25 +34,29 @@
         const [visitStartMonth, setVisitStartMonth] = useState('');
        const [visitStartDay, setVisitStartDay] = useState('');
 
-const [visitEndYear, setVisitEndYear] = useState('');
-const [visitEndMonth, setVisitEndMonth] = useState('');
-const [visitEndDay, setVisitEndDay] = useState('');
+        const [visitEndYear, setVisitEndYear] = useState('');
+        const [visitEndMonth, setVisitEndMonth] = useState('');
+        const [visitEndDay, setVisitEndDay] = useState('');
 
-const [uname, setUname] = useState('');
-const [utel, setUtel] = useState('');
-const [uphone, setUphone] = useState('');
-const [uaddress, setUaddress] = useState('');
+        const [uname, setUname] = useState('');
+        const [utel, setUtel] = useState('');
+        const [uphone, setUphone] = useState('');
+        const [uaddress, setUaddress] = useState('');
 
-const [insureYear, setInsureYear] = useState(2000);  
-const [insureMounth, setInsureMonth] = useState(1);
-const [insureDay, setInsureDay] = useState(1);
-const [todayYear, setTodayYear] = useState(new Date().getFullYear());
+        const [insureYear, setInsureYear] = useState(2000);  
+        const [insureMounth, setInsureMonth] = useState(1);
+        const [insureDay, setInsureDay] = useState(1);
+        const [todayYear, setTodayYear] = useState(new Date().getFullYear());
 
-const [treat_cmt_count, setTreatCmtCount] = useState(0);
-const [ad_etc_count, setAdEtcCount] = useState(0);
-const [ptSsNum1, setPtSsNum1] = useState(0);
-const [ptSsNum2, setPtSsNum2] = useState(0);
+        const [treat_cmt_count, setTreatCmtCount] = useState(0);
+        const [ad_etc_count, setAdEtcCount] = useState(0);
+        const [ptSsNum1, setPtSsNum1] = useState(0);
+        const [ptSsNum2, setPtSsNum2] = useState(0);
 
+        const [questionCount, setQuestionCount] = useState([]);
+        const [questionAnswer , setAnswerCount] = useState([]);
+
+        
 
         useEffect(()=>{
             const fetchData = async() => {
@@ -61,7 +65,9 @@ const [ptSsNum2, setPtSsNum2] = useState(0);
                     setAdviceDetails(response.data);
                     console.log("response",response);
                     console.log("insure",response.data.insureDate);
-                    
+                    setQuestionCount(response.data.adviceQuestions);
+    
+                    console.log("adviceQuestions",response.data.adviceQuestions);
                     const insure = response.data.insureDate.split('-');
                     console.log("inseure",insure);
                     setInsureYear(insure[0]);
@@ -112,24 +118,40 @@ const [ptSsNum2, setPtSsNum2] = useState(0);
         };
 
         const renderQuestionInputs = () => {
-            return Array.from({ length: adQuestionTotal }, (_, index) => (
-            <div className={advicerequest.row_box} style={{height : 'auto'}} key={index}>
+            return questionCount.map((question, index) => (
+              <div className={advicerequest.row_box} style={{ height: 'auto' }} key={index}>
                 <div className={advicerequest.title_box}>
-                질문 {index + 1} 입력
+                  질문 {index + 1} 입력
                 </div>
                 <div className={advicerequest.input_box}>
-                <input
+                  <input
                     type="text"
-                    name={`adQuestionContent_${index}`}
-                    value={adQuestionContents[index] || ''}
-                    onChange={(e) => handleQuestionContentChange(index, e)}
+                    value={question.adQuestionContent || ''}
                     maxLength={300}
-                />
+                  />
                 </div>
-            </div>
+              </div>
             ));
-        };
-        
+          };
+
+          const renderAnswerInputs = () => {
+            return questionCount.map((question, index) => (
+              <div className={advicerequest.row_box} style={{ height: 'auto' }} key={index}>
+                <div className={advicerequest.title_box}>
+                  질문 {index + 1} 입력
+                </div>
+                <div className={advicerequest.input_box}>
+                  <input
+                    type="text"
+                    value={question.adAnswerContent || ''}
+                    maxLength={300}
+                  />
+                </div>
+              </div>
+            ));
+          };
+          
+
     
         const btn_advice_list = async() => {
             navigate('/medic/adminstrator/adadvicelistpage')
@@ -334,14 +356,37 @@ const [ptSsNum2, setPtSsNum2] = useState(0);
                         <div className={advicerequest.input_box}>
                             <input
                                 type="text"
-                                name="adQuestionTotal"
-                                value={adQuestionTotal}
-                                onChange={handleQuestionTotalChange}
+                                value={questionCount.length||0}
+                                disabled={true}
                             />
                         </div>
                     </div>
                         {renderQuestionInputs()}
                     </div>
+
+                    <div className={advicerequest.iconbox} style={{marginTop : '50px'}}>
+                    <h3>
+                        <i className="fa-solid fa-circle icon"></i>
+                        전문의 답변
+                    </h3>
+                    </div>
+                   
+
+                    <div className = {advicerequest.request_questiontable}>
+                    <div className={advicerequest.row_box} style={{height : 'auto'}}>
+                        <div className={advicerequest.title_box}>
+                            답변 항목수
+                        </div>
+                        <div className={advicerequest.input_box}>
+                            <input
+                                type="text"
+                                value={questionCount.length}
+                            />
+                        </div>
+                    </div>
+                        {renderAnswerInputs()}
+                    </div>
+
                 <div className={advicerequest.iconbox}>
                     <h3>
                         <i className="fa-solid fa-circle icon"></i>

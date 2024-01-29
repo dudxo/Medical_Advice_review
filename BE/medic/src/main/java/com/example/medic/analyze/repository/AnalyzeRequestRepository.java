@@ -17,4 +17,7 @@ public interface AnalyzeRequestRepository extends JpaRepository<AnalyzeRequest,L
     @Query("SELECT an FROM AnalyzeRequest an WHERE an.analyzeRequestList.anId = :anId")
     AnalyzeRequest findByAnId(@Param("anId") Long anId);
 
+    @Query("SELECT an FROM AnalyzeRequest an WHERE an.analyzeRequestList.anId = :anId")
+    List<AnalyzeRequest> findByAnIds(@Param("anId") Long anId);
+
 }

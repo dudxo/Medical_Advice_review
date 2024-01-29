@@ -1,5 +1,6 @@
 package com.example.medic.manager.dto;
 
+import com.example.medic.advice.domain.AdviceQuestion;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -65,6 +66,8 @@ public class AdDetailDto {
 
     private LocalDate adAnswerDate;
 
+    private List<AdviceQuestion> adviceQuestions;
+    private List<AdviceQuestion> adviceAnswers;
 
     @Builder
     public AdDetailDto(String adPtName, String adPtSsNum, String adPtSub, String adPtDiagnosis,
@@ -72,7 +75,8 @@ public class AdDetailDto {
                        String insureName, String adEtc, LocalDate adRegDate, LocalDate adMdDate,
                        String uId, String uName, String userAddress, String userPhone, String userTel,
                         String hospital, String admStart, String admEnd, String visitStart, String visitEnd, String treatCmt,
-                       int diagRound , List<String> adQuestionContent, String adAnswerContent) {
+                       int diagRound , List<String> adQuestionContent, String adAnswerContent, List<AdviceQuestion> adviceQuestions,
+                        List<AdviceQuestion> adviceAnswers) {
         this.adPtName = adPtName;
         this.adPtSsNum = adPtSsNum;
         this.adPtSub = adPtSub;
@@ -101,6 +105,8 @@ public class AdDetailDto {
 
         this.adQuestionContent = adQuestionContent;
         this.adAnswerContent = adAnswerContent;
+        this.adviceQuestions = adviceQuestions;
+        this.adviceAnswers = adviceAnswers;
     }
 
 

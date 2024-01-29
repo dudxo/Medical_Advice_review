@@ -1,5 +1,6 @@
 package com.example.medic.manager.dto;
 
+import com.example.medic.analyze.domain.AnalyzeRequest;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class AnDetailDto {
@@ -42,12 +44,17 @@ public class AnDetailDto {
 
     private String anOther;
 
+    private List<AnalyzeRequest> analyzeRequestList;
+
 
 
     @Builder
     public AnDetailDto(String anPtName,String anPtSsNum, String anPtSub, String anPtDiagnosis, String anPtDiagContent
+
                         ,String anEtc, LocalDate anRegDate, LocalDate anMdDate,  String uId, String uName, String userAddress, String userPhone, String userTel,
-                       String anReqForm, String anDiagnosis, String anRecord, String anFilm, String anOther){
+                       String anReqForm, String anDiagnosis, String anRecord, String anFilm, String anOther,
+                  List<AnalyzeRequest> analyzeRequests ){
+
         this.anPtName = anPtName;
         this.anPtSsNum = anPtSsNum;
         this.anPtSub = anPtSub;
@@ -68,6 +75,8 @@ public class AnDetailDto {
         this.anRecord = anRecord;
         this.anFilm = anFilm;
         this.anOther=anOther;
+
+        this.analyzeRequestList = analyzeRequests;
 
 
     }

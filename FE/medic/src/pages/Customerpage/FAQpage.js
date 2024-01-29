@@ -7,8 +7,11 @@ import { useNavigate } from 'react-router-dom';
 export default function FAQpage() {
   const [faqList, setFaqList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  
 
   const navigate = useNavigate();
+
+
 
   useEffect(() => {
     const getAnnouncements = async () => {
@@ -25,6 +28,12 @@ export default function FAQpage() {
     getAnnouncements();
   }, []);
 
+  
+  const itemsPerPage = 7;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const visibleQuiryList = faqList.reverse().slice(startIndex, startIndex + itemsPerPage);
+
+  
   const handlePageChange = (newPage) => {
     const totalPages = Math.ceil(faqList.length / itemsPerPage);
 
@@ -33,9 +42,6 @@ export default function FAQpage() {
     }
   };
 
-  const itemsPerPage = 7;
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const visibleQuiryList = faqList.reverse().slice(startIndex, startIndex + itemsPerPage);
 
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
@@ -76,23 +82,25 @@ export default function FAQpage() {
 
         
             </div>
-        </div>
+        
           
           <div className={faq.cusinquiry_quirylist_listbox}>
-              {faqList?.map((list,index) => (
+              {visibleQuiryList?.map((list,index) => (
                 <div key = {index} className={faq.cusinquiry_quirylist_content}>
-                  <div className={`${faq.quirylist_no} ${faq.list_content}`}>
+                  <div className={`${faq.quirylist_no} ${faq.list_content}`} onClick={()=>goToDetailPage(index)} >
                     {list.faqId}
                 </div>
-                <div className={`${faq.quirylist_question} ${faq.list_content}`} onClick={()=>goToDetailPage(index)}>
+                <div className={`${faq.quirylist_question} ${faq.list_content}`} >
                     {list.faqQuestion}
                 </div>
                 <div className={`${faq.quirylist_writedate} ${faq.list_content}`}>
-                    {list.faqDate}
+                    {formatDateString(list.faqDate)}
                 </div>
                 </div>
               ))}
               </div>
+              </div>
+
                <div className={faq.btn_write_inquirybox}>
             <button className={faq.btn_write_inquiry} onClick={medicWrite}>
                 작성
