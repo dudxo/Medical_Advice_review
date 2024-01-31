@@ -63,6 +63,7 @@ import AdTranslateListPage from "./pages/Adminstrator/AdTranslateListPage";
 import AdDetailAdvice from "./pages/Adminstrator/AdDetailAdvice";
 import AdDetailAnalyze from "./pages/Adminstrator/AdDetailAnalyze";
 import AdDetailTranslate from "./pages/Adminstrator/AdDetailTranslate";
+import ChangeConsultativePwpage from "./pages/Mypage/ChangeConsultativePwpage";
 
 export default function App(){
     return(
@@ -116,6 +117,7 @@ export default function App(){
                     <Route path="/medic/knowledge/trafficaccidentdetails" element={<TrafficAccidentDetail/>}/>
                     <Route path="/medic/knowledge/wounddetails" element={<WoundDetail/>}/>
                     <Route path="/medic/mypage/modifymyinfo/modifyMyPw" element={<ModifyMyPwpage/>}/>
+                    <Route path="/medic/mypage/ChangeConsultativeInfo/ChangeMyPw" element={<ChangeConsultativePwpage/>}/>
                     <Route path="/medic/adminstrator/docmanagement" element={<DocManagement/>}/>
                     <Route path="/medic/adminstrator/administratormypage" element={<AdministratorMypage/>}/>
                     <Route path="/medic/adminstrator/usermanagement" element={<UserManagement/>}/>
