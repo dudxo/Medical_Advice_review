@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -184,6 +185,66 @@ public class ConsultativeController {
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).build();
+        }
+    }
+
+    /**
+     * 배정받은 자문의뢰 갯수 조회
+     */
+    @GetMapping("/consultativeMypage/conAdviceSituation")
+    public ResponseEntity<Integer> getAssignmentAdviceCount(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String cId = (String) session.getAttribute("uId");
+
+        if (cId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        try {
+            int assignmentAdviceCount = consultativeAssignmentService.getAssignmentAdviceCount(cId);
+            return ResponseEntity.ok(assignmentAdviceCount);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    /**
+     * 배정받은 분석의뢰 갯수 조회
+     */
+    @GetMapping("/consultativeMypage/conAnalyzeSituation")
+    public ResponseEntity<Integer> getAssignmentAnalyzeCount(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String cId = (String) session.getAttribute("uId");
+
+        if (cId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        try {
+            int assignmentAnalyzeCount = consultativeAssignmentService.getAssignmentAnalyzeCount(cId);
+            return ResponseEntity.ok(assignmentAnalyzeCount);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    /**
+     * 배정받은 번역의뢰 갯수 조회
+     */
+    @GetMapping("/consultativeMypage/conTranslationSituation")
+    public ResponseEntity<Integer> getAssignmentTranslationCount(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String cId = (String) session.getAttribute("uId");
+
+        if (cId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        try {
+            int assignmentTranslationCount = consultativeAssignmentService.getAssignmentTranslationCount(cId);
+            return ResponseEntity.ok(assignmentTranslationCount);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }
