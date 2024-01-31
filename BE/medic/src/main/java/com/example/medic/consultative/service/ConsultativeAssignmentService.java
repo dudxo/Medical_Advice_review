@@ -29,4 +29,9 @@ public interface ConsultativeAssignmentService {
     TranslationResponseDto findAssignmentTranslationDetail(ConsultativeDto consultativeDto, TranslationRequestDto translationRequestDto);
 
     boolean saveTranslationAnswerFile(ConsultativeDto consultativeDto, List<MultipartFile> multipartFiles, Long trId) throws IOException;
+
+    int getAssignmentAdviceCount(String cId);
+
+    int getAssignmentAnalyzeCount(String cId);
+    int getAssignmentTranslationCount(String cId);
 }

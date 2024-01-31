@@ -4,6 +4,7 @@ import com.example.medic.advice.domain.*;
 import com.example.medic.advice.dto.AdviceSituationDto;
 import com.example.medic.advice.dto.AllAdviceRequestDto;
 import com.example.medic.advice.repository.*;
+import com.example.medic.analyze.domain.AnalyzeAssignment;
 import com.example.medic.analyze.domain.AnalyzeRequest;
 import com.example.medic.analyze.domain.AnalyzeRequestFile;
 import com.example.medic.analyze.domain.AnalyzeRequestList;
@@ -21,6 +22,7 @@ import com.example.medic.consultative.dto.ConsultativeDto;
 import com.example.medic.consultative.repository.ConsultativeRepository;
 import com.example.medic.files.handler.FileHandler;
 import com.example.medic.translation.domain.TranslationAnswerFile;
+import com.example.medic.translation.domain.TranslationAssignment;
 import com.example.medic.translation.domain.TranslationRequestFile;
 import com.example.medic.translation.domain.TranslationRequestList;
 import com.example.medic.translation.dto.*;
@@ -349,5 +351,41 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
                     .build();
         }
         return null;
+    }
+
+    /**
+     * 배정받은 자문의뢰 갯수 조회
+     */
+    public int getAssignmentAdviceCount(String cId) throws NoSuchElementException {
+        try {
+            List<AdviceAssignment> findAllAdviceRequestList = adviceAssignmentRepository.findByConsultative_CId(cId);
+            return findAllAdviceRequestList.size();
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException();
+        }
+    }
+
+    /**
+     * 배정받은 분석의뢰 갯수 조회
+     */
+    public int getAssignmentAnalyzeCount(String cId) throws NoSuchElementException {
+        try {
+            List<AnalyzeAssignment> findAllAnalyzeRequestList = analyzeAssignmentRepository.findByConsultative_CId(cId);
+            return findAllAnalyzeRequestList.size();
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException();
+        }
+    }
+
+    /**
+     * 배정받은 번역의뢰 갯수 조회
+     */
+    public int getAssignmentTranslationCount(String cId) throws NoSuchElementException {
+        try {
+            List<TranslationAssignment> findAllTranslationRequestList = translationAssignmentRepository.findByConsultative_CId(cId);
+            return findAllTranslationRequestList.size();
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException();
+        }
     }
 }
