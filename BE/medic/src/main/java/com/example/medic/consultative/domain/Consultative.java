@@ -110,4 +110,8 @@ public class Consultative {
         this.hospNum = managedConsultativeInfoDto.getHospNum();
         this.hospAddress = managedConsultativeInfoDto.getHospAddress();
     }
+
+    public void updatePassword(String newCPw) {
+        this.cPw = newCPw;
+    }
 }
