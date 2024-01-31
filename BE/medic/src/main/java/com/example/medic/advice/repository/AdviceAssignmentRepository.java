@@ -21,5 +21,6 @@ public interface AdviceAssignmentRepository extends JpaRepository<AdviceAssignme
     @Query("SELECT aa FROM AdviceAssignment aa WHERE aa.adviceRequestList.adId = :adId")
     AdviceAssignment findByAdId(@Param("adId") Long adId);
 
-
+    @Query("SELECT aa FROM AdviceAssignment aa WHERE aa.consultative.cId = :cId")
+    List<AdviceAssignment> findByConsultative_CId(String cId);
 }
