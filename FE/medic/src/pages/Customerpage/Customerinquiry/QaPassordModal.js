@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 
 Modal.setAppElement('#root'); // 모달을 사용할 엘리먼트를 설정
 
-export default function QaPasswordModal ({ isOpen, onRequestClose, onPasswordSubmit }) {
+export default function QaPasswordModal ({ isOpen, onRequestClose, onPasswordSubmit}) {
   const [password, setPassword] = useState('');
 
   const handlePasswordChange = (e) => {

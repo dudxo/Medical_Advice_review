@@ -202,8 +202,8 @@ gradle-app.setting
 BE/medic/src/main/resources/application.yml
 application.yml
 
-BE/medic/src/main/resources/static/file
-file
+# 파일
+BE/medic/src/main/resources/static/file/**
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
