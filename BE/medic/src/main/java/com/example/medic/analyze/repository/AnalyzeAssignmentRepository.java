@@ -1,6 +1,7 @@
 package com.example.medic.analyze.repository;
 
 
+import com.example.medic.advice.domain.AdviceAssignment;
 import com.example.medic.analyze.domain.AnalyzeAssignment;
 import com.example.medic.analyze.domain.AnalyzeRequestList;
 import com.example.medic.consultative.domain.Consultative;
@@ -19,5 +20,6 @@ public interface AnalyzeAssignmentRepository extends JpaRepository<AnalyzeAssign
     @Query("SELECT an FROM AnalyzeAssignment an WHERE an.analyzeRequestList.anId = :anId")
     AnalyzeAssignment findByAnId(@Param("anId") Long anId);
 
-
+    @Query("SELECT aa FROM AnalyzeAssignment aa WHERE aa.consultative.cId = :cId")
+    List<AnalyzeAssignment> findByConsultative_CId(String cId);
 }
