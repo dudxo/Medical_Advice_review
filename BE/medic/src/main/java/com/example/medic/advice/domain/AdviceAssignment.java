@@ -31,7 +31,6 @@ public class AdviceAssignment {
 
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JoinColumn(name = "adId")
-
     private AdviceRequestList adviceRequestList;
 
     @ManyToOne
