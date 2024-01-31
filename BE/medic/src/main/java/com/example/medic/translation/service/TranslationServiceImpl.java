@@ -5,6 +5,7 @@ import com.example.medic.client.domain.Client;
 import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.client.service.ClientService;
 import com.example.medic.files.handler.FileHandler;
+import com.example.medic.translation.domain.TranslationAssignment;
 import com.example.medic.translation.domain.TranslationRequestFile;
 import com.example.medic.translation.domain.TranslationRequestList;
 import com.example.medic.translation.dto.TranslationFileDto;
@@ -51,6 +52,10 @@ public class TranslationServiceImpl implements TranslationService {
         try {
             TranslationRequestList savedTranslationList = saveTranslationList(translationListDto, currentClient);
             saveTranslationFile(savedTranslationList, translationFileDto);
+
+            TranslationAssignment saveedTranslationAssignment = TranslationAssignment.builder()
+                    .translationRequestList(savedTranslationList)
+                    .build();
             return true;
         } catch (PersistenceException e) {
             logger.info("번역 의뢰 신청 저장중 이상 오류로 인한 실패");

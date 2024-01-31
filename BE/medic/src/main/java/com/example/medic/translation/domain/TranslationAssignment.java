@@ -1,6 +1,7 @@
 package com.example.medic.translation.domain;
 
 import com.example.medic.advice.domain.AdviceRequestList;
+import com.example.medic.analyze.domain.AnalyzeRequestList;
 import com.example.medic.consultative.domain.Consultative;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
@@ -33,6 +34,15 @@ public class TranslationAssignment {
     @JoinColumn(name = "cId")
     @JsonIgnore
     private Consultative consultative;
+
+    @Builder
+    public TranslationAssignment(LocalDate tamDate, Consultative consultative, String trProgressStatus,
+                             TranslationRequestList translationRequestList) {
+        this.tamDate = tamDate;
+        this.consultative = consultative;
+        this.trProgressStatus = trProgressStatus;
+        this.translationRequestList = translationRequestList;
+    }
 
     public void updateStatusAndAdmDate(LocalDate tamDate, String trProgressStatus) {
         this.tamDate = tamDate;
