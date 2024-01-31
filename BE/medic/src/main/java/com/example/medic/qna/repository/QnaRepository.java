@@ -1,6 +1,7 @@
 package com.example.medic.qna.repository;
 
 import com.example.medic.qna.domain.Qna;
+import com.example.medic.qna.dto.QnaResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
