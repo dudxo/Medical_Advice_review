@@ -1,6 +1,7 @@
 package com.example.medic.translation.repository;
 
 
+import com.example.medic.analyze.domain.AnalyzeAssignment;
 import com.example.medic.consultative.domain.Consultative;
 
 import com.example.medic.translation.domain.TranslationAssignment;
@@ -21,4 +22,6 @@ public interface TranslationAssignmentRepository extends JpaRepository<Translati
     @Query("SELECT tr FROM TranslationAssignment tr WHERE tr.translationRequestList.trId = :trId")
     TranslationAssignment findByTrId(@Param("trId") Long trId);
 
+    @Query("SELECT ta FROM TranslationAssignment ta WHERE ta.consultative.cId = :cId")
+    List<TranslationAssignment> findByConsultative_CId(String cId);
 }
