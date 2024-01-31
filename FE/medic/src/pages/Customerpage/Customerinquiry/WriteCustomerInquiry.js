@@ -135,7 +135,7 @@ export default function WriteCustomerInquiry() {
                         checked = {isSecret}
                         onChange={e => {
                             setIsSecret(isSecret => !isSecret);
-                            if (!isSecret) {
+                            if (isSecret) {
                                 setSecretPw('');
                             }
                         }}
@@ -151,7 +151,7 @@ export default function WriteCustomerInquiry() {
                         }}
                         onChange={e => {
                             if (!isSecret) {
-                                e.target.value = ''; // Clear the input when not a secret
+                                e.target.value = ''; 
                             }
                             setSecretPw(e.target.value);
                         }}

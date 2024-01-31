@@ -1,6 +1,7 @@
 package com.example.medic.qna.controller;
 
 import com.example.medic.qna.domain.Qna;
+import com.example.medic.qna.dto.QnaDetailResponseDto;
 import com.example.medic.qna.dto.QnaPasswordDto;
 import com.example.medic.qna.dto.QnaRequestDto;
 import com.example.medic.qna.dto.QnaResponseDto;
@@ -43,12 +44,12 @@ public class QnaController {
 
     //Qna 전체목록 조회
     @GetMapping("/qna/findAllQna")
-    public ResponseEntity<?> findQPostAll(){
+    public ResponseEntity<List<QnaResponseDto>> findQPostAll(){
         try{
-            List<Qna> qnaList= qnaService.findQPostAll();
+            List<QnaResponseDto> qnaList= qnaService.findQPostAll();
             return ResponseEntity.ok(qnaList);
         }catch (Exception e){
-            return new ResponseEntity<>("Error" + e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -56,10 +57,10 @@ public class QnaController {
      * Qna 상세조회
      */
     @GetMapping("/qna/qnaDetail/{qaId}")
-    public ResponseEntity<QnaResponseDto> findQPost(@PathVariable Long qaId){
+    public ResponseEntity<QnaDetailResponseDto> findQPost(@PathVariable Long qaId){
         try{
-            QnaResponseDto qnaResponseDto = qnaService.findQPost(qaId);
-            return ResponseEntity.ok(qnaResponseDto);
+            QnaDetailResponseDto qnaDetailResponseDto = qnaService.findQPost(qaId);
+            return ResponseEntity.ok(qnaDetailResponseDto);
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
         }

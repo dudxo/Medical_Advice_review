@@ -3,6 +3,7 @@ package com.example.medic.qna.service;
 import com.example.medic.client.domain.Client;
 import com.example.medic.client.repository.ClientRepository;
 import com.example.medic.qna.domain.Qna;
+import com.example.medic.qna.dto.QnaDetailResponseDto;
 import com.example.medic.qna.dto.QnaPasswordDto;
 import com.example.medic.qna.dto.QnaRequestDto;
 import com.example.medic.qna.dto.QnaResponseDto;
@@ -11,6 +12,7 @@ import com.example.medic.qna.repository.QnaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,23 +27,32 @@ public class QnaService {
     public int getQnaCount(String uid) {
         try {
             return qnaRepository.findByClient_UId(uid);
-
         } catch (Exception e) {
             throw new RuntimeException("문의 건수 조회 중 오류 발생");
         }
     }
 
     //문의 게시글 목록 불러오기
-    public List<Qna> findQPostAll() {
-        return qnaRepository.findAll();
+    public List<QnaResponseDto> findQPostAll() {
+        try{
+            List<Qna> qnaList = qnaRepository.findAll();
+            List<QnaResponseDto> AllQnaList = new ArrayList<>();
+            for(Qna q : qnaList){
+                QnaResponseDto qnaResponseDto = convertToDto(q);
+                AllQnaList.add(qnaResponseDto);
+            }
+            return AllQnaList;
+        } catch (Exception e){
+            throw new RuntimeException("문의 리스트 조회 중 오류 발생");
+        }
     }
 
     //문의 게시글 상세조회
-    public QnaResponseDto findQPost(Long qaId) {
+    public QnaDetailResponseDto findQPost(Long qaId) {
         Qna qna = qnaRepository.findById(qaId).get();
         String uId = qnaRepository.findUserIdByQaId(qaId).get();
 
-        QnaResponseDto qnaResponseDto = QnaResponseDto.builder()
+        QnaDetailResponseDto qnaDetailResponseDto = QnaDetailResponseDto.builder()
                 .qaId(qna.getQaId())
                 .qaDate(qna.getQaDate())
                 .qaTitle(qna.getQaTitle())
@@ -51,7 +62,7 @@ public class QnaService {
                 .uId(uId)
                 .build();
 
-        return qnaResponseDto;
+        return qnaDetailResponseDto;
     }
 
     //문의 게시글 저장
@@ -120,5 +131,20 @@ public class QnaService {
         } catch (Exception e) {
             throw new RuntimeException("문의 게시글 비밀번호 검사 중 오류 발생");
         }
+    }
+    /**
+     * Qna리스트 Dto 변환
+     */
+    private QnaResponseDto convertToDto(Qna qna) {
+        if (qna != null) {
+            return QnaResponseDto.builder()
+                    .qaId(qna.getQaId())
+                    .qaDate(qna.getQaDate())
+                    .qaTitle(qna.getQaTitle())
+                    .qaSecret(qna.isQaSecret())
+                    .uId(qna.getClient().getUId())
+                    .build();
+        }
+        return null;
     }
 }
