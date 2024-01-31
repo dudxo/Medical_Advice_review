@@ -822,7 +822,6 @@ export default function ChangeConsultativeInfopage(){
             setCAddress(myInfo.cAddress);
             setHospName(myInfo.hospName);
             setHospTel(myInfo.hospTel);
-            setDepartment(myInfo.department);
             setHospFx(myInfo.hospFx);
             setHospNum(myInfo.hospNum);
             setHospAddress(myInfo.hospAddress);
