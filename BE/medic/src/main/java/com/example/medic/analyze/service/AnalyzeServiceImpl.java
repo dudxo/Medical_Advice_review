@@ -128,6 +128,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                     .anPtDiagContent(analyzeRequestListDto.getAnPtDiagContent())
                     .anEtc(analyzeRequestListDto.getAnEtc())
                     .anRegDate(LocalDate.now())
+                    .client(client)
                     .build();
 
             return analyzeRequestListRepository.save(analyzeRequestList);
