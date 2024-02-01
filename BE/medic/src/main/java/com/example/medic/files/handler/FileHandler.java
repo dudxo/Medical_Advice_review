@@ -9,24 +9,23 @@ import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.nio.file.Files;
 @Component
 public class FileHandler {
     private final List<String> extensions = new ArrayList<>(List.of("jpeg", "png", "gif", "mp4", "mp3", "m4a", "mpeg", "wav", "wma", "zip"));
 
-    public List<String> parseFile(Path path, List<MultipartFile> multipartFiles) throws IOException {
+    public Deque<String> parseFile(Path path, List<MultipartFile> multipartFiles) throws IOException {
 
         try{
             Files.createDirectory(path);
-            List <String> pathList = saveFiledirectory(path, multipartFiles);
+            Deque <String> pathList = saveFiledirectory(path, multipartFiles);
             return pathList;
         } catch (FileAlreadyExistsException e){
-            List <String> pathList = saveFiledirectory(path, multipartFiles);
+            Deque <String> pathList = saveFiledirectory(path, multipartFiles);
             return pathList;
         } catch (NoSuchFileException e) {
+            e.printStackTrace();
             return null;
         }catch (IOException e) {
             e.printStackTrace();
@@ -34,17 +33,19 @@ public class FileHandler {
         }
     }
 
-    private static List<String> saveFiledirectory(Path path, List<MultipartFile> multipartFiles) throws IOException {
-        List<String> pathList = new ArrayList<>();
-        for(MultipartFile file : multipartFiles){
-            String filename = file.getOriginalFilename();
-            String extension = filename.substring(filename.lastIndexOf("."));
-            String saveFilename = UUID.randomUUID()+extension;
+    private static Deque<String> saveFiledirectory(Path path, List<MultipartFile> multipartFiles) throws IOException {
+        Deque<String> pathList = new ArrayDeque<>();
+        for(MultipartFile file : multipartFiles) {
+            if (file != null && !file.isEmpty()) {
+                String filename = file.getOriginalFilename();
+                String extension = filename.substring(filename.lastIndexOf("."));
+                String saveFilename = UUID.randomUUID() + extension;
 
-            File saveFile = new File(path.toFile(), saveFilename);
-            file.transferTo(saveFile);
+                File saveFile = new File(path.toFile(), saveFilename);
+                file.transferTo(saveFile);
 
-            pathList.add(saveFilename);
+                pathList.add(saveFilename);
+            }
         }
         return pathList;
     }

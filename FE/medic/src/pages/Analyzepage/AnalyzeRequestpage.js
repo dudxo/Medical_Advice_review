@@ -24,6 +24,13 @@ export default function AnalyzeRequestpage(){
     const [anQuestionTotal, setAnQuestionTotal] = useState(1);
     const [anQuestionContents, setAnQuestionContents] = useState([]);
     const [contents_count, setContentscount] = useState(0)
+    
+    const [anReqForm, setAnReqForm] = useState(null)
+    const [anDiagnosis, setAnDiagnosis] = useState(null)
+    const [anRecord, setAnRecord] = useState(null)
+    const [anFilm, setAnFilm] = useState(null)
+    const [anOther, setOther] = useState(null)
+
 
     const navigate = useNavigate()
     const allAnalyzeRequest = new FormData()
@@ -121,13 +128,16 @@ export default function AnalyzeRequestpage(){
           const an_PtSsNum = an_ptssnum1 + an_ptssnum2
           const today = new Date()
 
-          const fileInputs = document.querySelectorAll('input[type="file"]');
-            fileInputs.forEach((fileInput) => {
-                const files = fileInput.files;
-                for (let i = 0; i < files.length; i++) {
-                    allAnalyzeRequest.append('files', files[i]);
-                }
-            });
+          const anFile = [anReqForm, anDiagnosis, anRecord, anFilm, anOther]
+          const anFile_toString = []
+          anFile.forEach(file => {
+            if (file === null) {
+                anFile_toString.push("empty_file")
+            } else {
+                allAnalyzeRequest.append('files', file);
+                anFile_toString.push("no_empty_file")
+            }
+        });
             allAnalyzeRequest.append("dto", new Blob([JSON.stringify({
                 "anPtName" : an_ptname,
                 "anPtSsNum" : an_PtSsNum,
@@ -137,6 +147,11 @@ export default function AnalyzeRequestpage(){
                 "anEtc" : anEtcValue,
                 "anRegDate" : today,
                 "anQuestionContent" : anQuestionContents,
+                "anReqForm" : anReqForm,
+                "anDiagnosis" : anDiagnosis,
+                "anRecord" : anRecord,
+                "anFilm" : anFilm,
+                "anOther" : anOther,
             })], {type : "application/json"}))
 
           try{

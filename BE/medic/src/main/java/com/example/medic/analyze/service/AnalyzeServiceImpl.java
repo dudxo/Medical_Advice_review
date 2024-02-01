@@ -26,10 +26,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +47,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         Client currentClient = clientService.findClient(clientInfoDto.getUId());
         AnalyzeRequestListDto analyzeRequestListDto = splitRequestToRequestListDto(requestDto);
         AnalyzeQuestionDto analyzeQuestionDtoList = splitRequestToQuestionDto(requestDto);
-        AnalyzeRequestFileDto analyzeRequestFileDto = splitRequestToRequestFileDto(multipartFiles);
+        AnalyzeRequestFileDto analyzeRequestFileDto = splitRequestToRequestFileDto(requestDto, multipartFiles);
 
         try{
             AnalyzeRequestList savedAnalyzeRequestList = saveAnalyzeRequestList(analyzeRequestListDto, currentClient);
@@ -96,20 +93,27 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     /**
      * @return 요청 받은 분석 의뢰 파일 변환
      */
-    public AnalyzeRequestFileDto splitRequestToRequestFileDto(List<MultipartFile> multipartFiles) throws IOException {
+    public AnalyzeRequestFileDto splitRequestToRequestFileDto(AnalyzeRequestDto analyzeRequestDto, List<MultipartFile> multipartFiles) throws IOException {
         if(multipartFiles.size() !=0) {
             Path projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/analyzerequest/");
-            List<String> files = fileHandler.parseFile(projectPath, multipartFiles);
+            Deque <String> files = fileHandler.parseFile(projectPath, multipartFiles);
             return AnalyzeRequestFileDto.builder()
-                    .anReqForm(files.get(0))
-                    .anDiagnosis(files.get(1))
-                    .anRecord(files.get(2))
-                    .anFilm(files.get(3))
-                    .anOther(files.get(4))
+                    .anReqForm(analyzeRequestDto.getAnReqForm().equals("no_empty_file") ? files.pollFirst() : analyzeRequestDto.getAnReqForm())
+                    .anDiagnosis(analyzeRequestDto.getAnDiagnosis().equals("no_empty_file") ? files.pollFirst(): analyzeRequestDto.getAnDiagnosis())
+                    .anRecord(analyzeRequestDto.getAnRecord().equals("no_empty_file") ? files.pollFirst(): analyzeRequestDto.getAnRecord())
+                    .anFilm(analyzeRequestDto.getAnFilm().equals("no_empty_file") ? files.pollFirst() : analyzeRequestDto.getAnRecord())
+                    .anOther(analyzeRequestDto.getAnOther().equals("no_empty-file") ? files.pollFirst() : analyzeRequestDto.getAnOther())
                     .build();
         }
-        return null;
+        return AnalyzeRequestFileDto.builder()
+                .anReqForm(analyzeRequestDto.getAnReqForm())
+                .anDiagnosis(analyzeRequestDto.getAnDiagnosis())
+                .anRecord(analyzeRequestDto.getAnRecord())
+                .anFilm(analyzeRequestDto.getAnFilm())
+                .anOther(analyzeRequestDto.getAnOther())
+                .build();
     }
+
 
 
     /**
@@ -188,6 +192,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
      */
     public AnalyzeResponseDto getAnalyzeRequestDetail(Long anId) {
         AnalyzeRequestList analyzeRequestList = analyzeRequestListRepository.findById(anId).get();
+
 
         List<AnalyzeRequest> analyzeRequests = analyzeRequestList.getAnalyzeRequests();
         List<String> questionContents = new ArrayList<>();
