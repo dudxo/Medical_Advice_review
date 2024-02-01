@@ -1,5 +1,6 @@
 package com.example.medic.translation.service;
 
+import com.example.medic.analyze.domain.AnalyzeRequestList;
 import com.example.medic.analyze.dto.AnalyzeRequestFileDto;
 import com.example.medic.client.domain.Client;
 import com.example.medic.client.dto.ClientInfoDto;
@@ -155,5 +156,33 @@ public class TranslationServiceImpl implements TranslationService {
                 .build();
 
         return translationResponseDto;
+    }
+
+    /**
+     * 번역의뢰 수정
+     */
+    @Transactional
+    public boolean updateTranslationRequest(Long trId, TranslationResponseDto updateDto) {
+        TranslationRequestList translationRequestList = translationRequestListRepository.findById(trId).orElse(null);
+
+        // 번역의뢰 리스트 수정
+        TranslationRequestList updatedTranslationRequestList = translationRequestList.toBuilder()
+                .trEtc(updateDto.getTrEtc())
+                .trPtName(updateDto.getTrPtName())
+                .trPtSub(updateDto.getTrPtSub())
+                .trPtSsNum(updateDto.getTrPtSsNum())
+                .trPtDiagnosis(updateDto.getTrPtDiagnosis())
+                .trPtDiagContent(updateDto.getTrPtDiagContent())
+                .build();
+
+        // 수정일자 업데이트
+        updatedTranslationRequestList = updatedTranslationRequestList.toBuilder()
+                .trMdDate(LocalDate.now())
+                .build();
+
+        // 번역의뢰 리스트 저장
+        translationRequestListRepository.save(updatedTranslationRequestList);
+
+        return true;
     }
 }
