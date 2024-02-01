@@ -13,6 +13,8 @@ import java.util.List;
 @Builder
 public class AdviceQuestionRequestDto {
 
+    private Long adQid;
+
     private List<String> adQuestionContent;
 
     private String adAnswerContent;
