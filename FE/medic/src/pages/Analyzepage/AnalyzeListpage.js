@@ -72,7 +72,7 @@ export default function AnalyzeListPage() {
             {analyzeList.map((analyzeRequestList, index) => (
     <tr key={index}>
       <React.Fragment>
-        <td className={analyzelist.adviceList_td} onClick={() => btn_detail_analyze(analyzeRequestList.adId)}>
+        <td className={analyzelist.analyzeList_td} onClick={() => btn_detail_analyze(analyzeRequestList.anId)}>
           {analyzeList.length - index}
         </td>
         <td className={analyzelist.analyzeList_td}>{analyzeRequestList.anPtSub}</td>

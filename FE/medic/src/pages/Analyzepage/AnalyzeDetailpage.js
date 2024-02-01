@@ -29,28 +29,15 @@ export default function AnalyzeDetailpage(){
     const [anQuestionContents, setAnQuestionContents] = useState([]);
     const [anAnswerContent, setAnAnswerContent] = useState([]);
 
-    const [analyzeData, setAnalyzeData] = useState({});
-    const [isEditMode, setIsEditMode] = useState(false);
-    const [updatedData, setUpdatedData] = useState({});
-
-    const fetchData = async () => {
-        try {
-            const response = await axios.get(`/analyze/analyze/${index}`);
-            setAnalyzeData(response.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     const getAnalyzeRequest = async() => {
         try{
-            const response = await axios.get(`/analyze/analyze/${index}`)
+            const response = await axios.get(`/analyze/analyzeDetail/${index}`)
             console.log(response.data)
             setAnptname(response.data.anPtName)
             setAn_PtSsNum(response.data.anPtSsNum)
             setAnptsub(response.data.anPtSub)
             setAnptdiagnosis(response.data.anPtDiagnosis)
-            setAnptdiagcontent(response.data.an_ptdiagcontent)
+            setAnptdiagcontent(response.data.anPtDiagContent)
             setAnEtcValue(response.data.anEtc)
             setAnQuestionContents(response.data.anQuestionContent)
             setAnAnswerContent(response.data.anAnswerContent)
@@ -74,7 +61,6 @@ export default function AnalyzeDetailpage(){
 
     useEffect(()=>{
         getUserInfo()
-        fetchData();
         getAnalyzeRequest()
     },{index})
 
@@ -83,30 +69,8 @@ export default function AnalyzeDetailpage(){
     }
 
     const btn_edit = () => {
-        setIsEditMode(true);
-        // 수정 모드로 전환되면 현재 데이터를 업데이트 상태로 설정
-        setUpdatedData(analyzeData);
+        navigate(`/medic/analyze/analyzeUpdate/${index}`);
     }
-
-    const btn_save = async () => {
-        try {
-            await axios.put(`/analyze/analyzeDetail/update/${index}`, analyzeData);
-            setIsEditMode(false);
-            refreshData();
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const refreshData = async () => {
-        try {
-            const response = await axios.get(`/analyze/analyzeDetail/${index}`);
-            setAnalyzeData(response.data);
-            setUpdatedData({}); // 저장 후 초기화
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     const renderQuestionInputs = () => {
         return anQuestionContents.map((content, index) => (
@@ -139,7 +103,7 @@ export default function AnalyzeDetailpage(){
             <div className={analyzeDetail.iconbox}>
                 <h2>
                     <i className="fa-solid fa-circle icon"></i>
-                    분석의뢰 신청 상세페이지
+                    분석의뢰 상세페이지
                 </h2>
              </div>
              <div className={analyzeDetail.iconbox}>
@@ -174,37 +138,21 @@ export default function AnalyzeDetailpage(){
                 <div className={`${analyzeDetail.row_box} ${analyzeDetail.patient_box}`}>
                     <div className={`${analyzeDetail.title_box} ${analyzeDetail.patient_box}`}>환자명</div>
                     <div className={`${analyzeDetail.input_box} ${analyzeDetail.patient_box}`}>
-                        {isEditMode ? ( // 수정 모드일 때만 편집 가능한 입력 필드 표시
-                            <input type="text" value={an_ptname} onChange={(e) => setAnptname(e.target.value)} />
-                        ) : (
-                            <input type="text" disabled={true} value={an_ptname}/> // 수정 모드가 아닐 때는 읽기 전용 필드 표시
-                        )}
+                            <input type="text" disabled={true} value={an_ptname}/>
                     </div>
                     <div className={`${analyzeDetail.title_box} ${analyzeDetail.patient_box}`} style={{borderLeft : '1px solid black'}}>주민등록번호</div>
                     <div className={`${analyzeDetail.input_box} ${analyzeDetail.input_ptssnumbox} ${analyzeDetail.patient_box}`}>
-                        {isEditMode ? (
-                            <input type="text" value={an_PtSsNum} onChange={(e) => setAn_PtSsNum(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={an_PtSsNum}/>
-                        )}
                     </div>
                 </div>
                 <div className={analyzeDetail.row_box}>
                     <div className={analyzeDetail.title_box}>진단과목</div>
                     <div className={analyzeDetail.input_box}>
-                        {isEditMode ? (
-                            <input type="text" value={an_ptsub} onChange={(e) => setAnptsub(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={an_ptsub}/>
-                        )}
                     </div>
                     <div className={analyzeDetail.title_box} style={{borderLeft : '1px solid black'}}>진단명</div>
                     <div className={analyzeDetail.input_box}>
-                        {isEditMode ? (
-                            <input type="text" value={an_ptdiagnosis} onChange={(e) => setAnptdiagnosis(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={an_ptdiagnosis}/>
-                        )}
                     </div>
                 </div>
                 <div className={`${analyzeDetail.row_box}`}>
@@ -212,11 +160,7 @@ export default function AnalyzeDetailpage(){
                         진단 사항
                     </div>
                     <div className={analyzeDetail.input_box} style={{width : '400px', height : 'auto'}}>
-                        {isEditMode ? (
-                            <input type="text" value={an_ptdiagcontent} onChange={(e) => setAnptdiagcontent(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={an_ptdiagcontent}/>
-                        )}
                     </div>
                 </div>
             </div>
@@ -230,11 +174,7 @@ export default function AnalyzeDetailpage(){
                 <div className={analyzeDetail.row_box} >
                     <div className={analyzeDetail.title_box} style={{height : '130px'}}>기타사항</div>
                     <div className={analyzeDetail.input_box} style={{width : '400px'}}>
-                        {isEditMode ? (
-                            <input type="text" value={anEtcValue} onChange={(e) => setAnEtcValue(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={anEtcValue}/>
-                        )}
                     </div>
                 </div>
             </div>
@@ -352,10 +292,10 @@ export default function AnalyzeDetailpage(){
                     </div>
                 </div>
                 <div className={analyzeDetail.complete}>
-                    <button type = "button" className={analyzeDetail.btt_complete}>수정</button>
-                    <button type = "button" className={analyzeDetail.btt_complete}>삭제</button>
+                    <button type="button" onClick={btn_goto_list} className={analyzeDetail.btt_complete}>목록</button>
+                    <button type="button" onClick={btn_edit} className={analyzeDetail.btt_complete}>수정</button>
+                    </div>
                  </div>
             </div>
-        </div>
     )
 }
