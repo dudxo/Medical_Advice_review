@@ -71,7 +71,7 @@ public class AdviceRequestList {
     @JsonIgnore
     private AdviceAssignment adviceAssignment;
 
-    @Builder
+    @Builder(toBuilder = true)
     private AdviceRequestList(Long adId, String adPtName, String adPtSsNum, String adPtSub, String adPtDiagnosis,
                               String adPtRec, String adPtCmt, String insurance, String insureDate, String insureName,
                               String adEtc, LocalDate adMdDate, LocalDate adRegDate, Client client){
@@ -111,22 +111,4 @@ public class AdviceRequestList {
         this.client = client;
         this.adviceAssignment = adviceAssignment;
     }
-
-    public void updateAdvice(String adPtName, String adPtSsNum, String adPtSub, String adPtDiagnosis, String adPtRec,
-                             String adPtCmt, String insurance, String insureDate, String insureName, String adEtc,
-                             LocalDate adRegDate, LocalDate adMdDate) {
-        this.adPtName = adPtName;
-        this.adPtSsNum = adPtSsNum;
-        this.adPtSub = adPtSub;
-        this.adPtDiagnosis = adPtDiagnosis;
-        this.adPtRec = adPtRec;
-        this.adPtCmt = adPtCmt;
-        this.insurance = insurance;
-        this.insureDate = insureDate;
-        this.insureName = insureName;
-        this.adEtc = adEtc;
-        this.adRegDate = adRegDate;
-        this.adMdDate = adMdDate;
-    }
-
 }

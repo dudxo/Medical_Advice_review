@@ -25,7 +25,7 @@ public class AdviceQuestion {
     @NotNull
     private String adQuestionContent;
 
-    @NotNull
+
     private String adAnswerContent;
 
 
@@ -36,9 +36,10 @@ public class AdviceQuestion {
     @JsonIgnore
     private AdviceRequestList adviceRequestList;
 
-    @Builder
-    public AdviceQuestion(String adQuestionContent, String adAnswerContent, LocalDate adAnswerDate,
+    @Builder(toBuilder = true)
+    public AdviceQuestion(Long adQid, String adQuestionContent, String adAnswerContent, LocalDate adAnswerDate,
                           AdviceRequestList adviceRequestList) {
+        this.adQid = adQid;
         this.adQuestionContent = adQuestionContent;
         this.adAnswerContent = adAnswerContent;
         this.adAnswerDate = adAnswerDate;
