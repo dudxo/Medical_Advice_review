@@ -1,6 +1,7 @@
 package com.example.medic.translation.controller;
 
 import com.example.medic.advice.dto.AllAdviceRequestDto;
+import com.example.medic.analyze.dto.AnalyzeUpdateDto;
 import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.translation.dto.TranslationRequestDto;
 import com.example.medic.translation.service.TranslationFileService;
@@ -71,7 +72,7 @@ public class TranslationController {
     }
 
     /**
-     * 변역의뢰 상세 조회
+     * 번역의뢰 상세 조회
      */
     @GetMapping("/translate/translateDetail/{trId}")
     public ResponseEntity<TranslationResponseDto> findTranslationDetail(@PathVariable Long trId){
@@ -80,6 +81,20 @@ public class TranslationController {
             return ResponseEntity.ok(translationResponseDto);
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
+        }
+    }
+
+    /**
+     * 번역의뢰 수정
+     */
+    @PutMapping("/translate/translateDetail/update/{trId}")
+    public ResponseEntity<String> updateTranslationRequest(@PathVariable Long trId, @RequestBody TranslationResponseDto updateDto) {
+        boolean updated = translationServiceImpl.updateTranslationRequest(trId, updateDto);
+
+        if (updated) {
+            return ResponseEntity.ok("번역의뢰 수정 성공");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Analyze request with ID " + trId + " not found");
         }
     }
 }
