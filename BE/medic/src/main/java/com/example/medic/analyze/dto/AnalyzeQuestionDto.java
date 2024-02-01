@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -18,6 +18,6 @@ public class AnalyzeQuestionDto {
 
     private String anAnswerContent;
 
-    private Date anAnswerDate;
+    private LocalDate anAnswerDate;
 
 }
