@@ -31,7 +31,7 @@ public class AnalyzeRequest {
     @JsonIgnore
     private AnalyzeRequestList analyzeRequestList;
 
-    @Builder
+    @Builder(toBuilder = true)
     public AnalyzeRequest(Long anQid, String anQuestionContent, String anAnswerContent,
                           LocalDate anAnswerDate, AnalyzeRequestList analyzeRequestList) {
         this.anQid = anQid;
