@@ -8,9 +8,11 @@ import Loginpage from './pages/Loginpage';
 import AdviceRequestpage from './pages/Advicepage/AdviceRequestpage';
 import AdviceListpage from './pages/Advicepage/AdviceListPage';
 import AdviceDetailpage from './pages/Advicepage/AdviceDetailpage';
+import AdviceModifypage from "./pages/Advicepage/AdviceModifypage";
 import AnalyzeRequestpage from './pages/Analyzepage/AnalyzeRequestpage';
 import AnalyzeListpage from './pages/Analyzepage/AnalyzeListpage';
 import AnalyzeDetailpage from './pages/Analyzepage/AnalyzeDetailpage';
+import AnalyzeModifypage from "./pages/Analyzepage/AnalyzeModifypage";
 import TranslateRequestpage from './pages/Translatepage/TranslateRequestpage'
 import TranslateListpage from './pages/Translatepage/TranslateListpage'
 import TranslateDetailpage from './pages/Translatepage/TranslateDetailpage'
@@ -79,9 +81,11 @@ export default function App(){
                     <Route path='/medic/advice/adviceRequest' element={<AdviceRequestpage/>}/>
                     <Route path='/medic/advice/adviceList' element={<AdviceListpage/>}/>
                     <Route path='/medic/advice/adviceDetail/:index' element={<AdviceDetailpage/>}/>
+                    <Route path='/medic/advice/adviceUpdate/:index' element={<AdviceModifypage/>}/>
                     <Route path='/medic/analyze/analyzeRequest' element={<AnalyzeRequestpage/>}/>
                     <Route path='/medic/analyze/analyzeList' element={<AnalyzeListpage/>}/>
-                    <Route path='/medic/analyze/analyzeDetail' element={<AnalyzeDetailpage/>}/>
+                    <Route path='/medic/analyze/analyzeDetail/:index' element={<AnalyzeDetailpage/>}/>
+                    <Route path='/medic/analyze/analyzeUpdate/:index' element={<AnalyzeModifypage/>}/>
                     <Route path='/medic/translate/translateRequest' element={<TranslateRequestpage/>}/>
                     <Route path='/medic/translate/translateList' element={<TranslateListpage/>}/>
                     <Route path='/medic/translate/translateDetail' element={<TranslateDetailpage/>}/>
