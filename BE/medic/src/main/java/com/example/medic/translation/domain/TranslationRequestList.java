@@ -57,13 +57,10 @@ public class TranslationRequestList {
     @OneToOne(mappedBy = "translationRequestList")
     private TranslationAnswerFile translationAnswerFile;
 
-    @Builder
-
+    @Builder(toBuilder = true)
     private TranslationRequestList(Long trId, String trPtName, String trPtSsNum, String trPtSub,
                                    String trPtDiagnosis, String trPtDiagContent, String trEtc,
                                    LocalDate trRegDate, LocalDate trMdDate, Client client) {
-
-
         this.trId = trId;
         this.trPtName = trPtName;
         this.trPtSsNum = trPtSsNum;
