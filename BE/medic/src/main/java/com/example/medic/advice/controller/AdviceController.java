@@ -1,5 +1,6 @@
 package com.example.medic.advice.controller;
 
+import com.example.medic.advice.dto.AdviceUpdateDto;
 import com.example.medic.advice.dto.AllAdviceRequestDto;
 import com.example.medic.advice.service.AdviceFileService;
 import com.example.medic.advice.service.AdviceService;
@@ -79,12 +80,13 @@ public class AdviceController {
      * 자문의뢰 수정
      */
     @PutMapping("/advice/adviceDetail/update/{adId}")
-    public ResponseEntity<String> updateAdviceRequestList(@PathVariable Long adId, @RequestBody AllAdviceRequestDto allAdviceRequestDto) {
-        boolean result = adviceService.updateAdvice(adId, allAdviceRequestDto);
-        if (result) {
-            return ResponseEntity.ok("Advice updated successfully.");
+    public ResponseEntity<String> updateAdviceRequestList(@PathVariable Long adId, @RequestBody AdviceUpdateDto adviceUpdateDto) {
+        boolean updated = adviceService.updateAdviceRequest(adId, adviceUpdateDto);
+
+        if (updated) {
+            return ResponseEntity.ok("자문의뢰 수정 성공");
         } else {
-            return ResponseEntity.badRequest().body("Failed to update advice.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Advice request with ID " + adId + " not found");
         }
     }
 }
