@@ -2,6 +2,7 @@ package com.example.medic.analyze.controller;
 
 import com.example.medic.advice.dto.AllAdviceRequestDto;
 import com.example.medic.analyze.dto.AnalyzeRequestDto;
+import com.example.medic.analyze.dto.AnalyzeUpdateDto;
 import com.example.medic.analyze.service.AnalyzeFileService;
 import com.example.medic.analyze.dto.AnalyzeResponseDto;
 import com.example.medic.analyze.service.AnalyzeServiceImpl;
@@ -81,4 +82,19 @@ public class AnalyzeController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    /**
+     * 분석의뢰 수정
+     */
+    @PutMapping("/analyze/analyzeDetail/update/{anId}")
+    public ResponseEntity<String> updateAnalyzeRequest(@PathVariable Long anId, @RequestBody AnalyzeUpdateDto updateDto) {
+        boolean updated = analyzeService.updateAnalyzeRequest(anId, updateDto);
+
+        if (updated) {
+            return ResponseEntity.ok("분석의뢰 수정 성공");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Analyze request with ID " + anId + " not found");
+        }
+    }
 }
+
