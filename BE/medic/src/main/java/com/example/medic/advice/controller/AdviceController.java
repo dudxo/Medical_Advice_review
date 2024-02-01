@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,11 +26,13 @@ public class AdviceController {
     private final AdviceService adviceService;
     private final AdviceFileService adviceFileService;
 
-    @PostMapping("/advice/request")
+    //받는타입 지정
+    @PostMapping(value = "/advice/request")
     public ResponseEntity<String> saveAdviceRequest(@RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles,
                                                     @RequestPart(name = "dto") AllAdviceRequestDto allAdviceRequestDto,
                                                     HttpServletRequest request) throws IOException {
 
+        System.out.println(multipartFiles.size());
         HttpSession session = request.getSession();
         String uid = (String) session.getAttribute("uId");
 
@@ -66,7 +69,6 @@ public class AdviceController {
                         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileResource.getFilename() + "\"")
                         .body(fileResource);
             } else {
-                System.out.println(64);
                 return ResponseEntity.notFound().build();
             }
         } catch (IOException e) {

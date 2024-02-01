@@ -43,7 +43,7 @@ public class AdviceService {
     @Transactional
     public boolean saveAdviceRequest(AllAdviceRequestDto allAdviceRequestDto, ClientInfoDto clientInfoDto, List<MultipartFile> multipartFiles) throws IOException {
         Client client = clientService.findClient(clientInfoDto.getUId());
-        AdviceFileRequestDto parseAdviceFileRequestDto = splitRequestToFileDto(multipartFiles);
+        AdviceFileRequestDto parseAdviceFileRequestDto = splitRequestToFileDto(allAdviceRequestDto, multipartFiles);
         AdviceQuestionRequestDto parseAdviceQuestionRequestDto = splitRequestToQuestionDto(allAdviceRequestDto);
         AdviceRequestListDto parseAdviceRequestListDto = splitRequestToRequestListDto(allAdviceRequestDto);
         DiagnosisRecordRequestDto parseDiagnosisRecordRequestDto = parseDiagnosisRecordRequestDto(allAdviceRequestDto);
@@ -71,19 +71,32 @@ public class AdviceService {
     /**
      * @return 자문 의뢰 신청 파일 변환
      */
-    public AdviceFileRequestDto splitRequestToFileDto(List<MultipartFile> multipartFiles) throws IOException {
-        if(multipartFiles.size() !=0) {
-            Path projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/");
-            List<String> files = fileHandler.parseFile(projectPath, multipartFiles);
+    public AdviceFileRequestDto splitRequestToFileDto(AllAdviceRequestDto allAdviceRequestDto, List<MultipartFile> multipartFiles) throws IOException {
+        if (multipartFiles.size() != 0 && multipartFiles.size() > 0) {
+            Path projectPath;
+            if (System.getProperty("user.dir").contains("medic")) {
+                projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/advicerequest/");
+            } else {
+                projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/");
+            }
+
+            Deque <String> files = fileHandler.parseFile(projectPath, multipartFiles);
+
             return AdviceFileRequestDto.builder()
-                    .adReqForm(files.get(0))
-                    .adDiagnosis(files.get(1))
-                    .adRecord(files.get(2))
-                    .adFilm(files.get(3))
-                    .adOther(files.get(4))
+                    .adReqForm(allAdviceRequestDto.getAdReqForm().equals("no_empty_file") ? files.pollFirst() : allAdviceRequestDto.getAdReqForm())
+                    .adDiagnosis(allAdviceRequestDto.getAdDiagnosis().equals("no_empty_file") ? files.pollFirst(): allAdviceRequestDto.getAdDiagnosis())
+                    .adRecord(allAdviceRequestDto.getAdRecord().equals("no_empty_file") ? files.pollFirst(): allAdviceRequestDto.getAdRecord())
+                    .adFilm(allAdviceRequestDto.getAdFilm().equals("no_empty_file") ? files.pollFirst() : allAdviceRequestDto.getAdRecord())
+                    .adOther(allAdviceRequestDto.getAdOther().equals("no_empty-file") ? files.pollFirst() : allAdviceRequestDto.getAdOther())
                     .build();
         }
-        return null;
+        return AdviceFileRequestDto.builder()
+                .adReqForm(allAdviceRequestDto.getAdReqForm())
+                .adDiagnosis(allAdviceRequestDto.getAdDiagnosis())
+                .adRecord(allAdviceRequestDto.getAdRecord())
+                .adFilm(allAdviceRequestDto.getAdFilm())
+                .adOther(allAdviceRequestDto.getAdOther())
+                .build();
     }
 
     /**
@@ -227,7 +240,7 @@ public class AdviceService {
      */
     public AllAdviceRequestDto getAdviceRequestDetail(Long adId) {
         AdviceRequestList adviceRequestList = adviceRequestListRepository.findById(adId).get();
-
+        AdviceFile adviceFile = adviceFileRepository.findById(adId).get();
 
         AllAdviceRequestDto allAdviceRequestDto = AllAdviceRequestDto.builder()
                 .adId(adviceRequestList.getAdId())
@@ -253,6 +266,11 @@ public class AdviceService {
                 .diagRound(adviceRequestList.getDiagnosisRecords().get(0).getDiagRound())
                 .adQuestionContent(Collections.singletonList(adviceRequestList.getAdviceQuestions().get(0).getAdQuestionContent()))
                 .adAnswerContent(Collections.singletonList(adviceRequestList.getAdviceQuestions().get(0).getAdAnswerContent()))
+                .adReqForm(adviceFile.getAdReqForm())
+                .adDiagnosis(adviceFile.getAdDiagnosis())
+                .adRecord(adviceFile.getAdRecord())
+                .adFilm(adviceFile.getAdFilm())
+                .adOther(adviceFile.getAdOther())
                 .build();
         return allAdviceRequestDto;
     }

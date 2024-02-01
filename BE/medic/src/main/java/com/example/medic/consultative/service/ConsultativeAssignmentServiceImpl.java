@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -345,10 +346,10 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
     private TranslationAnswerFileRequestDto splitTranslationAnswerFile(List<MultipartFile> multipartFiles) throws IOException {
         if(multipartFiles.size() !=0) {
             Path projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translateanswer/");
-            List<String> files = fileHandler.parseFile(projectPath, multipartFiles);
-            return TranslationAnswerFileRequestDto.builder()
-                    .trAnswer(files.get(0))
-                    .build();
+            Deque <String> files = fileHandler.parseFile(projectPath, multipartFiles);
+//            return TranslationAnswerFileRequestDto.builder()
+//                    .trAnswer(files.get(0))
+//                    .build();
         }
         return null;
     }
