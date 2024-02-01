@@ -189,6 +189,15 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     public AnalyzeResponseDto getAnalyzeRequestDetail(Long anId) {
         AnalyzeRequestList analyzeRequestList = analyzeRequestListRepository.findById(anId).get();
 
+        List<AnalyzeRequest> analyzeRequests = analyzeRequestList.getAnalyzeRequests();
+        List<String> questionContents = new ArrayList<>();
+        List<String> answerContents = new ArrayList<>();
+
+        for (AnalyzeRequest analyzeRequest : analyzeRequests) {
+            questionContents.add(analyzeRequest.getAnQuestionContent());
+            answerContents.add(analyzeRequest.getAnAnswerContent());
+        }
+
         AnalyzeResponseDto analyzeResponseDto = AnalyzeResponseDto.builder()
                 .anId(analyzeRequestList.getAnId())
                 .anEtc(analyzeRequestList.getAnEtc())
@@ -197,10 +206,55 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 .anPtSsNum(analyzeRequestList.getAnPtSsNum())
                 .anPtDiagnosis(analyzeRequestList.getAnPtDiagnosis())
                 .anPtDiagContent(analyzeRequestList.getAnPtDiagContent())
-                .anQuestionContent(Collections.singletonList(analyzeRequestList.getAnalyzeRequests().get(0).getAnQuestionContent()))
-                .anAnswerContent(Collections.singletonList(analyzeRequestList.getAnalyzeRequests().get(0).getAnAnswerContent()))
+                .anQuestionContent(questionContents)
+                .anAnswerContent(answerContents)
                 .build();
 
         return analyzeResponseDto;
+    }
+
+    /**
+     * 분석의뢰 수정
+     */
+    @Transactional
+    public boolean updateAnalyzeRequest(Long anId, AnalyzeUpdateDto updateDto) {
+        AnalyzeRequestList analyzeRequestList = analyzeRequestListRepository.findById(anId).orElse(null);
+
+        // 분석의뢰 리스트 수정
+        AnalyzeRequestList updatedAnalyzeRequestList = analyzeRequestList.toBuilder()
+                .anEtc(updateDto.getAnEtc())
+                .anPtName(updateDto.getAnPtName())
+                .anPtSub(updateDto.getAnPtSub())
+                .anPtSsNum(updateDto.getAnPtSsNum())
+                .anPtDiagnosis(updateDto.getAnPtDiagnosis())
+                .anPtDiagContent(updateDto.getAnPtDiagContent())
+                .build();
+
+        // 분석의뢰 질문지 수정
+        List<AnalyzeRequest> analyzeRequests = analyzeRequestList.getAnalyzeRequests();
+        List<String> updatedQuestionContents = updateDto.getAnQuestionContent();
+
+        List<AnalyzeRequest> updatedAnalyzeRequests = new ArrayList<>();
+        for (int i = 0; i < analyzeRequests.size() && i < updatedQuestionContents.size(); i++) {
+            AnalyzeRequest analyzeRequest = analyzeRequests.get(i);
+            AnalyzeRequest updatedAnalyzeRequest = analyzeRequest.toBuilder()
+                    .anQuestionContent(updatedQuestionContents.get(i))
+                    .analyzeRequestList(updatedAnalyzeRequestList)
+                    .build();
+            updatedAnalyzeRequests.add(updatedAnalyzeRequest);
+        }
+
+        // 분석의뢰 리스트에 새로운 질문지 설정
+        updatedAnalyzeRequestList.getAnalyzeRequests().addAll(updatedAnalyzeRequests);
+
+        // 수정일자 업데이트
+        updatedAnalyzeRequestList = updatedAnalyzeRequestList.toBuilder()
+                .anMdDate(LocalDate.now())
+                .build();
+
+        // 분석의뢰 리스트 저장
+        analyzeRequestListRepository.save(updatedAnalyzeRequestList);
+
+        return true;
     }
 }
