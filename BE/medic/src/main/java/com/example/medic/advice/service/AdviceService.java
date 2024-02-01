@@ -3,6 +3,9 @@ package com.example.medic.advice.service;
 import com.example.medic.advice.domain.*;
 import com.example.medic.advice.dto.*;
 import com.example.medic.advice.repository.*;
+import com.example.medic.analyze.domain.AnalyzeRequest;
+import com.example.medic.analyze.domain.AnalyzeRequestList;
+import com.example.medic.analyze.dto.AnalyzeResponseDto;
 import com.example.medic.client.domain.Client;
 import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.client.service.ClientService;
@@ -17,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
+import java.time.LocalDate;
 import java.util.*;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -72,7 +76,7 @@ public class AdviceService {
      * @return 자문 의뢰 신청 파일 변환
      */
     public AdviceFileRequestDto splitRequestToFileDto(List<MultipartFile> multipartFiles) throws IOException {
-        if(multipartFiles.size() !=0) {
+        if (multipartFiles.size() != 0) {
             Path projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/");
             List<String> files = fileHandler.parseFile(projectPath, multipartFiles);
             return AdviceFileRequestDto.builder()
@@ -185,15 +189,15 @@ public class AdviceService {
      */
     public void saveAdviceFile(AdviceRequestList adviceRequestList, AdviceFileRequestDto adviceFileRequestDto) throws PersistenceException {
         try {
-                AdviceFile adviceFile = AdviceFile.builder()
-                        .adReqForm(adviceFileRequestDto.getAdReqForm())
-                        .adDiagnosis(adviceFileRequestDto.getAdDiagnosis())
-                        .adRecord(adviceFileRequestDto.getAdRecord())
-                        .adFilm(adviceFileRequestDto.getAdFilm())
-                        .adOther(adviceFileRequestDto.getAdOther())
-                        .adviceRequestList(adviceRequestList)
-                        .build();
-                adviceFileRepository.save(adviceFile);
+            AdviceFile adviceFile = AdviceFile.builder()
+                    .adReqForm(adviceFileRequestDto.getAdReqForm())
+                    .adDiagnosis(adviceFileRequestDto.getAdDiagnosis())
+                    .adRecord(adviceFileRequestDto.getAdRecord())
+                    .adFilm(adviceFileRequestDto.getAdFilm())
+                    .adOther(adviceFileRequestDto.getAdOther())
+                    .adviceRequestList(adviceRequestList)
+                    .build();
+            adviceFileRepository.save(adviceFile);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -228,32 +232,45 @@ public class AdviceService {
     public AllAdviceRequestDto getAdviceRequestDetail(Long adId) {
         AdviceRequestList adviceRequestList = adviceRequestListRepository.findById(adId).get();
 
+        List<AdviceQuestion> adviceQuestions = adviceRequestList.getAdviceQuestions();
+        List<String> questionContents = new ArrayList<>();
+        List<String> answerContents = new ArrayList<>();
+
+        for (AdviceQuestion adviceQuestion : adviceQuestions) {
+            questionContents.add(adviceQuestion.getAdQuestionContent());
+            answerContents.add(adviceQuestion.getAdAnswerContent());
+        }
+
+        // 병원진단 정보 가져오기
+        DiagnosisRecord diagnosisRecord = adviceRequestList.getDiagnosisRecords().get(0); // 하나의 진단기록만 있다고 가정
+        String hospital = diagnosisRecord.getHospital();
+        String admStart = diagnosisRecord.getAdmStart();
+        String admEnd = diagnosisRecord.getAdmEnd();
+        String visitStart = diagnosisRecord.getVisitStart();
+        String visitEnd = diagnosisRecord.getVisitEnd();
+        String treatCmt = diagnosisRecord.getTreatCmt();
 
         AllAdviceRequestDto allAdviceRequestDto = AllAdviceRequestDto.builder()
-                .adId(adviceRequestList.getAdId())
                 .adEtc(adviceRequestList.getAdEtc())
-                .adMdDate(adviceRequestList.getAdMdDate())
-                .adPtCmt(adviceRequestList.getAdPtCmt())
-                .adPtSub(adviceRequestList.getAdPtSub())
-                .adPtDiagnosis(adviceRequestList.getAdPtDiagnosis())
                 .adPtName(adviceRequestList.getAdPtName())
-                .adPtRec(adviceRequestList.getAdPtRec())
-                .adRegDate(adviceRequestList.getAdRegDate())
+                .adPtSub(adviceRequestList.getAdPtSub())
                 .adPtSsNum(adviceRequestList.getAdPtSsNum())
-                .adMdDate(adviceRequestList.getAdMdDate())
+                .adPtDiagnosis(adviceRequestList.getAdPtDiagnosis())
+                .adPtRec(adviceRequestList.getAdPtRec())
+                .adPtCmt(adviceRequestList.getAdPtCmt())
+                .insurance(adviceRequestList.getInsurance())
                 .insureDate(adviceRequestList.getInsureDate())
                 .insureName(adviceRequestList.getInsureName())
-                .insurance(adviceRequestList.getInsurance())
-                .hospital(adviceRequestList.getDiagnosisRecords().get(0).getHospital())
-                .admStart(adviceRequestList.getDiagnosisRecords().get(0).getAdmStart())
-                .admEnd(adviceRequestList.getDiagnosisRecords().get(0).getAdmEnd())
-                .visitStart(adviceRequestList.getDiagnosisRecords().get(0).getVisitStart())
-                .visitEnd(adviceRequestList.getDiagnosisRecords().get(0).getVisitEnd())
-                .treatCmt(adviceRequestList.getDiagnosisRecords().get(0).getTreatCmt())
-                .diagRound(adviceRequestList.getDiagnosisRecords().get(0).getDiagRound())
-                .adQuestionContent(Collections.singletonList(adviceRequestList.getAdviceQuestions().get(0).getAdQuestionContent()))
-                .adAnswerContent(Collections.singletonList(adviceRequestList.getAdviceQuestions().get(0).getAdAnswerContent()))
+                .hospital(hospital)
+                .admStart(admStart)
+                .admEnd(admEnd)
+                .visitStart(visitStart)
+                .visitEnd(visitEnd)
+                .treatCmt(treatCmt)
+                .adQuestionContent(questionContents)
+                .adAnswerContent(answerContents)
                 .build();
+
         return allAdviceRequestDto;
     }
 
@@ -261,47 +278,61 @@ public class AdviceService {
      * 자문의뢰 수정
      */
     @Transactional
-    public boolean updateAdvice(Long adId, AllAdviceRequestDto allAdviceRequestDto) {
-        try {
-            AdviceRequestList adviceRequestList = adviceRequestListRepository.findById(adId).orElse(null);
-            if (adviceRequestList == null) {
-                logger.info("해당 자문 의뢰를 찾을 수 없습니다. ID: {}", adId);
-                return false;
-            }
-            updateAdviceRequestList(adviceRequestList, allAdviceRequestDto);
-            updateAdviceFile(adviceRequestList, allAdviceRequestDto);
-            updateDiagnosisRecord(adviceRequestList, allAdviceRequestDto);
+    public boolean updateAdviceRequest(Long adId, AdviceUpdateDto updateDto) {
+        AdviceRequestList adviceRequestList = adviceRequestListRepository.findById(adId).orElse(null);
 
-            return true;
-        } catch (PersistenceException p) {
-            logger.info("자문 의뢰 업데이트 실패");
-            return false;
+        // 자문의뢰 리스트 수정
+        AdviceRequestList updatedAdviceRequestList = adviceRequestList.toBuilder()
+                .adEtc(updateDto.getAdEtc())
+                .adPtName(updateDto.getAdPtName())
+                .adPtSub(updateDto.getAdPtSub())
+                .adPtSsNum(updateDto.getAdPtSsNum())
+                .adPtDiagnosis(updateDto.getAdPtDiagnosis())
+                .adPtRec(updateDto.getAdPtRec())
+                .adPtCmt(updateDto.getAdPtCmt())
+                .insurance(updateDto.getInsurance())
+                .insureDate(updateDto.getInsureDate())
+                .insureName(updateDto.getInsureName())
+                .build();
+
+        // 병원진단 사항 수정
+        DiagnosisRecord diagnosisRecord = adviceRequestList.getDiagnosisRecords().get(0); // 병원진단은 하나의 레코드만 있다고 가정
+        diagnosisRecord.updateDiagnosisRecord(
+                updateDto.getHospital(),
+                updateDto.getAdmStart(),
+                updateDto.getAdmEnd(),
+                updateDto.getVisitStart(),
+                updateDto.getVisitEnd(),
+                updateDto.getTreatCmt(),
+                updateDto.getDiagRound()
+        );
+
+        // 자문의뢰 질문지 수정
+        List<AdviceQuestion> adviceQuestions = adviceRequestList.getAdviceQuestions();
+        List<String> updatedQuestionContents = updateDto.getAdQuestionContent();
+
+        List<AdviceQuestion> updatedAdviceQuestions = new ArrayList<>();
+        for (int i = 0; i < adviceQuestions.size() && i < updatedQuestionContents.size(); i++) {
+            AdviceQuestion adviceQuestion = adviceQuestions.get(i);
+            AdviceQuestion updatedAdviceQuestion = adviceQuestion.toBuilder()
+                    .adQuestionContent(updatedQuestionContents.get(i))
+                    .adviceRequestList(updatedAdviceRequestList)
+                    .build();
+            updatedAdviceQuestions.add(updatedAdviceQuestion);
         }
-    }
 
-    private void updateAdviceRequestList(AdviceRequestList adviceRequestList, AllAdviceRequestDto allAdviceRequestDto) {
-        adviceRequestList.updateAdvice(allAdviceRequestDto.getAdPtName(), allAdviceRequestDto.getAdPtSsNum(),
-                allAdviceRequestDto.getAdPtSub(), allAdviceRequestDto.getAdPtDiagnosis(), allAdviceRequestDto.getAdPtRec(),
-                allAdviceRequestDto.getAdPtCmt(), allAdviceRequestDto.getInsurance(), allAdviceRequestDto.getInsureDate(),
-                allAdviceRequestDto.getInsureName(), allAdviceRequestDto.getAdEtc(), allAdviceRequestDto.getAdRegDate(),
-                allAdviceRequestDto.getAdMdDate());
+        // 자문의뢰 리스트에 새로운 질문지 설정
+        updatedAdviceRequestList.getAdviceQuestions().addAll(updatedAdviceQuestions);
 
-        adviceRequestListRepository.save(adviceRequestList);
-    }
+        // 수정일자 업데이트
+        updatedAdviceRequestList = updatedAdviceRequestList.toBuilder()
+                .adMdDate(LocalDate.now())
+                .build();
 
-    private void updateAdviceFile(AdviceRequestList adviceRequestList, AllAdviceRequestDto allAdviceRequestDto) {
-        AdviceFile adviceFile = adviceFileRepository.findByAdviceRequestList(adviceRequestList);
-        adviceFile.updateAdviceFile(allAdviceRequestDto.getAdReqForm(), allAdviceRequestDto.getAdDiagnosis(),
-                allAdviceRequestDto.getAdRecord(), allAdviceRequestDto.getAdFilm(), allAdviceRequestDto.getAdOther());
+        // 자문의뢰 리스트 저장
+        adviceRequestListRepository.save(updatedAdviceRequestList);
 
-        adviceFileRepository.save(adviceFile);
-    }
-
-    private void updateDiagnosisRecord(AdviceRequestList adviceRequestList, AllAdviceRequestDto allAdviceRequestDto) {
-        DiagnosisRecord diagnosisRecord = diagnosisRecordRepository.findByAdviceRequestList(adviceRequestList);
-        diagnosisRecord.updateDiagnosisRecord(allAdviceRequestDto.getHospital(), allAdviceRequestDto.getAdmStart(),
-                allAdviceRequestDto.getAdmEnd(), allAdviceRequestDto.getVisitStart(), allAdviceRequestDto.getVisitEnd(),
-                allAdviceRequestDto.getTreatCmt(), allAdviceRequestDto.getDiagRound());
-        diagnosisRecordRepository.save(diagnosisRecord);
+        return true;
     }
 }
+
