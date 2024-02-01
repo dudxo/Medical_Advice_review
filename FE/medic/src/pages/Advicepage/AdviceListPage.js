@@ -78,7 +78,7 @@ export default function AdviceListPage() {
               <tr key={index}>
                 <React.Fragment>
                   <td className={advicelist.adviceList_td} onClick={() => btn_detail_advice(adviceRequestList.adId)}>
-                    {index + 1}
+                  {adviceList.length - index}
                   </td>
                   <td className={advicelist.adviceList_td}>{adviceRequestList.adPtSub}</td>
                   <td className={advicelist.adviceList_td}>{adviceRequestList.adPtDiagnosis}</td>

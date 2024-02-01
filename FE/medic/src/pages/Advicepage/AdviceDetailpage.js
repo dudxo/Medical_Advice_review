@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import adviceDetail from '../../css/AdviceDetailpage.module.css'
 import axios from 'axios';
-import {useLocation, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 
 export default function AdviceDetailpage(){
     const navigate = useNavigate();
-    const location = useLocation();
     const startYear = 1960;
 
     const {index} = useParams();
@@ -54,20 +53,6 @@ export default function AdviceDetailpage(){
 
     const [imageError, setImageError] = useState(false);
     const [filepath, setFilepath] = useState({})
-    
-    const [adviceData, setAdviceData] = useState({});
-    const [isEditMode, setIsEditMode] = useState(false);
-    const [updatedData, setUpdatedData] = useState({});
-
-
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`/advice/adviceDetail/${index}`);
-                setAdviceData(response.data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
 
     const getAdviceRequest = async() => {
         try{
@@ -110,7 +95,6 @@ export default function AdviceDetailpage(){
 
     useEffect(()=>{
         getUserInfo()
-        fetchData();
         getAdviceRequest()
     },{index})
 
@@ -119,30 +103,8 @@ export default function AdviceDetailpage(){
     }
 
     const btn_edit = () => {
-        setIsEditMode(true);
-        // 수정 모드로 전환되면 현재 데이터를 업데이트 상태로 설정
-        setUpdatedData(adviceData);
+        navigate(`/medic/advice/adviceUpdate/${index}`);
     }
-
-    const btn_save = async () => {
-        try {
-            await axios.put(`/advice/adviceDetail/update/${index}`, adviceData);
-            setIsEditMode(false);
-            refreshData();
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const refreshData = async () => {
-        try {
-            const response = await axios.get(`/advice/adviceDetail/${index}`);
-            setAdviceData(response.data);
-            setUpdatedData({}); // 저장 후 초기화
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     const renderQuestionInputs = () => {
         return adQuestionContents.map((content, index) => (
@@ -168,12 +130,7 @@ export default function AdviceDetailpage(){
         const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
         return formattedDate;
     };
-
-    const medicAdviceList = () => {
-        navigate('/medic/advice/adviceList');
-    };
-
-
+    
     return(
         <div className={adviceDetail.adviceDetail_wrap}>
             <div className={adviceDetail.iconbox}>
@@ -214,47 +171,27 @@ export default function AdviceDetailpage(){
                 <div className={`${adviceDetail.row_box} ${adviceDetail.patient_box}`}>
                     <div className={`${adviceDetail.title_box} ${adviceDetail.patient_box}`}>환자명</div>
                     <div className={`${adviceDetail.input_box} ${adviceDetail.patient_box}`}>
-                        {isEditMode ? ( // 수정 모드일 때만 편집 가능한 입력 필드 표시
-                            <input type="text" value={adPtName} onChange={(e) => setAdPtName(e.target.value)} />
-                        ) : (
-                            <input type="text" disabled={true} value={adPtName}/> // 수정 모드가 아닐 때는 읽기 전용 필드 표시
-                        )}
+                        <input type="text" disabled={true} value={adPtName}/>
                     </div>
                 <div className={`${adviceDetail.title_box} ${adviceDetail.patient_box}`} style={{borderLeft: '1px solid black'}}>주민등록번호</div>
                 <div className={`${adviceDetail.input_box} ${adviceDetail.input_ptssnumbox} ${adviceDetail.patient_box}`}>
-                        {isEditMode ? (
-                            <input type="text" value={ad_ptssnum} onChange={(e) => setAdptssnum(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={ad_ptssnum}/>
-                        )}
                 </div>
             </div>
                 <div className={adviceDetail.row_box}>
                     <div className={adviceDetail.title_box}>진단과목</div>
                     <div className={adviceDetail.input_box}>
-                        {isEditMode ? (
-                            <input type="text" value={ad_ptsub} onChange={(e) => setAdptsub(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={ad_ptsub}/>
-                        )}
                 </div>
                     <div className={adviceDetail.title_box} style={{borderLeft : '1px solid black'}}>진단명</div>
                     <div className={adviceDetail.input_box}>
-                        {isEditMode ? (
-                            <input type="text" value={ad_ptdiagnosis} onChange={(e) => setAdptdiagnosis(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={ad_ptdiagnosis}/>
-                        )}
                     </div>
                 </div>
                 <div className={adviceDetail.row_box}>
                     <div className={adviceDetail.title_box}>과거 진단이력</div>
                     <div className={adviceDetail.input_box}>
-                        {isEditMode ? (
-                            <input type="text" value={ad_ptrec} onChange={(e) => setAdptrec(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={ad_ptrec}/>
-                        )}
                     </div>
                 </div>
                 <div className={`${adviceDetail.row_box}`}>
@@ -262,11 +199,7 @@ export default function AdviceDetailpage(){
                         내용
                     </div>
                     <div className={adviceDetail.input_box} style={{width : '400px', height : 'auto'}}>
-                        {isEditMode ? (
-                            <input type="text" value={ad_ptcmt} onChange={(e) => setAdptcmt(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={ad_ptcmt}/>
-                        )}
                     </div>
                 </div>
             </div>
@@ -280,29 +213,17 @@ export default function AdviceDetailpage(){
                 <div className={adviceDetail.row_box}>
                     <div className={adviceDetail.title_box}>보험사명</div>
                     <div className={adviceDetail.input_box}>
-                        {isEditMode ? (
-                            <input type="text" value={insurance} onChange={(e) => setInsurance(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={insurance}/>
-                        )}
                     </div>
                     <div className={adviceDetail.title_box} style={{borderLeft : '1px solid black'}}>계약일자</div>
                     <div className={adviceDetail.input_box}>
-                        {isEditMode ? (
-                            <input type="text" value={insureDate} onChange={(e) => setInsureDate(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={insureDate}/>
-                        )}
                     </div>
                 </div>
                 <div className={adviceDetail.row_box}>
                     <div className={adviceDetail.title_box}>보험계약명</div>
                     <div className={adviceDetail.input_box}>
-                        {isEditMode ? (
-                            <input type="text" value={insure_name} onChange={(e) => setInsurename(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={insure_name}/>
-                        )}
                     </div>
                 </div>
             </div>
@@ -316,30 +237,18 @@ export default function AdviceDetailpage(){
                 <div className={adviceDetail.row_box} style={{height : '42px'}}>
                     <div className={adviceDetail.title_box} >1차 치료 병원명</div>
                     <div className={adviceDetail.input_box}>
-                        {isEditMode ? (
-                            <input type="text" value={hospital} onChange={(e) => setHospital(e.target.value)} />
-                        ) : (
                         <input type="text" disabled={true} value={hospital}/>
-                        )}
                     </div>
                 </div>
                 <div className={adviceDetail.row_box}>
                     <div className={adviceDetail.title_box} style={{height : '92px'}}>입원 치료기간</div>
                     <div className={adviceDetail.input_box} style={{display:'flex', flexDirection:'column' ,width: '600px', alignItems : 'space-between', height : '80px'}}>
                         <div className={adviceDetail.datebox}>
-                            {isEditMode ? (
-                                <input type="text" value={admStart} onChange={(e) => setAdmstart(e.target.value)} />
-                            ) : (
                                 <input type="text" disabled={true} value={admStart}/>
-                            )}
                         </div>                       
                         ~
                         <div className={adviceDetail.datebox}>
-                            {isEditMode ? (
-                                <input type="text" value={admEnd} onChange={(e) => setAdmend(e.target.value)} />
-                            ) : (
                                 <input type="text" disabled={true} value={admEnd}/>
-                            )}
                         </div>                       
                     </div>
                 </div>
@@ -347,19 +256,11 @@ export default function AdviceDetailpage(){
                     <div className={adviceDetail.title_box} style={{height : '92px'}}>통원 치료기간</div>
                     <div className={adviceDetail.input_box} style={{display:'flex', flexDirection:'column' ,width: '600px', justifyContent : 'start', alignItems : 'space-between', height : '80px'}}>
                         <div className={adviceDetail.datebox}>
-                            {isEditMode ? (
-                                <input type="text" value={visitStart} onChange={(e) => setVisitstart(e.target.value)} />
-                            ) : (
                                 <input type="text" disabled={true} value={visitStart}/>
-                            )}
                         </div>                       
                         ~
                         <div className={adviceDetail.datebox}>
-                            {isEditMode ? (
-                                <input type="text" value={visitEnd} onChange={(e) => setVisitend(e.target.value)} />
-                            ) : (
                                 <input type="text" disabled={true} value={visitEnd}/>
-                            )}
                         </div>                       
                     </div>
                 </div>
@@ -368,11 +269,7 @@ export default function AdviceDetailpage(){
                         치료사항
                     </div>
                     <div className={adviceDetail.input_box} style={{width : '400px', height : 'auto'}}>
-                        {isEditMode ? (
-                            <input type="text" value={treat_cmt} onChange={(e) => setTreatcmt(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={treat_cmt}/>
-                        )}
                     </div>
                 </div>
             </div>
@@ -386,11 +283,7 @@ export default function AdviceDetailpage(){
                 <div className={adviceDetail.row_box} >
                     <div className={adviceDetail.title_box} style={{height : '130px'}}>기타사항</div>
                     <div className={adviceDetail.input_box} style={{width : '400px'}}>
-                        {isEditMode ? (
-                            <input type="text" value={adEtcValue} onChange={(e) => setAdEtcValue(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={adEtcValue}/>
-                        )}
                     </div>
                 </div>
             </div>
@@ -505,14 +398,8 @@ export default function AdviceDetailpage(){
                     </div>
                 </div>
                 <div className={adviceDetail.complete}>
-                    {isEditMode ? (
-                        <>
-                            <button type="button" onClick={btn_save} className={adviceDetail.btt_complete}>저장</button>
-                            <button type="button" onClick={btn_goto_list} className={adviceDetail.btt_complete}>취소</button>
-                        </>
-                    ) : (
-                <><button type="button" onClick={btn_edit} className={adviceDetail.btt_complete}>수정</button><button type="button" onClick={btn_goto_list} className={adviceDetail.btt_complete}>목록</button></>
-                    )}
+                    <button type="button" onClick={btn_goto_list} className={adviceDetail.btt_complete}>목록</button>
+                    <button type="button" onClick={btn_edit} className={adviceDetail.btt_complete}>수정</button>
                  </div>
             </div>
              </div> 
