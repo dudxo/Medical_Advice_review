@@ -29,7 +29,7 @@ export default function AnalyzeRequestpage(){
     const [anDiagnosis, setAnDiagnosis] = useState(null)
     const [anRecord, setAnRecord] = useState(null)
     const [anFilm, setAnFilm] = useState(null)
-    const [anOther, setOther] = useState(null)
+    const [anOther, setAnOther] = useState(null)
 
 
     const navigate = useNavigate()
@@ -147,11 +147,11 @@ export default function AnalyzeRequestpage(){
                 "anEtc" : anEtcValue,
                 "anRegDate" : today,
                 "anQuestionContent" : anQuestionContents,
-                "anReqForm" : anReqForm,
-                "anDiagnosis" : anDiagnosis,
-                "anRecord" : anRecord,
-                "anFilm" : anFilm,
-                "anOther" : anOther,
+                "anReqForm" : anFile_toString[0],
+                "anDiagnosis" : anFile_toString[1],
+                "anRecord" : anFile_toString[2],
+                "anFilm" : anFile_toString[3],
+                "anOther" : anFile_toString[4],
             })], {type : "application/json"}))
 
           try{
@@ -301,7 +301,7 @@ export default function AnalyzeRequestpage(){
                         분석의뢰신청서
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file' accept="image/*"/>
+                        <input type='file' accept="image/*" onChange={(e) => setAnReqForm(e.target.files[0])}/>
                     </div>
                 </div>
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
@@ -309,7 +309,7 @@ export default function AnalyzeRequestpage(){
                         진단서
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file' accept="image/*"/>
+                        <input type='file' accept="image/*" onChange={e => setAnDiagnosis(e.target.files[0])}/>
                     </div>
                 </div>
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
@@ -317,7 +317,7 @@ export default function AnalyzeRequestpage(){
                         의무기록지
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file' accept="image/*"/>
+                        <input type='file' accept="image/*" onChange={e => setAnRecord(e.target.files[0])}/>
                     </div>
                 </div>
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
@@ -325,7 +325,7 @@ export default function AnalyzeRequestpage(){
                         필름
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file' accept="image/*"/>
+                        <input type='file' accept="image/*" onChange={e => setAnFilm(e.target.files[0])}/>
                     </div>
                 </div>
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
@@ -333,7 +333,7 @@ export default function AnalyzeRequestpage(){
                         기타자료
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file' accept="image/*"/>
+                        <input type='file' accept="image/*" onChange={e => setAnOther(e.target.files[0])}/>
                     </div>
                 </div>
                 <div className={analyzerequest.complete}>

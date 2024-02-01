@@ -29,6 +29,12 @@ export default function AnalyzeDetailpage(){
     const [anQuestionContents, setAnQuestionContents] = useState([]);
     const [anAnswerContent, setAnAnswerContent] = useState([]);
 
+    const [anReqForm, setAnReqForm] = useState(false)
+    const [anDiagnosis, setAnDiagnosis] = useState(false)
+    const [anRecord, setAnRecord] = useState(false)
+    const [anFilm, setAnFilm] = useState(false)
+    const [anOther, setAnOther] = useState(false)
+
     const getAnalyzeRequest = async() => {
         try{
             const response = await axios.get(`/analyze/analyzeDetail/${index}`)
@@ -41,6 +47,42 @@ export default function AnalyzeDetailpage(){
             setAnEtcValue(response.data.anEtc)
             setAnQuestionContents(response.data.anQuestionContent)
             setAnAnswerContent(response.data.anAnswerContent)
+            setAnReqForm(() => {
+                if(response.data.anReqForm === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+            setAnDiagnosis(()=>{
+                if(response.data.anDiagnosis === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+            setAnRecord(()=>{
+                if(response.data.anRecord === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+            setAnFilm(()=>{
+                if(response.data.anFilm === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+            setAnOther(()=>{
+                if(response.data.anOther === "empty_file"){
+                    console.log(1)
+                    return false
+                } else{
+                    return true
+                }
+            })
     } catch(err){
         console.log(err)
     }  
@@ -216,15 +258,21 @@ export default function AnalyzeDetailpage(){
                         분석의뢰신청서
                     </div>
                     <div className={analyzeDetail.input_box}>
-                        <button>
-                            <a
-                                href={`http://localhost:8080/analyze/findrequestfile/${index}/anReqForm`}
-                                download="anReqForm.jpg"
-                                style={{ display: imageError ? 'none' : 'block' }}
-                            >
-                                다운로드
-                            </a>
-                        </button>
+                        {
+                            anReqForm ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anReqForm`}
+                                    download="anReqForm.jpg"
+                                    style={{ display: imageError ? 'none' : 'block' }}
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            : 
+                            "해당 파일이 존재하지 않습니다."
+                        }
+                        
                     </div>
                 </div>
                 <div className={analyzeDetail.row_box} style={{height : 'auto'}}>
@@ -232,15 +280,21 @@ export default function AnalyzeDetailpage(){
                         진단서
                     </div>
                     <div className={analyzeDetail.input_box}>
-                        <button>
-                            <a
-                                href={`http://localhost:8080/analyze/findrequestfile/${index}/anDiagnosis`}
-                                download="anDiagnosis.jpg"
-                                style={{ display: imageError ? 'none' : 'block' }}
-                            >
-                                다운로드
-                            </a>
-                        </button>
+                        {
+                            anDiagnosis ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anDiagnosis`}
+                                    download="anDiagnosis.jpg"
+                                    style={{ display: imageError ? 'none' : 'block' }}
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
+                        
                     </div>
                 </div>
                 <div className={analyzeDetail.row_box} style={{height : 'auto'}}>
@@ -248,15 +302,21 @@ export default function AnalyzeDetailpage(){
                         의무기록지
                     </div>
                     <div className={analyzeDetail.input_box}>
-                        <button>
-                            <a
-                                href={`http://localhost:8080/analyze/findrequestfile/${index}/anRecord`}
-                                download="anRecord.jpg"
-                                style={{ display: imageError ? 'none' : 'block' }}
-                            >
-                                다운로드
-                            </a>
-                        </button>
+                        {
+                            anRecord ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anRecord`}
+                                    download="anRecord.jpg"
+                                    style={{ display: imageError ? 'none' : 'block' }}
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
+                        
                     </div>
                 </div>
                 <div className={analyzeDetail.row_box} style={{height : 'auto'}}>
@@ -264,15 +324,21 @@ export default function AnalyzeDetailpage(){
                         필름
                     </div>
                     <div className={analyzeDetail.input_box}>
-                        <button>
-                            <a
-                                href={`http://localhost:8080/analyze/findrequestfile/${index}/anFilm`}
-                                download="anFilm.jpg"
-                                style={{ display: imageError ? 'none' : 'block' }}
-                            >
-                                다운로드
-                            </a>
-                        </button>
+                        {
+                            anFilm ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anFilm`}
+                                    download="anFilm.jpg"
+                                    style={{ display: imageError ? 'none' : 'block' }}
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
+                        
                     </div>
                 </div>
                 <div className={analyzeDetail.row_box} style={{height : 'auto'}}>
@@ -280,15 +346,20 @@ export default function AnalyzeDetailpage(){
                         기타자료
                     </div>
                     <div className={analyzeDetail.input_box}>
-                        <button>
-                            <a
-                                href={`http://localhost:8080/analyze/findrequestfile/${index}/anOther`}
-                                download="anOther.jpg"
-                                style={{ display: imageError ? 'none' : 'block' }}
-                            >
-                                다운로드
-                            </a>
-                        </button>
+                        {
+                            anOther ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anOther`}
+                                    download="anOther.jpg"
+                                    style={{ display: imageError ? 'none' : 'block' }}
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }                      
                     </div>
                 </div>
                 <div className={analyzeDetail.complete}>

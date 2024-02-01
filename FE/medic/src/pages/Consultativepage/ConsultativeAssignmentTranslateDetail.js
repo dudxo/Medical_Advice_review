@@ -27,10 +27,11 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
     const allTranslateRequest = new FormData()
 
     //답변
-    const [answerFile, setAnswerFile] = useEffect(false)
+    const [answerFile, setAnswerFile] = useState(false)
+    const [trMtl, setTrMtl] = useState(false)
     const getUserInfo = async() =>{
         try{
-            const response = await axios.get('/consultative/assignment/translate/${translateIndex.id}/details')
+            const response = await axios.get(`/consultative/assignment/translate/${translateIndex.id}/details`)
             console.log(response.data)
             setUname(response.data.name)
             setUtel(response.data.userTel)
@@ -43,6 +44,13 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
             setTrptdiagnosis(response.data.trptdiagnosis)
             setTrptdiagcontent(response.data.trptdiagcontent)
             setTrEtcValue(response.data.trEtcValue)
+            setTrMtl(()=>{
+                if(response.data.trMtl === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
         } catch(err){
             console.log(err)
         }  
@@ -194,16 +202,21 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
                         번역 요청자료
                     </div>
                     <div className={translaterequest.input_box}>
-                        {/*해당 번역의뢰 long id 가져오는거 필요*/}
-                        <button>
-                            <a
-                                href={`http://localhost:8080/translation/findrequestfile/${trId}`}
-                                style={{ display: imageError ? 'none' : 'block' }}
-                                download="adRecord.zip"
-                            >
-                                다운로드
-                            </a>
-                        </button>
+                        {
+                            trMtl ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/translation/findrequestfile/${trId}`}
+                                    style={{ display: imageError ? 'none' : 'block' }}
+                                    download="adRecord.zip"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
+                        
                     </div>
                     <div className={translaterequest.title_box}>
                         번역자료

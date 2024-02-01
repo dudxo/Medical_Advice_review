@@ -23,6 +23,8 @@ export default function TranslateRequestpage(){
 
     const [contents_count, setContentscount] = useState(0)
 
+    const [trMtl, setTrMtl] = useState(null)
+
     const navigate = useNavigate()
     const allTranslateRequest = new FormData()
 
@@ -86,13 +88,17 @@ export default function TranslateRequestpage(){
           }
           const tr_PtSsNum = tr_ptssnum1 + tr_ptssnum2
           const today = new Date()
-          const fileInputs = document.querySelectorAll('input[type="file"]');
-          fileInputs.forEach((fileInput) => {
-              const files = fileInput.files;
-              for (let i = 0; i < files.length; i++) {
-                  allTranslateRequest.append('files', files[i]);
-              }
-          });
+          const trFile = [trMtl]
+          const trFile_toString = []
+          trFile.forEach(file => {
+            if(file === null){
+                trFile_toString.push("empty_file")
+            }else{
+                allTranslateRequest.append('files', file)
+                trFile_toString.push("no_empty_file")
+            }
+          })
+
           allTranslateRequest.append("dto", new Blob([JSON.stringify({
             "trPtName" : tr_ptname,
               "trPtSsNum" : tr_PtSsNum,
@@ -101,6 +107,7 @@ export default function TranslateRequestpage(){
               "trPtCmt" : tr_ptcmt,
               "trEtc" : trEtcValue,
               "trRegDate" : today,
+              "trMtl" : trFile_toString[0]
         })], {type : "application/json"}))
           try{
               const response = axios.post('/translate/request', allTranslateRequest, {
@@ -231,7 +238,7 @@ export default function TranslateRequestpage(){
                         번역 요청자료
                     </div>
                     <div className={translaterequest.input_box}>
-                        <input type='file' accept='application/zip'/>
+                        <input type='file' accept='application/zip' onChange={(e)=> setTrMtl(e.target.files[0])}/>
                     </div>
                 </div>
                 <div className={translaterequest.complete}>

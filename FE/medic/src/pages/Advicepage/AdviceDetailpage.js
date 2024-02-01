@@ -54,16 +54,6 @@ export default function AdviceDetailpage(){
     const [adFilm, setAdFilm] = useState(false)
     const [adOther, setAdOther] = useState(false)
 
-
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`/advice/adviceDetail/${index}`);
-                setAdviceData(response.data);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
     const getAdviceRequest = async() => {
         try{
             const response = await axios.get(`/advice/adviceDetail/${index}`)
@@ -94,31 +84,31 @@ export default function AdviceDetailpage(){
                 }
             })
             setAdDiagnosis(()=>{
-                if(response.data.adDiagnosis){
+                if(response.data.adDiagnosis === "empty_file"){
                     return false
                 } else{
                     return true
                 }
             })
             setAdRecord(()=>{
-                if(response.data.adRecord){
+                if(response.data.adRecord === "empty_file"){
                     return false
                 } else{
                     return true
                 }
             })
             setAdFilm(()=>{
-                if(response.data.adFilm){
+                if(response.data.adFilm === "empty_file"){
                     return false
                 } else{
                     return true
                 }
             })
             setAdOther(()=>{
-                if(response.data.adOther){
-                    return true
-                } else{
+                if(response.data.adOther === "empty_file"){
                     return false
+                } else{
+                    return true
                 }
             })
     } catch(err){
