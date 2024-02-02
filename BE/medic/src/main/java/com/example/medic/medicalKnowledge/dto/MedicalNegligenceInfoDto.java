@@ -5,6 +5,7 @@ import com.example.medic.medicalKnowledge.domain.MedicalNegligenceInfo;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -12,8 +13,8 @@ import java.util.Date;
 public class MedicalNegligenceInfoDto {
     private String mnName;
     private String mnInstitution;
-    private Date mnRegDate;
-    private Date mnMdDate;
+    private LocalDate mnRegDate;
+    private LocalDate mnMdDate;
     private String mnContent;
     private Manager manager;
 

@@ -1,5 +1,6 @@
 package com.example.medic.medicalKnowledge.repository;
 
+import com.example.medic.manager.domain.Manager;
 import com.example.medic.medicalKnowledge.domain.WoundInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -62,5 +63,7 @@ public interface WoundInfoRepository extends JpaRepository<WoundInfo,Long> {
         String getNextWriter();
         String getNextDate();
     }
+    @Query("SELECT w.manager from WoundInfo w WHERE w.woId = :woId")
+    Manager findManagerByWoid(Long woId);
 
 }

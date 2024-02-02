@@ -1,5 +1,6 @@
 package com.example.medic.medicalKnowledge.service;
 
+import com.example.medic.manager.domain.Manager;
 import com.example.medic.medicalKnowledge.domain.WoundInfo;
 import com.example.medic.medicalKnowledge.dto.WoundInfoDto;
 import com.example.medic.medicalKnowledge.repository.WoundInfoRepository;
@@ -24,12 +25,17 @@ public class WoundInfoService {
         return woundInfoRepository.findAll();
     }
 
-    public WoundInfo getWoundInfoDetail(Long iaid){
-        Optional<WoundInfo> optionalWoundInfo = woundInfoRepository.findById(iaid);
-
+    public WoundInfoDto getWoundInfoDetail(Long woid){
+        Optional<WoundInfo> optionalWoundInfo = woundInfoRepository.findById(woid);
         if(optionalWoundInfo.isPresent()){
             WoundInfo woundInfo = optionalWoundInfo.get();
-            return woundInfo;
+            WoundInfoDto woundInfoDto = WoundInfoDto.builder()
+                    .woName(woundInfo.getWoName())
+                    .woContent(woundInfo.getWoContent())
+                    .woRegDate(woundInfo.getWoRegdate())
+                    .woInstitution(woundInfo.getWoInstitution())
+                    .build();
+            return woundInfoDto;
         }else{
             return null;
         }
@@ -51,15 +57,17 @@ public class WoundInfoService {
     }
     public WoundInfo updateWoundInfo(Long woid, WoundInfoDto woundInfoDto){
         WoundInfo woundInfo = findWoundInfo(woid);
+        Manager manager = woundInfoRepository.findManagerByWoid(woid);
         if(woundInfo == null){
             throw new IllegalArgumentException("게시글을 찾을 수 없습니다.");
         }
         WoundInfo responsewoundInfo = woundInfo.builder()
+                .woId(woid)
                 .woName(woundInfoDto.getWoName())
                 .woInstitution(woundInfoDto.getWoInstitution())
                 .woMdDate(woundInfoDto.getWoMdDate())
                 .woContent(woundInfoDto.getWoContent())
-                .manager(woundInfoDto.getManager())
+                .manager(manager)
                 .build();
         return woundInfoRepository.save(responsewoundInfo);
     }

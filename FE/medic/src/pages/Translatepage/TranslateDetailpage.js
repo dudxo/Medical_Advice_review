@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import translateDetail from '../../css/TranslateDetailpage.module.css'
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { faL } from '@fortawesome/free-solid-svg-icons';
 
 export default function TranslateDetailpage(){
     const [imageError, setImageError] = useState(false);
@@ -24,16 +25,50 @@ export default function TranslateDetailpage(){
 
     const [trEtcValue, setTrEtcValue] = useState('');
 
+<<<<<<< HEAD
+=======
+    const [translateData, setTranslateData] = useState({});
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [updatedData, setUpdatedData] = useState({});
+
+    const [trMtl, setTrMtl] = useState(false);
+
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(`/translate/translateDetail/${index}`);
+            setTranslateData(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+>>>>>>> 2763944b75cfd19fe172f22174d68850de389895
     const getTranslateRequest = async() => {
         try{
             const response = await axios.get(`/translate/translateDetail/${index}`)
             console.log(response.data)
+<<<<<<< HEAD
             setTrptname(response.data.trPtName)
             setTrPtSsnum(response.data.trPtSsNum)
             setTrptsub(response.data.trPtSub)
             setTrptdiagnosis(response.data.trPtDiagnosis)
             setTrptcmt(response.data.trPtDiagContent)
             setTrEtcValue(response.data.trEtc)
+=======
+            setTrptname(response.data.tr_ptname)
+            setTrPtSsnum(response.data.tr_PtSsNum)
+            setTrptsub(response.data.tr_ptsub)
+            setTrptdiagnosis(response.data.tr_ptdiagnosis)
+            setTrptcmt(response.data.tr_ptcmt)
+            setTrEtcValue(response.data.trEtcValue)
+            setTrMtl(()=>{
+                if(response.data.trMtl === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+>>>>>>> 2763944b75cfd19fe172f22174d68850de389895
     } catch(err){
         console.log(err)
     }  
@@ -182,14 +217,20 @@ export default function TranslateDetailpage(){
                         번역 자료
                     </div>
                     <div className={translateDetail.input_box}>
-                        <button>
-                            <a
-                                href={`http://localhost:8080/translateanswer/findrequestfile/${index}`}
-                                download="adRecord.zip"
-                            >
-                                다운로드
-                            </a>
-                        </button>
+                        {
+                            trMtl ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/translateanswer/findrequestfile/${index}`}
+                                    download="adRecord.zip"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
+                        
                     </div>
                 </div>
                 <div className={translateDetail.complete}>

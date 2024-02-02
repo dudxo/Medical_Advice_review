@@ -36,9 +36,11 @@ public class ConsultativeDto {
 
     private String hospAddress;
 
+    private String trAnswer;
+
     @Builder
     public ConsultativeDto(String cId, String cPw, String cRole, String cName, String cEmail, String cTel, String cPhone,
-                           String cAddress, String hospName, String hospTel, String department, String hospFx, String hospNum, String hospAddress) {
+                           String cAddress, String hospName, String hospTel, String department, String hospFx, String hospNum, String hospAddress, String trAnswer) {
         this.cId = cId;
         this.cPw = cPw;
         this.cRole = cRole;
@@ -53,5 +55,6 @@ public class ConsultativeDto {
         this.hospFx = hospFx;
         this.hospNum = hospNum;
         this.hospAddress = hospAddress;
+        this.trAnswer = trAnswer;
     }
 }

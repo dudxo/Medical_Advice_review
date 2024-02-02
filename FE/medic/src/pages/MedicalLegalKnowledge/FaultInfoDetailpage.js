@@ -68,7 +68,10 @@ export default function FaultInfoDetailpage(){
   };
 
   const medicfaultInfo = () => {
-    navigate('/medic/medicalknowledge/faultInfo');
+    navigate('/medic/medicalknowledge/faultinfo/faultinfowrite', {state : {
+      faultInfoId : faultInfoId,
+      updatefault : true
+    }});
   };
   
   const deleteFault = async(faultInfoId)=> {
@@ -76,7 +79,10 @@ export default function FaultInfoDetailpage(){
     // 삭제 응답에 따른 이동 여부 판단 로직 필요
     navigate('/medic/medicalknowledge/faultInfo');
   };
-
+ 
+  const btn_medicfaultinfo_list = e => {
+    navigate('/medic/medicalknowledge/faultInfo');
+  }
   return (
     <div className={faultinfodetails.detailform}>
       <div className={faultinfodetails.detail_title}>
@@ -118,7 +124,7 @@ export default function FaultInfoDetailpage(){
           </table>
         </div>
         <div className={faultinfodetails.complete}>
-          <button type="button" onClick={medicfaultInfo} className={faultinfodetails.btt_write}>
+          <button type="button" onClick={btn_medicfaultinfo_list} className={faultinfodetails.btt_write}>
             목록
           </button>
           <button type="button" onClick={medicfaultInfo} className={faultinfodetails.btt_write}>

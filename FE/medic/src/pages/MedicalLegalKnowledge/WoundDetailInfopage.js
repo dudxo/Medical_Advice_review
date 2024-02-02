@@ -68,7 +68,10 @@ export default function WoundAccidentDetailInfopage(){
   };
 
   const medicWound = () => {
-    navigate('/medic/medicalknowledge/woundInfo');
+    navigate('/medic/medicalknowledge/woundInfo/writewound', {state : {
+      woId : woundInfoId,
+      isUpdate : true
+    }});
   };
 
   const deleteWound = async(woundInfoId)=> {

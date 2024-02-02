@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.Deque;
 import java.util.List;
 
 @Service
@@ -48,7 +49,7 @@ public class TranslationServiceImpl implements TranslationService {
     public boolean saveTranslationRequest(TranslationRequestDto requestDto, ClientInfoDto clientInfoDto, List<MultipartFile> multipartFiles) throws IOException {
         Client currentClient = clientService.findClient(clientInfoDto.getUId());
         TranslationListDto translationListDto = splitRequestToTranslationListDto(requestDto);
-        TranslationFileDto translationFileDto = splitRequestToTranslationFileDto(multipartFiles);
+        TranslationFileDto translationFileDto = splitRequestToTranslationFileDto(requestDto ,multipartFiles);
 
         try {
             TranslationRequestList savedTranslationList = saveTranslationList(translationListDto, currentClient);
@@ -68,15 +69,22 @@ public class TranslationServiceImpl implements TranslationService {
      * @return 요청 받은 번역 의뢰 파일 변환
      */
     @Override
-    public TranslationFileDto splitRequestToTranslationFileDto(List<MultipartFile> multipartFiles) throws IOException {
+    public TranslationFileDto splitRequestToTranslationFileDto(TranslationRequestDto translationRequestDto, List<MultipartFile> multipartFiles) throws IOException {
         if(multipartFiles.size() !=0) {
-            Path projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translationrequest/");
-            List<String> files = fileHandler.parseFile(projectPath, multipartFiles);
+            Path projectPath;
+            if (System.getProperty("user.dir").contains("medic")) {
+                projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/translationrequest/");
+            } else {
+                projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translationrequest/");
+            }
+            Deque<String> files = fileHandler.parseFile(projectPath, multipartFiles);
             return TranslationFileDto.builder()
-                    .trMtl(files.get(0))
+                    .trMtl(translationRequestDto.getTrMtl().equals("no_empty_file") ? files.pollFirst() : translationRequestDto.getTrMtl())
                     .build();
         }
-        return null;
+        return TranslationFileDto.builder()
+                .trMtl(translationRequestDto.getTrMtl())
+                .build();
     }
 
     /**
@@ -144,6 +152,7 @@ public class TranslationServiceImpl implements TranslationService {
      */
     public TranslationResponseDto getTranslationDetail(Long trId) {
         TranslationRequestList translationRequestList = translationRequestListRepository.findById(trId).get();
+        TranslationRequestFile translationRequestFile = translationRequestFileRepository.findById(trId).get();
 
         TranslationResponseDto translationResponseDto = TranslationResponseDto.builder()
                 .trId(translationRequestList.getTrId())
@@ -153,6 +162,7 @@ public class TranslationServiceImpl implements TranslationService {
                 .trPtDiagnosis(translationRequestList.getTrPtDiagnosis())
                 .trPtDiagContent(translationRequestList.getTrPtDiagContent())
                 .trEtc(translationRequestList.getTrEtc())
+                .trMtl(translationRequestFile.getTrMtl())
                 .build();
 
         return translationResponseDto;

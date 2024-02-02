@@ -1,5 +1,6 @@
 package com.example.medic.medicalKnowledge.repository;
 
+import com.example.medic.manager.domain.Manager;
 import com.example.medic.medicalKnowledge.domain.IndustrialAccidentInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -44,4 +45,6 @@ public interface IndustrialAccidentInfoRepository extends JpaRepository<Industri
         String getNextWriter();
         String getNextDate();
     }
+    @Query("SELECT i.manager from IndustrialAccidentInfo i WHERE i.iaId = :iaId")
+    Manager findManagerByIaid(Long iaId);
 }

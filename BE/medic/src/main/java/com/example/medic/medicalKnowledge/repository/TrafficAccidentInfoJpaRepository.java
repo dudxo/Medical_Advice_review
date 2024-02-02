@@ -1,5 +1,6 @@
 package com.example.medic.medicalKnowledge.repository;
 
+import com.example.medic.manager.domain.Manager;
 import com.example.medic.medicalKnowledge.domain.IndustrialAccidentInfo;
 import com.example.medic.medicalKnowledge.domain.TrafficAccidentInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -45,4 +46,6 @@ public interface TrafficAccidentInfoJpaRepository extends JpaRepository<TrafficA
         String getNextWriter();
         String getNextDate();
     }
+    @Query("SELECT t.manager from TrafficAccidentInfo t WHERE t.taId = :taId")
+    Manager findManagerByTaid(Long taId);
 }

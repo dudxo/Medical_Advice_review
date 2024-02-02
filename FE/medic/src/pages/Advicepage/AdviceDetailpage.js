@@ -36,23 +36,23 @@ export default function AdviceDetailpage(){
     //기타사항
     const [adEtcValue, setAdEtcValue] = useState('');
 
-    const [selectedYear, setSelectedYear] = useState(startYear);
-    const [selectedMonth, setSelectedMonth] = useState(1);
-    const [selectedDay, setSelectedDay] = useState(1);
-    const [dayOptions, setDayOptions] = useState([]);
-    const [adQuestionTotal, setAdQuestionTotal] = useState(1);
     const [adQuestionContents, setAdQuestionContents] = useState([]);
     const [adAnswerContent, setAdAnswerContent] = useState([])
-    const [contents_count, setContentscount] = useState(0)
 
     const [visitStart ,setVisitstart] = useState('')
     const [visitEnd, setVisitend] = useState('')
 
-    const [handleQuestionTotalChange, setHandleQuestionTotalChange] = useState(() => {});
-    const [handleQuestionContentChange, setHandleQuestionContentChange] = useState(() => {});
 
-    const [imageError, setImageError] = useState(false);
-    const [filepath, setFilepath] = useState({})
+    
+    const [adviceData, setAdviceData] = useState({});
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [updatedData, setUpdatedData] = useState({});
+
+    const [adReqForm, setAdReqForm] = useState(false)
+    const [adDiagnosis, setAdDiagnosis] = useState(false)
+    const [adRecord, setAdRecord] = useState(false)
+    const [adFilm, setAdFilm] = useState(false)
+    const [adOther, setAdOther] = useState(false)
 
     const getAdviceRequest = async() => {
         try{
@@ -76,6 +76,41 @@ export default function AdviceDetailpage(){
             setAdEtcValue(response.data.adEtc)
             setAdQuestionContents(response.data.adQuestionContent)
             setAdAnswerContent(response.data.adAnswerContent)
+            setAdReqForm(() => {
+                if(response.data.adReqForm === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+            setAdDiagnosis(()=>{
+                if(response.data.adDiagnosis === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+            setAdRecord(()=>{
+                if(response.data.adRecord === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+            setAdFilm(()=>{
+                if(response.data.adFilm === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+            setAdOther(()=>{
+                if(response.data.adOther === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
     } catch(err){
         console.log(err)
     }  
@@ -97,6 +132,7 @@ export default function AdviceDetailpage(){
         getUserInfo()
         getAdviceRequest()
     },{index})
+
 
     const btn_goto_list = () => {
         navigate('/medic/advice/adviceList');
@@ -325,16 +361,19 @@ export default function AdviceDetailpage(){
                         자문의뢰신청서
                     </div>
                     <div className={adviceDetail.input_box}>
-                        <button>
-                            <a
-                                href={`http://localhost:8080/advice/findrequestfile/${index}/adReqForm`}
-                                download="adReqForm.jpg"
-                                style={{ display: imageError ? 'none' : 'block' }}
-                            >
-                                다운로드
-                            </a>
-                        </button>
-                        
+                        {
+                            adReqForm ? 
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/advice/findrequestfile/${index}/adReqForm`}
+                                    download="adReqForm.jpg"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
                     </div>
                 </div>
                 <div className={adviceDetail.row_box} style={{height : 'auto'}}>
@@ -342,15 +381,20 @@ export default function AdviceDetailpage(){
                         진단서
                     </div>
                     <div className={adviceDetail.input_box}>
-                        <button>
-                            <a
-                                href={`http://localhost:8080/advice/findrequestfile/${index}/adDiagnosis`}
-                                style={{ display: imageError ? 'none' : 'block' }}
-                                download="adDiagnosis.jpg"
-                            >
-                            다운로드
-                            </a>
-                        </button>
+                        {
+                            adDiagnosis ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/advice/findrequestfile/${index}/adDiagnosis`}
+                                    download="adDiagnosis.jpg"
+                                >
+                                다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
+                        
                     </div>
                 </div>
                  <div className={adviceDetail.row_box} style={{height : 'auto'}}>
@@ -358,15 +402,20 @@ export default function AdviceDetailpage(){
                         의무기록지
                     </div>
                     <div className={adviceDetail.input_box}>
-                        <button>
-                            <a
-                                href={`http://localhost:8080/advice/findrequestfile/${index}/adRecord`}
-                                style={{ display: imageError ? 'none' : 'block' }}
-                                download="adRecord.jpg"
-                            >
-                                다운로드
-                            </a>
-                        </button>
+                        {
+                            adRecord ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/advice/findrequestfile/${index}/adRecord`}
+                                    download="adRecord.jpg"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
+                        
                     </div>
                 </div>
                 <div className={adviceDetail.row_box} style={{height : 'auto'}}>
@@ -374,13 +423,18 @@ export default function AdviceDetailpage(){
                         필름
                     </div>
                     <div className={adviceDetail.input_box}>
-                        <button>
-                            <a
-                                href={`http://localhost:8080/advice/findrequestfile/${index}/adFilm`}
-                                style={{ display: imageError ? 'none' : 'block' }}
-                                download="adFilm.jpg"
-                            >다운로드</a>
-                        </button>
+                        {
+                            adFilm ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/advice/findrequestfile/${index}/adFilm`}
+                                    download="adFilm.jpg"
+                                >다운로드</a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
+                        
                     </div>
                 </div>
                 <div className={adviceDetail.row_box} style={{height : 'auto'}}>
@@ -388,13 +442,18 @@ export default function AdviceDetailpage(){
                         기타 자료
                     </div>
                     <div className={adviceDetail.input_box}>
-                        <button>
-                            <a
-                                href={`http://localhost:8080/advice/findrequestfile/${index}/adOther`}
-                                style={{ display: imageError ? 'none' : 'block' }}
-                                download="adOther.jpg"
-                            >다운로드</a>
-                        </button>
+                        {
+                            adOther ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/advice/findrequestfile/${index}/adOther`}
+                                    download="adOther.jpg"
+                                >다운로드</a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
+                        
                     </div>
                 </div>
                 <div className={adviceDetail.complete}>

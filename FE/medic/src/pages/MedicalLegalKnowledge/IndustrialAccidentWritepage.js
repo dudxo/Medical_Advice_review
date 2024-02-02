@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import industrialwrite from '../../css/IndustrialAccidentWritepage.module.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 
 export default function IndustrialAccidentWritepage() {
@@ -11,12 +11,37 @@ export default function IndustrialAccidentWritepage() {
     const [writer, setWriter] = useState('');
     const [postTitle, setPostTitle] = useState('')
 
+    const [indusId, setIndusId] = useState('')
+    const [isUpdate, setIsUpdate] = useState(false)
+
     const navigate = useNavigate();
     const cookie = new Cookies()
+    const location = new useLocation()
+
     useEffect(()=>{
         currentTimer();
     }, [])
 
+    const getUpdateInfo = async() =>{
+        if(location.state){
+            setIndusId(location.state.IndustId)
+            setIsUpdate(location.state.isUpdate)
+            if(location.state.isUpdate){
+                try{
+                    const response = await axios.get(`/find/industacident/detail/${location.state.IndustId}`)
+                    setPostTitle(response.data.iaName)
+                    setWriter(response.data.iaInstitution)
+                    setIndustrialWrite(response.data.iaContent)
+                } catch(err){
+                    console.log(err)
+                }
+            }
+        }
+    }
+    
+    useEffect(()=>{
+        getUpdateInfo()
+    },[])
     const btn_writePost = async()=> {
         const today = new Date();
         const IndustrialAccidentInfo = {
@@ -49,6 +74,24 @@ export default function IndustrialAccidentWritepage() {
     const input_writer = e => {
         setWriter(e.target.value)
     }
+    const btn_updatePost = async() => {
+        const today = new Date();
+        const upDatePost = {
+            'iaName' : postTitle,
+            'iaInstitution' : writer,
+            'iaContent' : industrialWrite,
+            'iaMdDate' : today,
+        }
+        try{
+            if(window.confirm('수정하시겠습니까?')){
+                const response = await axios.put(`/update/industacident/${indusId}`, upDatePost)
+                alert('수정되었습니다.')
+                navigate('/medic/medicalknowledge/industrialAccidentInfo')
+            }
+        } catch(err){
+            console.log(err)
+        }
+    }
   return (
     <div className={industrialwrite.writeform}>
       <div className={industrialwrite.industrial_title}>
@@ -63,16 +106,16 @@ export default function IndustrialAccidentWritepage() {
                 제목
             </div>
             <div className={industrialwrite.write_titleinputbox}>
-                <input className={industrialwrite.write_titleinput} onChange={input_postTitle}/>
+                <input value={postTitle} className={industrialwrite.write_titleinput} onChange={input_postTitle}/>
             </div>
         </div>
         <div className={industrialwrite.write_rowbox}>
             <div className={industrialwrite.write_writerinfo}>
-                <div className={industrialwrite.write_title}>
+                <div  className={industrialwrite.write_title}>
                     기관명
                 </div>
                 <div className={industrialwrite.write_writerinfocontent}>
-                <input className={industrialwrite.write_writerinputbox} onChange={input_writer}/>
+                <input value= {writer} className={industrialwrite.write_writerinputbox} onChange={input_writer}/>
                 </div>
             </div> 
             <div className={industrialwrite.write_writerinfo}>
@@ -92,6 +135,7 @@ export default function IndustrialAccidentWritepage() {
             className={industrialwrite.write_content} 
             cols={60} 
             rows={50} 
+            value={industrialWrite}
             onChange={e => {
                 setIndustrialWrite(e.target.value)
                 setQuestionCount(e.target.value.length)
@@ -102,8 +146,19 @@ export default function IndustrialAccidentWritepage() {
         </div>
       </div>
       <div className={industrialwrite.btn_writequestionbox}>
-        <button className={industrialwrite.btn_writequestion} onClick={btn_writePost}>작성</button>
-        <button className={industrialwrite.btn_writequestion} onClick={btn_postlist}>목록</button>
+        {
+            isUpdate ?
+            <>
+                <button className={industrialwrite.btn_writequestion} onClick={btn_updatePost}>수정</button>
+                <button className={industrialwrite.btn_writequestion} onClick={btn_postlist}>목록</button>
+            </>
+            
+            :
+            <>
+                <button className={industrialwrite.btn_writequestion} onClick={btn_writePost}>작성</button>
+                <button className={industrialwrite.btn_writequestion} onClick={btn_postlist}>목록</button>
+            </>   
+        }
       </div>
     </div>
   );

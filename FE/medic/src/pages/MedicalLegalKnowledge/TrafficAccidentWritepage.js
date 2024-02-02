@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import faultinfowrite from '../../css/TrafficAccidentWritepage.module.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 
 export default function TrafficAccidentWritepage() {
@@ -11,12 +11,36 @@ export default function TrafficAccidentWritepage() {
     const [writer, setWriter] = useState('');
     const [postTitle, setPostTitle] = useState('')
 
+    const [taId, setTaId] = useState('')
+    const [isUpdate, setIsUpdate] = useState(false)
+
     const navigate = useNavigate();
     const cookie = new Cookies()
+    const location = useLocation();
+
     useEffect(()=>{
         currentTimer();
     }, [])
-
+    const getUpdateInfo = async() =>{
+        if(location.state){
+            setTaId(location.state.taId)
+            setIsUpdate(location.state.isUpdate)
+            if(location.state.isUpdate){
+                try{
+                    const response = await axios.get(`/find/tainfo/detail/${location.state.taId}`)
+                    setPostTitle(response.data.taName)
+                    setWriter(response.data.taInstitution)
+                    setTrafficWrite(response.data.taContent)
+                } catch(err){
+                    console.log(err)
+                }
+            }
+        }
+    }
+    
+    useEffect(()=>{
+        getUpdateInfo()
+    },[])
     const btn_writePost = async()=> {
         const today = new Date();
         const TrafficAccidentInfo = {
@@ -33,7 +57,7 @@ export default function TrafficAccidentWritepage() {
         }
     };
     const btn_postlist = e => {
-        navigate('/medic/medicalknowledge/trafficAccidentInfo/writetrafficAccident')
+        navigate('/medic/medicalknowledge/trafficAccidentInfo')
     }
     const currentTimer = () => {
         const date = new Date();
@@ -49,6 +73,24 @@ export default function TrafficAccidentWritepage() {
     const input_writer = e => {
         setWriter(e.target.value)
     }
+    const btn_updatePost = e=> {
+        const today = new Date();
+        const upDatePost = {
+            'taName' : postTitle,
+            'taInstitution' : writer,
+            'taContent' : trafficWrite,
+            'taMdDate' : today,
+        }
+        try{
+            if(window.confirm('수정하시겠습니까?')){
+                const response = axios.put(`/update/tainfo/${taId}`, upDatePost)
+                alert('수정되었습니다.')
+                navigate('/medic/medicalknowledge/trafficAccidentInfo')
+            }
+        } catch(err){
+            console.log(err)
+        }
+    }
   return (
     <div className={faultinfowrite.writeform}>
       <div className={faultinfowrite.fault_title}>
@@ -63,7 +105,7 @@ export default function TrafficAccidentWritepage() {
                 제목
             </div>
             <div className={faultinfowrite.write_titleinputbox}>
-                <input className={faultinfowrite.write_titleinput} onChange={input_postTitle}/>
+                <input value={postTitle} className={faultinfowrite.write_titleinput} onChange={input_postTitle}/>
             </div>
         </div>
         <div className={faultinfowrite.write_rowbox}>
@@ -72,7 +114,7 @@ export default function TrafficAccidentWritepage() {
                     기관명
                 </div>
                 <div className={faultinfowrite.write_writerinfocontent}>
-                <input className={faultinfowrite.write_writerinputbox} onChange={input_writer}/>
+                <input value={writer} className={faultinfowrite.write_writerinputbox} onChange={input_writer}/>
                 </div>
             </div> 
             <div className={faultinfowrite.write_writerinfo}>
@@ -92,6 +134,7 @@ export default function TrafficAccidentWritepage() {
             className={faultinfowrite.write_content} 
             cols={60} 
             rows={50} 
+            value={trafficWrite}
             onChange={e => {
                 setTrafficWrite(e.target.value)
                 setQuestionCount(e.target.value.length)
@@ -102,8 +145,19 @@ export default function TrafficAccidentWritepage() {
         </div>
       </div>
       <div className={faultinfowrite.btn_writequestionbox}>
-        <button className={faultinfowrite.btn_writequestion} onClick={btn_writePost}>작성</button>
-        <button className={faultinfowrite.btn_writequestion} onClick={btn_postlist}>목록</button>
+        {
+            isUpdate ?
+            <>
+                <button className={faultinfowrite.btn_writequestion} onClick={btn_updatePost}>수정</button>
+                <button className={faultinfowrite.btn_writequestion} onClick={btn_postlist}>목록</button>
+            </>
+            :
+            <>
+                <button className={faultinfowrite.btn_writequestion} onClick={btn_writePost}>작성</button>
+                <button className={faultinfowrite.btn_writequestion} onClick={btn_postlist}>목록</button>
+            </>
+        }
+        
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ public interface AnalyzeService {
 
     AnalyzeQuestionDto splitRequestToQuestionDto(AnalyzeRequestDto analyzeRequestDto);
 
-    AnalyzeRequestFileDto splitRequestToRequestFileDto(List<MultipartFile> multipartFiles) throws IOException;
+    AnalyzeRequestFileDto splitRequestToRequestFileDto(AnalyzeRequestDto analyzeRequestDto, List<MultipartFile> multipartFiles) throws IOException;
 
     AnalyzeRequestList saveAnalyzeRequestList(AnalyzeRequestListDto analyzeRequestListDto, Client client);
 

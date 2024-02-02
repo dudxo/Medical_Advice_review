@@ -31,10 +31,10 @@ public class WoundInfoController {
 
     //상세 조회
     @GetMapping("/find/woinfo/detail/{woid}")
-    public ResponseEntity<WoundInfo> findWoundInfoDetail(@PathVariable Long woid){
+    public ResponseEntity<WoundInfoDto> findWoundInfoDetail(@PathVariable Long woid){
         try{
-            WoundInfo woundInfo = woundInfoService.getWoundInfoDetail(woid);
-            return ResponseEntity.ok(woundInfo);
+            WoundInfoDto woundInfoDto = woundInfoService.getWoundInfoDetail(woid);
+            return ResponseEntity.ok(woundInfoDto);
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
         }

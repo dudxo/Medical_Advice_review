@@ -1,5 +1,6 @@
 package com.example.medic.medicalKnowledge.service;
 
+import com.example.medic.manager.domain.Manager;
 import com.example.medic.medicalKnowledge.domain.IndustrialAccidentInfo;
 import com.example.medic.medicalKnowledge.dto.IndustrialAccidentInfoDto;
 import com.example.medic.medicalKnowledge.repository.IndustrialAccidentInfoRepository;
@@ -20,12 +21,18 @@ public class IndustrialAccidentInfoService {
         return industrialAccidentInfoRepository.findAll();
     }
 
-    public IndustrialAccidentInfo getIndustrialAccidentInfoDetail(Long iaid){
+    public IndustrialAccidentInfoDto getIndustrialAccidentInfoDetail(Long iaid){
         Optional<IndustrialAccidentInfo> optionalIndustrialAccidentInfo = industrialAccidentInfoRepository.findById(iaid);
 
         if(optionalIndustrialAccidentInfo.isPresent()){
             IndustrialAccidentInfo industrialAccidentInfo = optionalIndustrialAccidentInfo.get();
-            return industrialAccidentInfo;
+            IndustrialAccidentInfoDto industrialAccidentInfoDto = IndustrialAccidentInfoDto.builder()
+                    .iaName(industrialAccidentInfo.getIaName())
+                    .iaContent(industrialAccidentInfo.getIaContent())
+                    .iaInstitution(industrialAccidentInfo.getIaInstitution())
+                    .iaRegDate(industrialAccidentInfo.getIaRegDate())
+                    .build();
+            return industrialAccidentInfoDto;
         }else{
             return null;
         }
@@ -47,15 +54,17 @@ public class IndustrialAccidentInfoService {
     }
     public IndustrialAccidentInfo updateIndustrialAccidentInfo(Long iaid, IndustrialAccidentInfoDto industrialAccidentInfoDto){
         IndustrialAccidentInfo industrialAccidentInfo = findIndustrialAccidentInfo(iaid);
+        Manager manager = industrialAccidentInfoRepository.findManagerByIaid(iaid);
         if(industrialAccidentInfo == null){
             throw new IllegalArgumentException("게시글을 찾을 수 없습니다.");
         }
         IndustrialAccidentInfo responseIndustrialAccidentInfo = industrialAccidentInfo.builder()
+                .iaId(iaid)
                 .iaName(industrialAccidentInfoDto.getIaName())
                 .iaInstitution(industrialAccidentInfoDto.getIaInstitution())
                 .iaMdDate(industrialAccidentInfoDto.getIaMdDate())
                 .iaContent(industrialAccidentInfoDto.getIaContent())
-                .manager(industrialAccidentInfoDto.getManager())
+                .manager(manager)
                 .build();
         return industrialAccidentInfoRepository.save(responseIndustrialAccidentInfo);
     }

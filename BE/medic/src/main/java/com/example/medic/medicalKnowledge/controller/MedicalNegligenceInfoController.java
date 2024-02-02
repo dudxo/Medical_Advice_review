@@ -30,10 +30,10 @@ public class MedicalNegligenceInfoController {
 
     //상세 조회
     @GetMapping("/find/mninfo/detail/{mnid}")
-    public ResponseEntity<MedicalNegligenceInfo> findMedicalNegligenceInfoDetail(@PathVariable Long mnid){
+    public ResponseEntity<MedicalNegligenceInfoDto> findMedicalNegligenceInfoDetail(@PathVariable Long mnid){
         try{
-            MedicalNegligenceInfo medicalNegligenceInfo = medicalNegligenceInfoService.getMedicalNegligenceInfoDetail(mnid);
-            return ResponseEntity.ok(medicalNegligenceInfo);
+            MedicalNegligenceInfoDto medicalNegligenceInfoDto = medicalNegligenceInfoService.getMedicalNegligenceInfoDetail(mnid);
+            return ResponseEntity.ok(medicalNegligenceInfoDto);
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
         }
