@@ -35,8 +35,8 @@ export default function UserManagement() {
 
   const handleEditUser = (userId) => {
     navigate(`/medic/adminstrator/useredit/${userId}`, { state: { useredit: userList[userId],  
-    userId : userId,
-    userlist : userList
+    // uId : userId,
+    // userlist : userList
     } });
   }
 

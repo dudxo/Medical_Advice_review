@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import administrator from '../../css/DocManagement.module.css';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {faTrash} from "@fortawesome/free-solid-svg-icons"
+
 
 export default function DocManagement() {
   const navigate = useNavigate();
@@ -13,6 +16,7 @@ export default function DocManagement() {
     const fetchData = async () => {
       try {
         const response = await axios.get('/doctor/management');
+        console.log(response)
         setDoctorList(response.data);
       } catch (error) {
         console.error('전문의 정보 가져오기 오류', error);
@@ -31,9 +35,9 @@ export default function DocManagement() {
 
   const handleEditDoc = (docId) => {
    
-    navigate('/edit/doctor', { state: { docedit: doctorList[docId],
-    docId : docId,
-    doclist : doctorList
+    navigate(`/medic/adminstrator/docedit/${docId}`, { state: { docedit: docId,
+    // docId : docId,
+    // doclist : doctorList
     } });
   }
 
@@ -56,25 +60,38 @@ export default function DocManagement() {
 
   return (
     <div className={administrator.doc_contents}>
-      <h1>의사 관리</h1>
+<div className={administrator.doc_iconbox}>
+      <h1>
+      <i className="fa-solid fa-circle icon"></i>
+        의사 관리
+        </h1>
+        </div>
       <table className={administrator.doc_table}>
         <thead>
           <tr>
             <th className={administrator.doc_th}>NO.</th>
             <th className={administrator.doc_th}>이름</th>
             <th className={administrator.doc_th}>직책</th>
-            <th className={administrator.doc_th}>수정</th>
+            <th className={administrator.doc_th}>전화번호</th>
+            <th className={administrator.doc_th}>자문건수</th>
+            <th className={administrator.doc_th}>분석건수</th>
+            <th className={administrator.doc_th}>번역건수</th>
             <th className={administrator.doc_th}>삭제</th>
           </tr>
         </thead>
         <tbody>
           {doctorList.map((doctor, index) => (
             <tr key={index}>
-              <td className={administrator.doc_td}>{index + 1}</td>
-              <td className={administrator.doc_td}>{doctor.cName}</td>
+              <td className={administrator.doc_td} onClick={()=>handleEditDoc(doctor.cid)}>{index + 1}</td>
+              <td className={administrator.doc_td}>{doctor.cname}</td>
               <td className={administrator.doc_td}>{doctor.department}</td>
-              <td className={administrator.doc_td} onClick={() => handleEditDoc(index)}>수정</td>
-              <td className={administrator.doc_td} onClick={() => handleDeleteDoc(index)}>삭제</td>
+              <td className={administrator.doc_td}>{doctor.ctel}</td>
+              <td className={administrator.doc_td}>{doctor.countByAdviceAssignment}</td>
+              <td className={administrator.doc_td}>{doctor.countByAnalyzeAssignment}</td>
+              <td className={administrator.doc_td}>{doctor.countByTranslateAssignment}</td>
+              <td className={administrator.doc_td} onClick={() => handleDeleteDoc(index+1)}>
+              <FontAwesomeIcon icon={faTrash}  />
+              </td>
             </tr>
           ))}
         </tbody>
