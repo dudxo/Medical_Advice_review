@@ -53,7 +53,6 @@ public class AdviceService {
         DiagnosisRecordRequestDto parseDiagnosisRecordRequestDto = parseDiagnosisRecordRequestDto(allAdviceRequestDto);
 
         try {
-
             AdviceRequestList savedAdviceRequestList = saveAdviceRequestList(parseAdviceRequestListDto, client);
             saveAdviceFile(savedAdviceRequestList, parseAdviceFileRequestDto);
             saveAdviceQuestion(parseAdviceQuestionRequestDto, savedAdviceRequestList);
