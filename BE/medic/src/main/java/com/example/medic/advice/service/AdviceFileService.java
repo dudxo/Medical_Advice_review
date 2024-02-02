@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.nio.file.Paths;
 import java.util.NoSuchElementException;
 
 @Service
@@ -32,28 +33,37 @@ public class AdviceFileService {
                 .orElseThrow(() -> new NoSuchElementException("AdviceFile not found with id: " + fileId));
 
         if (adviceFile != null) {
-            String baseUrl = "file:" + System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/";
-            Resource resource = null;
-            switch (fileType) {
-                case "adReqForm":
-                    resource = new UrlResource(baseUrl + adviceFile.getAdReqForm());
-                    return resource;
-                case "adDiagnosis":
-                    resource = new UrlResource(baseUrl + adviceFile.getAdDiagnosis());
-                    return resource;
-                case "adRecord":
-                    resource = new UrlResource(baseUrl + adviceFile.getAdRecord());
-                    return resource;
-                case "adFilm":
-                    resource = new UrlResource(baseUrl + adviceFile.getAdFilm());
-                    return resource;
-                case "adOther":
-                    resource = new UrlResource(baseUrl + adviceFile.getAdOther());
-                    return resource;
-                default:
-                    throw new IllegalArgumentException("Invalid file type: " + fileType);
+            if (System.getProperty("user.dir").contains("medic")) {
+                String baseUrl = "file" + System.getProperty("user.dir") + "/src/main/resources/static/file/advicerequest/";
+                return getFileResouce(baseUrl, fileType, adviceFile);
+            } else {
+                String baseUrl = "file" + System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/";
+                return getFileResouce(baseUrl, fileType, adviceFile);
             }
         }
         return null;
+    }
+
+    private Resource getFileResouce(String baseUrl, String fileType, AdviceFile adviceFile) throws MalformedURLException {
+        Resource resource = null;
+        switch (fileType) {
+            case "adReqForm":
+                resource = new UrlResource(baseUrl + adviceFile.getAdReqForm());
+                return resource;
+            case "adDiagnosis":
+                resource = new UrlResource(baseUrl + adviceFile.getAdDiagnosis());
+                return resource;
+            case "adRecord":
+                resource = new UrlResource(baseUrl + adviceFile.getAdRecord());
+                return resource;
+            case "adFilm":
+                resource = new UrlResource(baseUrl + adviceFile.getAdFilm());
+                return resource;
+            case "adOther":
+                resource = new UrlResource(baseUrl + adviceFile.getAdOther());
+                return resource;
+            default:
+                throw new IllegalArgumentException("Invalid file type: " + fileType);
+        }
     }
 }
