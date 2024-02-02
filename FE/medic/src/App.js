@@ -16,6 +16,7 @@ import AnalyzeModifypage from "./pages/Analyzepage/AnalyzeModifypage";
 import TranslateRequestpage from './pages/Translatepage/TranslateRequestpage'
 import TranslateListpage from './pages/Translatepage/TranslateListpage'
 import TranslateDetailpage from './pages/Translatepage/TranslateDetailpage'
+import TranslateModifypage from './pages/Translatepage/TranslateModifypage'
 import CustomerInquirypage from './pages/Customerpage/CustomerInquirypage';
 import WriteCustomerInquiry from './pages/Customerpage/Customerinquiry/WriteCustomerInquiry'
 import FaultInfopage from './pages/MedicalLegalKnowledge/FaultInfopage'
@@ -88,7 +89,8 @@ export default function App(){
                     <Route path='/medic/analyze/analyzeUpdate/:index' element={<AnalyzeModifypage/>}/>
                     <Route path='/medic/translate/translateRequest' element={<TranslateRequestpage/>}/>
                     <Route path='/medic/translate/translateList' element={<TranslateListpage/>}/>
-                    <Route path='/medic/translate/translateDetail' element={<TranslateDetailpage/>}/>
+                    <Route path='/medic/translate/translateDetail/:index' element={<TranslateDetailpage/>}/>
+                    <Route path='/medic/translate/translateUpdate/:index' element={<TranslateModifypage/>}/>
                     <Route path='/medic/customer/customerInquiry' element={<CustomerInquirypage/>}/>
                     <Route path="/medic/customer/customerinquiry/writecustomerinquiry" element={<WriteCustomerInquiry/>}/>
                     <Route path="/medic/customer/customerinquiry/customerinquirydetails" element={<CustomerInquiryDetail/>}/>
