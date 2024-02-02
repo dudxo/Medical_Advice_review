@@ -26,11 +26,10 @@ export default function TranslateListPage() {
     fetchData();
   }, []);
   
-  const btn_detail_translate = async(trId) => {
-    navigate(`/medic/translate/translateDetail/${trId}`)
-  }
-
   const formatDate = (dateString) => {
+    if (!dateString) { 
+      return ' ';
+    }
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -38,6 +37,11 @@ export default function TranslateListPage() {
   
     return `${year}-${month}-${day}`;
   };
+
+  const btn_detail_translate = async(trId) => {
+    navigate(`/medic/translate/translateDetail/${trId}`)
+  }
+
   
   const handleStatusChange = (newStatus) => {
     setSelectedStatus(newStatus);
@@ -74,7 +78,7 @@ export default function TranslateListPage() {
     <tr key={index}>
       <React.Fragment>
         <td className={translatelist.translateList_td} onClick={() => btn_detail_translate(translateRequestList.trId)}>
-          {translatelist.length - index}
+        {typeof translateRequestList.trId === 'number' ? translateRequestList.trId : 'Invalid trId'}
         </td>
         <td className={translatelist.translateList_td}>{translateRequestList.trPtSub}</td>
         <td className={translatelist.translateList_td}>{translateRequestList.trPtDiagnosis}</td>

@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 
 export default function TranslateDetailpage(){
+    const [imageError, setImageError] = useState(false);
+
     const navigate = useNavigate();
 
     const {index} = useParams();
@@ -22,30 +24,16 @@ export default function TranslateDetailpage(){
 
     const [trEtcValue, setTrEtcValue] = useState('');
 
-    const [translateData, setTranslateData] = useState({});
-    const [isEditMode, setIsEditMode] = useState(false);
-    const [updatedData, setUpdatedData] = useState({});
-
-
-    const fetchData = async () => {
-        try {
-            const response = await axios.get(`/translate/translateDetail/${index}`);
-            setTranslateData(response.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     const getTranslateRequest = async() => {
         try{
             const response = await axios.get(`/translate/translateDetail/${index}`)
             console.log(response.data)
-            setTrptname(response.data.tr_ptname)
-            setTrPtSsnum(response.data.tr_PtSsNum)
-            setTrptsub(response.data.tr_ptsub)
-            setTrptdiagnosis(response.data.tr_ptdiagnosis)
-            setTrptcmt(response.data.tr_ptcmt)
-            setTrEtcValue(response.data.trEtcValue)
+            setTrptname(response.data.trPtName)
+            setTrPtSsnum(response.data.trPtSsNum)
+            setTrptsub(response.data.trPtSub)
+            setTrptdiagnosis(response.data.trPtDiagnosis)
+            setTrptcmt(response.data.trPtDiagContent)
+            setTrEtcValue(response.data.trEtc)
     } catch(err){
         console.log(err)
     }  
@@ -66,7 +54,6 @@ export default function TranslateDetailpage(){
 
     useEffect(()=>{
         getUserInfo()
-        fetchData();
         getTranslateRequest()
     }, [index])
 
@@ -75,30 +62,8 @@ export default function TranslateDetailpage(){
     }
 
     const btn_edit = () => {
-        setIsEditMode(true);
-        // 수정 모드로 전환되면 현재 데이터를 업데이트 상태로 설정
-        setUpdatedData(translateData);
+        navigate(`/medic/translate/translateUpdate/${index}`);
     }
-
-    const btn_save = async () => {
-        try {
-            await axios.put(`/translate/translateDetail/update/${index}`, translateData);
-            setIsEditMode(false);
-            refreshData();
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    const refreshData = async () => {
-        try {
-            const response = await axios.get(`/translate/translateDetail/${index}`);
-            setTranslateData(response.data);
-            setUpdatedData({}); // 저장 후 초기화
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     const formatDateString = (dateString) => {
         const date = new Date(dateString);
@@ -126,13 +91,12 @@ export default function TranslateDetailpage(){
                     <div className={translateDetail.title_box}>의뢰자명</div>
                     <div className={translateDetail.input_box}><input type="text" disabled={true} value={uname}/></div>
                 </div>
-                </div>
                 <div className={translateDetail.row_box}>
                     <div className={translateDetail.title_box}>일반전화</div>
                     <div className={translateDetail.input_box}><input type="text" disabled={true} value={utel}/></div>
                     <div className={translateDetail.title_box} style={{borderLeft : '1px solid black'}}>휴대전화</div>
-                    <div className={translateDetail.input_box}><input type="text" disabled={true} value={uphone}/>
-                </div>
+                    <div className={translateDetail.input_box}><input type="text" disabled={true} value={uphone}/></div>
+                    </div>
                 <div className={translateDetail.row_box}>
                     <div className={translateDetail.title_box}>주소</div>
                     <div className={translateDetail.input_box}>
@@ -150,37 +114,21 @@ export default function TranslateDetailpage(){
                 <div className={`${translateDetail.row_box} ${translateDetail.patient_box}`}>
                     <div className={`${translateDetail.title_box} ${translateDetail.patient_box}`}>환자명</div>
                     <div className={`${translateDetail.input_box} ${translateDetail.patient_box}`}>
-                        {isEditMode ? ( // 수정 모드일 때만 편집 가능한 입력 필드 표시
-                            <input type="text" value={tr_ptname} onChange={(e) => setTrptname(e.target.value)} />
-                        ) : (
-                            <input type="text" disabled={true} value={tr_ptname}/> // 수정 모드가 아닐 때는 읽기 전용 필드 표시
-                        )}
+                            <input type="text" disabled={true} value={tr_ptname}/>
                     </div>
                     <div className={`${translateDetail.title_box} ${translateDetail.patient_box}`} style={{borderLeft : '1px solid black'}}>주민등록번호</div>
                     <div className={`${translateDetail.input_box} ${translateDetail.input_ptssnumbox} ${translateDetail.patient_box}`}>
-                        {isEditMode ? (
-                            <input type="text" value={tr_PtSsNum} onChange={(e) => setTrPtSsnum(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={tr_PtSsNum}/>
-                        )}
                     </div>
                 </div>
                 <div className={translateDetail.row_box}>
                     <div className={translateDetail.title_box}>진단과목</div>
                     <div className={translateDetail.input_box}>
-                        {isEditMode ? (
-                            <input type="text" value={tr_ptsub} onChange={(e) => setTrptsub(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={tr_ptsub}/>
-                        )}
                     </div>
                     <div className={translateDetail.title_box} style={{borderLeft : '1px solid black'}}>진단명</div>
                     <div className={translateDetail.input_box}>
-                        {isEditMode ? (
-                            <input type="text" value={tr_ptdiagnosis} onChange={(e) => setTrptdiagnosis(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={tr_ptdiagnosis}/>
-                        )}
                     </div>
                 </div>
                 <div className={`${translateDetail.row_box}`}>
@@ -188,11 +136,7 @@ export default function TranslateDetailpage(){
                         진단 사항
                     </div>
                     <div className={translateDetail.input_box} style={{width : '400px', height : 'auto'}}>
-                        {isEditMode ? (
-                            <input type="text" value={tr_ptcmt} onChange={(e) => setTrptcmt(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={tr_ptcmt}/>
-                        )}
                     </div>
                 </div>
             </div>
@@ -206,11 +150,7 @@ export default function TranslateDetailpage(){
                 <div className={translateDetail.row_box} >
                     <div className={translateDetail.title_box} style={{height : '130px'}}>기타사항</div>
                     <div className={translateDetail.input_box} style={{width : '400px'}}>
-                        {isEditMode ? (
-                            <input type="text" value={trEtcValue} onChange={(e) => setTrEtcValue(e.target.value)} />
-                        ) : (
                             <input type="text" disabled={true} value={trEtcValue}/>
-                        )}
                     </div>
                 </div>
             </div>
@@ -253,14 +193,8 @@ export default function TranslateDetailpage(){
                     </div>
                 </div>
                 <div className={translateDetail.complete}>
-                    {isEditMode ? (
-                        <>
-                            <button type="button" onClick={btn_save} className={translateDetail.btt_complete}>저장</button>
-                            <button type="button" onClick={btn_goto_list} className={translateDetail.btt_complete}>취소</button>
-                        </>
-                    ) : (
-                <><button type="button" onClick={btn_edit} className={translateDetail.btt_complete}>수정</button><button type="button" onClick={btn_goto_list} className={translateDetail.btt_complete}>목록</button></>
-                    )}
+                <button type="button" onClick={btn_goto_list} className={translateDetail.btt_complete}>목록</button>
+                <button type="button" onClick={btn_edit} className={translateDetail.btt_complete}>수정</button>
                  </div>
             </div>
         </div>
