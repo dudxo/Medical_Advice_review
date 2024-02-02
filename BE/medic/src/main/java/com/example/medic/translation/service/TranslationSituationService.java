@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,44 +30,60 @@ public class TranslationSituationService {
     private final TranslationRequestListRepository translationRequestListRepository;
 
     /**
-     * 번역의뢰 상세 조회
+     * 번역의뢰 현황 조회
      */
     public List<TranslationSituationDto> getTranslationSituationList(ClientInfoDto clientInfoDto) {
         try {
             String uid = clientInfoDto.getUId();
 
             List<TranslationRequestList> translationRequestLists = translationRequestListRepository.findByClient_UId(uid);
-            List<TranslationSituationDto> translationSituationDtos = new ArrayList<>();
+            Map<Long, TranslationSituationDto> translationSituationDtoMap = new HashMap<>();
 
             for (TranslationRequestList translationRequestList : translationRequestLists) {
-                TranslationAnswerFile translationAnswerFiles = translationRequestList.getTranslationAnswerFile();
+                TranslationAssignment translationAssignment = translationRequestList.getTranslationAssignment();
+                TranslationAnswerFile translationAnswerFile = translationRequestList.getTranslationAnswerFile();
 
-                TranslationSituationDto translationSituationDto = convertToDTO(translationRequestList, translationAnswerFiles);
-                translationSituationDtos.add(translationSituationDto);
+                Long trId = translationRequestList.getTrId();
+                String trPtSub = translationRequestList.getTrPtSub();
+                String trPtDiagnosis = translationRequestList.getTrPtDiagnosis();
+                LocalDate trRegDate = translationRequestList.getTrRegDate();
+                LocalDate tamDate = translationAssignment != null ? translationAssignment.getTamDate() : null;
+                LocalDate trAnswerDate = translationAnswerFile != null ? translationAnswerFile.getTrAnswerDate() : null;
+                String trProgressStatus = translationAssignment != null ? translationAssignment.getTrProgressStatus() : null;
+
+                TranslationSituationDto translationSituationDto = new TranslationSituationDto(
+                        trId, trPtSub, trPtDiagnosis, trRegDate, tamDate, trAnswerDate, trProgressStatus);
+
+                if (!translationSituationDtoMap.containsKey(trId)) {
+                    translationSituationDtoMap.put(trId, translationSituationDto);
+                }
+                logger.info("TranslationSituationDto created: trId=" + trId);
             }
-            return translationSituationDtos;
+            return new ArrayList<>(translationSituationDtoMap.values());
+
         } catch (Exception e) {
             throw new RuntimeException("TranslationSituationList 조회 중 오류 발생", e);
         }
     }
 
-    private TranslationSituationDto convertToDTO(TranslationRequestList translationRequestList, TranslationAnswerFile translationAnswerFile) {
-        String trProgressStatus = null;
 
-        Optional<TranslationAssignment> translationAssignmentOptional = Optional.ofNullable(translationRequestList.getTranslationAssignment());
-
-        if (translationAssignmentOptional.isPresent()) {
-            TranslationAssignment translationAssignment = translationAssignmentOptional.get();
-            trProgressStatus = translationAssignment.getTrProgressStatus();
-        }
-
-        Consultative consultative = translationAssignmentOptional.map(TranslationAssignment::getConsultative).orElse(null);
-
-        return new TranslationSituationDto(translationRequestList.getTrId(), translationRequestList.getTrPtSub(),
-                translationRequestList.getTrPtDiagnosis(), translationRequestList.getTrRegDate(),
-                (translationAssignmentOptional.map(TranslationAssignment::getTamDate).orElse(null)),
-                translationAnswerFile.getTrAnswerDate(), trProgressStatus);
-    }
+//    private TranslationSituationDto convertToDTO(TranslationRequestList translationRequestList, TranslationAnswerFile translationAnswerFile) {
+//        String trProgressStatus = null;
+//
+//        Optional<TranslationAssignment> translationAssignmentOptional = Optional.ofNullable(translationRequestList.getTranslationAssignment());
+//
+//        if (translationAssignmentOptional.isPresent()) {
+//            TranslationAssignment translationAssignment = translationAssignmentOptional.get();
+//            trProgressStatus = translationAssignment.getTrProgressStatus();
+//        }
+//
+//        Consultative consultative = translationAssignmentOptional.map(TranslationAssignment::getConsultative).orElse(null);
+//
+//        return new TranslationSituationDto(translationRequestList.getTrId(), translationRequestList.getTrPtSub(),
+//                translationRequestList.getTrPtDiagnosis(), translationRequestList.getTrRegDate(),
+//                (translationAssignmentOptional.map(TranslationAssignment::getTamDate).orElse(null)),
+//                translationAnswerFile.getTrAnswerDate(), trProgressStatus);
+//    }
 
 
     public int getTranslationCount(String uid) {
