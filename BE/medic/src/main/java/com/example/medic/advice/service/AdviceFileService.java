@@ -34,10 +34,10 @@ public class AdviceFileService {
 
         if (adviceFile != null) {
             if (System.getProperty("user.dir").contains("medic")) {
-                String baseUrl = System.getProperty("user.dir") + "/src/main/resources/static/file/advicerequest/";
+                String baseUrl = "file:" + System.getProperty("user.dir") + "/src/main/resources/static/file/advicerequest/";
                 return getFileResouce(baseUrl, fileType, adviceFile);
             } else {
-                String baseUrl = System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/";
+                String baseUrl = "file:" + System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/";
                 return getFileResouce(baseUrl, fileType, adviceFile);
             }
         }
