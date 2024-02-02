@@ -31,10 +31,10 @@ public class TrafficAccidentInfoController {
 
     //상세 조회
     @GetMapping("/find/tainfo/detail/{taid}")
-    public ResponseEntity<TrafficAccidentInfo> findTrafficAccidentInfoDetail(@PathVariable Long taid){
+    public ResponseEntity<TrafficAccidentInfoDto> findTrafficAccidentInfoDetail(@PathVariable Long taid){
         try{
-            TrafficAccidentInfo trafficAccidentInfo = trafficAccidentInfoService.getTrafficAccidentInfoDetail(taid);
-            return ResponseEntity.ok(trafficAccidentInfo);
+            TrafficAccidentInfoDto trafficAccidentInfoDto = trafficAccidentInfoService.getTrafficAccidentInfoDetail(taid);
+            return ResponseEntity.ok(trafficAccidentInfoDto);
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
         }

@@ -68,7 +68,10 @@ export default function TrafficAccidentDetailInfopage(){
   };
 
   const medicTrafficAccident = () => {
-    navigate('/medic/medicalknowledge/trafficAccidentInfo');
+    navigate('/medic/medicalknowledge/trafficAccidentInfo/writetrafficAccident', {state : {
+      taId : trafficAccidentInfoId,
+      isUpdate : true
+    }});
   };
 
   const deleteTrafficAccident = async(trafficAccidentInfoId)=> {

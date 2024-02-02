@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import faultinfowrite from '../../css/FaultInfoWritepage.module.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 
 export default function FaultInfoWritepage() {
@@ -11,11 +11,37 @@ export default function FaultInfoWritepage() {
     const [writer, setWriter] = useState('');
     const [postTitle, setPostTitle] = useState('')
 
+    const [faultInfoId, setFaultInfoId] = useState('')
+    const [isUpdate, setIsUpdate] = useState(false)
+
     const navigate = useNavigate();
     const cookie = new Cookies()
+    const location = new useLocation()
+
     useEffect(()=>{
         currentTimer();
     }, [])
+    const getUpdateInfo = async() =>{
+        if(location.state){
+            setFaultInfoId(location.state.faultInfoId)
+            setIsUpdate(location.state.updatefault)
+            if(location.state.updatefault){
+                try{
+                    const response = await axios.get(`/find/mninfo/detail/${location.state.faultInfoId}`)
+                    console.log(response)
+                    setPostTitle(response.data.mnName)
+                    setWriter(response.data.mnInstitution)
+                    setFaultWrite(response.data.mnContent)
+                } catch(err){
+                    console.log(err)
+                }
+            }
+        }
+    }
+    
+    useEffect(()=>{
+        getUpdateInfo()
+    },[])
 
     const btn_writePost = async()=> {
         const today = new Date();
@@ -49,6 +75,25 @@ export default function FaultInfoWritepage() {
     const input_writer = e => {
         setWriter(e.target.value)
     }
+
+    const btn_updatePost = async() => {
+        const today = new Date();
+        const upDatePost = {
+            'mnName' : postTitle,
+            'mnInstitution' : writer,
+            'mnContent' : faultWrite,
+            'mnMdDate' : today,
+        }
+        try{
+            if(window.confirm('수정하시겠습니까?')){
+                const response = await axios.put(`/update/mninfo/${faultInfoId}`, upDatePost)
+                alert('수정되었습니다.')
+                navigate('/medic/medicalknowledge/faultInfo')
+            }
+        } catch(err){
+            console.log(err)
+        }
+    }
   return (
     <div className={faultinfowrite.writeform}>
       <div className={faultinfowrite.fault_title}>
@@ -63,7 +108,7 @@ export default function FaultInfoWritepage() {
                 제목
             </div>
             <div className={faultinfowrite.write_titleinputbox}>
-                <input className={faultinfowrite.write_titleinput} onChange={input_postTitle}/>
+                <input value = {postTitle} className={faultinfowrite.write_titleinput} onChange={input_postTitle}/>
             </div>
         </div>
         <div className={faultinfowrite.write_rowbox}>
@@ -72,14 +117,14 @@ export default function FaultInfoWritepage() {
                     기관명
                 </div>
                 <div className={faultinfowrite.write_writerinfocontent}>
-                <input className={faultinfowrite.write_writerinputbox} onChange={input_writer}/>
+                <input value={writer} className={faultinfowrite.write_writerinputbox} onChange={input_writer}/>
                 </div>
             </div> 
             <div className={faultinfowrite.write_writerinfo}>
                 <div className={faultinfowrite.write_title}>
                     작성일
                 </div>
-                <div className={faultinfowrite.write_writerinfocontent}>
+                <div value={timer} className={faultinfowrite.write_writerinfocontent}>
                     {timer}
                 </div>
             </div>    
@@ -92,6 +137,7 @@ export default function FaultInfoWritepage() {
             className={faultinfowrite.write_content} 
             cols={60} 
             rows={50} 
+            value={faultWrite}
             onChange={e => {
                 setFaultWrite(e.target.value)
                 setQuestionCount(e.target.value.length)
@@ -102,8 +148,21 @@ export default function FaultInfoWritepage() {
         </div>
       </div>
       <div className={faultinfowrite.btn_writequestionbox}>
-        <button className={faultinfowrite.btn_writequestion} onClick={btn_writePost}>작성</button>
-        <button className={faultinfowrite.btn_writequestion} onClick={btn_postlist}>목록</button>
+        {
+            isUpdate ? 
+            <>
+                <button className={faultinfowrite.btn_writequestion} onClick={btn_updatePost}>수정</button>
+                <button className={faultinfowrite.btn_writequestion} onClick={btn_postlist}>목록</button>
+            </>
+            
+            :
+            <>
+                <button className={faultinfowrite.btn_writequestion} onClick={btn_writePost}>작성</button>
+                <button className={faultinfowrite.btn_writequestion} onClick={btn_postlist}>목록</button>
+            </>
+            
+        }
+        
       </div>
     </div>
   );

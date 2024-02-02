@@ -95,7 +95,12 @@ public class AnalyzeServiceImpl implements AnalyzeService {
      */
     public AnalyzeRequestFileDto splitRequestToRequestFileDto(AnalyzeRequestDto analyzeRequestDto, List<MultipartFile> multipartFiles) throws IOException {
         if(multipartFiles.size() !=0) {
-            Path projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/analyzerequest/");
+            Path projectPath;
+            if (System.getProperty("user.dir").contains("medic")) {
+                projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/analyzerequest/");
+            } else {
+                projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/analyzerequest/");
+            }
             Deque <String> files = fileHandler.parseFile(projectPath, multipartFiles);
             return AnalyzeRequestFileDto.builder()
                     .anReqForm(analyzeRequestDto.getAnReqForm().equals("no_empty_file") ? files.pollFirst() : analyzeRequestDto.getAnReqForm())
@@ -192,7 +197,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
      */
     public AnalyzeResponseDto getAnalyzeRequestDetail(Long anId) {
         AnalyzeRequestList analyzeRequestList = analyzeRequestListRepository.findById(anId).get();
-
+        AnalyzeRequestFile analyzeRequestFile = analyzeRequestFileRepository.findById(anId).get();
 
         List<AnalyzeRequest> analyzeRequests = analyzeRequestList.getAnalyzeRequests();
         List<String> questionContents = new ArrayList<>();
@@ -213,6 +218,11 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 .anPtDiagContent(analyzeRequestList.getAnPtDiagContent())
                 .anQuestionContent(questionContents)
                 .anAnswerContent(answerContents)
+                .anReqForm(analyzeRequestFile.getAnReqForm())
+                .anDiagnosis(analyzeRequestFile.getAnDiagnosis())
+                .anRecord(analyzeRequestFile.getAnRecord())
+                .anFilm(analyzeRequestFile.getAnFilm())
+                .anOther(analyzeRequestFile.getAnOther())
                 .build();
 
         return analyzeResponseDto;

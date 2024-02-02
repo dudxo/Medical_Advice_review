@@ -1,5 +1,6 @@
 package com.example.medic.medicalKnowledge.repository;
 
+import com.example.medic.manager.domain.Manager;
 import com.example.medic.medicalKnowledge.domain.MedicalNegligenceInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -44,4 +45,7 @@ public interface MedicalNegligenceInfoRepository extends JpaRepository<MedicalNe
         String getNextWriter();
         String getNextDate();
     }
+
+    @Query("SELECT m.manager from MedicalNegligenceInfo m WHERE m.mnId = :mnId")
+    Manager findManagerByMnid(Long mnId);
 }

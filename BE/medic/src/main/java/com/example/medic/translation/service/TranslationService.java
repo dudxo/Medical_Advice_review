@@ -17,7 +17,7 @@ public interface TranslationService {
 
     boolean saveTranslationRequest(TranslationRequestDto requestDto, ClientInfoDto clientInfoDto, List<MultipartFile> multipartFiles) throws IOException;
 
-    TranslationFileDto splitRequestToTranslationFileDto(List<MultipartFile> multipartFiles) throws IOException;
+    TranslationFileDto splitRequestToTranslationFileDto(TranslationRequestDto translationRequestDto, List<MultipartFile> multipartFiles) throws IOException;
 
     TranslationListDto splitRequestToTranslationListDto(TranslationRequestDto request);
 

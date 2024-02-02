@@ -26,7 +26,7 @@ public class ConsultativeFileService {
                 .orElseThrow(() -> new NoSuchElementException("AdviceFile not found with id: " + fileId));
 
         if (translationAnswerFile != null) {
-            String baseUrl = "file:" + System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translateanswer/";
+            String baseUrl = "file:" + System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translationanswer/";
             try {
                 Resource resource = new UrlResource(baseUrl + translationAnswerFile.getTrAnswer());
                 return resource;

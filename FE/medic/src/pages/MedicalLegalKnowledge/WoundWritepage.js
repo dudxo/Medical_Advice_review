@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import woundwrite from '../../css/WoundWritepage.module.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 
 export default function WoundWritepage() {
@@ -10,12 +10,37 @@ export default function WoundWritepage() {
     const [questionCount, setQuestionCount] = useState(0)
     const [writer, setWriter] = useState('');
     const [postTitle, setPostTitle] = useState('')
+    
+    const [woId, setWoId] = useState('')
+    const [isUpdate, setIsUpdate] = useState(false)
 
     const navigate = useNavigate();
     const cookie = new Cookies()
+    const location = useLocation();
     useEffect(()=>{
         currentTimer();
     }, [])
+
+    const getUpdateInfo = async() =>{
+        if(location.state){
+            setWoId(location.state.woId)
+            setIsUpdate(location.state.isUpdate)
+            if(location.state.isUpdate){
+                try{
+                    const response = await axios.get(`/find/woinfo/detail/${location.state.woId}`)
+                    setPostTitle(response.data.woName)
+                    setWriter(response.data.woInstitution)
+                    setWoundWrite(response.data.woContent)
+                } catch(err){
+                    console.log(err)
+                }
+            }
+        }
+    }
+    
+    useEffect(()=>{
+        getUpdateInfo()
+    },[])
 
     const btn_writePost = async()=> {
         const today = new Date();
@@ -49,6 +74,24 @@ export default function WoundWritepage() {
     const input_writer = e => {
         setWriter(e.target.value)
     }
+    const btn_updatePost = e=> {
+        const today = new Date();
+        const upDatePost = {
+            'woName' : postTitle,
+            'woInstitution' : writer,
+            'woContent' : woundWrite,
+            'woMdDate' : today,
+        }
+        try{
+            if(window.confirm('수정하시겠습니까?')){
+                const response = axios.put(`/update/woinfo/${woId}`, upDatePost)
+                alert('수정되었습니다.')
+                navigate('/medic/medicalknowledge/woundInfo')
+            }
+        } catch(err){
+            console.log(err)
+        }
+    }
   return (
     <div className={woundwrite.writeform}>
       <div className={woundwrite.wound_title}>
@@ -63,7 +106,7 @@ export default function WoundWritepage() {
                 제목
             </div>
             <div className={woundwrite.write_titleinputbox}>
-                <input className={woundwrite.write_titleinput} onChange={input_postTitle}/>
+                <input value={postTitle} className={woundwrite.write_titleinput} onChange={input_postTitle}/>
             </div>
         </div>
         <div className={woundwrite.write_rowbox}>
@@ -72,7 +115,7 @@ export default function WoundWritepage() {
                     기관명
                 </div>
                 <div className={woundwrite.write_writerinfocontent}>
-                <input className={woundwrite.write_writerinputbox} onChange={input_writer}/>
+                <input value={writer} className={woundwrite.write_writerinputbox} onChange={input_writer}/>
                 </div>
             </div> 
             <div className={woundwrite.write_writerinfo}>
@@ -92,6 +135,7 @@ export default function WoundWritepage() {
             className={woundwrite.write_content} 
             cols={60} 
             rows={50} 
+            value={woundWrite}
             onChange={e => {
                 setWoundWrite(e.target.value)
                 setQuestionCount(e.target.value.length)
@@ -102,8 +146,19 @@ export default function WoundWritepage() {
         </div>
       </div>
       <div className={woundwrite.btn_writequestionbox}>
-        <button className={woundwrite.btn_writequestion} onClick={btn_writePost}>작성</button>
-        <button className={woundwrite.btn_writequestion} onClick={btn_postlist}>목록</button>
+        {
+            isUpdate ?
+            <>
+                <button className={woundwrite.btn_writequestion} onClick={btn_updatePost}>수정</button>
+                <button className={woundwrite.btn_writequestion} onClick={btn_postlist}>목록</button>
+            </>
+            :
+            <>
+                <button className={woundwrite.btn_writequestion} onClick={btn_writePost}>작성</button>
+                <button className={woundwrite.btn_writequestion} onClick={btn_postlist}>목록</button>
+            </>
+        }
+        
       </div>
     </div>
   );

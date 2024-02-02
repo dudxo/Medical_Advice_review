@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -26,12 +27,9 @@ public class MedicalNegligenceInfo {
     @NotNull
     private String mnInstitution;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull
-    private Date mnRegdate;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date mnMdDate;
+    private LocalDate mnRegdate;
+    private LocalDate mnMdDate;
 
     @NotNull
     private String mnContent;
@@ -42,7 +40,7 @@ public class MedicalNegligenceInfo {
     private Manager manager;
 
     @Builder
-    private MedicalNegligenceInfo(Long mnId, String mnName, String mnInstitution, Date mnRegDate, Date mnMdDate, String mnContent,
+    private MedicalNegligenceInfo(Long mnId, String mnName, String mnInstitution, LocalDate mnRegDate, LocalDate mnMdDate, String mnContent,
                                    Manager manager) {
         this.mnId = mnId;
         this.mnName = mnName;

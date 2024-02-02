@@ -69,7 +69,10 @@ export default function IndustrialAccidentDetailInfopage(){
 
 
   const medicIndustrialAccident = () => {
-    navigate('/medic/medicalknowledge/industrialAccidentInfo');
+    navigate('/medic/admin/knowledge/industrialAccidentInfo/writeindustrialaccident', {state : {
+      IndustId : industrialAccidentInfoId,
+      isUpdate : true
+    }});
   };
 
   const deleteIndustrialAccident = async(industrialAccidentInfoId)=> {

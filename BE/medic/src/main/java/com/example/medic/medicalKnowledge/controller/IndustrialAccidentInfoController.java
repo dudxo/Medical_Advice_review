@@ -31,10 +31,10 @@ public class IndustrialAccidentInfoController {
 
     //상세 조회
     @GetMapping("/find/industacident/detail/{iaid}")
-    public ResponseEntity<IndustrialAccidentInfo> findIndustrialAccidentInfoDetail(@PathVariable Long iaid){
+    public ResponseEntity<IndustrialAccidentInfoDto> findIndustrialAccidentInfoDetail(@PathVariable Long iaid){
         try{
-            IndustrialAccidentInfo industrialAccidentInfo = industrialAccidentInfoService.getIndustrialAccidentInfoDetail(iaid);
-            return ResponseEntity.ok(industrialAccidentInfo);
+            IndustrialAccidentInfoDto industrialAccidentInfoDto = industrialAccidentInfoService.getIndustrialAccidentInfoDetail(iaid);
+            return ResponseEntity.ok(industrialAccidentInfoDto);
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
         }

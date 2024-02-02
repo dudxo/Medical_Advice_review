@@ -1,5 +1,6 @@
 package com.example.medic.medicalKnowledge.service;
 
+import com.example.medic.manager.domain.Manager;
 import com.example.medic.medicalKnowledge.domain.TrafficAccidentInfo;
 import com.example.medic.medicalKnowledge.dto.TrafficAccidentInfoDto;
 import com.example.medic.medicalKnowledge.repository.TrafficAccidentInfoJpaRepository;
@@ -20,12 +21,18 @@ public class TrafficAccidentInfoService {
         return trafficAccidentInfoJpaRepository.findAll();
     }
 
-    public TrafficAccidentInfo getTrafficAccidentInfoDetail(Long iaid){
+    public TrafficAccidentInfoDto getTrafficAccidentInfoDetail(Long iaid){
         Optional<TrafficAccidentInfo> optionalTrafficAccidentInfo = trafficAccidentInfoJpaRepository.findById(iaid);
 
         if(optionalTrafficAccidentInfo.isPresent()){
             TrafficAccidentInfo trafficAccidentInfo = optionalTrafficAccidentInfo.get();
-            return trafficAccidentInfo;
+            TrafficAccidentInfoDto trafficAccidentInfoDto = TrafficAccidentInfoDto.builder()
+                    .taName(trafficAccidentInfo.getTaName())
+                    .taContent(trafficAccidentInfo.getTaContent())
+                    .taRegDate(trafficAccidentInfo.getTaMdDate())
+                    .taInstitution(trafficAccidentInfo.getTaInstitution())
+                    .build();
+            return trafficAccidentInfoDto;
         }else{
             return null;
         }
@@ -47,15 +54,17 @@ public class TrafficAccidentInfoService {
     }
     public TrafficAccidentInfo updateTrafficAccidentInfo(Long taid, TrafficAccidentInfoDto trafficAccidentInfoDto){
         TrafficAccidentInfo trafficAccidentInfo = findTrafficAccidentInfo(taid);
+        Manager manager = trafficAccidentInfoJpaRepository.findManagerByTaid(taid);
         if(trafficAccidentInfo == null){
             throw new IllegalArgumentException("게시글을 찾을 수 없습니다.");
         }
         TrafficAccidentInfo responsetrafficAccidentInfo = trafficAccidentInfo.builder()
+                .taId(taid)
                 .taName(trafficAccidentInfoDto.getTaName())
                 .taInstitution(trafficAccidentInfoDto.getTaInstitution())
                 .taMdDate(trafficAccidentInfoDto.getTaMdDate())
                 .taContent(trafficAccidentInfoDto.getTaContent())
-                .manager(trafficAccidentInfoDto.getManager())
+                .manager(manager)
                 .build();
         return trafficAccidentInfoJpaRepository.save(responsetrafficAccidentInfo);
     }

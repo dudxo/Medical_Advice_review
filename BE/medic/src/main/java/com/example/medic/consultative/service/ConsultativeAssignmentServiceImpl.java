@@ -322,11 +322,14 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
                 .build();
     }
 
+    /**
+     * 번역의뢰 답변파일 저장
+     */
     @Override
     public boolean saveTranslationAnswerFile(ConsultativeDto consultativeDto, List<MultipartFile> multipartFiles, Long trId) throws IOException {
         Consultative consultative = consultativeRepository.findById(consultativeDto.getCId()).get();
         TranslationRequestList translationRequestList = translationRequestListRepository.findById(trId).get();
-        TranslationAnswerFileRequestDto translationAnswerFileRequestDto = splitTranslationAnswerFile(multipartFiles);
+        TranslationAnswerFileRequestDto translationAnswerFileRequestDto = splitTranslationAnswerFile(consultativeDto, multipartFiles);
 
         try{
             TranslationAnswerFile translationAnswerFile = TranslationAnswerFile.builder()
@@ -343,13 +346,21 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
         }
     }
 
-    private TranslationAnswerFileRequestDto splitTranslationAnswerFile(List<MultipartFile> multipartFiles) throws IOException {
+    /**
+     * 번역의뢰 답변 파일 dto 변환
+     */
+    private TranslationAnswerFileRequestDto splitTranslationAnswerFile(ConsultativeDto consultativeDto, List<MultipartFile> multipartFiles) throws IOException {
         if(multipartFiles.size() !=0) {
-            Path projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translateanswer/");
+            Path projectPath;
+            if (System.getProperty("user.dir").contains("medic")) {
+                projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/translationanswer/");
+            } else {
+                projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translationanswer/");
+            }
             Deque <String> files = fileHandler.parseFile(projectPath, multipartFiles);
-//            return TranslationAnswerFileRequestDto.builder()
-//                    .trAnswer(files.get(0))
-//                    .build();
+            return TranslationAnswerFileRequestDto.builder()
+                    .trAnswer(consultativeDto.getTrAnswer())
+                    .build();
         }
         return null;
     }

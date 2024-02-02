@@ -38,6 +38,7 @@ public class TranslationController {
     public ResponseEntity<String> saveTranslationRequest(@RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles,
                                                          @RequestPart(name = "dto") TranslationRequestDto translationRequestDto,
                                                          HttpServletRequest request) throws IOException {
+        System.out.println(multipartFiles.size());
         HttpSession session = request.getSession();
         String findUId = (String) session.getAttribute("uId");
 
