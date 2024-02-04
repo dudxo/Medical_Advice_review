@@ -49,4 +49,15 @@ public class AdviceUpdateDto {
     private LocalDate adMdDate;
 
     private List<String> adQuestionContent;
+
+    /*자문 파일*/
+    private String adReqForm;
+
+    private String adDiagnosis;
+
+    private String adRecord;
+
+    private String adFilm;
+
+    private String adOther;
 }

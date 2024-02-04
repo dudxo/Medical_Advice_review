@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import advicerequest from '../../css/AdviceRequestpage.module.css';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import ImageModal from '../../components/ImageModal';
 
 export default function AdviceModifypage(){
     
@@ -13,6 +14,7 @@ export default function AdviceModifypage(){
     const startYear = 1960;
 
     const {index} = useParams();
+    const allAdviceUpdate = new FormData();
 
     const [uname, setUname] = useState('')
     const [utel, setUtel] = useState('')
@@ -68,6 +70,26 @@ export default function AdviceModifypage(){
     const [visit_endMonth, setVisitendMonth] = useState('')
     const [visit_endDay, setVisitendDay] = useState('')
 
+    // 자문 파일
+    const [adReqForm, setAdReqForm] = useState(null)
+    const [adDiagnosis, setAdDiagnosis] = useState(null)
+    const [adRecord, setAdRecord] = useState(null)
+    const [adFilm, setAdFilm] = useState(null)
+    const [adOther, setAdOther] = useState(null)
+
+    //자문 파일 검사
+    const [isAdReqForm, setIsAdReqForm] = useState(false)
+    const [isAdDiagnosis, setIsAdDiagnosis] = useState(false)
+    const [isAdRecord, setIsAdRecord] = useState(false)
+    const [isAdFilm, setIsAdFilm] = useState(false)
+    const [isAdOther, setIsAdOther] = useState(false)
+
+    //사진 미리보기 팝업
+    const [isOpenimage ,setIsOpenimage] = useState(false)
+    const [src, setSrc] = useState('')
+
+    const filename = {}
+
     const navigate = useNavigate()
     const adviceUpdate = new FormData()
 
@@ -116,7 +138,46 @@ export default function AdviceModifypage(){
             setVisitend(response.data.visitEnd)
             setAdEtcValue(response.data.adEtc)
             setAdQuestionContents(response.data.adQuestionContent)
-            // setAdAnswerContent(response.data.adAnswerContent)
+            setIsAdReqForm(() => {
+                if(response.data.adReqForm === "empty_file"){
+                    return false
+                } else{
+                    setAdReqForm(response.data.adReqForm)
+                    return true
+                }
+            })
+            setIsAdDiagnosis(()=>{
+                if(response.data.adDiagnosis === "empty_file"){
+                    return false
+                } else{
+                    setAdDiagnosis(response.data.adDiagnosis)
+                    return true
+                }
+            })
+            setIsAdRecord(()=>{
+                if(response.data.adRecord === "empty_file"){
+                    return false
+                } else{
+                    setAdRecord(response.data.adRecord)
+                    return true
+                }
+            })
+            setIsAdFilm(()=>{
+                if(response.data.adFilm === "empty_file"){
+                    return false
+                } else{
+                    setAdFilm(response.data.adFilm)
+                    return true
+                }
+            })
+            setIsAdOther(()=>{
+                if(response.data.adOther === "empty_file"){
+                    return false
+                } else{
+                    setAdOther(response.data.adOther)
+                    return true
+                }
+            })
     } catch(err){
         console.log(err)
     }  
@@ -149,30 +210,51 @@ const btn_advice_update = async() => {
     const visitStart = visit_startYear + '-' + visit_startMonth + '-' + visit_startMonth
     const visitEnd = visit_endYear + '-' + visit_endMonth + '-' + visit_endDay
     
-    const updateAdvice = {
-        "adPtName" : ad_ptname,
-        "adPtSsNum" : adPtSsNum,
-        "adPtSub" : ad_ptsub,
-        "adPtDiagnosis" : ad_ptdiagnosis,
-        "adPtRec" : ad_ptrec,
-        "adPtCmt" : ad_ptcmt,
-        "insurance" : insurance,
-        "insureDate" : insureDate,
-        "insureName" : insure_name,
-        "adEtc" : adEtcValue,
-        "adMdDate" : today,
-        "adQuestionContent" : adQuestionContents,
-        "hospital" : hospital,
-        "admStart" : admStart,
-        "admEnd" : admEnd,
-        "visitStart" : visitStart,
-        "visitEnd" : visitEnd,
-        "treatCmt" : treat_cmt,
-        "diagRound" : 1
-      }
+    const adFile = [adReqForm, adDiagnosis, adRecord, adFilm, adOther];
+        const adFile_toString = []
+        adFile.forEach(file => {
+            if (file === null) {
+                adFile_toString.push("empty_file")
+            } else {
+                allAdviceUpdate.append('files', file);
+                adFile_toString.push("no_empty_file")
+            }
+        });
+        console.log(allAdviceUpdate.getAll('files'));
+        console.log(adFile_toString)
+        allAdviceUpdate.append("dto", new Blob([JSON.stringify({
+            "adPtName" : ad_ptname,
+            "adPtSsNum" : adPtSsNum,
+            "adPtSub" : ad_ptsub,
+            "adPtDiagnosis" : ad_ptdiagnosis,
+            "adPtRec" : ad_ptrec,
+            "adPtCmt" : ad_ptcmt,
+            "insurance" : insurance,
+            "insureDate" : insureDate,
+            "insureName" : insure_name,
+            "adEtc" : adEtcValue,
+            "adRegDate" : today,
+            "adQuestionContent" : adQuestionContents,
+            "hospital" : hospital,
+            "admStart" : admStart,
+            "admEnd" : admEnd,
+            "visitStart" : visitStart,
+            "visitEnd" : visitEnd,
+            "treatCmt" : treat_cmt,
+            "diagRound" : 1,
+            "adReqForm" : adFile_toString[0],
+            "adDiagnosis" : adFile_toString[1],
+            "adRecord" : adFile_toString[2],
+            "adFilm" : adFile_toString[3],
+            "adOther" : adFile_toString[4],
+          })], { type: "application/json" }));
 
     try{
-        const response = axios.put(`/advice/adviceDetail/update/${index}`, updateAdvice)
+        await axios.put(`/advice/adviceDetail/update/${index}`, allAdviceUpdate,{
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
         alert('자문의뢰 신청이 완료되었습니다.')
         navigate('/')
     } catch(err){
@@ -315,6 +397,13 @@ const handleYearChange = (e) => {
     navigate('/')
 }
 
+const btn_open_image = src => {
+    setIsOpenimage(true)
+    setSrc(src)
+}
+const closeImageModal = e => {
+    setIsOpenimage(false)
+}
 return(
     <div className={advicerequest.advicerequest_wrap}>
         <div className={advicerequest.iconbox}>
@@ -530,12 +619,20 @@ return(
             </h3>
         </div>
         <div className={advicerequest.file_table}>
-            <div className={advicerequest.row_box} style={{height : 'auto'}}>
+        <div className={advicerequest.row_box} style={{height : 'auto'}}>
                 <div className={advicerequest.title_box}>
-                    자문의뢰신청서
+                        자문의뢰신청서
                 </div>
                 <div className={advicerequest.input_box}>
-                    <input type='file' accept="image/*"/>
+                    {
+                        isAdReqForm ? 
+                        <>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findrequestfile/${index}/adReqForm`)}>미리보기</button>
+                            <button onClick={()=>setIsAdReqForm(!isAdReqForm)} >X</button>
+                        </>
+                        :
+                        <input type='file' accept="image/*" onChange={(e) => setAdReqForm(e.target.files[0])} />
+                    }
                 </div>
             </div>
             <div className={advicerequest.row_box} style={{height : 'auto'}}>
@@ -543,7 +640,16 @@ return(
                     진단서
                 </div>
                 <div className={advicerequest.input_box}>
-                    <input type='file' accept="image/*"/>
+                    {
+                        isAdDiagnosis ?
+                        <>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findrequestfile/${index}/adDiagnosis`)}>미리보기</button>
+                            <button onClick={()=>setIsAdDiagnosis(!isAdDiagnosis)} >X</button>
+                        </>
+                        :
+                        <input type='file' accept="image/*" onChange={e => setAdDiagnosis(e.target.files[0])}/>    
+                    }
+                    
                 </div>
             </div>
             <div className={advicerequest.row_box} style={{height : 'auto'}}>
@@ -551,7 +657,15 @@ return(
                     의무기록지
                 </div>
                 <div className={advicerequest.input_box}>
-                    <input type='file' accept="image/*"/>
+                    {
+                        isAdRecord ?
+                        <>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findrequestfile/${index}/adRecord`)}>미리보기</button>
+                            <button onClick={()=>setIsAdRecord(!isAdRecord)} >X</button>
+                        </>
+                        :
+                        <input type='file' accept="image/*" onChange={e => setAdRecord(e.target.files[0])}/>
+                    }
                 </div>
             </div>
             <div className={advicerequest.row_box} style={{height : 'auto'}}>
@@ -559,7 +673,15 @@ return(
                     필름
                 </div>
                 <div className={advicerequest.input_box}>
-                    <input type='file' accept="image/*"/>
+                    {
+                        isAdFilm ? 
+                        <>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findrequestfile/${index}/adFilm`)}>미리보기</button>
+                            <button onClick={()=>setIsAdFilm(!isAdFilm)} >X</button>
+                        </>
+                        :
+                        <input type='file' accept="image/*" onChange={e => setAdFilm(e.target.files[0])}/>
+                    }      
                 </div>
             </div>
             <div className={advicerequest.row_box} style={{height : 'auto'}}>
@@ -567,13 +689,22 @@ return(
                     기타 자료
                 </div>
                 <div className={advicerequest.input_box}>
-                    <input type='file' accept="image/*"/>
+                    {
+                        isAdOther ?
+                        <>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findrequestfile/${index}/adOther`)}>미리보기</button>
+                            <button onClick={()=>setIsAdOther(!isAdOther)} >X</button>
+                        </>
+                        :
+                        <input type='file' accept="image/*" onChange={e => setAdOther(e.target.files[0])}/>
+                    }
                 </div>
             </div>
             <div className={advicerequest.complete}>
-                <button type = "button" className={advicerequest.btt_complete} onClick={btn_advice_update}>저장</button>
+                <button type = "button" className={advicerequest.btt_complete} onClick={btn_advice_update}>자문 의뢰수정</button>
                 <button type = "button" className={advicerequest.btt_complete} onClick={btn_advice_cancle}>취소</button>
              </div>
+             <ImageModal src={src} isOpenimage={isOpenimage} onRequestClose={closeImageModal} />
         </div>
     </div>  
 )

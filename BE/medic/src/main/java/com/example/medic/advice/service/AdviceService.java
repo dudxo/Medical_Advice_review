@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.*;
 import java.io.IOException;
@@ -91,7 +92,7 @@ public class AdviceService {
                     .adDiagnosis(allAdviceRequestDto.getAdDiagnosis().equals("no_empty_file") ? files.pollFirst(): allAdviceRequestDto.getAdDiagnosis())
                     .adRecord(allAdviceRequestDto.getAdRecord().equals("no_empty_file") ? files.pollFirst(): allAdviceRequestDto.getAdRecord())
                     .adFilm(allAdviceRequestDto.getAdFilm().equals("no_empty_file") ? files.pollFirst() : allAdviceRequestDto.getAdRecord())
-                    .adOther(allAdviceRequestDto.getAdOther().equals("no_empty-file") ? files.pollFirst() : allAdviceRequestDto.getAdOther())
+                    .adOther(allAdviceRequestDto.getAdOther().equals("no_empty_file") ? files.pollFirst() : allAdviceRequestDto.getAdOther())
                     .build();
         }
         return AdviceFileRequestDto.builder()
@@ -298,11 +299,17 @@ public class AdviceService {
      * 자문의뢰 수정
      */
     @Transactional
-    public boolean updateAdviceRequest(Long adId, AdviceUpdateDto updateDto) {
+    public boolean updateAdviceRequest(Long adId, AdviceUpdateDto updateDto, List<MultipartFile> multipartFiles) throws IOException {
         AdviceRequestList adviceRequestList = adviceRequestListRepository.findById(adId).orElse(null);
+        AdviceFile adviceFile = adviceFileRepository.findById(adId).get();
+        Long fid = adviceFileRepository.findByFileId(adId);
+
+        AdviceFileRequestDto adviceFileRequestDto = splitUpdateToFileDto(updateDto, multipartFiles);
+        deleteAdviceFile(adviceFile, adviceFileRequestDto);
 
         // 자문의뢰 리스트 수정
         AdviceRequestList updatedAdviceRequestList = adviceRequestList.toBuilder()
+                .adId(adId)
                 .adEtc(updateDto.getAdEtc())
                 .adPtName(updateDto.getAdPtName())
                 .adPtSub(updateDto.getAdPtSub())
@@ -349,10 +356,101 @@ public class AdviceService {
                 .adMdDate(LocalDate.now())
                 .build();
 
+        // 자문 파일 업데이트
+        adviceFile = adviceFile.builder()
+                .fid(fid)
+                .adReqForm(adviceFileRequestDto.getAdReqForm())
+                .adDiagnosis(adviceFileRequestDto.getAdDiagnosis())
+                .adRecord(adviceFileRequestDto.getAdRecord())
+                .adFilm(adviceFileRequestDto.getAdFilm())
+                .adOther(adviceFileRequestDto.getAdOther())
+                .adviceRequestList(adviceRequestList)
+                .build();
+
         // 자문의뢰 리스트 저장
         adviceRequestListRepository.save(updatedAdviceRequestList);
 
+        // 자문 파일 저장
+        adviceFileRepository.save(adviceFile);
+
         return true;
+    }
+
+    /**
+     * 파일 업데이트 Dto 변환
+     */
+    private AdviceFileRequestDto splitUpdateToFileDto (AdviceUpdateDto adviceUpdateDto, List<MultipartFile> multipartFiles) throws IOException {
+        if (multipartFiles.size() != 0) {
+            Path projectPath;
+            if (System.getProperty("user.dir").contains("medic")) {
+                projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/advicerequest/");
+            } else {
+                projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/");
+            }
+
+            Deque <String> files = fileHandler.parseFile(projectPath, multipartFiles);
+
+            return AdviceFileRequestDto.builder()
+                    .adReqForm(adviceUpdateDto.getAdReqForm().equals("no_empty_file") ? files.pollFirst() : adviceUpdateDto.getAdReqForm())
+                    .adDiagnosis(adviceUpdateDto.getAdDiagnosis().equals("no_empty_file") ? files.pollFirst(): adviceUpdateDto.getAdDiagnosis())
+                    .adRecord(adviceUpdateDto.getAdRecord().equals("no_empty_file") ? files.pollFirst(): adviceUpdateDto.getAdRecord())
+                    .adFilm(adviceUpdateDto.getAdFilm().equals("no_empty_file") ? files.pollFirst() : adviceUpdateDto.getAdRecord())
+                    .adOther(adviceUpdateDto.getAdOther().equals("no_empty_file") ? files.pollFirst() : adviceUpdateDto.getAdOther())
+                    .build();
+        }
+        return AdviceFileRequestDto.builder()
+                .adReqForm(adviceUpdateDto.getAdReqForm())
+                .adDiagnosis(adviceUpdateDto.getAdDiagnosis())
+                .adRecord(adviceUpdateDto.getAdRecord())
+                .adFilm(adviceUpdateDto.getAdFilm())
+                .adOther(adviceUpdateDto.getAdOther())
+                .build();
+    }
+
+    /**
+     * 수정파일과 기존 파일 변화비교
+     */
+    private void deleteIfNotEqual(Path filePath, String fileValue, String requestValue) throws IOException {
+        if (!fileValue.equals(requestValue)) {
+            Path filePathToDelete = filePath.resolve(Paths.get(fileValue));
+            deleteFile(filePathToDelete);
+        }
+    }
+
+    /**
+     * 기존 파일 삭제
+     */
+    private void deleteFile(Path filePathToDelete) throws IOException {
+        if (Files.exists(filePathToDelete)) {
+            try {
+                Files.delete(filePathToDelete);
+                System.out.println("File deleted successfully: " + filePathToDelete);
+            } catch (IOException e) {
+                System.err.println("Error deleting file: " + filePathToDelete);
+                e.printStackTrace();
+                throw e; // Rethrow the exception to handle it in the upper layers if needed
+            }
+        } else {
+            System.out.println("File not found: " + filePathToDelete);
+        }
+    }
+
+    /**
+     * 경로 생성 및 삭제메서드 호출
+     */
+    private void deleteAdviceFile(AdviceFile adviceFile, AdviceFileRequestDto adviceFileRequestDto) throws IOException {
+        Path projectPath;
+        if (System.getProperty("user.dir").contains("medic")) {
+            projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/advicerequest/");
+        } else {
+            projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/");
+        }
+
+        deleteIfNotEqual(projectPath, adviceFile.getAdReqForm(), adviceFileRequestDto.getAdReqForm());
+        deleteIfNotEqual(projectPath, adviceFile.getAdDiagnosis(), adviceFileRequestDto.getAdDiagnosis());
+        deleteIfNotEqual(projectPath, adviceFile.getAdRecord(), adviceFileRequestDto.getAdRecord());
+        deleteIfNotEqual(projectPath, adviceFile.getAdFilm(), adviceFileRequestDto.getAdFilm());
+        deleteIfNotEqual(projectPath, adviceFile.getAdOther(), adviceFileRequestDto.getAdOther());
     }
 }
 
