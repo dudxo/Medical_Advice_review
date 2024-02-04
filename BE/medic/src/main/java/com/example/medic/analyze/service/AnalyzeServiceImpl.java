@@ -198,15 +198,8 @@ public class AnalyzeServiceImpl implements AnalyzeService {
     public AnalyzeResponseDto getAnalyzeRequestDetail(Long anId) {
         AnalyzeRequestList analyzeRequestList = analyzeRequestListRepository.findById(anId).get();
         AnalyzeRequestFile analyzeRequestFile = analyzeRequestFileRepository.findById(anId).get();
+        List<AnalyzeRequest> analyzeRequests = analyzeRequestRepository.findByAnIds(anId);
 
-        List<AnalyzeRequest> analyzeRequests = analyzeRequestList.getAnalyzeRequests();
-        List<String> questionContents = new ArrayList<>();
-        List<String> answerContents = new ArrayList<>();
-
-        for (AnalyzeRequest analyzeRequest : analyzeRequests) {
-            questionContents.add(analyzeRequest.getAnQuestionContent());
-            answerContents.add(analyzeRequest.getAnAnswerContent());
-        }
 
         AnalyzeResponseDto analyzeResponseDto = AnalyzeResponseDto.builder()
                 .anId(analyzeRequestList.getAnId())
@@ -216,8 +209,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 .anPtSsNum(analyzeRequestList.getAnPtSsNum())
                 .anPtDiagnosis(analyzeRequestList.getAnPtDiagnosis())
                 .anPtDiagContent(analyzeRequestList.getAnPtDiagContent())
-                .anQuestionContent(questionContents)
-                .anAnswerContent(answerContents)
+                .analyzeRequests(analyzeRequests)
                 .anReqForm(analyzeRequestFile.getAnReqForm())
                 .anDiagnosis(analyzeRequestFile.getAnDiagnosis())
                 .anRecord(analyzeRequestFile.getAnRecord())
