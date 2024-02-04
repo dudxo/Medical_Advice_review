@@ -7,6 +7,7 @@ export default function AdviceModifypage(){
     
     const [imageError, setImageError] = useState(false);
     const today = new Date();
+    const [adviceDetails, setAdviceDetails] = useState({});
 
     const todayYear = today.getFullYear();
 
@@ -22,8 +23,8 @@ export default function AdviceModifypage(){
     //환자
     const [ad_ptname, setAdptname] = useState('')
     const [ad_ptssnum, setAdptssnum] = useState('');
-    const [ad_ptssnum1, setAdptssnum1] = useState('');
-    const [ad_ptssnum2, setAdptssnum2] = useState('');
+    const [adPtSsNum1, setAdPtSsNum1] = useState();
+    const [adPtSsNum2, setAdPtSsNum2] = useState();
     const [ad_ptsub, setAdptsub] = useState('');
     const [ad_ptdiagnosis, setAdptdiagnosis] = useState('')
     const [ad_ptrec ,setAdptrec] = useState('')
@@ -33,17 +34,21 @@ export default function AdviceModifypage(){
     const [insurance ,setInsurance] = useState('')
     const [insure_name, setInsurename] = useState('')
     const [insureDate, setInsureDate] = useState('')
+
+    const [insureYear, setInsureYear] = useState(2000);  
+    const [insureMonth, setInsureMonth] = useState(1);
+    const [insureDay, setInsureDay] = useState(1);
     
     // 진료기록
     const [hospital, setHospital] = useState('')
-    const [admStart ,setAdmstart] = useState('')
-    const [admEnd, setAdmend] = useState('')
-    const [adm_startYear ,setAdmstartYear] = useState('')
-    const [adm_startMonth, setAdmstartMonth] = useState('')
-    const [adm_startDay, setAdmstartDay] = useState('')
-    const [adm_endYear, setAdmendYear] = useState('')
-    const [adm_endMonth, setAdmendMonth] = useState('')
-    const [adm_endDay, setAdmendDay] = useState('')
+    const [admStart ,setAdmStart] = useState('')
+    const [admEnd, setAdmEnd] = useState('')
+    const [adm_startYear ,setAdmStartYear] = useState('')
+    const [adm_startMonth, setAdmStartMonth] = useState('')
+    const [adm_startDay, setAdmStartDay] = useState('')
+    const [adm_endYear, setAdmEndYear] = useState('')
+    const [adm_endMonth, setAdmEndMonth] = useState('')
+    const [adm_endDay, setAdmEndDay] = useState('')
     const [treat_cmt ,setTreatcmt] = useState('')
     const [treat_cmt_count, setTreatcmtcount] = useState(0)
 
@@ -61,12 +66,14 @@ export default function AdviceModifypage(){
 
     const [visitStart ,setVisitstart] = useState('')
     const [visitEnd, setVisitend] = useState('')
-    const [visit_startYear ,setVisitstartYear] = useState('')
-    const [visit_startMonth, setVisitstartMonth] = useState('')
-    const [visit_startDay, setVisitstartDay] = useState('')
-    const [visit_endYear, setVisitendYear] = useState('')
-    const [visit_endMonth, setVisitendMonth] = useState('')
-    const [visit_endDay, setVisitendDay] = useState('')
+    const [visit_startYear ,setVisitStartYear] = useState('')
+    const [visit_startMonth, setVisitStartMonth] = useState('')
+    const [visit_startDay, setVisitStartDay] = useState('')
+    const [visit_endYear, setVisitEndYear] = useState('')
+    const [visit_endMonth, setVisitEndMonth] = useState('')
+    const [visit_endDay, setVisitEndDay] = useState('')
+
+    const [adQuestion, setAdQuestion] = useState(0);
 
     const navigate = useNavigate()
     const adviceUpdate = new FormData()
@@ -84,12 +91,6 @@ export default function AdviceModifypage(){
         }  
     }
 
-    useEffect(() => {
-        // ad_ptssnum1과 ad_ptssnum2가 변경될 때 adPtSsNum을 업데이트
-        const adPtSsNum = ad_ptssnum1 + "-" + ad_ptssnum2;
-        setAdptssnum(adPtSsNum);
-    }, [ad_ptssnum1, ad_ptssnum2]);
-
     useEffect(()=>{
         getUserInfo()
         getAdviceRequest()
@@ -99,24 +100,56 @@ export default function AdviceModifypage(){
         try{
             const response = await axios.get(`/advice/adviceDetail/${index}`)
             console.log(response.data)
+            setAdviceDetails(response.data);
+            console.log("response",response);
+            console.log("insure",response.data.insureDate);
+            setAdQuestion(response.data.adviceQuestions);
+            setAdQuestionTotal(response.data.adviceQuestions.length);
+    
             setAdptname(response.data.adPtName)
-            setAdptssnum(response.data.adPtSsNum)
             setAdptsub(response.data.adPtSub)
             setAdptdiagnosis(response.data.adPtDiagnosis)
             setAdptrec(response.data.adPtRec)
             setAdptcmt(response.data.adPtCmt)
             setInsurance(response.data.insurance)
-            setInsureDate(response.data.insureDate)
             setInsurename(response.data.insureName)
             setHospital(response.data.hospital)
-            setAdmstart(response.data.admStart)
-            setAdmend(response.data.admEnd)
             setTreatcmt(response.data.treatCmt)
-            setVisitstart(response.data.visitStart)
-            setVisitend(response.data.visitEnd)
             setAdEtcValue(response.data.adEtc)
-            setAdQuestionContents(response.data.adQuestionContent)
-            // setAdAnswerContent(response.data.adAnswerContent)
+
+            console.log("adviceQuestions",response.data.adviceQuestions);
+            const insure = response.data.insureDate.split('-');
+            console.log("insure",insure);
+            setInsureYear(insure[0]);
+            setInsureMonth(insure[1]);
+            setInsureDay(insure[2]);
+            console.log("insure0",insureYear);
+            console.log("insure1",insureMonth);
+            console.log("insure2",insureDay);
+            const adm_start_parts = response.data.admStart.split('-');
+            setAdmStartYear(adm_start_parts[0]);
+            setAdmStartMonth(adm_start_parts[1]);
+            setAdmStartDay(adm_start_parts[2]);
+              
+            const adm_end_parts = response.data.admEnd.split('-');
+            setAdmEndYear(adm_end_parts[0]);
+            setAdmEndMonth(adm_end_parts[1]);
+            setAdmEndDay(adm_end_parts[2]);
+              
+            const visit_start_parts = response.data.visitStart.split('-');
+            setVisitStartYear(visit_start_parts[0]);
+            setVisitStartMonth(visit_start_parts[1]);
+            setVisitStartDay(visit_start_parts[2]);
+              
+            const visit_end_parts = response.data.visitEnd.split('-');
+            setVisitEndYear(visit_end_parts[0]);
+            setVisitEndMonth(visit_end_parts[1]);
+            setVisitEndDay(visit_end_parts[2]);
+        
+
+            const ad_PtSsNum = response.data.adPtSsNum.split('-');
+            setAdPtSsNum1(ad_PtSsNum[0]);
+            setAdPtSsNum2(ad_PtSsNum[1]);
     } catch(err){
         console.log(err)
     }  
@@ -125,8 +158,8 @@ export default function AdviceModifypage(){
 const isFormValid = () => {
     // 여러 입력 필드와 텍스트 영역의 유효성을 확인
     const isUserInfoValid = uname && utel && uphone && uaddress;
-    const isPtInfoValid = ad_ptname && ad_ptssnum1 && ad_ptssnum2 && ad_ptsub && ad_ptdiagnosis && ad_ptrec && ad_ptcmt;
-    const isInsuranceValid = insurance && insure_name && selectedYear && selectedMonth && selectedDay;
+    const isPtInfoValid = ad_ptname && adPtSsNum1 && adPtSsNum2 && ad_ptsub && ad_ptdiagnosis && ad_ptrec && ad_ptcmt;
+    const isInsuranceValid = insurance && insure_name && insureYear && insureMonth && insureDay;
     const isHospitalInfoValid = hospital && adm_startYear && adm_startMonth && adm_startDay && adm_endYear && adm_endMonth && adm_endDay &&
       visit_startYear && visit_startMonth && visit_startDay && visit_endYear && visit_endMonth && visit_endDay && treat_cmt;
     const isEtcInfoValid = adEtcValue;
@@ -141,8 +174,8 @@ const btn_advice_update = async() => {
         alert('입력값을 확인해주세요.');
         return;
     }
-    const adPtSsNum = ad_ptssnum1 + "-" + ad_ptssnum2
-    const insureDate = selectedYear + '-' + selectedMonth + '-' + selectedDay
+    const adPtSsNum = adPtSsNum1 + "-" + adPtSsNum2
+    const insureDate = insureYear + '-' + insureMonth + '-' + insureDay
     const today = new Date()
     const admStart = adm_startYear + '-' + adm_startMonth + '-' + adm_startDay
     const admEnd = adm_endYear + '-' + adm_endMonth + '-' + adm_endDay
@@ -181,23 +214,44 @@ const btn_advice_update = async() => {
 }
 
 const renderQuestionInputs = () => {
-    return Array.from({ length: adQuestionTotal }, (_, index) => (
-      <div className={advicerequest.row_box} style={{height : 'auto'}} key={index}>
+    if (!adQuestion || adQuestion.length === 0) {
+        return null; // 또는 다른 처리를 수행하거나 빈 배열을 반환
+      }
+    return adQuestion.map((question, index) => (
+    <div className={advicerequest.row_box} style={{height : 'auto'}} key={index}>
         <div className={advicerequest.title_box}>
-          질문 {index + 1} 입력
+        질문 {index + 1} 입력
         </div>
         <div className={advicerequest.input_box}>
-          <input
+        <input
             type="text"
-            name={`adQuestionContent_${index}`}
-            value={adQuestionContents[index] || ''}
-            onChange={(e) => handleQuestionContentChange(index, e)}
+            value={question.adQuestionContent || ''}
             maxLength={300}
-          />
+            onChange={(e) => handleQuestionContentChange(index, e)}
+        />
         </div>
-      </div>
+    </div>
     ));
 };
+
+const updateLastDay = () => {
+    const year = parseInt(selectedYear);
+    const month = parseInt(selectedMonth);
+    const lastDay = new Date(year, month, 0).getDate();
+
+    // Update options for days
+    const newDayOptions = generateOptions(1, lastDay);
+    setDayOptions(newDayOptions);
+
+    // Adjust selected day if it exceeds the number of days in the month
+    if (selectedDay > lastDay) {
+      setSelectedDay(lastDay);
+    }
+};
+
+useEffect(() => {
+    updateLastDay();
+  }, [selectedYear, selectedMonth]);
 
 const generateOptions = (start, end) => {
     const options = [];
@@ -208,15 +262,15 @@ const generateOptions = (start, end) => {
   };
 
 const handleYearChange = (e) => {
-    setSelectedYear(e.target.value);
+    setInsureYear(e.target.value);
   };
 
   const handleMonthChange = (e) => {
-    setSelectedMonth(e.target.value);
+    setInsureMonth(e.target.value);
   };
 
   const handleDayChange = (e) => {
-    setSelectedDay(e.target.value);
+    setInsureDay(e.target.value);
   };
 
   const handleAdEtcChange = (e) => {
@@ -240,11 +294,11 @@ const handleYearChange = (e) => {
       setAdptname(e.target.value)
   }
   const input_ad_ptssnum1 = e => {
-      setAdptssnum1(e.target.value+'-')
+      setAdPtSsNum1(e.target.value)
       console.log(e.target.value + '-')
   }
   const input_ad_ptssnum2 = e => {
-      setAdptssnum2(e.target.value)
+      setAdPtSsNum2(e.target.value)
   }
   const input_ad_ptsub = e => {
       setAdptsub(e.target.value)
@@ -270,45 +324,45 @@ const handleYearChange = (e) => {
       setHospital(e.target.value)
   }
   const input_adm_startYear = e => {
-      setAdmstartYear(e.target.value)
+      setAdmStartYear(e.target.value)
   }
   const input_adm_startMonth = e => {
-      setAdmstartMonth(e.target.value)
+      setAdmStartMonth(e.target.value)
   } 
   const input_adm_startDay = e => {
-      setAdmstartDay(e.target.value)
+      setAdmStartDay(e.target.value)
   }
   const input_adm_endYear = e => {
-      setAdmendYear(e.target.value)
+      setAdmEndYear(e.target.value)
   }
   const input_adm_endMonth = e => {
-      setAdmendMonth(e.target.value)
+      setAdmEndMonth(e.target.value)
   }
   const input_adm_endDay = e => {
-      setAdmendDay(e.target.value)
+      setAdmEndDay(e.target.value)
   }
   const input_treat_cmt = e => {
       setTreatcmt(e.target.value)
       setTreatcmtcount(e.target.value.length)
   }
   const input_visit_startYear = e => {
-      setVisitstartYear(e.target.value)
+      setVisitStartYear(e.target.value)
   }
   const input_visit_startMonth = e => {
-      setVisitstartMonth(e.target.value)
+      setVisitStartMonth(e.target.value)
   }
   const input_visit_startDay = e => {
-      setVisitstartDay(e.target.value)
+      setVisitStartDay(e.target.value)
   }
 
   const input_visit_endYear = e => {
-      setVisitendYear(e.target.value)
+      setVisitEndYear(e.target.value)
   }
   const input_visit_endMonth = e => {
-      setVisitendMonth(e.target.value)
+      setVisitEndMonth(e.target.value)
   }
   const input_visit_endDay = e => {
-      setVisitendDay(e.target.value)
+      setVisitEndDay(e.target.value)
   }
 
   const btn_advice_cancle = async() => {
@@ -368,9 +422,9 @@ return(
                 </div>
                 <div className={`${advicerequest.title_box} ${advicerequest.patient_box}`} style={{borderLeft : '1px solid black'}}>주민등록번호</div>
                 <div className={`${advicerequest.input_box} ${advicerequest.input_ptssnumbox} ${advicerequest.patient_box}`}>
-                    <input type="text" name="ad_ptssnum1" value={ad_ptssnum1} disabled={false} maxLength={6} onChange={input_ad_ptssnum1}></input>
+                    <input type="text" name="ad_ptssnum1" value={adPtSsNum1} disabled={false} maxLength={6} onChange={input_ad_ptssnum1}></input>
                      -
-                    <input type="password" name="ad_ptssnum2" value={ad_ptssnum2} disabled={false} maxLength={7} onChange={input_ad_ptssnum2}></input>
+                    <input type="password" name="ad_ptssnum2" value={adPtSsNum2} disabled={false} maxLength={7} onChange={input_ad_ptssnum2}></input>
                 </div>
             </div>
             <div className={advicerequest.row_box}>
@@ -415,9 +469,9 @@ return(
                 </div>
                 <div className={advicerequest.title_box} style={{borderLeft : '1px solid black'}}>계약일자</div>
                 <div className={advicerequest.input_box}>
-                    <select onChange={handleYearChange} value={selectedYear}>{generateOptions(startYear, todayYear)}</select> -
-                    <select onChange={handleMonthChange} value={selectedMonth}>{generateOptions(1, 12)}</select> -
-                    <select onChange={handleDayChange} value={selectedDay}>{dayOptions.map((day) => day)}</select>
+                    <select onChange={handleYearChange} value={insureYear}>{generateOptions(startYear, todayYear)}</select> -
+                    <select onChange={handleMonthChange} value={insureMonth}>{generateOptions(1, 12)}</select> -
+                    <select onChange={handleDayChange} value={insureDay}>{dayOptions.map((day) => day)}</select>
                 </div>
             </div>
             <div className={advicerequest.row_box}>
