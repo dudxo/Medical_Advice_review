@@ -55,7 +55,9 @@ export default function TranslateModifypage(){
             const response = await axios.get(`/translate/translateDetail/${index}`)
             console.log(response.data)
             setTrptname(response.data.trPtName)
-            setTrPtSsnum(response.data.trPtSsNum)
+            const trPtSsNum = response.data.trPtSsNum.split('-');
+            setTrptssnum1(trPtSsNum[0]);
+            setTrptssnum2(trPtSsNum[1]);
             setTrptsub(response.data.trPtSub)
             setTrptdiagnosis(response.data.trPtDiagnosis)
             setTrptcmt(response.data.trPtDiagContent)
@@ -80,7 +82,7 @@ export default function TranslateModifypage(){
             alert('입력값을 확인해주세요.');
             return;
         }
-        const tr_PtSsNum = tr_ptssnum1 + tr_ptssnum2
+        const tr_PtSsNum = tr_ptssnum1 + '-' + tr_ptssnum2
         const today = new Date()
 
     const updateTranslate = {
@@ -111,7 +113,7 @@ export default function TranslateModifypage(){
         setTrptname(e.target.value)
     }
     const input_tr_ptssnum1 = e => {
-        setTrptssnum1(e.target.value+'-')
+        setTrptssnum1(e.target.value)
         console.log(e.target.value + '-')
     }
     const input_tr_ptssnum2 = e => {
