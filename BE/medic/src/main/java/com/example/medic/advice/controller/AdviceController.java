@@ -61,6 +61,7 @@ public class AdviceController {
             logger.info("adviceDetail:{}" ,allAdviceRequestDto);
             return ResponseEntity.ok(allAdviceRequestDto);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
     }
@@ -88,8 +89,10 @@ public class AdviceController {
      * 자문의뢰 수정
      */
     @PutMapping("/advice/adviceDetail/update/{adId}")
-    public ResponseEntity<String> updateAdviceRequestList(@PathVariable Long adId, @RequestBody AdviceUpdateDto adviceUpdateDto) {
-        boolean updated = adviceService.updateAdviceRequest(adId, adviceUpdateDto);
+    public ResponseEntity<String> updateAdviceRequestList(@PathVariable Long adId,
+                                                          @RequestPart(name = "dto") AdviceUpdateDto adviceUpdateDto,
+                                                          @RequestPart(name = "files") List<MultipartFile> multipartFiles) throws IOException {
+        boolean updated = adviceService.updateAdviceRequest(adId, adviceUpdateDto, multipartFiles);
 
         if (updated) {
             return ResponseEntity.ok("자문의뢰 수정 성공");

@@ -33,7 +33,7 @@ public class AdviceFile {
     private AdviceRequestList adviceRequestList;
 
     @Builder
-    public AdviceFile(String adReqForm, String adDiagnosis, String adRecord, String adFilm,
+    public AdviceFile(Long fid, String adReqForm, String adDiagnosis, String adRecord, String adFilm,
                       String adOther, AdviceRequestList adviceRequestList) {
         this.adReqForm = adReqForm;
         this.adDiagnosis = adDiagnosis;
