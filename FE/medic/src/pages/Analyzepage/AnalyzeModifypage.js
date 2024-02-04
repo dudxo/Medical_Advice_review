@@ -18,8 +18,8 @@ export default function AnalyzeModifypage(){
     //환자
     const [an_ptname, setAnptname] = useState('')
     const [an_PtSsNum, setAn_PtSsNum] = useState('');
-    const [an_ptssnum1, setAnptssnum1] = useState('');
-    const [an_ptssnum2, setAnptssnum2] = useState('');
+    const [an_ptssnum1, setAnPtSsNum1] = useState('');
+    const [an_ptssnum2, setAnPtSsNum2] = useState('');
     const [an_ptsub, setAnptsub] = useState('');
     const [an_ptdiagnosis, setAnptdiagnosis] = useState('')
     const [an_ptdiagcontent, setAnptdiagcontent] = useState('')
@@ -31,6 +31,7 @@ export default function AnalyzeModifypage(){
     const [anQuestionTotal, setAnQuestionTotal] = useState(1);
     const [anQuestionContents, setAnQuestionContents] = useState([]);
     const [contents_count, setContentscount] = useState(0)
+    const [anQuestion, setAnQuestion] = useState(0);
 
     const navigate = useNavigate()
     const analyzeUpdate = new FormData()
@@ -58,12 +59,15 @@ export default function AnalyzeModifypage(){
             const response = await axios.get(`/analyze/analyzeDetail/${index}`)
             console.log(response.data)
             setAnptname(response.data.anPtName)
-            setAn_PtSsNum(response.data.anPtSsNum)
+            const an_PtSsNum = response.data.anPtSsNum.split('-');
+            setAnPtSsNum1(an_PtSsNum[0]);
+            setAnPtSsNum2(an_PtSsNum[1]);
             setAnptsub(response.data.anPtSub)
             setAnptdiagnosis(response.data.anPtDiagnosis)
             setAnptdiagcontent(response.data.anPtDiagContent)
             setAnEtcValue(response.data.anEtc)
-            setAnQuestionContents(response.data.anQuestionContent)
+            setAnQuestion(response.data.analyzeRequests);
+            setAnQuestionTotal(response.data.analyzeRequests.length);
             // setAnAnswerContent(response.data.anAnswerContent)
     } catch(err){
         console.log(err)
@@ -87,7 +91,7 @@ const btn_analyze_update = async() => {
               alert('입력값을 확인해주세요.');
               return;
           }
-          const an_PtSsNum = an_ptssnum1 + an_ptssnum2
+          const an_PtSsNum = an_ptssnum1 + '-' + an_ptssnum2
           const today = new Date()
 
             const updateModify = {
@@ -111,25 +115,26 @@ const btn_analyze_update = async() => {
       }
 
 
-    const renderQuestionInputs = () => {
-        return Array.from({ length: anQuestionTotal }, (_, index) => (
-          <div className={analyzerequest.row_box} style={{height : 'auto'}} key={index}>
+      const renderQuestionInputs = () => {
+        if (!anQuestion || anQuestion.length === 0) {
+            return null; // 또는 다른 처리를 수행하거나 빈 배열을 반환
+          }
+        return anQuestion.map((question, index) => (
+        <div className={analyzerequest.row_box} style={{height : 'auto'}} key={index}>
             <div className={analyzerequest.title_box}>
-              질문 {index + 1} 입력
+            질문 {index + 1} 입력
             </div>
             <div className={analyzerequest.input_box}>
-              <input
+            <input
                 type="text"
-                name={`anQuestionContent_${index}`}
-                value={anQuestionContents[index] || ''}
-                onChange={(e) => handleQuestionContentChange(index, e)}
+                value={question.anQuestionContent || ''}
                 maxLength={300}
-              />
+                onChange={(e) => handleQuestionContentChange(index, e)}
+            />
             </div>
-          </div>
+        </div>
         ));
     };
-
     const handleAnEtcChange = (e) => {
         setAnEtcValue(e.target.value);
         setAnetccount(e.target.value.length)
@@ -151,11 +156,11 @@ const btn_analyze_update = async() => {
         setAnptname(e.target.value)
     }
     const input_an_ptssnum1 = e => {
-        setAnptssnum1(e.target.value+'-')
+        setAnPtSsNum1(e.target.value)
         console.log(e.target.value + '-')
     }
     const input_an_ptssnum2 = e => {
-        setAnptssnum2(e.target.value)
+        setAnPtSsNum2(e.target.value)
     }
     const input_an_ptsub = e => {
         setAnptsub(e.target.value)

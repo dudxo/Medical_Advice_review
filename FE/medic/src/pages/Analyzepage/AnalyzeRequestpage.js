@@ -92,7 +92,7 @@ export default function AnalyzeRequestpage(){
         setAnptname(e.target.value)
     }
     const input_an_ptssnum1 = e => {
-        setAnptssnum1(e.target.value+'-')
+        setAnptssnum1(e.target.value)
         console.log(e.target.value + '-')
     }
     const input_an_ptssnum2 = e => {
@@ -125,7 +125,7 @@ export default function AnalyzeRequestpage(){
               alert('입력값을 확인해주세요.');
               return;
           }
-          const an_PtSsNum = an_ptssnum1 + an_ptssnum2
+          const an_PtSsNum = an_ptssnum1 + "-" + an_ptssnum2
           const today = new Date()
 
           const anFile = [anReqForm, anDiagnosis, anRecord, anFilm, anOther]
