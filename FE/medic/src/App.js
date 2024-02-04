@@ -66,11 +66,8 @@ import AdTranslateListPage from "./pages/Adminstrator/AdTranslateListPage";
 import AdDetailAdvice from "./pages/Adminstrator/AdDetailAdvice";
 import AdDetailAnalyze from "./pages/Adminstrator/AdDetailAnalyze";
 import AdDetailTranslate from "./pages/Adminstrator/AdDetailTranslate";
-<<<<<<< HEAD
 import ChangeConsultativePwpage from "./pages/Mypage/ChangeConsultativePwpage";
-=======
 import AnnouncementEdit from "./pages/Customerpage/Announcement/AnnouncementEdit";
->>>>>>> feat-connect-usermanagement-m
 
 export default function App(){
     return(
