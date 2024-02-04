@@ -1,5 +1,6 @@
 package com.example.medic.advice.dto;
 
+import com.example.medic.advice.domain.AdviceQuestion;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
@@ -80,6 +81,10 @@ public class AllAdviceRequestDto {
 
     private String userAddress;
 
+    private List<AdviceQuestion> adviceQuestions;
+
+    private List<AdviceQuestion> adviceAnswers;
+
     @Builder
     public AllAdviceRequestDto(Long adId, String adPtName, String adPtSsNum, String adPtSub, String adPtDiagnosis,
                                String adPtRec, String adPtCmt, String insurance, String insureDate,
@@ -88,7 +93,8 @@ public class AllAdviceRequestDto {
                                String adReqForm, String adDiagnosis, String adRecord, String adFilm,
                                String adOther, String hospital, String admStart, String admEnd,
                                String visitStart, String visitEnd, String treatCmt, int diagRound,
-                               String uName, String userTel, String userPhone, String userAddress){
+                               String uName, String userTel, String userPhone, String userAddress,
+                               List<AdviceQuestion> adviceQuestions, List<AdviceQuestion> adviceAnswers){
         this.adId = adId;
         this.adPtName = adPtName;
         this.adPtSsNum = adPtSsNum;
@@ -121,5 +127,7 @@ public class AllAdviceRequestDto {
         this.userTel = userTel;
         this.userPhone = userPhone;
         this.userAddress = userAddress;
+        this.adviceQuestions = adviceQuestions;
+        this.adviceAnswers = adviceAnswers;
     }
 }
