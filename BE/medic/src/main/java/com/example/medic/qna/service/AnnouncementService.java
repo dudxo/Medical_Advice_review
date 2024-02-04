@@ -25,6 +25,11 @@ public class AnnouncementService {
     private final Logger logger = LoggerFactory.getLogger(ClientService.class);
 
 
+
+    /**
+     *
+     * 게시글 조회
+     */
     public List<Announcement> getAllAnnounce(){
             return announcementRepository.findAll();
     }
@@ -39,6 +44,12 @@ public class AnnouncementService {
             return null;
         }
     }
+
+
+    /**
+     *
+     * 게시글 작성
+     */
 
     public Announcement saveAnnouncement(AnnouncementDto announcementDto) {
 //        String managerId = "qkralstj";
@@ -55,5 +66,51 @@ public class AnnouncementService {
 
             logger.info("announcement:{}",announcement);
         return announcementRepository.save(announcement);
+    }
+
+
+    /**
+     *
+     * 게시글 상세 조회
+     */
+    public AnnouncementDto announcdDetial(Long amId){
+        Announcement announcement = announcementRepository.findById(amId).get();
+        AnnouncementDto announcementDto = AnnouncementDto.builder()
+                .amContent(announcement.getAmContent())
+                .amName(announcement.getAmName())
+                .amRegDate(announcement.getAmRegDate())
+                .amMdDate(announcement.getAmMdDate())
+                .build();
+        return announcementDto;
+    }
+
+
+    /**
+     *
+     * 게시글 수정
+     */
+
+    public AnnouncementDto updateAnnouncement(Long amId, AnnouncementDto announcementDto){
+        Announcement announcement = announcementRepository.findById(amId).get();
+//        Manager manager = managerRepository.findById(announcementDto.getMId()).get();
+      announcement.updateAnnounce(announcementDto.getAmName(),announcementDto.getAmRegDate(),announcementDto.getAmContent(),announcementDto.getAmMdDate());
+
+      announcementRepository.save(announcement);
+        return  announcementDto;
+    }
+
+    /**
+     *
+     * 게시글 삭제
+     */
+    public Boolean deleteAnnouncement(Long amId){
+
+        if(amId != null){
+            announcementRepository.deleteById(amId);
+            return  true;
+        }
+        return false;
+
+
     }
 }

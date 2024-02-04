@@ -4,53 +4,38 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import axios from "axios";
 
-export default function AnnouncementDetail()  {
+export default function AnnouncementEdit()  {
   const navigate = useNavigate();
   const location = useLocation();
   const cookie = new Cookies();
+  const [announceDetail,setAnnounceDetail] = useState(location.state.announceDetail);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [announceDetail,setAnnounceDetail ] = useState(location.state.announceDetail);
-  const [announceDetail1,setAnnounceDetail1 ] = useState([]);
-  const [amName,setAmName] = useState(announceDetail1.amName);
-  const [amRegDate,setAmRegDate] = useState(announceDetail1.amReg);
+  const [amContent , setAmContent] = useState(announceDetail.amContent);
+  const [amRegDate, setAmRegDate] = useState(announceDetail.amRegDate);
+  const [amMdDate, setAmMdDate] = useState(announceDetail.amMdDate);
+  const [amName , setAmName] = useState(announceDetail.amName);
+  const [amId , setAmId] = useState(location.state.amId);
+  const [mId, setMid] = useState(announceDetail.mId);
+  useEffect(()=>{
 
-  const announcementdetail = location.state.announcementdetail;
-  const announcements = location.state.announcements;
-  const amId = location.state.amid;
-  console.log('amId',amId)
-  const [prevTitle, setPrevTitle] = useState('');
-  const [nextTitle, setNextTitle] = useState('');
-  const [prevDate, setPrevDate] = useState('');
-  const [nextDate, setNextDate] = useState('');
+  })
 
-
-  const getAnnounceDetail = async()=>{
-    try {
-        const response = await axios.get(`/detail/post/${amId}`);
-        setAnnounceDetail1(response.data);
-        console.log(response.data)
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-const editAnnouncement = () => {
-  navigate(`/medic/customer/announcement/edit/${amId}`,
-  {state : {
-    announceDetail : announceDetail1,
-    amId : amId
-  }});
-}
-
-useEffect(() => {
-  getAnnounceDetail()
-  if(cookie.get('uRole')== 'admin'){
-    setIsAdmin(true)
-  }else{
-    setIsAdmin(false)
+  const input_amName = (e) =>{
+    setAmName(e.target.value)
   }
 
-}, []);
+  const input_amRegDate = (e) =>{
+    setAmRegDate(e.target.value)
+  }
+  const input_amContent = (e) =>{
+    setAmContent(e.target.value)
+  }
+  const input_amMdDate = (e)=>{
+    setAmMdDate(e.target.value)
+  }
+
+
+console.log('ann',announceDetail)
 
   const formatDateString = (dateString) => {
     if (dateString) {
@@ -68,6 +53,30 @@ useEffect(() => {
     navigate('/medic/customer/announcement');
   };
 
+  const btn_announce_modify = e => {
+    if(window.confirm("수정하시겠습니까?")){
+        e.preventDefault()
+        const announceInfo = {
+          'mId' : mId,
+           'amName' : amName,
+           'amRegDate' : amRegDate,
+           'amMdDate ' : amMdDate,
+           'amContent' : amContent
+        } 
+        announce_modify(announceInfo)
+    }
+    
+  }
+
+  const announce_modify = async(announceInfo) => {
+    console.log(2)
+    const response = await axios.put(`/update/post/${amId}`, announceInfo)
+    console.log(response)
+    if(response.data === 1){
+        alert('정보수정이 완료되었습니다.')
+        navigate('/medic/mypage')
+    }
+  }
 
   return (
     <>
@@ -84,7 +93,7 @@ useEffect(() => {
                     제목
                 </div>
                 <div className={announcedetail.detail_titleinputbox}>
-                    {announceDetail1.amName}
+                    <input type='text' value={amName} onChange={e=>input_amName(e)}></input>
                 </div>
             </div>
             <div className={announcedetail.detail_rowbox}>
@@ -93,15 +102,17 @@ useEffect(() => {
                         작성자
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
-                        {announceDetail1.amId}
+        
+                        <input type='text' value={amId}></input>
                     </div>
                 </div> 
                 <div className={announcedetail.detail_writerinfo}>
-                    <div className={announcedetail.detail_title}>
+                    <div className={announcedetail.detail_title} >
                         작성일
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
-                        {formatDateString(announceDetail1.amRegDate)}
+                        
+                        <input value={formatDateString(amRegDate)} onChange={e=>input_amRegDate(e)}></input>
                     </div>
                 </div>   
                 <div className={announcedetail.detail_writerinfo}>
@@ -109,7 +120,7 @@ useEffect(() => {
                         수정일
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
-                        {formatDateString(announceDetail1.amMdDate)}
+                    <input value={formatDateString(amMdDate)} onChange = {e=>input_amMdDate(e)}></input>
                     </div>
                 </div>  
             </div>
@@ -118,7 +129,8 @@ useEffect(() => {
                     <h3 style={{paddingLeft: '20px'}}>내용</h3>
                 </div>
                 <div className={announcedetail.detail_content} >
-                    {announceDetail1.amContent}
+                  <input type='text' value={amContent} onChange={e=>input_amContent(e)}></input>
+                    
                 </div>  
             </div>
         </div>
@@ -161,58 +173,16 @@ useEffect(() => {
             목록
           </button>
         </div>
+        <div className={announcedetail.complete}>
+          <button type="button" onClick={btn_announce_modify} className={announcedetail.btt_write}>
+            수정
+          </button>
+        </div>
 
-        {isAdmin &&(
-<div className={announcedetail.complete}>
-        <button type="button" onClick={editAnnouncement} className={announcedetail.btt_write}>수정</button>
-      </div>
-      )}
       
 
         </div>
-
-
+      
     </>
   );
 };
-
-      {/* <form>
-        <table className={announcedetail.announcedetail_table}>
-          <tr>
-            <th className={announcedetail.announcedetail_th}>제목</th>
-            <td className={announcedetail.announcedetail_td}>{announcementdetail.amName}</td>
-            <th className={announcedetail.announcedetail_th}>등록일</th>
-            <td className={announcedetail.announcedetail_td}>{formatDateString(announcementdetail.amRegDate)}</td>
-          </tr>
-          <th className={announcedetail.announcedetail_th}>내용</th>
-          <td colSpan="3" className={announcedetail.announcedetail_td}>
-            <div className={announcedetail.content}>{announcementdetail.amContent}</div>
-          </td>
-          <tr></tr>
-        </table>
-        <br />
-        <div className={announcedetail.secondTable}>
-          <table className={announcedetail.announcedetail_table}>
-            <tr>
-              <th className={announcedetail.announcedetail_th}>이전글</th>
-              <td className={announcedetail.announcedetail_td}>{prevTitle}</td>
-              <td className={announcedetail.announcedetail_td}>건강관리공단</td>
-              <td className={announcedetail.announcedetail_td}>{formatDateString(prevDate)}</td>
-            </tr>
-            <tr>
-              <th className={announcedetail.announcedetail_th}>다음글</th>
-              <td className={announcedetail.announcedetail_td}>{nextTitle}</td>
-              <td className={announcedetail.announcedetail_td}>건강관리공단</td>
-              <td className={announcedetail.announcedetail_td}>{formatDateString(nextDate)}</td>
-            </tr>
-          </table>
-        </div>
-        <div className={announcedetail.complete}>
-          <button type="button" onClick={medicannounce} className={announcedetail.btt_write}>
-            목록
-          </button>
-        </div>
-      </form>
-     </div>
-  );
-}; */};

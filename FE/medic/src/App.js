@@ -66,7 +66,11 @@ import AdTranslateListPage from "./pages/Adminstrator/AdTranslateListPage";
 import AdDetailAdvice from "./pages/Adminstrator/AdDetailAdvice";
 import AdDetailAnalyze from "./pages/Adminstrator/AdDetailAnalyze";
 import AdDetailTranslate from "./pages/Adminstrator/AdDetailTranslate";
+<<<<<<< HEAD
 import ChangeConsultativePwpage from "./pages/Mypage/ChangeConsultativePwpage";
+=======
+import AnnouncementEdit from "./pages/Customerpage/Announcement/AnnouncementEdit";
+>>>>>>> feat-connect-usermanagement-m
 
 export default function App(){
     return(
@@ -140,6 +144,7 @@ export default function App(){
                     <Route path='/medic/adminstrator/addetail/:index' element={<AdDetailAdvice/>}/>
                     <Route path='/medic/adminstrator/andetail/:index' element={<AdDetailAnalyze/>}/>
                     <Route path='/medic/adminstrator/tndetail/:index' element={<AdDetailTranslate/>}/>
+                    <Route path='/medic/customer/announcement/edit/:amId' element ={<AnnouncementEdit/>}/>
 
 
 

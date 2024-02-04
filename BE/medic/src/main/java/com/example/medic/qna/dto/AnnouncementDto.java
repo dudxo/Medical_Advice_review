@@ -5,24 +5,30 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
-@Builder
+
 
 public class AnnouncementDto {
     private String amName;
-    private Date amRegDate;
+    private LocalDate amRegDate;
     private String amContent;
+    private LocalDate amMdDate;
+
 
     private String mId;
-    public static AnnouncementDto form(Announcement announcement) {
-        return AnnouncementDto.builder()
 
-                .amName(announcement.getAmName())
-                .amRegDate(announcement.getAmRegDate())
-                .amContent(announcement.getAmContent())
-                .build();
+    @Builder
+    public  AnnouncementDto(String amName, LocalDate amRegDate, String amContent, String mId, LocalDate amMdDate) {
+
+               this.amContent = amContent;
+               this.amRegDate = amRegDate;
+               this.amName = amName;
+               this.mId = mId;
+               this.amMdDate = amMdDate;
+
     }
 
 

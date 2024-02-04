@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -27,12 +28,12 @@ public class Announcement {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull
-    private Date amRegDate;
+    private LocalDate amRegDate;
 
     private String amContent;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date amMdDate;
+
+    private LocalDate amMdDate;
 
     @ManyToOne
     @JoinColumn(name = "mId")
@@ -40,12 +41,21 @@ public class Announcement {
     private Manager manager;
 
     @Builder
-    private Announcement(Long amId, String amName, Date amRegDate, String amContent, Date amMdDate, Manager manager){
+    private Announcement(Long amId, String amName, LocalDate amRegDate, String amContent, LocalDate amMdDate, Manager manager){
         this.amId = amId;
         this.amName = amName;
-        this.amRegDate = amRegDate;
         this.amContent = amContent;
         this.amRegDate = amRegDate;
+        this.amMdDate = amMdDate;
         this.manager = manager;
+    }
+
+    public void updateAnnounce( String amName, LocalDate amRegDate, String amContent, LocalDate amMdDate){
+
+        this.amName = amName;
+        this.amContent = amContent;
+        this.amRegDate = amRegDate;
+        this.amMdDate = amMdDate;
+//        this.manager = manager;
     }
 }

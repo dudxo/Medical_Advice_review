@@ -94,6 +94,7 @@ export default function AdDetailAnalyze(){
         if (!anQuestion || anQuestion.length === 0) {
             return null; // 또는 다른 처리를 수행하거나 빈 배열을 반환
           }
+          
         return anQuestion.map((question, index) => (
           <div className={analyzerequest.row_box} style={{ height: 'auto' }} key={index}>
             <div className={analyzerequest.title_box}>

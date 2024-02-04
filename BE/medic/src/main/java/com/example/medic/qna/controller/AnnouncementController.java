@@ -11,10 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,14 +32,17 @@ public class AnnouncementController {
     }
 
     @GetMapping("/detail/post/{amId}")
-    public ResponseEntity<Announcement> findDetailAnnounce(@PathVariable Long amId) {
+    public ResponseEntity<AnnouncementDto> findDetailAnnounce(@PathVariable Long amId) {
         try{
-            Announcement announcement = announcementService.findDetailAnnounce(amId);
-            return ResponseEntity.ok(announcement);
+            logger.info("amId:{}",amId);
+            AnnouncementDto announcementDto = announcementService.announcdDetial(amId);
+            return ResponseEntity.ok(announcementDto);
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
         }
     }
+
+
 
     @PostMapping("/write/post")
     public ResponseEntity<String> writeAnnounce( @RequestBody AnnouncementDto announcementDto){
@@ -54,6 +54,27 @@ public class AnnouncementController {
         }catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PutMapping("/update/post/{amId}")
+    public ResponseEntity<Integer> updateAnnounce(@PathVariable Long amId,@RequestBody AnnouncementDto announcementDto){
+        logger.info("amidid:{}",amId);
+        logger.info("amididto:{}",announcementDto.getAmContent());
+        if(amId == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(0);
+        }
+         announcementService.updateAnnouncement(amId,announcementDto);
+        return ResponseEntity.ok(1);
+    }
+
+    @DeleteMapping("/delete/post/{amId}")
+    public ResponseEntity<Integer> deleteAnnounce(@PathVariable Long amId){
+        logger.info("amId:{}",amId);
+        if(amId == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        announcementService.deleteAnnouncement(amId);
+        return ResponseEntity.ok(1);
     }
 
 }

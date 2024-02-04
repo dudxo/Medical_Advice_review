@@ -5,26 +5,90 @@ import { useNavigate , useLocation} from "react-router-dom";
 
 export default function DocEdit() {
   const location = useLocation();
-  const doctoredit = location.state.docedit;
- 
+  const docInfo = location.state.docedit||{};
+  console.log(docInfo)
+  const [cId,setCId] = useState(docInfo.cId);
+  const [uRole, setURole] = useState('');   //역할
+  const [department, setDepartment] = useState([
+      "내과", "신경과", "정신건강의학과", "외과", "정형외과", "신경외과", "흉부외과", "성형외과", "마취통증의학과",
+      "산부인과", "소아청소년과", "안과", "이비인후과", "피부과", "비뇨의학과", "영상의학과", "방사선종양학과",
+      "병리과", "진단검사의학과", "결핵과", "재활의학과", "예방의학과", "가정의학과", "응급의학과", "핵의학과",
+      "직업환경의학과"
+    ]);
+  const [uPw, setUPw] = useState('')      //pw
+  const [uName, setUName] = useState('') //name
+  const [uEmail, setUEmail] = useState('') //email
+  const [userTel, setUserTel] = useState('') //tel
+  const [userPhone, setUserPhone] = useState('') //
 
 
-  const [docInfo, setDocInfo] = useState({
-    cId: doctoredit.cId || '',
-    cPw: doctoredit.cPw || '',
-    cName:doctoredit.cName || '',
-    cEmail: doctoredit.cEmail || '',
-    cTel: doctoredit.cTel || '',
-    cPhone: doctoredit.cPhone || '',
-    cAddress: doctoredit.cAddress || '',
-    hospName: doctoredit.hospName || '',
-    hospTel: doctoredit.hospTel || '',  
-    department: doctoredit.department || '',
-    hospFx: doctoredit.hospFx || '',
-    hospNum: doctoredit.hospNum || '',
-    hospAddress: doctoredit.hospAddress || '',
-    
-  });
+  const [hospName,setHospName] = useState('')
+  const [company, setCompany] = useState('') //소속 병원
+  const [ceo, setCeo] = useState('') //대표자명
+  const [cpTel, setCpTel] = useState('') //회사 전화번호
+  const [cpFx, setCpFx] = useState('') //회사 팩스번호
+  const [cpNum, setCpNum] = useState('') //회사 사업자번호
+
+
+  const [myInfo, setMyInfo] = useState({})
+
+  const [idchk, setIdchk] = useState(false) // 중복검사
+  const [pwchk, setPwchk] = useState(false)
+  const [infoEmpty, setInfoEmpty] = useState(false)
+  const [zipcodeNum, setZipcodeNum] = useState(docInfo.zipcodeNum)
+  const [zipcode, setZipcode] = useState(docInfo.zipCode)
+  const [detailAddress, setDetailAddress] = useState(docInfo.detailAddress)
+  const [userAddress, setUserAddress] = useState(docInfo.userAddress)
+  const [cpZipcodeNum, setCpZipcodeNum] = useState(docInfo.cpZipcodeNum)
+  const [cpZipcode, setCpZipcode] = useState(docInfo.cpZipcode)
+  const [detailCpAddress, setDetailCpAddress] = useState(docInfo.detailCpAddress)
+  const [cpAddress, setCpAddress] = useState(docInfo.cpAddress) //회사 주소
+
+
+  useEffect(() => {
+    fetchUserData();
+
+},[]);
+
+  const fetchUserData = async () => {
+    try {
+      
+      const response = await axios.get(`/doc/detail/${cId}`);
+      const docInfo = response.data;
+      console.log(docInfo);
+      setCId(docInfo.cId);
+      setUPw(docInfo.upw);
+      setUName(docInfo.cname);
+      setUEmail(docInfo.cemail);
+      setUserTel(docInfo.userTel);
+      setUserPhone(docInfo.userPhone);
+      setCompany(docInfo.company);
+      setCeo(docInfo.ceo);
+      setCpTel(docInfo.cpTel);
+      setCpFx(docInfo.cpFx);
+      setCpNum(docInfo.cpNum);
+
+
+      // userAddress를 공백을 기준으로 나누기
+      const docAddressArray = docInfo.docAddress.split(" ");
+      setZipcodeNum(docAddressArray[0]);
+      setZipcode(docAddressArray[1]);
+      setDetailAddress(docAddressArray.slice(2).join(" "));
+
+      const hospAddressArray = docInfo.hospAddress.split(" ");
+      setCpZipcodeNum(hospAddressArray[0]);
+      setCpZipcode(hospAddressArray[1]);
+      setDetailCpAddress(hospAddressArray.slice(2).join(" "));
+
+
+      console.log('response1', response.data);
+      
+      console.log('userinfo',docInfo)
+    } catch (error) {
+      console.error('유저 정보를 가져오는 도중 에러 발생', error);
+    }
+} 
+
 
   const [docZipcodeNum, setDocZipcodeNum] = useState('')
   const [docZipcode, setDocZipcode] = useState('')
@@ -33,29 +97,29 @@ export default function DocEdit() {
     const [hospZipcode, setHospZipcode] = useState('')
     const [hospAddress, setHospAddress] = useState('')
 
-  const input_cid = (e) => {
-    setDocInfo({ ...docInfo, cId: e.target.value });
-  };
+  // const input_cid = (e) => {
+  //   setDocInfo({ ...docInfo, cId: e.target.value });
+  // };
 
-  const input_cpw = (e) => {
-    setDocInfo({ ...docInfo, cPw: e.target.value });
-  };
+  // const input_cpw = (e) => {
+  //   setDocInfo({ ...docInfo, cPw: e.target.value });
+  // };
 
   const input_cemail = (e) => {
-    setDocInfo({ ...docInfo, cEmail: e.target.value });
+    setUEmail({ ...docInfo, cEmail: e.target.value });
   }
   
   const input_cname = (e) => {
-    setDocInfo({ ...docInfo, cName: e.target.value });
+    setUName({ ...docInfo, cName: e.target.value });
   }
   
   const input_ctel = (e) => {
-    setDocInfo({ ...docInfo, cTel: e.target.value });
+    setCpTel({ ...docInfo, cTel: e.target.value });
   }
   
-  const input_cphone = (e) => {
-    setDocInfo({ ...docInfo, cPhone: e.target.value });
-  }
+  // const input_cphone = (e) => {
+  //   setCpTel({ ...docInfo, cPhone: e.target.value });
+  // }
   
 const input_doc_zipcode_num = e => {
     setDocZipcodeNum(e.target.value)
@@ -68,25 +132,25 @@ const input_details_czipcode = e => {
     setDocAddress(cadd)
 }
 const input_hospname = (e) => {
-    setDocInfo({ ...docInfo, hospName: e.target.value });
+    setHospName({ ...docInfo, hospName: e.target.value });
   }
   
 
   const input_hospTel = (e) => {
-    setDocInfo({ ...docInfo, hospTel: e.target.value });
+    setCpTel({ ...docInfo, hospTel: e.target.value });
   }
   
   const input_department = (e) => {
-    setDocInfo({ ...docInfo, department: e.target.value });
+    setDepartment({ ...docInfo, department: e.target.value });
   }
   
   
   const input_hosp_fx = (e) => {
-    setDocInfo({ ...docInfo, hospFx: e.target.value });
+    setCpFx({ ...docInfo, hospFx: e.target.value });
   }
 
   const input_hosp_num = (e) => {
-    setDocInfo({ ...docInfo, hospNum: e.target.value });
+    setCpNum({ ...docInfo, hospNum: e.target.value });
   }
 const input_hosp_zipcode_num = e => {
     setHospZipcodeNum(e.target.value)
@@ -152,7 +216,9 @@ const navigate = useNavigate();
               <td className={docedit.docedit_th}>아이디</td>
               <td  className={docedit.docedit}> 
               <div className={docedit.docedit_td}>
-                <input type="text" name="cid" onChange={input_cid} maxLength={12} value={docInfo.cId} />
+                <input type="text" name="cid" 
+                // onChange={input_cid} 
+                maxLength={12} value={docInfo.cId} />
               </div>
               </td>
 
@@ -163,7 +229,7 @@ const navigate = useNavigate();
                   type="password"
                   name="cpw"
                   value={docInfo.cPw}
-                  onChange={input_cpw}
+                  // onChange={input_cpw}
                   maxLength={15}
                 />
               </td>
@@ -202,7 +268,7 @@ const navigate = useNavigate();
                 <td className={docedit.docedit_td}>
                     <input typeof="text" name="cphone"
                      value={docInfo.cPhone}
-                    onChange={input_cphone}
+                    // onChange={input_cphone}
                     maxLength={13}
                     />
                 </td>
