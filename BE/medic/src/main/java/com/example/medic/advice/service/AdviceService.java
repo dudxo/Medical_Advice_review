@@ -245,25 +245,9 @@ public class AdviceService {
     public AllAdviceRequestDto getAdviceRequestDetail(Long adId) {
         AdviceRequestList adviceRequestList = adviceRequestListRepository.findById(adId).get();
         AdviceFile adviceFile = adviceFileRepository.findById(adId).get();
+        List<AdviceQuestion> adviceQuestions = adviceQuestionRepository.findByAdIds(adId);
 
-        List<AdviceQuestion> adviceQuestions = adviceRequestList.getAdviceQuestions();
-        List<String> questionContents = new ArrayList<>();
-        List<String> answerContents = new ArrayList<>();
-
-        for (AdviceQuestion adviceQuestion : adviceQuestions) {
-            questionContents.add(adviceQuestion.getAdQuestionContent());
-            answerContents.add(adviceQuestion.getAdAnswerContent());
-        }
-
-        // 병원진단 정보 가져오기
-        DiagnosisRecord diagnosisRecord = adviceRequestList.getDiagnosisRecords().get(0); // 하나의 진단기록만 있다고 가정
-        String hospital = diagnosisRecord.getHospital();
-        String admStart = diagnosisRecord.getAdmStart();
-        String admEnd = diagnosisRecord.getAdmEnd();
-        String visitStart = diagnosisRecord.getVisitStart();
-        String visitEnd = diagnosisRecord.getVisitEnd();
-        String treatCmt = diagnosisRecord.getTreatCmt();
-
+        logger.info("adviceQuestion:{}",adviceQuestions.get(0));
         AllAdviceRequestDto allAdviceRequestDto = AllAdviceRequestDto.builder()
                 .adEtc(adviceRequestList.getAdEtc())
                 .adPtName(adviceRequestList.getAdPtName())
@@ -282,13 +266,12 @@ public class AdviceService {
                 .visitEnd(adviceRequestList.getDiagnosisRecords().get(0).getVisitEnd())
                 .treatCmt(adviceRequestList.getDiagnosisRecords().get(0).getTreatCmt())
                 .diagRound(adviceRequestList.getDiagnosisRecords().get(0).getDiagRound())
-                .adQuestionContent(Collections.singletonList(adviceRequestList.getAdviceQuestions().get(0).getAdQuestionContent()))
-                .adAnswerContent(Collections.singletonList(adviceRequestList.getAdviceQuestions().get(0).getAdAnswerContent()))
                 .adReqForm(adviceFile.getAdReqForm())
                 .adDiagnosis(adviceFile.getAdDiagnosis())
                 .adRecord(adviceFile.getAdRecord())
                 .adFilm(adviceFile.getAdFilm())
                 .adOther(adviceFile.getAdOther())
+                .adviceQuestions(adviceQuestions)
                 .build();
 
         return allAdviceRequestDto;
