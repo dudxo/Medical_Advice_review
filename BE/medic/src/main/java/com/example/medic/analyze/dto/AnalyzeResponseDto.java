@@ -1,5 +1,6 @@
 package com.example.medic.analyze.dto;
 
+import com.example.medic.analyze.domain.AnalyzeRequest;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -48,4 +49,6 @@ public class AnalyzeResponseDto {
     private String userPhone;
 
     private String userAddress;
+
+    private List<AnalyzeRequest> analyzeRequests;
 }

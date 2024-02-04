@@ -6,7 +6,10 @@ import com.example.medic.advice.service.AdviceFileService;
 import com.example.medic.advice.service.AdviceService;
 import com.example.medic.client.dto.ClientInfoDto;
 
+import com.example.medic.manager.controller.AdListAllController;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,6 +29,8 @@ public class AdviceController {
 
     private final AdviceService adviceService;
     private final AdviceFileService adviceFileService;
+
+    private static final Logger logger = LoggerFactory.getLogger(AdviceController.class);
 
     //받는타입 지정
     @PostMapping(value = "/advice/request")
@@ -53,6 +58,7 @@ public class AdviceController {
     public ResponseEntity<AllAdviceRequestDto> findAdviceDetail(@PathVariable Long adId) {
         try {
             AllAdviceRequestDto allAdviceRequestDto = adviceService.getAdviceRequestDetail(adId);
+            logger.info("adviceDetail:{}" ,allAdviceRequestDto);
             return ResponseEntity.ok(allAdviceRequestDto);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

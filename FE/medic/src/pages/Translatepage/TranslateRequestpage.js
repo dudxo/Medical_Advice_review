@@ -54,7 +54,7 @@ export default function TranslateRequestpage(){
         setTrptname(e.target.value)
     }
     const input_tr_ptssnum1 = e => {
-        setTrptssnum1(e.target.value+'-')
+        setTrptssnum1(e.target.value)
         console.log(e.target.value + '-')
     }
     const input_tr_ptssnum2 = e => {
@@ -86,7 +86,7 @@ export default function TranslateRequestpage(){
               alert('입력값을 확인해주세요.');
               return;
           }
-          const tr_PtSsNum = tr_ptssnum1 + tr_ptssnum2
+          const tr_PtSsNum = tr_ptssnum1 + '-' + tr_ptssnum2
           const today = new Date()
           const trFile = [trMtl]
           const trFile_toString = []
@@ -104,7 +104,7 @@ export default function TranslateRequestpage(){
               "trPtSsNum" : tr_PtSsNum,
               "trPtSub" : tr_ptsub,
               "trPtDiagnosis" : tr_ptdiagnosis,
-              "trPtCmt" : tr_ptcmt,
+              "trPtDiagContent" : tr_ptcmt,
               "trEtc" : trEtcValue,
               "trRegDate" : today,
               "trMtl" : trFile_toString[0]

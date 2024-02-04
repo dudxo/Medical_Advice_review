@@ -2,7 +2,7 @@
     height: 1700px;
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: center;
     align-items: center; /* 추가: 화면 가운데 정렬 */
     text-align: center;
     margin-bottom: 50px;

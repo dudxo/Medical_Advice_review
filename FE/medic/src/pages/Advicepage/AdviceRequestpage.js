@@ -170,7 +170,7 @@ export default function AdviceRequestpage(){
         setAdptname(e.target.value)
     }
     const input_ad_ptssnum1 = e => {
-        setAdptssnum1(e.target.value+'-')
+        setAdptssnum1(e.target.value)
         console.log(e.target.value + '-')
     }
     const input_ad_ptssnum2 = e => {
