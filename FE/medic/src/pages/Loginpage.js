@@ -9,6 +9,7 @@ export default function Loginpage(){
     const [upw, setUpw] = useState('');
     const [errmsg, setErrmsg] = useState('')
     const navigate = useNavigate();
+    const [role, setRole] = useState([]);
     
     const inputId = e => {
         setUid(e.target.value)
@@ -21,7 +22,8 @@ export default function Loginpage(){
         console.log(1)
         const userInfo = {
             'uId' : uid,
-            'uPw' : upw
+            'uPw' : upw,
+            'role' : role
         }
         try{
             const response = await axios.post('/login', userInfo)
@@ -45,6 +47,16 @@ export default function Loginpage(){
     const btn_finduserinfo = e => {
         navigate('/medic/finduserinfo')
     }
+    const handleClickUserRadio = (e) => {
+        setRole("user")
+    }
+    const handleClickConsultativeRadio = (e) => {
+        setRole("consultative")
+    }
+    const handleClickAdminRadio = (e) => {
+        setRole("manager")
+    }
+
     return(
                <div className={style.contents}>
                <form name="dataForm" className={style.loginform}>            
@@ -52,6 +64,13 @@ export default function Loginpage(){
                     <div className = {style.loginbox_box}>
                         <div className={style.loginimg} onClick={btn_show_mainpage}></div>
                         <h1 className={style.logintext}>Login</h1>
+                        <div className={style.inputbox}>
+                            <div className={style.rolebox}>
+                                <input type="radio" vlaue="user" checked={role === "user"} onChange={handleClickUserRadio}/> 일반회원
+                                <input type="radio" vlaue="consultative" checked={role === "consultative"} onChange={handleClickConsultativeRadio}/> 전문의
+                                <input type="radio" vlaue="manager" checked={role === "manager"} onChange={handleClickAdminRadio}/> 관리자
+                            </div>
+                        </div>
                         <div className={style.inputbox}>
                             <div className={`${style.input} ${style.inputid}`}>
                                 <label htmlFor="id">
