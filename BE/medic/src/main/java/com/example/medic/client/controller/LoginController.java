@@ -4,6 +4,8 @@ import com.example.medic.client.domain.Client;
 import com.example.medic.client.dto.LoginDto;
 import com.example.medic.client.exception.NotCorrespondingIdException;
 import com.example.medic.client.service.LoginService;
+import com.example.medic.consultative.domain.Consultative;
+import com.example.medic.manager.domain.Manager;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,15 +45,26 @@ public class LoginController {
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto,
                                         HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         try {
-            Client client = loginService.login(loginDto);
+            Object success = loginService.login(loginDto);
+
 
             // 로그인 성공 -> 세션 생성
             httpServletRequest.getSession().invalidate();
             HttpSession session = httpServletRequest.getSession(true);
             // 세션에 userId를 넣어줌
-            String uId = client.getUId();
-            String uRole = client.getURole();
-            session.setAttribute("uId", client.getUId());
+            String uId = "";
+            String uRole = "";
+            if (success instanceof Client) {
+                uId = ((Client) success).getUId();
+                uRole = ((Client) success).getURole();
+            } else if (success instanceof Consultative) {
+                uId = ((Consultative) success).getCId();
+                uRole = ((Consultative) success).getCRole();
+            } else if (success instanceof Manager) {
+                uId = ((Manager) success).getMId();
+                uRole = ((Manager) success).getMRole();
+            }
+            session.setAttribute("uId", uId);
             session.setMaxInactiveInterval(1800);
 
             sessionList.put(session.getId(), session);

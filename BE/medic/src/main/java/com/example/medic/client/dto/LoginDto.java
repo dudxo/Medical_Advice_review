@@ -13,6 +13,7 @@ public class LoginDto {
     private String uName;
     private String uEmail;
     private String newUpw;
+    private String role;
 
     public static LoginDto form(Client client) {
         return LoginDto.builder()
