@@ -9,7 +9,7 @@ export default function TranslateModifypage(){
     const startYear = 1960;
 
     const {index} = useParams();
-
+    const updateTranslate = new FormData()
     const [uname, setUname] = useState('')
     const [utel, setUtel] = useState('')
     const [uphone, setUphone] = useState('')
@@ -28,6 +28,9 @@ export default function TranslateModifypage(){
     const [trEtcValue, setTrEtcValue] = useState('');
     const [tr_etc_count, setTretccount] = useState(0)
 
+    const [trMtl, setTrMtl] = useState(null)
+    const [isTrMtl, setIsTrMtl] = useState(false)
+
     const [contents_count, setContentscount] = useState(0) 
     const navigate = useNavigate()
     const translateUpdate = new FormData()
@@ -40,6 +43,14 @@ export default function TranslateModifypage(){
             setUtel(response.data.userTel)
             setUphone(response.data.userPhone)
             setUaddress(response.data.userAddress)
+            setIsTrMtl(() => {
+                if(response.data.trMtl === "empty_file"){
+                    return false
+                } else{
+                    setTrMtl(response.data.trMtl)
+                    return true
+                }
+            })
         } catch(err){
             console.log(err)
         }  
@@ -85,7 +96,17 @@ export default function TranslateModifypage(){
         const tr_PtSsNum = tr_ptssnum1 + '-' + tr_ptssnum2
         const today = new Date()
 
-    const updateTranslate = {
+        const trFile = [trMtl]
+        const trFile_toString = []
+        trFile.forEach(file => {
+          if(file === null){
+              trFile_toString.push("empty_file")
+          }else{
+              updateTranslate.append('files', file)
+              trFile_toString.push("no_empty_file")
+          }
+        })
+        updateTranslate.append("dto", new Blob ([JSON.stringify({
             "trPtName" : tr_ptname,
             "trPtSsNum" : tr_PtSsNum,
             "trPtSub" : tr_ptsub,
@@ -93,10 +114,15 @@ export default function TranslateModifypage(){
             "trPtDiagContent" : tr_ptcmt,
             "trEtc" : trEtcValue,
             "trMdDate" : today,
-        }
+            "trMtl" : trFile_toString[0]
+        })], {type : "application/json"}))
 
         try{
-            const response = axios.put(`/translate/translateDetail/update/${index}`, updateTranslate)
+            const response = axios.put(`/translate/translateDetail/update/${index}`, updateTranslate, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
             alert('번역의뢰 신청이 완료되었습니다.')
             navigate('/')
         } catch(err){
@@ -247,7 +273,22 @@ export default function TranslateModifypage(){
                         번역 요청자료
                     </div>
                     <div className={translaterequest.input_box}>
-                        <input type='file' accept='application/zip'/>
+                        {
+                            isTrMtl ?
+                            <>
+                                <button>
+                                    <a
+                                        href={`http://localhost:8080/translation/findrequestfile/${index}`}
+                                        download="adRecord.zip"
+                                    >
+                                        다운로드
+                                    </a>
+                                </button>
+                                <button onClick = {()=>setIsTrMtl(!isTrMtl)}>X</button>
+                            </>
+                            :
+                            <input type='file' accept="image/*" onChange={(e) => setTrMtl(e.target.files[0])} />
+                        }
                     </div>
                 </div>
                 <div className={translaterequest.complete}>
