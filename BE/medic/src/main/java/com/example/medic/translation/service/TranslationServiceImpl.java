@@ -8,6 +8,7 @@ import com.example.medic.client.domain.Client;
 import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.client.service.ClientService;
 import com.example.medic.files.handler.FileHandler;
+import com.example.medic.translation.domain.TranslationAnswerFile;
 import com.example.medic.translation.domain.TranslationAssignment;
 import com.example.medic.translation.domain.TranslationRequestFile;
 import com.example.medic.translation.domain.TranslationRequestList;
@@ -15,6 +16,7 @@ import com.example.medic.translation.dto.TranslationFileDto;
 import com.example.medic.translation.dto.TranslationListDto;
 import com.example.medic.translation.dto.TranslationRequestDto;
 import com.example.medic.translation.dto.TranslationResponseDto;
+import com.example.medic.translation.repository.TranslationAnswerFileRepository;
 import com.example.medic.translation.repository.TranslationRequestFileRepository;
 import com.example.medic.translation.repository.TranslationRequestListRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +43,7 @@ public class TranslationServiceImpl implements TranslationService {
     private final Logger logger = LoggerFactory.getLogger(TranslationServiceImpl.class);
     private final TranslationRequestFileRepository translationRequestFileRepository;
     private final TranslationRequestListRepository translationRequestListRepository;
+    private final TranslationAnswerFileRepository translationAnswerFileRepository;
     private final ClientService clientService;
     private final FileHandler fileHandler;
 
@@ -156,6 +159,7 @@ public class TranslationServiceImpl implements TranslationService {
     public TranslationResponseDto getTranslationDetail(Long trId) {
         TranslationRequestList translationRequestList = translationRequestListRepository.findById(trId).get();
         TranslationRequestFile translationRequestFile = translationRequestFileRepository.findById(trId).get();
+        TranslationAnswerFile translationAnswerFile = translationAnswerFileRepository.findAnswerFileById(trId);
 
         TranslationResponseDto translationResponseDto = TranslationResponseDto.builder()
                 .trId(translationRequestList.getTrId())
@@ -166,6 +170,7 @@ public class TranslationServiceImpl implements TranslationService {
                 .trPtDiagContent(translationRequestList.getTrPtDiagContent())
                 .trEtc(translationRequestList.getTrEtc())
                 .trMtl(translationRequestFile.getTrMtl())
+                .trAnswer(translationAnswerFile.getTrAnswer())
                 .build();
 
         return translationResponseDto;

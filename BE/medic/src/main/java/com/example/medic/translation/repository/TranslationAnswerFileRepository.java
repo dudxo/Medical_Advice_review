@@ -14,4 +14,7 @@ public interface TranslationAnswerFileRepository extends JpaRepository<Translati
 
     @Query("SELECT traf.trAnswerId FROM TranslationAnswerFile traf WHERE traf.translationRequestList.trId = :trId")
     Long findByFileId(Long trId);
+
+    @Query("SELECT traf FROM TranslationAnswerFile traf WHERE traf.translationRequestList.trId = :trId")
+    TranslationAnswerFile findAnswerFileById(Long trId);
 }

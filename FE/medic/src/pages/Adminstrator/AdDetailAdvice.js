@@ -56,7 +56,12 @@
         const [questionCount, setQuestionCount] = useState([]);
         const [questionAnswer , setAnswerCount] = useState([]);
 
-        
+        //자문의뢰 파일
+        const [adReqForm, setAdReqForm] = useState(false)
+        const [adDiagnosis, setAdDiagnosis] = useState(false)
+        const [adRecord, setAdRecord] = useState(false)
+        const [adFilm, setAdFilm] = useState(false)
+        const [adOther, setAdOther] = useState(false)
 
         useEffect(()=>{
             const fetchData = async() => {
@@ -100,7 +105,41 @@
                     const ptSsNum = response.data.adPtSsNum.split('-');
                     setPtSsNum1(ptSsNum1[0]);
                     setPtSsNum2(ptSsNum2[1]);
-                    
+                    setAdReqForm(() => {
+                        if(response.data.adReqForm === "empty_file"){
+                            return false
+                        } else{
+                            return true
+                        }
+                    })
+                    setAdDiagnosis(()=>{
+                        if(response.data.adDiagnosis === "empty_file"){
+                            return false
+                        } else{
+                            return true
+                        }
+                    })
+                    setAdRecord(()=>{
+                        if(response.data.adRecord === "empty_file"){
+                            return false
+                        } else{
+                            return true
+                        }
+                    })
+                    setAdFilm(()=>{
+                        if(response.data.adFilm === "empty_file"){
+                            return false
+                        } else{
+                            return true
+                        }
+                    })
+                    setAdOther(()=>{
+                        if(response.data.adOther === "empty_file"){
+                            return false
+                        } else{
+                            return true
+                        }
+                    })
                 }catch(error){
                     console.error('유저 정보 에러:',error);
                 }
@@ -399,7 +438,19 @@
                             자문의뢰신청서
                         </div>
                         <div className={advicerequest.input_box}>
-                            <input type='file' disabled={true} />
+                        {
+                            adReqForm ? 
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/advice/findrequestfile/${index}/adReqForm`}
+                                    download="adReqForm.jpg"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
                         </div>
                     </div>
                     <div className={advicerequest.row_box} style={{height : 'auto'}}>
@@ -407,7 +458,19 @@
                             진단서
                         </div>
                         <div className={advicerequest.input_box}>
-                            <input type='file' disabled={true}  />
+                        {
+                            adDiagnosis ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/advice/findrequestfile/${index}/adDiagnosis`}
+                                    download="adDiagnosis.jpg"
+                                >
+                                다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
                         </div>
                     </div>
                     <div className={advicerequest.row_box} style={{height : 'auto'}}>
@@ -415,7 +478,19 @@
                             의무기록지
                         </div>
                         <div className={advicerequest.input_box}>
-                            <input type='file' disabled={true}  />
+                        {
+                            adRecord ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/advice/findrequestfile/${index}/adRecord`}
+                                    download="adRecord.jpg"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
                         </div>
                     </div>
                     <div className={advicerequest.row_box} style={{height : 'auto'}}>
@@ -423,7 +498,37 @@
                             필름
                         </div>
                         <div className={advicerequest.input_box}>
-                            <input type='file' disabled={true}  />
+                        {
+                            adFilm ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/advice/findrequestfile/${index}/adFilm`}
+                                    download="adFilm.jpg"
+                                >다운로드</a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
+                        
+                        </div>
+                    </div>
+                    <div className={advicerequest.row_box} style={{height : 'auto'}}>
+                        <div className={advicerequest.title_box}>
+                            기타 자료
+                        </div>
+                        <div className={advicerequest.input_box}>
+                            {
+                                adOther ?
+                                <button>
+                                    <a
+                                        href={`http://localhost:8080/advice/findrequestfile/${index}/adOther`}
+                                        download="adOther.jpg"
+                                    >다운로드</a>
+                                </button>
+                                :
+                                "해당 파일이 존재하지 않습니다."
+                            }
+                            
                         </div>
                     </div>
                     <div className={advicerequest.complete}>

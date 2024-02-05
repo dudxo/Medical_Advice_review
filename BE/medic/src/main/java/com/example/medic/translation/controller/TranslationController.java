@@ -91,7 +91,7 @@ public class TranslationController {
     @PutMapping("/translate/translateDetail/update/{trId}")
     public ResponseEntity<String> updateTranslationRequest(@PathVariable Long trId,
                                                            @RequestPart(name = "dto") TranslationResponseDto updateDto,
-                                                           @RequestPart(name = "files") List<MultipartFile> multipartFiles) {
+                                                           @RequestPart(name = "files") List<MultipartFile> multipartFiles) throws IOException {
         boolean updated = translationServiceImpl.updateTranslationRequest(trId, updateDto, multipartFiles);
 
         if (updated) {

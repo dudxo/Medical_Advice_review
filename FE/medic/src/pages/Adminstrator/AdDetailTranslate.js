@@ -28,6 +28,9 @@ export default function AdDetailTranslate(){
 
     const [contents_count, setContentscount] = useState(0)
 
+    const [trMtl, setTrMtl] = useState(false);
+    const [trAnswer, setTrAnswer] = useState(false)
+
     const navigate = useNavigate()
 
     // const getUserInfo = async() =>{
@@ -56,7 +59,21 @@ export default function AdDetailTranslate(){
                 const anptssnum = response.data.trPtSsNum.split('-');
                 setTrptssnum1(anptssnum[0]);
                 setTrptssnum2(anptssnum[1]);
-                
+                setTrMtl(()=>{
+                    if(response.data.trMtl === "empty_file"){
+                        return false
+                    } else{
+                        return true
+                    }
+                    
+                })
+                setTrAnswer(()=>{
+                    if(response.data.trAnswer === "empty_file"){
+                        return false
+                    } else{
+                        return true
+                    }
+                })
                
             }catch(error){
                 console.error('유저 정보 에러:',error);
@@ -181,7 +198,40 @@ export default function AdDetailTranslate(){
                         번역 요청자료
                     </div>
                     <div className={translaterequest.input_box}>
-                        <input type='file' disabled={true} value={translateDetails.trMtl}/>
+                    {
+                            trMtl ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/translation/findrequestfile/${index}`}
+                                    download="adRecord.zip"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
+                    </div>
+                </div>
+                <div className={translaterequest.row_box} style={{height : 'auto'}}>
+                    <div className={translaterequest.title_box}>
+                        번역 자료
+                    </div>
+                    <div className={translaterequest.input_box}>
+                        {
+                            trAnswer ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/translateanswer/findrequestfile/${index}`}
+                                    download="adRecord.zip"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
+                        
                     </div>
                 </div>
                 <div className={translaterequest.complete}>

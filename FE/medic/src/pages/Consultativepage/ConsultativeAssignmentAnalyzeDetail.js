@@ -30,6 +30,12 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
     const [anQuestionContents, setAnQuestionContents] = useState([]);
     const [anAnswerContents, setAnAnswerContents] = useState([]);
     
+    //분석의뢰 파일
+    const [anReqForm, setAnReqForm] = useState(false)
+    const [anDiagnosis, setAnDiagnosis] = useState(false)
+    const [anRecord, setAnRecord] = useState(false)
+    const [anFilm, setAnFilm] = useState(false)
+    const [anOther, setAnOther] = useState(false)
 
     const getUserInfo = async() =>{
         try{
@@ -48,6 +54,42 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
             setAnEtcValue(response.data.anEtcValue)
             setAnQuestionTotal(response.data.anQuestionTotal)
             setAnQuestionContents(response.data.anQuestionContents)
+            setAnReqForm(() => {
+                if(response.data.anReqForm === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+            setAnDiagnosis(()=>{
+                if(response.data.anDiagnosis === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+            setAnRecord(()=>{
+                if(response.data.anRecord === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+            setAnFilm(()=>{
+                if(response.data.anFilm === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+            setAnOther(()=>{
+                if(response.data.anOther === "empty_file"){
+                    console.log(1)
+                    return false
+                } else{
+                    return true
+                }
+            })
         } catch(err){
             console.log(err)
         }  
@@ -258,7 +300,19 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
                         분석의뢰신청서
                     </div>
                     <div className={assignmentanalyzedetail.input_box}>
-                        <input type='file'/>
+                        {
+                            anReqForm ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/analyze/findrequestfile/${analyzeIndex}/anReqForm`}
+                                    download="anReqForm.jpg"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            : 
+                            "해당 파일이 존재하지 않습니다."
+                        }
                     </div>
                 </div>
                 <div className={assignmentanalyzedetail.row_box} style={{height : 'auto'}}>
@@ -266,7 +320,19 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
                         진단서
                     </div>
                     <div className={assignmentanalyzedetail.input_box}>
-                        <input type='file'/>
+                        {
+                            anDiagnosis ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/analyze/findrequestfile/${analyzeIndex}/anDiagnosis`}
+                                    download="anDiagnosis.jpg"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
                     </div>
                 </div>
                 <div className={assignmentanalyzedetail.row_box} style={{height : 'auto'}}>
@@ -274,7 +340,19 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
                         의무기록지
                     </div>
                     <div className={assignmentanalyzedetail.input_box}>
-                        <input type='file'/>
+                        {
+                            anRecord ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/analyze/findrequestfile/${analyzeIndex}/anRecord`}
+                                    download="anRecord.jpg"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
                     </div>
                 </div>
                 <div className={assignmentanalyzedetail.row_box} style={{height : 'auto'}}>
@@ -282,7 +360,19 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
                         필름
                     </div>
                     <div className={assignmentanalyzedetail.input_box}>
-                        <input type='file'/>
+                        {
+                            anFilm ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/analyze/findrequestfile/${analyzeIndex}/anFilm`}
+                                    download="anFilm.jpg"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
                     </div>
                 </div>
                 <div className={assignmentanalyzedetail.row_box} style={{height : 'auto'}}>

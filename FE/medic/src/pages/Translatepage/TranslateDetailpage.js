@@ -22,6 +22,7 @@ export default function TranslateDetailpage(){
     const [tr_etc_count, setTretccount] = useState(0)
 
     const [trMtl, setTrMtl] = useState(false);
+    const [trAnswer, setTrAnswer] = useState(false)
 
     const getTranslateRequest = async() => {
         try{
@@ -33,6 +34,13 @@ export default function TranslateDetailpage(){
             setTrptssnum2(trPtSsNum[1]);
             setTrMtl(()=>{
                 if(response.data.trMtl === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+            setTrAnswer(()=>{
+                if(response.data.trAnswer === "empty_file"){
                     return false
                 } else{
                     return true
@@ -179,14 +187,20 @@ export default function TranslateDetailpage(){
                         번역 요청자료
                     </div>
                     <div className={translaterequest.input_box}>
-                        <button>
-                            <a
-                                href={`http://localhost:8080/translation/findrequestfile/${index}`}
-                                download="adRecord.zip"
-                            >
-                                다운로드
-                            </a>
-                        </button>
+                        {
+                            trMtl ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/translation/findrequestfile/${index}`}
+                                    download="adRecord.zip"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
+                        
                     </div>
                 </div>
                 <div className={translaterequest.row_box} style={{height : 'auto'}}>
@@ -195,7 +209,7 @@ export default function TranslateDetailpage(){
                     </div>
                     <div className={translaterequest.input_box}>
                         {
-                            trMtl ?
+                            trAnswer ?
                             <button>
                                 <a
                                     href={`http://localhost:8080/translateanswer/findrequestfile/${index}`}

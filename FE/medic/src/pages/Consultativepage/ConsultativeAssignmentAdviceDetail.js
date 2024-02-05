@@ -54,6 +54,13 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
     const [adQuestionContents, setAdQuestionContents] = useState([]);
     const [adAnswerContents, setAdAnswerContents] = useState([]);
 
+    //자문 파일
+    const [adReqForm, setAdReqForm] = useState(false)
+    const [adDiagnosis, setAdDiagnosis] = useState(false)
+    const [adRecord, setAdRecord] = useState(false)
+    const [adFilm, setAdFilm] = useState(false)
+    const [adOther, setAdOther] = useState(false)
+
 
     const getUserInfo = async() =>{
         try{
@@ -92,9 +99,44 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
             setAdEtcValue(response.data.adEtcValue)
             setAdQuestionTotal(response.data.adQuestionTotal)
             setAdQuestionContents(response.data.adQuestionContents)
-        } catch(err){
-            console.log(err)
-        }  
+            setAdReqForm(() => {
+                if(response.data.adReqForm === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+            setAdDiagnosis(()=>{
+                if(response.data.adDiagnosis === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+            setAdRecord(()=>{
+                if(response.data.adRecord === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+            setAdFilm(()=>{
+                if(response.data.adFilm === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+            setAdOther(()=>{
+                if(response.data.adOther === "empty_file"){
+                    return false
+                } else{
+                    return true
+                }
+            })
+    } catch(err){
+        console.log(err)
+    }  
     }
 
     useEffect(()=>{
@@ -388,7 +430,19 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                         자문의뢰신청서
                     </div>
                     <div className={assignmentadvicedetail.input_box}>
-                        <input type='file'/>
+                    {
+                            adReqForm ? 
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/advice/findrequestfile/${adviceIndex}/adReqForm`}
+                                    download="adReqForm.jpg"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
                     </div>
                 </div>
                 <div className={assignmentadvicedetail.row_box} style={{height : 'auto'}}>
@@ -396,7 +450,19 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                         진단서
                     </div>
                     <div className={assignmentadvicedetail.input_box}>
-                        <input type='file'/>
+                        {
+                            adDiagnosis ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/advice/findrequestfile/${adviceIndex}/adDiagnosis`}
+                                    download="adDiagnosis.jpg"
+                                >
+                                다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
                     </div>
                 </div>
                 <div className={assignmentadvicedetail.row_box} style={{height : 'auto'}}>
@@ -404,7 +470,19 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                         의무기록지
                     </div>
                     <div className={assignmentadvicedetail.input_box}>
-                        <input type='file'/>
+                        {
+                            adRecord ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/advice/findrequestfile/${adviceIndex}/adRecord`}
+                                    download="adRecord.jpg"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
                     </div>
                 </div>
                 <div className={assignmentadvicedetail.row_box} style={{height : 'auto'}}>
@@ -412,7 +490,36 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                         필름
                     </div>
                     <div className={assignmentadvicedetail.input_box}>
-                        <input type='file'/>
+                        {
+                            adFilm ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/advice/findrequestfile/${adviceIndex}/adFilm`}
+                                    download="adFilm.jpg"
+                                >다운로드</a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
+                    </div>
+                </div>
+                <div className={assignmentadvicedetail.row_box} style={{height : 'auto'}}>
+                    <div className={assignmentadvicedetail.title_box}>
+                        기타 자료
+                    </div>
+                    <div className={assignmentadvicedetail.input_box}>
+                        {
+                            adOther ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/advice/findrequestfile/${adviceIndex}/adOther`}
+                                    download="adOther.jpg"
+                                >다운로드</a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
+                        
                     </div>
                 </div>
                 <div className={assignmentadvicedetail.complete}>

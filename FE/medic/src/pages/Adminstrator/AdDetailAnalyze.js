@@ -30,6 +30,11 @@ export default function AdDetailAnalyze(){
     const [anptssnum1, setAnPtSsNum1] = useState(0);
     const [anptssnum2, setAnPtSsNum2] = useState(0);
 
+    const [anReqForm, setAnReqForm] = useState(false)
+    const [anDiagnosis, setAnDiagnosis] = useState(false)
+    const [anRecord, setAnRecord] = useState(false)
+    const [anFilm, setAnFilm] = useState(false)
+    const [anOther, setAnOther] = useState(false)
 
     const [anQuestion, setAnQuestion] = useState(0);
     
@@ -47,7 +52,42 @@ export default function AdDetailAnalyze(){
                 setAnQuestion(response.data.analyzeRequestList);
                 setAnPtSsNum1(anptssnum[0]);
                 setAnPtSsNum2(anptssnum[1]);
-            
+                setAnReqForm(() => {
+                    if(response.data.anReqForm === "empty_file"){
+                        return false
+                    } else{
+                        return true
+                    }
+                })
+                setAnDiagnosis(()=>{
+                    if(response.data.anDiagnosis === "empty_file"){
+                        return false
+                    } else{
+                        return true
+                    }
+                })
+                setAnRecord(()=>{
+                    if(response.data.anRecord === "empty_file"){
+                        return false
+                    } else{
+                        return true
+                    }
+                })
+                setAnFilm(()=>{
+                    if(response.data.anFilm === "empty_file"){
+                        return false
+                    } else{
+                        return true
+                    }
+                })
+                setAnOther(()=>{
+                    if(response.data.anOther === "empty_file"){
+                        console.log(1)
+                        return false
+                    } else{
+                        return true
+                    }
+                })
 
                
             }catch(error){
@@ -273,7 +313,19 @@ export default function AdDetailAnalyze(){
                         분석의뢰신청서
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file' disabled={true} value={analyzeDetails.anReqFrom}/>
+                        {
+                            anReqForm ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anReqForm`}
+                                    download="anReqForm.jpg"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            : 
+                            "해당 파일이 존재하지 않습니다."
+                        }
                     </div>
                 </div>
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
@@ -281,7 +333,19 @@ export default function AdDetailAnalyze(){
                         진단서
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file' disabled={true} value={analyzeDetails.andDiagnosis}/>
+                    {
+                            anDiagnosis ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anDiagnosis`}
+                                    download="anDiagnosis.jpg"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
                     </div>
                 </div>
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
@@ -289,7 +353,19 @@ export default function AdDetailAnalyze(){
                         의무기록지
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file'disabled={true} value={analyzeDetails.anRecord} />
+                    {
+                            anRecord ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anRecord`}
+                                    download="anRecord.jpg"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
                     </div>
                 </div>
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
@@ -297,7 +373,19 @@ export default function AdDetailAnalyze(){
                         필름
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file'disabled={true} value={analyzeDetails.anFilm}/>
+                    {
+                            anFilm ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anFilm`}
+                                    download="anFilm.jpg"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
                     </div>
                 </div>
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
@@ -305,7 +393,19 @@ export default function AdDetailAnalyze(){
                         기타자료
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file' disabled={true} value={analyzeDetails.anOther}/>
+                    {
+                            anOther ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anOther`}
+                                    download="anOther.jpg"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }    
                     </div>
                 </div>
                 <div className={analyzerequest.complete}>
