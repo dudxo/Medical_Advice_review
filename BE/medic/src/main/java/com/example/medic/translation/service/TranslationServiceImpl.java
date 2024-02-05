@@ -1,7 +1,9 @@
 package com.example.medic.translation.service;
 
+import com.example.medic.analyze.domain.AnalyzeRequestFile;
 import com.example.medic.analyze.domain.AnalyzeRequestList;
 import com.example.medic.analyze.dto.AnalyzeRequestFileDto;
+import com.example.medic.analyze.dto.AnalyzeUpdateDto;
 import com.example.medic.client.domain.Client;
 import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.client.service.ClientService;
@@ -25,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.PersistenceException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -172,8 +175,13 @@ public class TranslationServiceImpl implements TranslationService {
      * 번역의뢰 수정
      */
     @Transactional
-    public boolean updateTranslationRequest(Long trId, TranslationResponseDto updateDto) {
+    public boolean updateTranslationRequest(Long trId, TranslationResponseDto updateDto, List<MultipartFile> multipartFiles) throws IOException {
         TranslationRequestList translationRequestList = translationRequestListRepository.findById(trId).orElse(null);
+        TranslationRequestFile translationRequestFile = translationRequestFileRepository.findById(trId).get();
+        Long fid = translationRequestFileRepository.findByFileId(trId);
+
+        TranslationFileDto translationFileDto = splitUpdateToFileDto(updateDto, multipartFiles);
+        deleteTranslationFile(translationRequestFile, translationFileDto);
 
         // 번역의뢰 리스트 수정
         TranslationRequestList updatedTranslationRequestList = translationRequestList.toBuilder()
@@ -190,9 +198,80 @@ public class TranslationServiceImpl implements TranslationService {
                 .trMdDate(LocalDate.now())
                 .build();
 
+        //번역의뢰 파일 업데이트
+        translationRequestFile = translationRequestFile.builder()
+                .tfId(fid)
+                .trMtl(translationFileDto.getTrMtl())
+                .build();
         // 번역의뢰 리스트 저장
         translationRequestListRepository.save(updatedTranslationRequestList);
+        translationRequestFileRepository.save(translationRequestFile);
 
         return true;
+    }
+
+    /**
+     * 파일 업데이트 Dto 변환
+     */
+    private TranslationFileDto splitUpdateToFileDto (TranslationResponseDto updateDto, List<MultipartFile> multipartFiles) throws IOException {
+        if (multipartFiles.size() != 0) {
+            Path projectPath;
+            if (System.getProperty("user.dir").contains("medic")) {
+                projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/translationrequest/");
+            } else {
+                projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translationrequest/");
+            }
+
+            Deque <String> files = fileHandler.parseFile(projectPath, multipartFiles);
+
+            return TranslationFileDto.builder()
+                    .trMtl(updateDto.getTrMtl().equals("no_empty_file") ? files.pollFirst() : updateDto.getTrMtl())
+                    .build();
+        }
+        return TranslationFileDto.builder()
+                .trMtl(updateDto.getTrMtl())
+                .build();
+    }
+
+    /**
+     * 수정파일과 기존 파일 변화비교
+     */
+    private void deleteIfNotEqual(Path filePath, String fileValue, String requestValue) throws IOException {
+        if (!fileValue.equals(requestValue)) {
+            Path filePathToDelete = filePath.resolve(Paths.get(fileValue));
+            deleteFile(filePathToDelete);
+        }
+    }
+
+    /**
+     * 기존 파일 삭제
+     */
+    private void deleteFile(Path filePathToDelete) throws IOException {
+        if (Files.exists(filePathToDelete)) {
+            try {
+                Files.delete(filePathToDelete);
+                System.out.println("File deleted successfully: " + filePathToDelete);
+            } catch (IOException e) {
+                System.err.println("Error deleting file: " + filePathToDelete);
+                e.printStackTrace();
+                throw e; // Rethrow the exception to handle it in the upper layers if needed
+            }
+        } else {
+            System.out.println("File not found: " + filePathToDelete);
+        }
+    }
+
+    /**
+     * 경로 생성 및 삭제메서드 호출
+     */
+    private void deleteTranslationFile(TranslationRequestFile translationRequestFile, TranslationFileDto translationFileDto) throws IOException {
+        Path projectPath;
+        if (System.getProperty("user.dir").contains("medic")) {
+            projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/analyzerequest/");
+        } else {
+            projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/analyzerequest/");
+        }
+
+        deleteIfNotEqual(projectPath, translationRequestFile.getTrMtl(), translationFileDto.getTrMtl());
     }
 }

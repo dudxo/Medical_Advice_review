@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import analyzerequest from '../../css/AnalyzeRequestpage.module.css';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import ImageModal from '../../components/ImageModal';
 
 export default function AnalyzeModifypage(){
     const [imageError, setImageError] = useState(false);
@@ -32,6 +33,23 @@ export default function AnalyzeModifypage(){
     const [anQuestionContents, setAnQuestionContents] = useState([]);
     const [contents_count, setContentscount] = useState(0)
     const [anQuestion, setAnQuestion] = useState(0);
+
+    // 자문 파일
+    const [anReqForm, setAnReqForm] = useState(null)
+    const [anDiagnosis, setAnDiagnosis] = useState(null)
+    const [anRecord, setAnRecord] = useState(null)
+    const [anFilm, setAnFilm] = useState(null)
+    const [anOther, setAnOther] = useState(null)
+
+    //자문 파일 검사
+    const [isAnReqForm, setIsAnReqForm] = useState(false)
+    const [isAnDiagnosis, setIsAnDiagnosis] = useState(false)
+    const [isAnRecord, setIsAnRecord] = useState(false)
+    const [isAnFilm, setIsAnFilm] = useState(false)
+    const [isAnOther, setIsAnOther] = useState(false)
+
+    const [isOpenimage ,setIsOpenimage] = useState(false)
+    const [src, setSrc] = useState('')
 
     const navigate = useNavigate()
     const analyzeUpdate = new FormData()
@@ -69,6 +87,46 @@ export default function AnalyzeModifypage(){
             setAnQuestion(response.data.analyzeRequests);
             setAnQuestionTotal(response.data.analyzeRequests.length);
             // setAnAnswerContent(response.data.anAnswerContent)
+            setIsAnReqForm(() => {
+                if(response.data.anReqForm === "empty_file"){
+                    return false
+                } else{
+                    setAnReqForm(response.data.anReqForm)
+                    return true
+                }
+            })
+            setIsAnDiagnosis(()=>{
+                if(response.data.anDiagnosis === "empty_file"){
+                    return false
+                } else{
+                    setAnDiagnosis(response.data.anDiagnosis)
+                    return true
+                }
+            })
+            setIsAnRecord(()=>{
+                if(response.data.anRecord === "empty_file"){
+                    return false
+                } else{
+                    setAnRecord(response.data.anRecord)
+                    return true
+                }
+            })
+            setIsAnFilm(()=>{
+                if(response.data.anFilm === "empty_file"){
+                    return false
+                } else{
+                    setAnFilm(response.data.anFilm)
+                    return true
+                }
+            })
+            setIsAnOther(()=>{
+                if(response.data.anOther === "empty_file"){
+                    return false
+                } else{
+                    setAnOther(response.data.anOther)
+                    return true
+                }
+            })
     } catch(err){
         console.log(err)
     }  
@@ -93,20 +151,42 @@ const btn_analyze_update = async() => {
           }
           const an_PtSsNum = an_ptssnum1 + '-' + an_ptssnum2
           const today = new Date()
-
-            const updateModify = {
-                "anPtName" : an_ptname,
-                "anPtSsNum" : an_PtSsNum,
-                "anPtSub" : an_ptsub,
-                "anPtDiagnosis" : an_ptdiagnosis,
-                "anPtDiagContent" : an_ptdiagcontent,
-                "anEtc" : anEtcValue,
-                "anMdDate" : today,
-                "anQuestionContent" : anQuestionContents,
+          const anFile = [anReqForm, anDiagnosis, anRecord, anFilm, anOther];
+        const anFile_toString = []
+        anFile.forEach(file => {
+            if (file === null) {
+                anFile_toString.push("empty_file")
+            } else {
+                if(typeof file === 'string'){
+                    anFile_toString.push(file)
+                }else{
+                    analyzeUpdate.append('files', file);
+                    anFile_toString.push("no_empty_file")
+                }
+                
             }
-
+        });
+        analyzeUpdate.append("dto", new Blob([JSON.stringify({
+            "anPtName" : an_ptname,
+            "anPtSsNum" : an_PtSsNum,
+            "anPtSub" : an_ptsub,
+            "anPtDiagnosis" : an_ptdiagnosis,
+            "anPtDiagContent" : an_ptdiagcontent,
+            "anEtc" : anEtcValue,
+            "anMdDate" : today,
+            "anQuestionContent" : anQuestionContents,
+            "anReqForm" : anFile_toString[0],
+            "anDiagnosis" : anFile_toString[1],
+            "anRecord" : anFile_toString[2],
+            "anFilm" : anFile_toString[3],
+            "anOther" : anFile_toString[4],
+        })], {type: "application/json"}))
           try{
-              const response = axios.put(`/analyze/analyzeDetail/update/${index}`, updateModify)
+              const response = await axios.put(`/analyze/analyzeDetail/update/${index}`, analyzeUpdate,{
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
               alert('분석의뢰 수정이 완료되었습니다.')
               navigate('/')
           } catch(err){
@@ -176,7 +256,13 @@ const btn_analyze_update = async() => {
     const btn_analyze_cancle = async() => {
         navigate('/')
     }
-
+    const btn_open_image = src => {
+        setIsOpenimage(true)
+        setSrc(src)
+    }
+    const closeImageModal = e => {
+        setIsOpenimage(false)
+    }
     return(
         <div className={analyzerequest.anvicerequest_wrap}>
             <div className={analyzerequest.iconbox}>
@@ -308,7 +394,15 @@ const btn_analyze_update = async() => {
                         분석의뢰신청서
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file' accept="image/*"/>
+                    {
+                        isAnReqForm ? 
+                        <>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findrequestfile/${index}/anReqForm`)}>미리보기</button>
+                            <button onClick={()=>setIsAnReqForm(!isAnReqForm)} >X</button>
+                        </>
+                        :
+                        <input type='file' accept="image/*" onChange={(e) => setAnReqForm(e.target.files[0])} />
+                    }
                     </div>
                 </div>
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
@@ -316,7 +410,15 @@ const btn_analyze_update = async() => {
                         진단서
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file' accept="image/*"/>
+                    {
+                        isAnDiagnosis ? 
+                        <>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findrequestfile/${index}/anDiagnosis`)}>미리보기</button>
+                            <button onClick={()=>setIsAnDiagnosis(!isAnDiagnosis)} >X</button>
+                        </>
+                        :
+                        <input type='file' accept="image/*" onChange={(e) => setAnDiagnosis(e.target.files[0])} />
+                    }
                     </div>
                 </div>
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
@@ -324,7 +426,15 @@ const btn_analyze_update = async() => {
                         의무기록지
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file' accept="image/*"/>
+                    {
+                        isAnRecord ? 
+                        <>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findrequestfile/${index}/anRecord`)}>미리보기</button>
+                            <button onClick={()=>setIsAnRecord(!isAnRecord)} >X</button>
+                        </>
+                        :
+                        <input type='file' accept="image/*" onChange={(e) => setAnRecord(e.target.files[0])} />
+                    }
                     </div>
                 </div>
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
@@ -332,7 +442,15 @@ const btn_analyze_update = async() => {
                         필름
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file' accept="image/*"/>
+                    {
+                        isAnFilm ? 
+                        <>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findrequestfile/${index}/anFilm`)}>미리보기</button>
+                            <button onClick={()=>setIsAnFilm(!isAnFilm)} >X</button>
+                        </>
+                        :
+                        <input type='file' accept="image/*" onChange={(e) => setAnFilm(e.target.files[0])} />
+                    }
                     </div>
                 </div>
                 <div className={analyzerequest.row_box} style={{height : 'auto'}}>
@@ -340,13 +458,22 @@ const btn_analyze_update = async() => {
                         기타자료
                     </div>
                     <div className={analyzerequest.input_box}>
-                        <input type='file' accept="image/*"/>
+                    {
+                        isAnOther ? 
+                        <>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findrequestfile/${index}/anOther`)}>미리보기</button>
+                            <button onClick={()=>setIsAnOther(!isAnOther)} >X</button>
+                        </>
+                        :
+                        <input type='file' accept="image/*" onChange={(e) => setAnOther(e.target.files[0])} />
+                    }
                     </div>
                 </div>
                 <div className={analyzerequest.complete}>
                     <button type = "button" className={analyzerequest.btt_complete} onClick={btn_analyze_update}>저장</button>
                     <button type = "button" className={analyzerequest.btt_complete} onClick={btn_analyze_cancle}>취소</button>
                  </div>
+                 <ImageModal src={src} isOpenimage={isOpenimage} onRequestClose={closeImageModal} />
             </div>
         </div>
     )

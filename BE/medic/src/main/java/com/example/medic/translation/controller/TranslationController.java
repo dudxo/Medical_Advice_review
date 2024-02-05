@@ -89,8 +89,10 @@ public class TranslationController {
      * 번역의뢰 수정
      */
     @PutMapping("/translate/translateDetail/update/{trId}")
-    public ResponseEntity<String> updateTranslationRequest(@PathVariable Long trId, @RequestBody TranslationResponseDto updateDto) {
-        boolean updated = translationServiceImpl.updateTranslationRequest(trId, updateDto);
+    public ResponseEntity<String> updateTranslationRequest(@PathVariable Long trId,
+                                                           @RequestPart(name = "dto") TranslationResponseDto updateDto,
+                                                           @RequestPart(name = "files") List<MultipartFile> multipartFiles) {
+        boolean updated = translationServiceImpl.updateTranslationRequest(trId, updateDto, multipartFiles);
 
         if (updated) {
             return ResponseEntity.ok("번역의뢰 수정 성공");

@@ -27,4 +27,14 @@ public class AnalyzeUpdateDto {
     private Date anMdDate;
 
     private List<String> anQuestionContent;
+
+    private String anReqForm;
+
+    private String anDiagnosis;
+
+    private String anRecord;
+
+    private String anFilm;
+
+    private String anOther;
 }

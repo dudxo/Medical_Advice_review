@@ -87,8 +87,10 @@ public class AnalyzeController {
      * 분석의뢰 수정
      */
     @PutMapping("/analyze/analyzeDetail/update/{anId}")
-    public ResponseEntity<String> updateAnalyzeRequest(@PathVariable Long anId, @RequestBody AnalyzeUpdateDto updateDto) {
-        boolean updated = analyzeService.updateAnalyzeRequest(anId, updateDto);
+    public ResponseEntity<String> updateAnalyzeRequest(@PathVariable Long anId,
+                                                       @RequestPart(name = "dto") AnalyzeUpdateDto updateDto,
+                                                       @RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles) throws IOException {
+        boolean updated = analyzeService.updateAnalyzeRequest(anId, updateDto, multipartFiles);
 
         if (updated) {
             return ResponseEntity.ok("분석의뢰 수정 성공");

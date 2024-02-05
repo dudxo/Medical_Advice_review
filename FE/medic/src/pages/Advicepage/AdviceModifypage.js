@@ -251,8 +251,12 @@ const btn_advice_update = async() => {
             if (file === null) {
                 adFile_toString.push("empty_file")
             } else {
-                allAdviceUpdate.append('files', file);
-                adFile_toString.push("no_empty_file")
+                if(typeof file === 'string'){
+                    adFile_toString.push(file)
+                } else{
+                    allAdviceUpdate.append('files', file);
+                    adFile_toString.push("no_empty_file")
+                }
             }
         });
         console.log(allAdviceUpdate.getAll('files'));

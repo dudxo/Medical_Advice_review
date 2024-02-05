@@ -1,6 +1,8 @@
 package com.example.medic.analyze.service;
 
+import com.example.medic.advice.domain.AdviceFile;
 import com.example.medic.advice.dto.AdviceFileRequestDto;
+import com.example.medic.advice.dto.AdviceUpdateDto;
 import com.example.medic.analyze.domain.AnalyzeAssignment;
 import com.example.medic.analyze.domain.AnalyzeRequest;
 import com.example.medic.analyze.domain.AnalyzeRequestFile;
@@ -23,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.PersistenceException;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -224,8 +227,13 @@ public class AnalyzeServiceImpl implements AnalyzeService {
      * 분석의뢰 수정
      */
     @Transactional
-    public boolean updateAnalyzeRequest(Long anId, AnalyzeUpdateDto updateDto) {
+    public boolean updateAnalyzeRequest(Long anId, AnalyzeUpdateDto updateDto, List<MultipartFile> multipartFiles) throws IOException {
         AnalyzeRequestList analyzeRequestList = analyzeRequestListRepository.findById(anId).orElse(null);
+        AnalyzeRequestFile analyzeRequestFile = analyzeRequestFileRepository.findById(anId).get();
+        Long fid = analyzeRequestFileRepository.findByFileId(anId);
+
+        AnalyzeRequestFileDto analyzeRequestFileDto = splitUpdateToFileDto(updateDto, multipartFiles);
+        deleteAnalyzeFile(analyzeRequestFile, analyzeRequestFileDto);
 
         // 분석의뢰 리스트 수정
         AnalyzeRequestList updatedAnalyzeRequestList = analyzeRequestList.toBuilder()
@@ -259,9 +267,100 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 .anMdDate(LocalDate.now())
                 .build();
 
+        //분석의뢰 파일 업데이트
+        analyzeRequestFile = AnalyzeRequestFile.builder()
+                .anfId(fid)
+                .anReqForm(analyzeRequestFileDto.getAnReqForm())
+                .anDiagnosis(analyzeRequestFileDto.getAnDiagnosis())
+                .anRecord(analyzeRequestFile.getAnRecord())
+                .anFilm(analyzeRequestFileDto.getAnFilm())
+                .anOther(analyzeRequestFileDto.getAnOther())
+                .analyzeRequestList(analyzeRequestList)
+                .build();
+
         // 분석의뢰 리스트 저장
         analyzeRequestListRepository.save(updatedAnalyzeRequestList);
 
+        //분석의뢰 파일저장
+        analyzeRequestFileRepository.save(analyzeRequestFile);
+
         return true;
     }
+    /**
+     * 파일 업데이트 Dto 변환
+     */
+    private AnalyzeRequestFileDto splitUpdateToFileDto (AnalyzeUpdateDto analyzeUpdateDto, List<MultipartFile> multipartFiles) throws IOException {
+        if (multipartFiles.size() != 0) {
+            Path projectPath;
+            if (System.getProperty("user.dir").contains("medic")) {
+                projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/analyzerequest/");
+            } else {
+                projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/analyzerequest/");
+            }
+
+            Deque <String> files = fileHandler.parseFile(projectPath, multipartFiles);
+
+            return AnalyzeRequestFileDto.builder()
+                    .anReqForm(analyzeUpdateDto.getAnReqForm().equals("no_empty_file") ? files.pollFirst() : analyzeUpdateDto.getAnReqForm())
+                    .anDiagnosis(analyzeUpdateDto.getAnDiagnosis().equals("no_empty_file") ? files.pollFirst(): analyzeUpdateDto.getAnDiagnosis())
+                    .anRecord(analyzeUpdateDto.getAnRecord().equals("no_empty_file") ? files.pollFirst(): analyzeUpdateDto.getAnRecord())
+                    .anFilm(analyzeUpdateDto.getAnFilm().equals("no_empty_file") ? files.pollFirst() : analyzeUpdateDto.getAnRecord())
+                    .anOther(analyzeUpdateDto.getAnOther().equals("no_empty_file") ? files.pollFirst() : analyzeUpdateDto.getAnOther())
+                    .build();
+        }
+        return AnalyzeRequestFileDto.builder()
+                .anReqForm(analyzeUpdateDto.getAnReqForm())
+                .anDiagnosis(analyzeUpdateDto.getAnDiagnosis())
+                .anRecord(analyzeUpdateDto.getAnRecord())
+                .anFilm(analyzeUpdateDto.getAnFilm())
+                .anOther(analyzeUpdateDto.getAnOther())
+                .build();
+    }
+
+    /**
+     * 수정파일과 기존 파일 변화비교
+     */
+    private void deleteIfNotEqual(Path filePath, String fileValue, String requestValue) throws IOException {
+        if (!fileValue.equals(requestValue)) {
+            Path filePathToDelete = filePath.resolve(Paths.get(fileValue));
+            deleteFile(filePathToDelete);
+        }
+    }
+
+    /**
+     * 기존 파일 삭제
+     */
+    private void deleteFile(Path filePathToDelete) throws IOException {
+        if (Files.exists(filePathToDelete)) {
+            try {
+                Files.delete(filePathToDelete);
+                System.out.println("File deleted successfully: " + filePathToDelete);
+            } catch (IOException e) {
+                System.err.println("Error deleting file: " + filePathToDelete);
+                e.printStackTrace();
+                throw e; // Rethrow the exception to handle it in the upper layers if needed
+            }
+        } else {
+            System.out.println("File not found: " + filePathToDelete);
+        }
+    }
+
+    /**
+     * 경로 생성 및 삭제메서드 호출
+     */
+    private void deleteAnalyzeFile(AnalyzeRequestFile analyzeRequestFile, AnalyzeRequestFileDto analyzeRequestFileDto) throws IOException {
+        Path projectPath;
+        if (System.getProperty("user.dir").contains("medic")) {
+            projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/analyzerequest/");
+        } else {
+            projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/analyzerequest/");
+        }
+
+        deleteIfNotEqual(projectPath, analyzeRequestFile.getAnReqForm(), analyzeRequestFileDto.getAnReqForm());
+        deleteIfNotEqual(projectPath, analyzeRequestFile.getAnDiagnosis(), analyzeRequestFileDto.getAnDiagnosis());
+        deleteIfNotEqual(projectPath, analyzeRequestFile.getAnRecord(), analyzeRequestFileDto.getAnRecord());
+        deleteIfNotEqual(projectPath, analyzeRequestFile.getAnFilm(), analyzeRequestFileDto.getAnFilm());
+        deleteIfNotEqual(projectPath, analyzeRequestFile.getAnOther(), analyzeRequestFileDto.getAnOther());
+    }
 }
+
