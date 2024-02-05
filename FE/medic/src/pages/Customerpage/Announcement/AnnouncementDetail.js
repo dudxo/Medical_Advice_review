@@ -10,12 +10,12 @@ export default function AnnouncementDetail()  {
   const cookie = new Cookies();
   const [isAdmin, setIsAdmin] = useState(false);
   const [announceDetail,setAnnounceDetail ] = useState(location.state.announceDetail);
+  const previousAnnounce = location.state.previousAnnounce;
+  const nextAnnounce = location.state.nextAnnounce;
   const [announceDetail1,setAnnounceDetail1 ] = useState([]);
   const [amName,setAmName] = useState(announceDetail1.amName);
   const [amRegDate,setAmRegDate] = useState(announceDetail1.amReg);
-
-  const announcementdetail = location.state.announcementdetail;
-  const announcements = location.state.announcements;
+  console.log('1',previousAnnounce)
   const amId = location.state.amid;
   console.log('amId',amId)
   const [prevTitle, setPrevTitle] = useState('');
@@ -124,37 +124,35 @@ useEffect(() => {
         </div>
     <br></br>
     
-    <div className={announcedetail.detail_table} style={{height: '85px'}}>
-        <div className={announcedetail.detail_rowbox}>
-                <div className={announcedetail.detail_title} style={{width : '213px'}}>
-                      이전글
-                </div>
-                <div className={announcedetail.detail_titleinputbox}>
-                   이전글
-                </div>
-                <div className={announcedetail.detail_title} style={{width : '213px'}}>
-                      등록일
-                </div>
-                <div className={announcedetail.detail_titleinputbox}>
-                   등록일
-                </div>
+    <div className={announcedetail.detail_rowbox}>
+  <div className={announcedetail.detail_title} style={{ width: '213px' }}>
+    이전글
+  </div>
+  <div className={announcedetail.detail_titleinputbox}>
+    {previousAnnounce ? previousAnnounce.amName || '' : ''}
+  </div>
+  <div className={announcedetail.detail_title} style={{ width: '213px' }}>
+    등록일
+  </div>
+  <div className={announcedetail.detail_titleinputbox}>
+    {previousAnnounce ? previousAnnounce.amRegDate || '' : ''}
+  </div>
+</div>
+<div className={announcedetail.detail_rowbox}>
+  <div className={announcedetail.detail_title} style={{ width: '210px' }}>
+    다음글
+  </div>
+  <div className={announcedetail.detail_titleinputbox}>
+    {nextAnnounce ? nextAnnounce.amName || '' : ''}
+  </div>
+  <div className={announcedetail.detail_title} style={{ width: '210px' }}>
+    등록일
+  </div>
+  <div className={announcedetail.detail_titleinputbox}>
+    {nextAnnounce ? nextAnnounce.amRegDate || '' : ''}
+  </div>
+</div>
 
-            </div>
-        <div className={announcedetail.detail_rowbox}>
-                <div className={announcedetail.detail_title} style={{width : '210px'}}>
-                      다음글
-                </div>
-                <div className={announcedetail.detail_titleinputbox}>
-                   다음글
-                </div>
-                <div className={announcedetail.detail_title} style={{width : '210px'}}>
-                      등록일
-                </div>
-                <div className={announcedetail.detail_titleinputbox}>
-                   등록일
-                </div>
-            </div>
-        </div>
         
         <div className={announcedetail.complete}>
           <button type="button" onClick={medicannounce} className={announcedetail.btt_write}>

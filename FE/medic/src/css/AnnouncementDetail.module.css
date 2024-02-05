@@ -139,3 +139,14 @@ div.complete {
   border: none;
   border-radius: 20px;
 }
+
+.inputWithoutBorder {
+  border: none;
+  outline: none;
+}
+
+.textareaWithoutBorder {
+  border: none;
+  outline: none;
+  resize: none;
+}

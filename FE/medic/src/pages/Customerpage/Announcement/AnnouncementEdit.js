@@ -16,8 +16,10 @@ export default function AnnouncementEdit()  {
   const [amName , setAmName] = useState(announceDetail.amName);
   const [amId , setAmId] = useState(location.state.amId);
   const [mId, setMid] = useState(announceDetail.mId);
-  useEffect(()=>{
+  const [timer, setTimer] = useState("");
 
+  useEffect(()=>{
+    currentTimer();
   })
 
   const input_amName = (e) =>{
@@ -34,7 +36,15 @@ export default function AnnouncementEdit()  {
     setAmMdDate(e.target.value)
   }
 
-
+  const currentTimer = () => {
+    const date = new Date();
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Add padStart(2, '0') to ensure two digits
+    const day = String(date.getDate()).padStart(2, '0'); // Add padStart(2, '0') to ensure two digits
+    const today = `${year}-${month}-${day}`;
+    setTimer(today);
+  };
+  
 console.log('ann',announceDetail)
 
   const formatDateString = (dateString) => {
@@ -57,10 +67,10 @@ console.log('ann',announceDetail)
     if(window.confirm("수정하시겠습니까?")){
         e.preventDefault()
         const announceInfo = {
-          'mId' : mId,
+            'mId' : mId,
            'amName' : amName,
            'amRegDate' : amRegDate,
-           'amMdDate ' : amMdDate,
+           'amMdDate': formatDateString(new Date()),
            'amContent' : amContent
         } 
         announce_modify(announceInfo)
@@ -74,7 +84,7 @@ console.log('ann',announceDetail)
     console.log(response)
     if(response.data === 1){
         alert('정보수정이 완료되었습니다.')
-        navigate('/medic/mypage')
+        navigate('/medic/customer/announcement')
     }
   }
 
@@ -93,7 +103,7 @@ console.log('ann',announceDetail)
                     제목
                 </div>
                 <div className={announcedetail.detail_titleinputbox}>
-                    <input type='text' value={amName} onChange={e=>input_amName(e)}></input>
+                    <input type='text' value={amName} className={announcedetail.inputWithoutBorder} onChange={e=>input_amName(e)}></input>
                 </div>
             </div>
             <div className={announcedetail.detail_rowbox}>
@@ -103,7 +113,7 @@ console.log('ann',announceDetail)
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
         
-                        <input type='text' value={amId}></input>
+                        <input type='text' value={amId} className={announcedetail.inputWithoutBorder} ></input>
                     </div>
                 </div> 
                 <div className={announcedetail.detail_writerinfo}>
@@ -112,27 +122,30 @@ console.log('ann',announceDetail)
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
                         
-                        <input value={formatDateString(amRegDate)} onChange={e=>input_amRegDate(e)}></input>
+                        <input value={formatDateString(amRegDate)} className={announcedetail.inputWithoutBorder} onChange={e=>input_amRegDate(e)}></input>
                     </div>
                 </div>   
-                <div className={announcedetail.detail_writerinfo}>
+                 <div className={announcedetail.detail_writerinfo}>
                     <div className={announcedetail.detail_title}>
                         수정일
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
-                    <input value={formatDateString(amMdDate)} onChange = {e=>input_amMdDate(e)}></input>
+                    <input value={timer}  className={announcedetail.inputWithoutBorder} readOnly={true} onChange = {e=>input_amMdDate(e)}></input>
                     </div>
-                </div>  
+                  </div>  
             </div>
             <div className={`${announcedetail.detail_rowbox} ${announcedetail.detail_contentrowbox}`}>
-                <div className={`${announcedetail.detail_contenttitle} ${announcedetail.detail_title}`}>
-                    <h3 style={{paddingLeft: '20px'}}>내용</h3>
-                </div>
-                <div className={announcedetail.detail_content} >
-                  <input type='text' value={amContent} onChange={e=>input_amContent(e)}></input>
-                    
-                </div>  
-            </div>
+  <div className={`${announcedetail.detail_contenttitle} ${announcedetail.detail_title}`}>
+    <h3 style={{ paddingLeft: '20px' }}>내용</h3>
+  </div>
+  <div className={announcedetail.detail_content}>
+    <textarea
+      value={amContent}
+      onChange={(e) => input_amContent(e)}
+      className={announcedetail.textareaWithoutBorder}
+    ></textarea>
+  </div>
+</div>
         </div>
     <br></br>
     
