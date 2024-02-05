@@ -17,6 +17,7 @@ export default function AnalyzeListPage() {
         const resp = await axios.get('/analyze/list');
         const data = resp.data.reverse()
         setAnalyzeList(data);
+        console.log(data.anPtDiagnosis)
         console.log(resp)
       } catch (error) {
         console.error('Error fetching analyze list:', error);

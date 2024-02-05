@@ -166,6 +166,8 @@ const btn_analyze_update = async() => {
                 
             }
         });
+        console.log(anFile)
+        console.log(anFile_toString)
         analyzeUpdate.append("dto", new Blob([JSON.stringify({
             "anPtName" : an_ptname,
             "anPtSsNum" : an_PtSsNum,
@@ -398,7 +400,10 @@ const btn_analyze_update = async() => {
                         isAnReqForm ? 
                         <>
                             <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findrequestfile/${index}/anReqForm`)}>미리보기</button>
-                            <button onClick={()=>setIsAnReqForm(!isAnReqForm)} >X</button>
+                            <button onClick={()=>{
+                                setIsAnReqForm(!isAnReqForm)
+                                setAnReqForm(null)
+                                }} >X</button>
                         </>
                         :
                         <input type='file' accept="image/*" onChange={(e) => setAnReqForm(e.target.files[0])} />
@@ -414,7 +419,10 @@ const btn_analyze_update = async() => {
                         isAnDiagnosis ? 
                         <>
                             <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findrequestfile/${index}/anDiagnosis`)}>미리보기</button>
-                            <button onClick={()=>setIsAnDiagnosis(!isAnDiagnosis)} >X</button>
+                            <button onClick={()=>{
+                                setIsAnDiagnosis(!isAnDiagnosis)
+                                setAnDiagnosis(null)
+                                }} >X</button>
                         </>
                         :
                         <input type='file' accept="image/*" onChange={(e) => setAnDiagnosis(e.target.files[0])} />
@@ -430,7 +438,10 @@ const btn_analyze_update = async() => {
                         isAnRecord ? 
                         <>
                             <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findrequestfile/${index}/anRecord`)}>미리보기</button>
-                            <button onClick={()=>setIsAnRecord(!isAnRecord)} >X</button>
+                            <button onClick={()=>{
+                                setIsAnRecord(!isAnRecord)
+                                setAnRecord(null)
+                                }} >X</button>
                         </>
                         :
                         <input type='file' accept="image/*" onChange={(e) => setAnRecord(e.target.files[0])} />
@@ -446,7 +457,10 @@ const btn_analyze_update = async() => {
                         isAnFilm ? 
                         <>
                             <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findrequestfile/${index}/anFilm`)}>미리보기</button>
-                            <button onClick={()=>setIsAnFilm(!isAnFilm)} >X</button>
+                            <button onClick={()=>{
+                                setIsAnFilm(!isAnFilm)
+                                setAnFilm(null)
+                                }} >X</button>
                         </>
                         :
                         <input type='file' accept="image/*" onChange={(e) => setAnFilm(e.target.files[0])} />
@@ -462,7 +476,10 @@ const btn_analyze_update = async() => {
                         isAnOther ? 
                         <>
                             <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findrequestfile/${index}/anOther`)}>미리보기</button>
-                            <button onClick={()=>setIsAnOther(!isAnOther)} >X</button>
+                            <button onClick={()=>{
+                                setIsAnOther(!isAnOther)
+                                setAnOther(null)
+                                }} >X</button>
                         </>
                         :
                         <input type='file' accept="image/*" onChange={(e) => setAnOther(e.target.files[0])} />

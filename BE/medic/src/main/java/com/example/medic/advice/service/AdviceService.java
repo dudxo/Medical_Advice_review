@@ -77,31 +77,35 @@ public class AdviceService {
      */
 
     public AdviceFileRequestDto splitRequestToFileDto(AllAdviceRequestDto allAdviceRequestDto, List<MultipartFile> multipartFiles) throws IOException {
-        if (multipartFiles.size() != 0 && multipartFiles.size() > 0) {
-            Path projectPath;
-            if (System.getProperty("user.dir").contains("medic")) {
-                projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/advicerequest/");
-            } else {
-                projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/");
+        try{
+            if (multipartFiles.size() != 0 && multipartFiles.size() > 0) {
+                Path projectPath;
+                if (System.getProperty("user.dir").contains("medic")) {
+                    projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/advicerequest/");
+                } else {
+                    projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/");
+                }
+
+                Deque <String> files = fileHandler.parseFile(projectPath, multipartFiles);
+
+                return AdviceFileRequestDto.builder()
+                        .adReqForm(allAdviceRequestDto.getAdReqForm().equals("no_empty_file") ? files.pollFirst() : allAdviceRequestDto.getAdReqForm())
+                        .adDiagnosis(allAdviceRequestDto.getAdDiagnosis().equals("no_empty_file") ? files.pollFirst(): allAdviceRequestDto.getAdDiagnosis())
+                        .adRecord(allAdviceRequestDto.getAdRecord().equals("no_empty_file") ? files.pollFirst(): allAdviceRequestDto.getAdRecord())
+                        .adFilm(allAdviceRequestDto.getAdFilm().equals("no_empty_file") ? files.pollFirst() : allAdviceRequestDto.getAdRecord())
+                        .adOther(allAdviceRequestDto.getAdOther().equals("no_empty_file") ? files.pollFirst() : allAdviceRequestDto.getAdOther())
+                        .build();
             }
-
-            Deque <String> files = fileHandler.parseFile(projectPath, multipartFiles);
-
+        } catch (NullPointerException e){
             return AdviceFileRequestDto.builder()
-                    .adReqForm(allAdviceRequestDto.getAdReqForm().equals("no_empty_file") ? files.pollFirst() : allAdviceRequestDto.getAdReqForm())
-                    .adDiagnosis(allAdviceRequestDto.getAdDiagnosis().equals("no_empty_file") ? files.pollFirst(): allAdviceRequestDto.getAdDiagnosis())
-                    .adRecord(allAdviceRequestDto.getAdRecord().equals("no_empty_file") ? files.pollFirst(): allAdviceRequestDto.getAdRecord())
-                    .adFilm(allAdviceRequestDto.getAdFilm().equals("no_empty_file") ? files.pollFirst() : allAdviceRequestDto.getAdRecord())
-                    .adOther(allAdviceRequestDto.getAdOther().equals("no_empty_file") ? files.pollFirst() : allAdviceRequestDto.getAdOther())
+                    .adReqForm(allAdviceRequestDto.getAdReqForm())
+                    .adDiagnosis(allAdviceRequestDto.getAdDiagnosis())
+                    .adRecord(allAdviceRequestDto.getAdRecord())
+                    .adFilm(allAdviceRequestDto.getAdFilm())
+                    .adOther(allAdviceRequestDto.getAdOther())
                     .build();
         }
-        return AdviceFileRequestDto.builder()
-                .adReqForm(allAdviceRequestDto.getAdReqForm())
-                .adDiagnosis(allAdviceRequestDto.getAdDiagnosis())
-                .adRecord(allAdviceRequestDto.getAdRecord())
-                .adFilm(allAdviceRequestDto.getAdFilm())
-                .adOther(allAdviceRequestDto.getAdOther())
-                .build();
+        return null;
     }
 
     /**
@@ -363,31 +367,35 @@ public class AdviceService {
      * 파일 업데이트 Dto 변환
      */
     private AdviceFileRequestDto splitUpdateToFileDto (AdviceUpdateDto adviceUpdateDto, List<MultipartFile> multipartFiles) throws IOException {
-        if (multipartFiles.size() != 0) {
-            Path projectPath;
-            if (System.getProperty("user.dir").contains("medic")) {
-                projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/advicerequest/");
-            } else {
-                projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/");
+        try{
+            if (multipartFiles.size() != 0) {
+                Path projectPath;
+                if (System.getProperty("user.dir").contains("medic")) {
+                    projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/advicerequest/");
+                } else {
+                    projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/");
+                }
+
+                Deque <String> files = fileHandler.parseFile(projectPath, multipartFiles);
+
+                return AdviceFileRequestDto.builder()
+                        .adReqForm(adviceUpdateDto.getAdReqForm().equals("no_empty_file") ? files.pollFirst() : adviceUpdateDto.getAdReqForm())
+                        .adDiagnosis(adviceUpdateDto.getAdDiagnosis().equals("no_empty_file") ? files.pollFirst(): adviceUpdateDto.getAdDiagnosis())
+                        .adRecord(adviceUpdateDto.getAdRecord().equals("no_empty_file") ? files.pollFirst(): adviceUpdateDto.getAdRecord())
+                        .adFilm(adviceUpdateDto.getAdFilm().equals("no_empty_file") ? files.pollFirst() : adviceUpdateDto.getAdRecord())
+                        .adOther(adviceUpdateDto.getAdOther().equals("no_empty_file") ? files.pollFirst() : adviceUpdateDto.getAdOther())
+                        .build();
             }
-
-            Deque <String> files = fileHandler.parseFile(projectPath, multipartFiles);
-
+        } catch (NullPointerException e){
             return AdviceFileRequestDto.builder()
-                    .adReqForm(adviceUpdateDto.getAdReqForm().equals("no_empty_file") ? files.pollFirst() : adviceUpdateDto.getAdReqForm())
-                    .adDiagnosis(adviceUpdateDto.getAdDiagnosis().equals("no_empty_file") ? files.pollFirst(): adviceUpdateDto.getAdDiagnosis())
-                    .adRecord(adviceUpdateDto.getAdRecord().equals("no_empty_file") ? files.pollFirst(): adviceUpdateDto.getAdRecord())
-                    .adFilm(adviceUpdateDto.getAdFilm().equals("no_empty_file") ? files.pollFirst() : adviceUpdateDto.getAdRecord())
-                    .adOther(adviceUpdateDto.getAdOther().equals("no_empty_file") ? files.pollFirst() : adviceUpdateDto.getAdOther())
+                    .adReqForm(adviceUpdateDto.getAdReqForm())
+                    .adDiagnosis(adviceUpdateDto.getAdDiagnosis())
+                    .adRecord(adviceUpdateDto.getAdRecord())
+                    .adFilm(adviceUpdateDto.getAdFilm())
+                    .adOther(adviceUpdateDto.getAdOther())
                     .build();
         }
-        return AdviceFileRequestDto.builder()
-                .adReqForm(adviceUpdateDto.getAdReqForm())
-                .adDiagnosis(adviceUpdateDto.getAdDiagnosis())
-                .adRecord(adviceUpdateDto.getAdRecord())
-                .adFilm(adviceUpdateDto.getAdFilm())
-                .adOther(adviceUpdateDto.getAdOther())
-                .build();
+        return null;
     }
 
     /**

@@ -76,21 +76,25 @@ public class TranslationServiceImpl implements TranslationService {
      */
     @Override
     public TranslationFileDto splitRequestToTranslationFileDto(TranslationRequestDto translationRequestDto, List<MultipartFile> multipartFiles) throws IOException {
-        if(multipartFiles.size() !=0) {
-            Path projectPath;
-            if (System.getProperty("user.dir").contains("medic")) {
-                projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/translationrequest/");
-            } else {
-                projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translationrequest/");
+        try {
+            if (multipartFiles.size() != 0) {
+                Path projectPath;
+                if (System.getProperty("user.dir").contains("medic")) {
+                    projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/translationrequest/");
+                } else {
+                    projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translationrequest/");
+                }
+                Deque<String> files = fileHandler.parseFile(projectPath, multipartFiles);
+                return TranslationFileDto.builder()
+                        .trMtl(translationRequestDto.getTrMtl().equals("no_empty_file") ? files.pollFirst() : translationRequestDto.getTrMtl())
+                        .build();
             }
-            Deque<String> files = fileHandler.parseFile(projectPath, multipartFiles);
+        } catch (NullPointerException e){
             return TranslationFileDto.builder()
-                    .trMtl(translationRequestDto.getTrMtl().equals("no_empty_file") ? files.pollFirst() : translationRequestDto.getTrMtl())
+                    .trMtl(translationRequestDto.getTrMtl())
                     .build();
         }
-        return TranslationFileDto.builder()
-                .trMtl(translationRequestDto.getTrMtl())
-                .build();
+        return null;
     }
 
     /**
@@ -170,7 +174,7 @@ public class TranslationServiceImpl implements TranslationService {
                 .trPtDiagContent(translationRequestList.getTrPtDiagContent())
                 .trEtc(translationRequestList.getTrEtc())
                 .trMtl(translationRequestFile.getTrMtl())
-                .trAnswer(translationAnswerFile.getTrAnswer())
+                .trAnswer(translationAnswerFile == null ? "empty_file" : translationAnswerFile.getTrAnswer())
                 .build();
 
         return translationResponseDto;
@@ -207,6 +211,7 @@ public class TranslationServiceImpl implements TranslationService {
         translationRequestFile = translationRequestFile.builder()
                 .tfId(fid)
                 .trMtl(translationFileDto.getTrMtl())
+                .translationRequestList(translationRequestList)
                 .build();
         // 번역의뢰 리스트 저장
         translationRequestListRepository.save(updatedTranslationRequestList);
@@ -272,9 +277,9 @@ public class TranslationServiceImpl implements TranslationService {
     private void deleteTranslationFile(TranslationRequestFile translationRequestFile, TranslationFileDto translationFileDto) throws IOException {
         Path projectPath;
         if (System.getProperty("user.dir").contains("medic")) {
-            projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/analyzerequest/");
+            projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/translationrequest/");
         } else {
-            projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/analyzerequest/");
+            projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translationrequest/");
         }
 
         deleteIfNotEqual(projectPath, translationRequestFile.getTrMtl(), translationFileDto.getTrMtl());

@@ -20,6 +20,7 @@ public class TranslationFileService {
      */
     public Resource findTranslationFile(Long trId) throws MalformedURLException {
         Long fileId = translationRequestFileRepository.findByFileId(trId);
+        System.out.println("23 : "+fileId);
         TranslationRequestFile translationRequestFile = translationRequestFileRepository.findById(fileId)
                 .orElseThrow(() -> new NoSuchElementException("AdviceFile not found with id: " + fileId));
 

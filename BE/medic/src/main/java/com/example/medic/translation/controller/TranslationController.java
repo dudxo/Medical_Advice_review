@@ -38,7 +38,6 @@ public class TranslationController {
     public ResponseEntity<String> saveTranslationRequest(@RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles,
                                                          @RequestPart(name = "dto") TranslationRequestDto translationRequestDto,
                                                          HttpServletRequest request) throws IOException {
-        System.out.println(multipartFiles.size());
         HttpSession session = request.getSession();
         String findUId = (String) session.getAttribute("uId");
 
@@ -63,7 +62,6 @@ public class TranslationController {
                         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileResource.getFilename() + "\"")
                         .body(fileResource);
             } else {
-                System.out.println(64);
                 return ResponseEntity.notFound().build();
             }
         } catch (IOException e) {
@@ -81,6 +79,7 @@ public class TranslationController {
             TranslationResponseDto translationResponseDto = translationServiceImpl.getTranslationDetail(trId);
             return ResponseEntity.ok(translationResponseDto);
         }catch (Exception e){
+            e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
     }

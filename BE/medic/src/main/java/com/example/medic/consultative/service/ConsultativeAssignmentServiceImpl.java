@@ -339,8 +339,7 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
                     .build();
             translationAnswerFileRepository.save(translationAnswerFile);
             return true;
-        } catch (
-        PersistenceException p){
+        } catch (PersistenceException p){
             logger.info("분석 의뢰 신청 저장 실패");
             return false;
         }
@@ -350,14 +349,20 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
      * 번역의뢰 답변 파일 dto 변환
      */
     private TranslationAnswerFileRequestDto splitTranslationAnswerFile(ConsultativeDto consultativeDto, List<MultipartFile> multipartFiles) throws IOException {
-        if(multipartFiles.size() !=0) {
-            Path projectPath;
-            if (System.getProperty("user.dir").contains("medic")) {
-                projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/translationanswer/");
-            } else {
-                projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translationanswer/");
+        try{
+            if(multipartFiles.size() !=0) {
+                Path projectPath;
+                if (System.getProperty("user.dir").contains("medic")) {
+                    projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/translationanswer/");
+                } else {
+                    projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translationanswer/");
+                }
+                Deque <String> files = fileHandler.parseFile(projectPath, multipartFiles);
+                return TranslationAnswerFileRequestDto.builder()
+                        .trAnswer(consultativeDto.getTrAnswer())
+                        .build();
             }
-            Deque <String> files = fileHandler.parseFile(projectPath, multipartFiles);
+        } catch (NullPointerException e){
             return TranslationAnswerFileRequestDto.builder()
                     .trAnswer(consultativeDto.getTrAnswer())
                     .build();

@@ -284,10 +284,13 @@ export default function TranslateModifypage(){
                                         다운로드
                                     </a>
                                 </button>
-                                <button onClick = {()=>setIsTrMtl(!isTrMtl)}>X</button>
+                                <button onClick = {()=>{
+                                    setIsTrMtl(!isTrMtl)
+                                    setTrMtl(null)
+                                    }}>X</button>
                             </>
                             :
-                            <input type='file' accept="image/*" onChange={(e) => setTrMtl(e.target.files[0])} />
+                            <input type='file' accept="application/zip" onChange={(e) => setTrMtl(e.target.files[0])} />
                         }
                     </div>
                 </div>
