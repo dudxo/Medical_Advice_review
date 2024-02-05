@@ -59,7 +59,7 @@ public class AnnouncementController {
     @PutMapping("/update/post/{amId}")
     public ResponseEntity<Integer> updateAnnounce(@PathVariable Long amId,@RequestBody AnnouncementDto announcementDto){
         logger.info("amidid:{}",amId);
-        logger.info("amididto:{}",announcementDto.getAmContent());
+        logger.info("amididto:{}",announcementDto.getAmMdDate());
         if(amId == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(0);
         }

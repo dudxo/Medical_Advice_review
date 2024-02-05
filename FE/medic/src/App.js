@@ -54,9 +54,9 @@ import DocManagement from "./pages/Adminstrator/DocManagement";
 import UserManagement from "./pages/Adminstrator/UserManagement";
 import DocEdit from "./pages/Adminstrator/DocEdit";
 import UserEdit from "./pages/Adminstrator/UserEdit";
-import FaqDetailPage from "./pages/Customerpage/Announcement/FAQDetailPage";
-import WriteFaqPage from "./pages/Customerpage/Announcement/WriteFaqPage";
-import FAQpage from "./pages/Customerpage/FAQpage";
+import FaqDetailPage from "./pages/Customerpage/FAQ/FAQDetailPage";
+import WriteFaqPage from "./pages/Customerpage/FAQ/WriteFaqPage";
+import FAQpage from "./pages/Customerpage/FAQ/FAQpage";
 import AdAdviceListPage from "./pages/Adminstrator/AdAdviceListPage";
 import AdSetDoc from "./pages/Adminstrator/AdSetDoc";
 import AdAnalyzeListPage from "./pages/Adminstrator/AdAnalyzeListPage";
@@ -68,6 +68,7 @@ import AdDetailAnalyze from "./pages/Adminstrator/AdDetailAnalyze";
 import AdDetailTranslate from "./pages/Adminstrator/AdDetailTranslate";
 import ChangeConsultativePwpage from "./pages/Mypage/ChangeConsultativePwpage";
 import AnnouncementEdit from "./pages/Customerpage/Announcement/AnnouncementEdit";
+import FaqEdit  from "./pages/Customerpage/FAQ/FaqEdit";
 
 export default function App(){
     return(
@@ -142,6 +143,7 @@ export default function App(){
                     <Route path='/medic/adminstrator/andetail/:index' element={<AdDetailAnalyze/>}/>
                     <Route path='/medic/adminstrator/tndetail/:index' element={<AdDetailTranslate/>}/>
                     <Route path='/medic/customer/announcement/edit/:amId' element ={<AnnouncementEdit/>}/>
+                    <Route path='/medic/customre/faq/edit/:faqId' element={<FaqEdit/>}/>
 
 
 

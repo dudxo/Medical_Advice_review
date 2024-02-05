@@ -1,103 +1,82 @@
 import React, { useEffect, useState } from "react";
-import administrator from '../../css/AdministratorMypage.module.css'
+import mypage from '../../css/Mypage.module.css'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Cookies } from "react-cookie";
 
-export default function AdministratorMypage() {
-    const [userCount, setUserCount] = useState(0);
-    const [consultativeCount, setConsultativeCount] = useState(0);
-    const [qnaCount, setQnaCount] = useState(0);
+export default function Mypage(){
     const [myAdvice, setMyAdvice] = useState(0)
     const [myanalysis, setMyAnalysis] = useState(0)
     const [myTranslation, setMyTranslation] = useState(0)
-
+    const [myRequest, setMyRequset] = useState(0)
+    const cookie = new Cookies();
     const navigate = useNavigate();
-
-    const myRequestcount = async () => {
-        try {
-            // const userResponse = await axios.get('/administrator/countUser');
-            // setUserCount(userResponse.data);
-
-            // const consultativeResponse = await axios.get('/administrator/countConsultative');
-            // setConsultativeCount(consultativeResponse.data);
-
-            const advice = await axios.get('/admin/adviceCount')
+    
+    const myRequestcount = async()=>{
+        try{
+            const advice = await axios.get('/mypage/myAdviceSituation')
             setMyAdvice(advice.data)
-            const Analysis = await axios.get('/admin/analyzeCount')
+            const Analysis = await axios.get('/mypage/myAnalyzeSituation')
             setMyAnalysis(Analysis.data)
-            const Translation = await axios.get('/admin/translateCount')
+            const Translation = await axios.get('/mypage/myTranslationSituation')
             setMyTranslation(Translation.data)
-            
-            const qnaResponse = await axios.get('/admin/qnaCount');
-            setQnaCount(qnaResponse.data);
-
-        } catch (err) {
-            console.error(err);
+            const CustomerInquiry = await axios.get(`/mypage/myCustomerInquiry`)
+            setMyRequset(CustomerInquiry.data)
+        } catch(err){
+            console.log(err)
         }
     }
 
-    const btn_show_doc = e => {
-        navigate('/medic/adminstrator/docmanagement')
-    }
-    
-    const btn_show_user = e => {
-        navigate('/medic/adminstrator/usermanagement')
-    }
-
-
-    useEffect(() => {
-        // 페이지가 마운트될 때 데이터를 가져오도록 useEffect를 사용
+    useEffect(()=>{
         myRequestcount();
     }, [])
 
-    return (
-        <div className={administrator.adminMypage_box}>
-            <div className={administrator.adminMypage_requestcount_box}>
-                <div className={administrator.adminMypage_count_wrap}>
-                    <div className={administrator.adminMypage_countbox} onClick={btn_show_user}>
-                        <h2 className={administrator.adminMypage_my_counttitle}>회원 관리</h2>
-                        <div className={administrator.adminMy_count}>
-                            <h3>전체 {userCount}명</h3>
-                        </div>
-                    </div>
-                    <div className={administrator.adminMypage_countbox} onClick={btn_show_doc}>
-                        <h2 className={administrator.adminMypage_my_counttitle}>전문의 관리</h2>
-                        <div className={administrator.adminMy_count}>
-                            <h3>전체 {consultativeCount}명</h3>
-                        </div>
-                    </div>
-                </div>
+    const btn_show_myAdvice = e => {
+        navigate('/medic/advice/adviceList')
+        
+        
+    }
+    const btn_show_myAnalysis = e => {
+        navigate('/medic/analysis/analysisList')
+    }
 
-                <div className={administrator.adminMypage_count_wrap}>
-                    <div className={administrator.adminMypage_countbox}>
-                        <h2 className={administrator.adminMypage_my_counttitle}>자문 현황 관리</h2>
-                        <div className={administrator.adminMy_count}>
-                            <h3>전체 {myAdvice} 건</h3>
+    const btn_show_myTranslaion = e => {
+        navigate('/meidc/translate/translateList')
+    }
+    const btn_show_customerInquiry = e => {
+        navigate('/medic/customer/customerinquiry')
+    }
+    return(
+        <div className={mypage.mypage_box}>
+            <div className={mypage.mypage_requestcount_box}>
+                <div className={mypage.mypage_count_wrap}>
+                    <div className={mypage.mypage_countbox} onClick={btn_show_myAdvice}>
+                        <h2 className={mypage.my_counttitle}>나의 자문의뢰 현황</h2>
+                        <div className={mypage.my_count}>
+                            <h3>전체 {myAdvice}건</h3>
                         </div>
                     </div>
-                    <div className={administrator.adminMypage_countbox}>
-                        <h2 className={administrator.adminMypage_my_counttitle}>Qna 관리</h2>
-                        <div className= {administrator.adminMy_count}>
-                            <h3>전체 {qnaCount} 건</h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div className={administrator.adminMypage_count_wrap}>
-                    <div className={administrator.adminMypage_countbox} >
-                        <h2 className={administrator.adminMypage_my_counttitle}>분석 현황 관리</h2>
-                        <div className={administrator.adminMy_count}>
+                    <div className={mypage.mypage_countbox} onClick={btn_show_myAnalysis}>
+                        <h2 className={mypage.my_counttitle}>나의 분석의뢰 현황</h2>
+                        <div className={mypage.my_count}>
                             <h3>전체 {myanalysis}건</h3>
                         </div>
                     </div>
-                    <div className={administrator.adminMypage_countbox} >
-                        <h2 className={administrator.adminMypage_my_counttitle}>번역 현황 관리</h2>
-                        <div className={administrator.adminMy_count}>
-                            <h3>전체 {myTranslation}명</h3>
+                </div>
+                <div className={mypage.mypage_count_wrap}>
+                    <div className={mypage.mypage_countbox} onClick={btn_show_myTranslaion}>
+                        <h2 className={mypage.my_counttitle}>나의 번역의뢰 현황</h2>
+                        <div className={mypage.my_count}>
+                            <h3>전체 {myTranslation}건</h3>
+                        </div>
+                    </div>
+                    <div className={mypage.mypage_countbox} onClick={btn_show_customerInquiry}>
+                        <h2 className={mypage.my_counttitle}>나의 문의 현황</h2>                     
+                        <div className={mypage.my_count}>
+                            <h3>전체 {myRequest}건</h3>
                         </div>
                     </div>
                 </div>
-                
             </div>
         </div>
     )

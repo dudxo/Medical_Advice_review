@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -21,16 +22,15 @@ public class Faq {
     @NotNull
     private Long faqId;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date faqDate;
+    private LocalDate faqRegDate;
 
     @NotNull
     private String faqQuestion;
 
     @NotNull
     private String faqAnswer;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date faqMdDate;
+
+    private LocalDate faqMdDate;
 
     @ManyToOne
     @JoinColumn(name = "mId")
@@ -38,12 +38,21 @@ public class Faq {
     private Manager manager;
 
     @Builder(toBuilder = true)
-    public Faq(Long faqId, Date faqDate, Date faqMdDate, String faqQuestion, String faqAnswer, Manager manager){
+    public Faq(Long faqId, LocalDate faqMdDate, String faqQuestion, String faqAnswer, Manager manager, LocalDate faqRegDate){
         this.faqId = faqId;
         this.faqAnswer = faqAnswer;
-        this.faqDate = faqDate;
+        this.faqRegDate = faqRegDate;
         this.faqMdDate = faqMdDate;
         this.faqQuestion = faqQuestion;
         this.manager = manager;
+    }
+
+    public void updateFaq( LocalDate faqMdDate, String faqQuestion, String faqAnswer,  LocalDate faqRegDate){
+
+        this.faqAnswer = faqAnswer;
+        this.faqRegDate = faqRegDate;
+        this.faqMdDate = faqMdDate;
+        this.faqQuestion = faqQuestion;
+
     }
 }

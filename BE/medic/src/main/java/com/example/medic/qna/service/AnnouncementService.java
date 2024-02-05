@@ -75,6 +75,9 @@ public class AnnouncementService {
      */
     public AnnouncementDto announcdDetial(Long amId){
         Announcement announcement = announcementRepository.findById(amId).get();
+        Announcement announcement1 = announcementRepository.findById(amId-1).get();
+        Announcement announcement2 = announcementRepository.findById(amId+1).get();
+
         AnnouncementDto announcementDto = AnnouncementDto.builder()
                 .amContent(announcement.getAmContent())
                 .amName(announcement.getAmName())
@@ -92,6 +95,7 @@ public class AnnouncementService {
 
     public AnnouncementDto updateAnnouncement(Long amId, AnnouncementDto announcementDto){
         Announcement announcement = announcementRepository.findById(amId).get();
+        logger.info("ammddate:{}",announcementDto.getAmMdDate());
 //        Manager manager = managerRepository.findById(announcementDto.getMId()).get();
       announcement.updateAnnounce(announcementDto.getAmName(),announcementDto.getAmRegDate(),announcementDto.getAmContent(),announcementDto.getAmMdDate());
 

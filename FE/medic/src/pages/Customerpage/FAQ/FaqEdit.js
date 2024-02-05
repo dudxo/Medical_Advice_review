@@ -4,36 +4,36 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 import axios from "axios";
 
-export default function AnnouncementEdit()  {
+export default function FaqEdit()  {
   const navigate = useNavigate();
   const location = useLocation();
   const cookie = new Cookies();
-  const [announceDetail,setAnnounceDetail] = useState(location.state.announceDetail);
+  const [faqDetail,setFaqDetail] = useState(location.state.faqDetail);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [amContent , setAmContent] = useState(announceDetail.amContent);
-  const [amRegDate, setAmRegDate] = useState(announceDetail.amRegDate);
-  const [amMdDate, setAmMdDate] = useState(announceDetail.amMdDate);
-  const [amName , setAmName] = useState(announceDetail.amName);
-  const [amId , setAmId] = useState(location.state.amId);
-  const [mId, setMid] = useState(announceDetail.mId);
+  const [faqAnswer , setFaqAnswer] = useState(faqDetail.faqAnswer);
+  const [faqRegDate, setFaqRegDate] = useState(faqDetail.faqRegDate);
+  const [faqMdDate, setFaqMdDate] = useState(faqDetail.faqMdDate);
+  const [faqQuestion , setFaqQuestion] = useState(faqDetail.faqQuestion);
+  const [faqId , setFaqId] = useState(location.state.faqId);
+//   const [mId, setMid] = useState(faqDetail.mId);
   const [timer, setTimer] = useState("");
 
   useEffect(()=>{
     currentTimer();
   })
 
-  const input_amName = (e) =>{
-    setAmName(e.target.value)
+  const input_faq_Question = (e) =>{
+    setFaqQuestion(e.target.value)
   }
 
-  const input_amRegDate = (e) =>{
-    setAmRegDate(e.target.value)
+  const input_faqRegDate = (e) =>{
+    setFaqRegDate(e.target.value)
   }
-  const input_amContent = (e) =>{
-    setAmContent(e.target.value)
+  const input_faq_Answer = (e) =>{
+    setFaqAnswer(e.target.value)
   }
-  const input_amMdDate = (e)=>{
-    setAmMdDate(e.target.value)
+  const input_faqMdDate = (e)=>{
+    setFaqMdDate(e.target.value)
   }
 
   const currentTimer = () => {
@@ -45,7 +45,7 @@ export default function AnnouncementEdit()  {
     setTimer(today);
   };
   
-console.log('ann',announceDetail)
+console.log('ann',faqDetail)
 
   const formatDateString = (dateString) => {
     if (dateString) {
@@ -63,24 +63,24 @@ console.log('ann',announceDetail)
     navigate('/medic/customer/announcement');
   };
 
-  const btn_announce_modify = e => {
+  const btn_faq_modify = e => {
     if(window.confirm("수정하시겠습니까?")){
         e.preventDefault()
-        const announceInfo = {
-            'mId' : mId,
-           'amName' : amName,
-           'amRegDate' : amRegDate,
-           'amMdDate': formatDateString(new Date()),
-           'amContent' : amContent
+        const faqInfo = {
+            // 'mId' : mId,
+           'faqQuestion' : faqQuestion,
+           'faqRegDate' : faqRegDate,
+           'faqMdDate': formatDateString(new Date()),
+           'faqAnswer' : faqAnswer
         } 
-        announce_modify(announceInfo)
+        faq_modify(faqInfo)
     }
     
   }
 
-  const announce_modify = async(announceInfo) => {
+  const faq_modify = async(faqInfo) => {
     console.log(2)
-    const response = await axios.put(`/update/post/${amId}`, announceInfo)
+    const response = await axios.put(`/faq/update/${faqId}`, faqInfo)
     console.log(response)
     if(response.data === 1){
         alert('정보수정이 완료되었습니다.')
@@ -103,7 +103,7 @@ console.log('ann',announceDetail)
                     제목
                 </div>
                 <div className={announcedetail.detail_titleinputbox}>
-                    <input type='text' value={amName} className={announcedetail.inputWithoutBorder} onChange={e=>input_amName(e)}></input>
+                    <input type='text' value={faqQuestion} className={announcedetail.inputWithoutBorder} onChange={e=>input_faq_Question(e)}></input>
                 </div>
             </div>
             <div className={announcedetail.detail_rowbox}>
@@ -113,7 +113,7 @@ console.log('ann',announceDetail)
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
         
-                        <input type='text' value={amId} className={announcedetail.inputWithoutBorder} ></input>
+                        <input type='text' value={faqId} className={announcedetail.inputWithoutBorder} ></input>
                     </div>
                 </div> 
                 <div className={announcedetail.detail_writerinfo}>
@@ -122,7 +122,7 @@ console.log('ann',announceDetail)
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
                         
-                        <input value={formatDateString(amRegDate)} className={announcedetail.inputWithoutBorder} onChange={e=>input_amRegDate(e)}></input>
+                        <input value={formatDateString(faqRegDate)} className={announcedetail.inputWithoutBorder} onChange={e=>input_faqRegDate(e)}></input>
                     </div>
                 </div>   
                  <div className={announcedetail.detail_writerinfo}>
@@ -130,7 +130,7 @@ console.log('ann',announceDetail)
                         수정일
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
-                    <input value={timer}  className={announcedetail.inputWithoutBorder} readOnly={true} onChange = {e=>input_amMdDate(e)}></input>
+                    <input value={timer}  className={announcedetail.inputWithoutBorder} readOnly={true} ></input>
                     </div>
                   </div>  
             </div>
@@ -140,8 +140,8 @@ console.log('ann',announceDetail)
   </div>
   <div className={announcedetail.detail_content}>
     <textarea
-      value={amContent}
-      onChange={(e) => input_amContent(e)}
+      value={faqAnswer}
+      onChange={(e) => input_faq_Answer(e)}
       className={announcedetail.textareaWithoutBorder}
     ></textarea>
   </div>
@@ -187,7 +187,7 @@ console.log('ann',announceDetail)
           </button>
         </div>
         <div className={announcedetail.complete}>
-          <button type="button" onClick={btn_announce_modify} className={announcedetail.btt_write}>
+          <button type="button" onClick={btn_faq_modify} className={announcedetail.btt_write}>
             수정
           </button>
         </div>

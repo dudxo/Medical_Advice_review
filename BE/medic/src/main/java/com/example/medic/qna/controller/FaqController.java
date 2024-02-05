@@ -2,6 +2,7 @@ package com.example.medic.qna.controller;
 
 import com.example.medic.manager.controller.AdListAllController;
 import com.example.medic.qna.domain.Faq;
+import com.example.medic.qna.dto.AnnouncementDto;
 import com.example.medic.qna.dto.FaqSituationDto;
 import com.example.medic.qna.service.FaqSituationService;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,14 @@ public class FaqController {
         }
     }
 
+    @GetMapping("/detail/faq/{faqId}")
+    public ResponseEntity<FaqSituationDto> detailFaq(@PathVariable Long faqId){
+        if(faqId == null){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+        FaqSituationDto faqSituationDto = faqSituationService.detailFaq(faqId);
+        return ResponseEntity.ok(faqSituationDto);
+    }
     /*
     faq 작성
      */
@@ -57,10 +66,10 @@ public class FaqController {
     /*
     faq 수정
      */
-    @PutMapping("/faq/update/{mId}")
-    public ResponseEntity<Integer> updateFaqp(@PathVariable String mId, FaqSituationDto faqSituationDto){
+    @PutMapping("/faq/update/{faqId}")
+    public ResponseEntity<Integer> updateFaqp(@PathVariable Long faqId, FaqSituationDto faqSituationDto){
         try{
-            if(faqSituationService.updateFaq(mId, faqSituationDto)){
+            if(faqSituationService.updateFaq(faqId, faqSituationDto)){
                 return ResponseEntity.ok(1);
             }
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);

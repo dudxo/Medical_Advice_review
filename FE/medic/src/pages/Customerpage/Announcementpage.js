@@ -17,7 +17,7 @@ export default function Announcementpage() {
   const itemsPerPage = 7;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const reverseQuiryList = [...announcements].reverse();
-  const visibleQuiryList = reverseQuiryList.slice(startIndex, startIndex + itemsPerPage);
+  const visibleQuiryList = announcements.slice(startIndex, startIndex + itemsPerPage);
 
   useEffect(() => {
     const getAnnouncements = async () => {
@@ -60,16 +60,21 @@ export default function Announcementpage() {
   };
 
   const goToDetailPage = (amId) => {
-    navigate(`/medic/customer/announcement/announcementdetails`,
-    {state : {
-      announcementdetail : announcements[amId],
-      amid : amId,
-      announcements : announcements
-    }});
-    console.log("tlqkf",amId);
-    console.log(announcements[amId])
+    const currentIndex = announcements.findIndex((announce) => announce.amId === amId);
+    const previousAnnounce = announcements[currentIndex - 1];
+    const nextAnnounce = announcements[currentIndex + 1];
+  
+    navigate(`/medic/customer/announcement/announcementdetails`, {
+      state: {
+        announceDetail: announcements[currentIndex],
+        amid: amId,
+        announcements: announcements,
+        previousAnnounce: previousAnnounce,
+        nextAnnounce: nextAnnounce,
+      },
+    });
   };
-
+  
   const handleDeleteAnnounce = async (amId) => {
     try {
       const confirmed = window.confirm('게시글을 삭제하시겠습니까?');
@@ -123,7 +128,7 @@ export default function Announcementpage() {
                 <>
                 
                         <div className={`${announce.announce_quirylist_question} ${announce.announce_list_content}`} >
-                            {quiry.amContent}
+                            {quiry.amName}
                         </div> 
                 </>
                 <div className={`${announce.announce_quirylist_writedate} ${announce.announce_list_content}`}>
