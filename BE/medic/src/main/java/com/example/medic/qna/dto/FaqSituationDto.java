@@ -3,6 +3,8 @@ package com.example.medic.qna.dto;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -10,21 +12,24 @@ public class FaqSituationDto {
 
     private Long faqId;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date faqDate;
+
+    private LocalDate faqDate;
 
     private String faqQuestion;
 
     private String faqAnswer;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date faqMdDate;
+
+    private LocalDate faqMdDate;
+
+    private LocalDate faqRegDate;
 
     @Builder
-    public FaqSituationDto(Long faqId, Date faqDate, String faqQuestion, String faqAnswer, Date faqMdDate){
+    public FaqSituationDto(Long faqId, LocalDate faqDate, String faqQuestion, String faqAnswer, LocalDate faqMdDate, LocalDate faqRegDate){
         this.faqId = faqId;
         this.faqDate = faqDate;
         this.faqQuestion = faqQuestion;
         this.faqAnswer = faqAnswer;
         this.faqMdDate = faqMdDate;
+        this.faqRegDate = faqRegDate;
     }
 }

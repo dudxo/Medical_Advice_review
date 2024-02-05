@@ -4,6 +4,7 @@ import com.example.medic.manager.controller.AdListAllController;
 import com.example.medic.manager.domain.Manager;
 import com.example.medic.manager.repository.ManagerRepository;
 import com.example.medic.qna.domain.Faq;
+import com.example.medic.qna.dto.AnnouncementDto;
 import com.example.medic.qna.dto.FaqSituationDto;
 import com.example.medic.qna.repository.FaqRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,24 @@ public class FaqSituationService {
     private static final Logger logger = LoggerFactory.getLogger(FaqSituationService.class);
 
 
+
     public List<Faq> faqSituationList(){
         List<Faq> faq = faqRepository.findAll();
         return faq;
     }
+
+    public FaqSituationDto detailFaq(Long faqId){
+        Faq faq = faqRepository.findById(faqId).get();
+        FaqSituationDto faqSituationDto = FaqSituationDto.builder()
+                .faqQuestion(faq.getFaqQuestion())
+                .faqId(faqId)
+                .faqAnswer(faq.getFaqAnswer())
+                .faqRegDate(faq.getFaqRegDate())
+                .faqMdDate(faq.getFaqMdDate())
+                .build();
+        return faqSituationDto;
+    }
+
     @Transactional
     public Boolean writeFaq(String mId , FaqSituationDto faqSituationDto) {
         try {
@@ -38,8 +53,8 @@ public class FaqSituationService {
                 Faq faq = Faq.builder()
                         .faqAnswer(faqSituationDto.getFaqAnswer())
                         .faqQuestion(faqSituationDto.getFaqQuestion())
-                        .faqDate(faqSituationDto.getFaqDate())
                         .faqMdDate(faqSituationDto.getFaqMdDate())
+
                         .manager(manager)
                         .build();
                 faqRepository.save(faq);
@@ -52,27 +67,14 @@ public class FaqSituationService {
         }
 
     }
-        public Boolean updateFaq(String mId, FaqSituationDto faqSituationDto){
+        public Boolean updateFaq(Long faqId, FaqSituationDto faqSituationDto){
         try{
-
-            Manager manager =  managerRepository.findById(mId).get();
-            if (manager.getMRole().equals("관리자")){
-
-                Faq faq = new Faq();
-                faq.toBuilder()
-                        .faqId(faqSituationDto.getFaqId())
-                        .faqAnswer(faqSituationDto.getFaqAnswer())
-                        .faqDate(faqSituationDto.getFaqDate())
-                        .faqQuestion(faqSituationDto.getFaqQuestion())
-                        .faqMdDate(faqSituationDto.getFaqMdDate())
-                        .manager(manager)
-                        .build();
-
-                faqRepository.save(faq);
-
+                Faq faq = faqRepository.findById(faqId).get();
+                faq.updateFaq(faqSituationDto.getFaqMdDate(), faqSituationDto.getFaqQuestion(), faqSituationDto.getFaqAnswer(),faqSituationDto.getFaqRegDate());
+                    faqRepository.save(faq);
                 return true;
-            }
-            return  false;
+
+
 
         }catch (Exception e){
             return false;
