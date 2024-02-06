@@ -1,8 +1,6 @@
 package com.example.medic.analyze.service;
 
-import com.example.medic.advice.domain.AdviceFile;
-import com.example.medic.advice.dto.AdviceFileRequestDto;
-import com.example.medic.advice.dto.AdviceUpdateDto;
+import com.example.medic.advice.domain.AdviceQuestion;
 import com.example.medic.analyze.domain.AnalyzeAssignment;
 import com.example.medic.analyze.domain.AnalyzeRequest;
 import com.example.medic.analyze.domain.AnalyzeRequestFile;
@@ -249,22 +247,11 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 .anPtDiagContent(updateDto.getAnPtDiagContent())
                 .build();
 
-        // 분석의뢰 질문지 수정
-        List<AnalyzeRequest> analyzeRequests = analyzeRequestList.getAnalyzeRequests();
-        List<String> updatedQuestionContents = updateDto.getAnQuestionContent();
-
-        List<AnalyzeRequest> updatedAnalyzeRequests = new ArrayList<>();
-        for (int i = 0; i < analyzeRequests.size() && i < updatedQuestionContents.size(); i++) {
-            AnalyzeRequest analyzeRequest = analyzeRequests.get(i);
-            AnalyzeRequest updatedAnalyzeRequest = analyzeRequest.toBuilder()
-                    .anQuestionContent(updatedQuestionContents.get(i))
-                    .analyzeRequestList(updatedAnalyzeRequestList)
-                    .build();
-            updatedAnalyzeRequests.add(updatedAnalyzeRequest);
-        }
-
-        // 분석의뢰 리스트에 새로운 질문지 설정
-        updatedAnalyzeRequestList.getAnalyzeRequests().addAll(updatedAnalyzeRequests);
+        // 분석의뢰 질문 수정
+        AnalyzeQuestionDto analyzeQuestionDto = AnalyzeQuestionDto.builder()
+                .anQuestionContent(updateDto.getAnQuestionContent())
+                .build();
+        updateQuestion(analyzeRequestList.getAnId(), analyzeQuestionDto);
 
         // 수정일자 업데이트
         updatedAnalyzeRequestList = updatedAnalyzeRequestList.toBuilder()
@@ -290,6 +277,40 @@ public class AnalyzeServiceImpl implements AnalyzeService {
 
         return true;
     }
+
+    @Transactional
+    public boolean updateQuestion(Long anId, AnalyzeQuestionDto analyzeQuestionDto) throws PersistenceException {
+        AnalyzeRequestList analyzeRequestList = analyzeRequestListRepository.findById(anId)
+                .orElseThrow(() -> new PersistenceException("AnalyzeRequestList not found with id: " + anId));
+        List<AnalyzeRequest> existingQuestions = analyzeRequestRepository.findByAnIds(anId);
+        try {
+            // 기존 질문 삭제 전 로그
+            logger.info("기존 질문 삭제 전: {}", existingQuestions);
+
+            // 기존 질문 삭제
+            analyzeRequestRepository.deleteAll(existingQuestions);
+
+            // 기존 질문 삭제 후 로그
+            logger.info("기존 질문 삭제 후: {}", existingQuestions);
+
+            // 수정된 질문 추가
+            List<AnalyzeRequest> newQuestions = new ArrayList<>();
+            for (String questionContent : analyzeQuestionDto.getAnQuestionContent()) {
+                AnalyzeRequest newQuestion = AnalyzeRequest.builder()
+                        .anQuestionContent(questionContent)
+                        .analyzeRequestList(analyzeRequestList)
+                        .build();
+                newQuestions.add(newQuestion);
+            }
+            analyzeRequestRepository.saveAll(newQuestions);
+        } catch (PersistenceException p) {
+            logger.error("분석의뢰 질문 수정 실패", p);
+            throw new PersistenceException("분석의뢰 질문 수정 실패", p);
+        }
+        return true;
+    }
+
+
     /**
      * 파일 업데이트 Dto 변환
      */
