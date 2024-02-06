@@ -5,6 +5,7 @@ import com.example.medic.advice.dto.*;
 import com.example.medic.advice.repository.*;
 import com.example.medic.analyze.domain.AnalyzeRequest;
 import com.example.medic.analyze.domain.AnalyzeRequestList;
+import com.example.medic.analyze.dto.AnalyzeQuestionDto;
 import com.example.medic.analyze.dto.AnalyzeResponseDto;
 import com.example.medic.client.domain.Client;
 import com.example.medic.client.dto.ClientInfoDto;
@@ -321,22 +322,11 @@ public class AdviceService {
                 updateDto.getDiagRound()
         );
 
-        // 자문의뢰 질문지 수정
-        List<AdviceQuestion> adviceQuestions = adviceRequestList.getAdviceQuestions();
-        List<String> updatedQuestionContents = updateDto.getAdQuestionContent();
-
-        List<AdviceQuestion> updatedAdviceQuestions = new ArrayList<>();
-        for (int i = 0; i < adviceQuestions.size() && i < updatedQuestionContents.size(); i++) {
-            AdviceQuestion adviceQuestion = adviceQuestions.get(i);
-            AdviceQuestion updatedAdviceQuestion = adviceQuestion.toBuilder()
-                    .adQuestionContent(updatedQuestionContents.get(i))
-                    .adviceRequestList(updatedAdviceRequestList)
-                    .build();
-            updatedAdviceQuestions.add(updatedAdviceQuestion);
-        }
-
-        // 자문의뢰 리스트에 새로운 질문지 설정
-        updatedAdviceRequestList.getAdviceQuestions().addAll(updatedAdviceQuestions);
+        // 자문의뢰 질문 수정
+        AdviceQuestionRequestDto adviceQuestionRequestDto = AdviceQuestionRequestDto.builder()
+                .adQuestionContent(updateDto.getAdQuestionContent())
+                .build();
+        updateQuestion(adviceRequestList.getAdId(), adviceQuestionRequestDto);
 
         // 수정일자 업데이트
         updatedAdviceRequestList = updatedAdviceRequestList.toBuilder()
@@ -360,6 +350,32 @@ public class AdviceService {
         // 자문 파일 저장
         adviceFileRepository.save(adviceFile);
 
+        return true;
+    }
+
+    /**
+     * 자문의뢰 질문지 수정
+     * */
+    public boolean updateQuestion(Long adId, AdviceQuestionRequestDto parseAdviceQuestionRequestDto) throws PersistenceException {
+        AdviceRequestList adviceRequestList = adviceRequestListRepository.findById(adId).orElseThrow(() -> new PersistenceException("AdviceRequestList not found with id: " + adId));
+        List<AdviceQuestion> existingQuestions = adviceQuestionRepository.findByAdIds(adId);
+
+        try {
+            adviceQuestionRepository.deleteAll(existingQuestions);
+
+            List<AdviceQuestion> newQuestions = new ArrayList<>();
+            for (String questionContent : parseAdviceQuestionRequestDto.getAdQuestionContent()) {
+                AdviceQuestion newQuestion = AdviceQuestion.builder()
+                        .adQuestionContent(questionContent)
+                        .adviceRequestList(adviceRequestList)
+                        .build();
+                newQuestions.add(newQuestion);
+            }
+            adviceQuestionRepository.saveAll(newQuestions);
+        } catch (PersistenceException p) {
+            logger.error("자문의뢰 질문 수정 실패", p);
+            throw new PersistenceException("자문의뢰 질문 수정 실패", p);
+        }
         return true;
     }
 
