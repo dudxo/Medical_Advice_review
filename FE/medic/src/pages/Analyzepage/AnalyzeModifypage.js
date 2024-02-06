@@ -6,7 +6,7 @@ import ImageModal from '../../components/ImageModal';
 
 export default function AnalyzeModifypage(){
     const [imageError, setImageError] = useState(false);
-    
+    // const [showQuestionForm, setShowQuestionForm] = useState(false);
     const startYear = 1960;
 
     const {index} = useParams();
@@ -31,6 +31,7 @@ export default function AnalyzeModifypage(){
 
     const [anQuestionTotal, setAnQuestionTotal] = useState(1);
     const [anQuestionContents, setAnQuestionContents] = useState([]);
+    const [anQuestionContentArray, setAnQuestionContentArray] = useState([]);
     const [contents_count, setContentscount] = useState(0)
     const [anQuestion, setAnQuestion] = useState(0);
 
@@ -85,6 +86,10 @@ export default function AnalyzeModifypage(){
             setAnptdiagcontent(response.data.anPtDiagContent)
             setAnEtcValue(response.data.anEtc)
             setAnQuestion(response.data.analyzeRequests);
+            const anContented = response.data.analyzeRequests
+            // const anQuestionContentArray = anContented.map(item => item.anQuestionContent);
+            setAnQuestionContentArray(() => anContented.map(item => item.anQuestionContent))
+            console.log(anQuestionContentArray);
             setAnQuestionTotal(response.data.analyzeRequests.length);
             // setAnAnswerContent(response.data.anAnswerContent)
             setIsAnReqForm(() => {
@@ -132,13 +137,35 @@ export default function AnalyzeModifypage(){
     }  
 }
 
+// const isQuestionValid = () => {
+//     const valid = anQuestionContents.every(content => content);
+//     return valid;
+// }
+
+// const questionUpdate = async() => {
+//     if (!isQuestionValid()) {
+//         alert('질문지 수정을 확인해주세요.');
+//         return;
+//     }
+//     const updateQuestion = {
+//         "anQuestionContent" : anQuestionContents
+//     }
+//     try{
+//         const response = await axios.put(`/analyze/analyzeDetail/updateQuestion/${index}`, updateQuestion)
+//         alert('분석의뢰 질문 수정이 완료되었습니다.')
+//     } catch(err){
+//         console.log(err)
+//     }
+// }
+
+
 const isFormValid = () => {
     // 여러 입력 필드와 텍스트 영역의 유효성을 확인
     const isUserInfoValid = uname && utel && uphone && uaddress;
     const isPtInfoValid = an_ptname && an_ptssnum1 && an_ptssnum2 && an_ptsub && an_ptdiagnosis;
     const isEtcInfoValid = anEtcValue;
     const isQuestionInfoValid = anQuestionContents.every(content => content); // 모든 질문 내용이 비어있지 않아야 함
-  
+
     // 모든 조건을 만족하면 true를 반환
     return isUserInfoValid && isPtInfoValid && isEtcInfoValid && isQuestionInfoValid;
   };
@@ -166,23 +193,28 @@ const btn_analyze_update = async() => {
                 
             }
         });
-        console.log(anFile)
-        console.log(anFile_toString)
+        const formData = new FormData();
         analyzeUpdate.append("dto", new Blob([JSON.stringify({
             "anPtName" : an_ptname,
             "anPtSsNum" : an_PtSsNum,
             "anPtSub" : an_ptsub,
             "anPtDiagnosis" : an_ptdiagnosis,
             "anPtDiagContent" : an_ptdiagcontent,
+            "anQuestionContent" : anQuestionContentArray,
             "anEtc" : anEtcValue,
             "anMdDate" : today,
-            "anQuestionContent" : anQuestionContents,
             "anReqForm" : anFile_toString[0],
             "anDiagnosis" : anFile_toString[1],
             "anRecord" : anFile_toString[2],
             "anFilm" : anFile_toString[3],
             "anOther" : anFile_toString[4],
         })], {type: "application/json"}))
+
+        anQuestionContentArray.forEach((question, index) => {
+            formData.append(`anQuestionContent[${index}]`, question);
+        });
+        console.log(anQuestionContentArray)
+        
           try{
               const response = await axios.put(`/analyze/analyzeDetail/update/${index}`, analyzeUpdate,{
                 headers: {
@@ -196,25 +228,41 @@ const btn_analyze_update = async() => {
           }
       }
 
+    //   const renderQuestionInput = () => {
+    //     return Array.from({ length: anQuestionTotal }, (_, index) => (
+    //       <div className={analyzerequest.row_box} style={{height : 'auto'}} key={index}>
+    //         <div className={analyzerequest.title_box}>
+    //           질문 {index + 1} 입력
+    //         </div>
+    //         <div className={analyzerequest.input_box}>
+    //           <input
+    //             type="text"
+    //             name={`anQuestionContent_${index}`}
+    //             value={anQuestionContents[index] || ''}
+    //             onChange={(e) => handleQuestionContentChange(index, e)}
+    //             maxLength={300}
+    //           />
+    //         </div>
+    //       </div>
+    //     ));
+    // };
 
       const renderQuestionInputs = () => {
-        if (!anQuestion || anQuestion.length === 0) {
-            return null; // 또는 다른 처리를 수행하거나 빈 배열을 반환
-          }
-        return anQuestion.map((question, index) => (
-        <div className={analyzerequest.row_box} style={{height : 'auto'}} key={index}>
+        return Array.from({ length: anQuestionTotal }, (_, index) => (
+          <div className={analyzerequest.row_box} style={{height : 'auto'}} key={index}>
             <div className={analyzerequest.title_box}>
-            질문 {index + 1} 입력
+              질문 {index + 1} 입력
             </div>
             <div className={analyzerequest.input_box}>
-            <input
+              <input
                 type="text"
-                value={question.anQuestionContent || ''}
-                maxLength={300}
+                name={`anQuestionContent_${index}`}
+                value={anQuestionContentArray[index]}
                 onChange={(e) => handleQuestionContentChange(index, e)}
-            />
+                maxLength={300}
+              />
             </div>
-        </div>
+          </div>
         ));
     };
     const handleAnEtcChange = (e) => {
@@ -229,9 +277,9 @@ const btn_analyze_update = async() => {
     };
       
     const handleQuestionContentChange = (index, e) => {
-        const newContents = [...anQuestionContents];
+        const newContents = [...anQuestionContentArray];
         newContents[index] = e.target.value;
-        setAnQuestionContents(newContents);
+        setAnQuestionContentArray(newContents);
     };
       
     const input_an_ptname = e => {
@@ -384,6 +432,31 @@ const btn_analyze_update = async() => {
                 </div>
                     {renderQuestionInputs()}
                 </div>
+                {/* <button onClick={() => setShowQuestionForm(!showQuestionForm)}>질문지 수정</button>
+                {showQuestionForm && (
+            <><div className={analyzerequest.iconbox} style={{ marginTop: '10px' }}>
+                <h3>
+                    <i className="fa-solid fa-circle icon"></i>
+                    질문지 수정
+                </h3>
+            </div><div className={analyzerequest.request_questiontable}>
+                    <div className={analyzerequest.row_box} style={{ height: 'auto' }}>
+                        <div className={analyzerequest.title_box}>
+                            질문 항목수
+                        </div>
+                        <div className={analyzerequest.input_box}>
+                            <input
+                                type="text"
+                                name="anQuestionTotal"
+                                value={anQuestionTotal}
+                                onChange={handleQuestionTotalChange} />
+                        </div>
+                    </div>
+                    {renderQuestionInput()}
+                    <button onClick={questionUpdate} >저장</button>
+                    <button onClick={() => setShowQuestionForm(false)}>취소</button>
+                </div></>
+            )} */}
              <div className={analyzerequest.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
