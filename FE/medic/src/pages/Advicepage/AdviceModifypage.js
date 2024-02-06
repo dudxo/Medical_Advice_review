@@ -64,6 +64,7 @@ export default function AdviceModifypage(){
     const [dayOptions, setDayOptions] = useState([]);
     const [adQuestionTotal, setAdQuestionTotal] = useState(1);
     const [adQuestionContents, setAdQuestionContents] = useState([]);
+    const [adQuestionContentArray, setAdQuestionContentArray] = useState([]);
     const [contents_count, setContentscount] = useState(0)
 
     const [visitStart ,setVisitstart] = useState('')
@@ -126,6 +127,9 @@ export default function AdviceModifypage(){
             console.log("response",response);
             console.log("insure",response.data.insureDate);
             setAdQuestion(response.data.adviceQuestions);
+            const adContented = response.data.adviceQuestions
+            setAdQuestionContentArray(() => adContented.map(item => item.adQuestionContent))
+            console.log(adQuestionContentArray);
             setAdQuestionTotal(response.data.adviceQuestions.length);
     
             setAdptname(response.data.adPtName)
@@ -172,7 +176,6 @@ export default function AdviceModifypage(){
             const ad_PtSsNum = response.data.adPtSsNum.split('-');
             setAdPtSsNum1(ad_PtSsNum[0]);
             setAdPtSsNum2(ad_PtSsNum[1]);
-            setAdQuestionContents(response.data.adQuestionContent)
             setIsAdReqForm(() => {
                 if(response.data.adReqForm === "empty_file"){
                     return false
@@ -227,6 +230,7 @@ const isFormValid = () => {
       visit_startYear && visit_startMonth && visit_startDay && visit_endYear && visit_endMonth && visit_endDay && treat_cmt;
     const isEtcInfoValid = adEtcValue;
     const isQuestionInfoValid = adQuestionContents.every(content => content); // 모든 질문 내용이 비어있지 않아야 함
+
   
     // 모든 조건을 만족하면 true를 반환
     return isUserInfoValid && isPtInfoValid && isInsuranceValid && isHospitalInfoValid && isEtcInfoValid && isQuestionInfoValid;
@@ -261,6 +265,7 @@ const btn_advice_update = async() => {
         });
         console.log(allAdviceUpdate.getAll('files'));
         console.log(adFile_toString)
+        const formData = new FormData();
         allAdviceUpdate.append("dto", new Blob([JSON.stringify({
             "adPtName" : ad_ptname,
             "adPtSsNum" : adPtSsNum,
@@ -273,7 +278,7 @@ const btn_advice_update = async() => {
             "insureName" : insure_name,
             "adEtc" : adEtcValue,
             "adRegDate" : today,
-            "adQuestionContent" : adQuestionContents,
+            "adQuestionContent" : adQuestionContentArray,
             "hospital" : hospital,
             "admStart" : admStart,
             "admEnd" : admEnd,
@@ -288,13 +293,18 @@ const btn_advice_update = async() => {
             "adOther" : adFile_toString[4],
           })], { type: "application/json" }));
 
+          adQuestionContentArray.forEach((question, index) => {
+            formData.append(`adQuestionContent[${index}]`, question);
+        });
+        console.log(adQuestionContentArray)
+
     try{
-        await axios.put(`/advice/adviceDetail/update/${index}`, allAdviceUpdate,{
+        const response = await axios.put(`/advice/adviceDetail/update/${index}`, allAdviceUpdate,{
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         });
-        alert('자문의뢰 신청이 완료되었습니다.')
+        alert('자문의뢰 수정이 완료되었습니다.')
         navigate('/')
     } catch(err){
         console.log(err)
@@ -302,25 +312,23 @@ const btn_advice_update = async() => {
 }
 
 const renderQuestionInputs = () => {
-    if (!adQuestion || adQuestion.length === 0) {
-        return null; // 또는 다른 처리를 수행하거나 빈 배열을 반환
-      }
-    return adQuestion.map((question, index) => (
-    <div className={advicerequest.row_box} style={{height : 'auto'}} key={index}>
-        <div className={advicerequest.title_box}>
-        질문 {index + 1} 입력
+    return Array.from({ length: adQuestionTotal }, (_, index) => (
+        <div className={advicerequest.row_box} style={{height : 'auto'}} key={index}>
+          <div className={advicerequest.title_box}>
+            질문 {index + 1} 입력
+          </div>
+          <div className={advicerequest.input_box}>
+            <input
+              type="text"
+              name={`adQuestionContent_${index}`}
+              value={adQuestionContentArray[index]}
+              onChange={(e) => handleQuestionContentChange(index, e)}
+              maxLength={300}
+            />
+          </div>
         </div>
-        <div className={advicerequest.input_box}>
-        <input
-            type="text"
-            value={question.adQuestionContent || ''}
-            maxLength={300}
-            onChange={(e) => handleQuestionContentChange(index, e)}
-        />
-        </div>
-    </div>
-    ));
-};
+      ));
+  };
 
 const updateLastDay = () => {
     const year = parseInt(selectedYear);
@@ -373,9 +381,9 @@ const handleYearChange = (e) => {
   };
   
   const handleQuestionContentChange = (index, e) => {
-      const newContents = [...adQuestionContents];
+      const newContents = [...adQuestionContentArray];
       newContents[index] = e.target.value;
-      setAdQuestionContents(newContents);
+      setAdQuestionContentArray(newContents);
   };
   
   const input_ad_ptname = e => {

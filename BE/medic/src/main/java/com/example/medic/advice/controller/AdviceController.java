@@ -1,5 +1,6 @@
 package com.example.medic.advice.controller;
 
+import com.example.medic.advice.dto.AdviceQuestionRequestDto;
 import com.example.medic.advice.dto.AdviceUpdateDto;
 import com.example.medic.advice.dto.AllAdviceRequestDto;
 import com.example.medic.advice.service.AdviceFileService;
@@ -93,6 +94,20 @@ public class AdviceController {
                                                           @RequestPart(name = "dto") AdviceUpdateDto adviceUpdateDto,
                                                           @RequestPart(name = "files") List<MultipartFile> multipartFiles) throws IOException {
         boolean updated = adviceService.updateAdviceRequest(adId, adviceUpdateDto, multipartFiles);
+
+        if (updated) {
+            return ResponseEntity.ok("자문의뢰 수정 성공");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Advice request with ID " + adId + " not found");
+        }
+    }
+
+    /**
+     * 자문의뢰 질문지 수정
+     */
+    @PutMapping("/advice/adviceDetail/updateQuestion/{adId}")
+    public ResponseEntity<String> updateQuestion(@PathVariable Long adId, @RequestBody AdviceQuestionRequestDto adviceQuestionRequestDto) {
+        boolean updated = adviceService.updateQuestion(adId, adviceQuestionRequestDto);
 
         if (updated) {
             return ResponseEntity.ok("자문의뢰 수정 성공");

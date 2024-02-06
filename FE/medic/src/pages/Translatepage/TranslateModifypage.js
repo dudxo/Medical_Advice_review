@@ -43,14 +43,7 @@ export default function TranslateModifypage(){
             setUtel(response.data.userTel)
             setUphone(response.data.userPhone)
             setUaddress(response.data.userAddress)
-            setIsTrMtl(() => {
-                if(response.data.trMtl === "empty_file"){
-                    return false
-                } else{
-                    setTrMtl(response.data.trMtl)
-                    return true
-                }
-            })
+            
         } catch(err){
             console.log(err)
         }  
@@ -73,6 +66,14 @@ export default function TranslateModifypage(){
             setTrptdiagnosis(response.data.trPtDiagnosis)
             setTrptcmt(response.data.trPtDiagContent)
             setTrEtcValue(response.data.trEtc)
+            setIsTrMtl(() => {
+                if(response.data.trMtl === "empty_file"){
+                    return false
+                } else{
+                    setTrMtl(response.data.trMtl)
+                    return true
+                }
+            })
     } catch(err){
         console.log(err)
     }  
@@ -96,16 +97,19 @@ export default function TranslateModifypage(){
         const tr_PtSsNum = tr_ptssnum1 + '-' + tr_ptssnum2
         const today = new Date()
 
-        const trFile = [trMtl]
-        const trFile_toString = []
-        trFile.forEach(file => {
-          if(file === null){
-              trFile_toString.push("empty_file")
-          }else{
-              updateTranslate.append('files', file)
-              trFile_toString.push("no_empty_file")
-          }
-        })
+        const trFile = [trMtl];
+        const trFile_toString = [];
+        console.log(trMtl)
+        if (trFile[0] === null) {
+            trFile_toString.push("empty_file");
+        } else {
+            if (typeof trFile[0] === 'string') {
+                trFile_toString.push(trFile[0]);
+            } else {
+                updateTranslate.append('files', trFile[0]);
+                trFile_toString.push("no_empty_file");
+            }
+        }
         updateTranslate.append("dto", new Blob ([JSON.stringify({
             "trPtName" : tr_ptname,
             "trPtSsNum" : tr_PtSsNum,

@@ -1,6 +1,7 @@
 package com.example.medic.analyze.controller;
 
 import com.example.medic.advice.dto.AllAdviceRequestDto;
+import com.example.medic.analyze.dto.AnalyzeQuestionDto;
 import com.example.medic.analyze.dto.AnalyzeRequestDto;
 import com.example.medic.analyze.dto.AnalyzeUpdateDto;
 import com.example.medic.analyze.service.AnalyzeFileService;
@@ -31,6 +32,7 @@ public class AnalyzeController {
 
     private final AnalyzeServiceImpl analyzeService;
     private final AnalyzeFileService analyzeFileService;
+
     /**
      * @return 분석 의뢰 저장
      */
@@ -74,11 +76,11 @@ public class AnalyzeController {
     }
 
     @GetMapping("/analyze/analyzeDetail/{anId}")
-    public ResponseEntity<AnalyzeResponseDto> findAnalyzeDetail(@PathVariable Long anId){
-        try{
+    public ResponseEntity<AnalyzeResponseDto> findAnalyzeDetail(@PathVariable Long anId) {
+        try {
             AnalyzeResponseDto analyzeResponseDto = analyzeService.getAnalyzeRequestDetail(anId);
             return ResponseEntity.ok(analyzeResponseDto);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
@@ -99,4 +101,19 @@ public class AnalyzeController {
         }
     }
 }
+
+//    /**
+//     * 분석의뢰 질문지 수정
+//     */
+//    @PutMapping("/analyze/analyzeDetail/updateQuestion/{anId}")
+//    public ResponseEntity<String> updateQuestion(@PathVariable Long anId, @RequestBody AnalyzeQuestionDto analyzeQuestionDto) {
+//        boolean updated = analyzeService.updateQuestion(anId, analyzeQuestionDto);
+//
+//        if (updated) {
+//            return ResponseEntity.ok("분석의뢰 수정 성공");
+//        } else {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Analyze request with ID " + anId + " not found");
+//        }
+//    }
+//}
 
