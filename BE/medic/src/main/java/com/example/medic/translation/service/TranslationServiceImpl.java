@@ -224,23 +224,27 @@ public class TranslationServiceImpl implements TranslationService {
      * 파일 업데이트 Dto 변환
      */
     private TranslationFileDto splitUpdateToFileDto (TranslationResponseDto updateDto, List<MultipartFile> multipartFiles) throws IOException {
-        if (multipartFiles.size() != 0) {
-            Path projectPath;
-            if (System.getProperty("user.dir").contains("medic")) {
-                projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/translationrequest/");
-            } else {
-                projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translationrequest/");
+        try{
+            if (multipartFiles.size() != 0) {
+                Path projectPath;
+                if (System.getProperty("user.dir").contains("medic")) {
+                    projectPath = Paths.get(System.getProperty("user.dir") + "/src/main/resources/static/file/translationrequest/");
+                } else {
+                    projectPath = Paths.get(System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translationrequest/");
+                }
+
+                Deque<String> files = fileHandler.parseFile(projectPath, multipartFiles);
+
+                return TranslationFileDto.builder()
+                        .trMtl(updateDto.getTrMtl().equals("no_empty_file") ? files.pollFirst() : updateDto.getTrMtl())
+                        .build();
             }
-
-            Deque <String> files = fileHandler.parseFile(projectPath, multipartFiles);
-
+        } catch (NullPointerException e) {
             return TranslationFileDto.builder()
-                    .trMtl(updateDto.getTrMtl().equals("no_empty_file") ? files.pollFirst() : updateDto.getTrMtl())
+                    .trMtl(updateDto.getTrMtl())
                     .build();
         }
-        return TranslationFileDto.builder()
-                .trMtl(updateDto.getTrMtl())
-                .build();
+        return null;
     }
 
     /**
