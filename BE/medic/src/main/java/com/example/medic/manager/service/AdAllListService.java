@@ -40,10 +40,12 @@ public class AdAllListService {
 
         for (AdviceRequestList adviceRequestList : adviceRequestLists) {
             String uName = getClientName(adviceRequestList.getClient());
+            String uName1 = adviceRequestList.getClient().getUName();
+
             List<AdviceQuestion> adviceQuestions = adviceRequestList.getAdviceQuestions();
 
             for (AdviceQuestion adviceQuestion : adviceQuestions) {
-                AdviceListDto adviceListDto = convertToDTO(adviceRequestList, uName, adviceQuestion);
+                AdviceListDto adviceListDto = convertToDTO(adviceRequestList, uName1, adviceQuestion);
 
                 if (!adviceListDtoMap.containsKey(adviceListDto.getAdId())) {
                     adviceListDtoMap.put(adviceListDto.getAdId(), adviceListDto);
@@ -96,26 +98,15 @@ public class AdAllListService {
     /*
     배정일 및 진행상황 수정
      */
-    public void updateAdviceList(List<AdviceListDto> adviceListDtos) {
+    public boolean updateAdviceList( Long adId ,AdviceListDto adviceListDto) {
 
-        for (AdviceListDto adviceListDto : adviceListDtos) {
-            Long adviceId = adviceListDto.getAdId();
-
-            AdviceAssignment adviceAssignment = adviceAssignmentRepository.findByAdId(adviceId);
-            AdviceQuestion adviceQuestion = adviceQuestionRepository.findByAdId(adviceId);
-
-            if (adviceAssignment != null) {
-
-                adviceAssignment.updateStatusAndAdmDate(adviceListDto.getAdmDate(),adviceListDto.getAdmProgressStatus());
-                adviceAssignmentRepository.save(adviceAssignment);
-            }
-            if (adviceQuestion != null) {
-                adviceQuestion.updateAdAnswerDate(adviceListDto.getAdAnswerDate());
-
-                adviceQuestionRepository.save(adviceQuestion);
-            }
+        AdviceAssignment adviceAssignment = adviceAssignmentRepository.findByAdId(adId);
+        if(adviceAssignment != null){
+            adviceAssignment.updateStatusAndAdmDate(adviceListDto.getAdmDate(), adviceListDto.getAdmProgressStatus());
+            adviceAssignmentRepository.save(adviceAssignment);
+            return true;
         }
-
+return false;
     }
 
 
