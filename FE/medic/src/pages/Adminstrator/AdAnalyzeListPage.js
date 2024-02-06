@@ -12,6 +12,8 @@ export default function AdAnalyzeListPage() {
   const [anProgressStatus, setAnProgressStatus] = useState('자문의뢰중');
   const itemsPerPage = 7;
   const navigate = useNavigate();
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const quiryList = allAnalyzeList.slice(startIndex, startIndex + itemsPerPage);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,7 +53,8 @@ export default function AdAnalyzeListPage() {
   };
 
   const btn_set_doctor = (index) => {
-    navigate(`/medic/adminstrator/andocset/${index}`);
+    const selectedAnalyze = allAnalyzeList[(index-1)];
+    navigate(`/medic/adminstrator/andocset/${index}`,{state:{selectedAnalyze}});
   };
 
   const formatDate = (dateString) => {
@@ -62,32 +65,12 @@ export default function AdAnalyzeListPage() {
   
     return `${year}-${month}-${day}`;
   };
+
+
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
 
-  const handleUpdateField = async () => {
-    try {
-      const updateAnalyzeList = allAnalyzeList.map((analyze, i) => {
-        if (i === (currentPage - 1) * itemsPerPage) {
-          return {
-            ...analyze,
-            adMdDate : formatDate(responseDate),
-            anAnswerDate: responseDate,
-            anProgressStatus: anProgressStatus,
-          };
-        }
-        return analyze;
-      });
-
-      console.log('Request Data:', updateAnalyzeList);
-
-      const response = await axios.put(`/an/update`, updateAnalyzeList);
-      navigate('/');
-    } catch (error) {
-      console.error(`분석 업데이트 중 에러 발생:`, error);
-    }
-  };
 
   return (
     <div className={ad.ad_contents}>
@@ -108,40 +91,24 @@ export default function AdAnalyzeListPage() {
             <th className={ad.ad_th}>의뢰분석일</th>
             <th className={ad.ad_th}>진행상태</th>
             <th className={ad.ad_th}>전문의</th>
+                  <th className={ad.ad_th}>편집</th>
           </tr>
         </thead>
         <tbody>
-          {allAnalyzeList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((analyze, index) => (
+          {quiryList?.map((analyze, index) => (
             <tr key={index}>
               <td className={ad.ad_td} onClick={() => btn_detail_analyze(calculateNo(index))}>{calculateNo(index)}</td>
               <td className={ad.ad_td}>{analyze.uname}</td>
               <td className={ad.ad_td}>{analyze.anPtDiagnosis}</td>
               <td className={ad.ad_td}>{formatDate(analyze.anRegDate)}</td>
               <td className={ad.ad_td}>
-                <input
-                  type="date"
-                  value={formatDate(analyze.adMdDate)}
-                  onChange={(e) => handleInputChange(index, 'adMdDate', e.target.value)}
-                />
+                  {formatDate(analyze.adMdDate)}
               </td>
               <td className={ad.ad_td}>
-                <input
-                  type="date"
-                  value={formatDate(analyze.anAnswerDate)}
-                  disabled={true}
-                  onChange={(e) => setResponseDate(formatDate(e.target.value))}
-                />
+              {formatDate(analyze.anAnswerDate)}
               </td>
               <td className={ad.ad_td}>
-                <select
-                  value={analyze.anProgressStatus}
-                  onChange={(e) => setAnProgressStatus(e.target.value)}
-                >
-                  <option value="자문의뢰중">자문의뢰중</option>
-                  <option value="자문배정중">자문배정중</option>
-                  <option value="결제하기">결제하기</option>
-                  <option value="자문완료">자문완료</option>
-                </select>
+              {analyze.anProgressStatus}
               </td>
               <td className={ad.ad_td}>
       <span
@@ -149,6 +116,12 @@ export default function AdAnalyzeListPage() {
   >
     {analyze.cname||''}
   </span>
+</td>
+
+<td className={ad.ad_td}>
+<div  onClick={() => btn_set_doctor(calculateNo(index))}>
+<i class="fa-solid fa-pen-to-square"></i>
+</div>
 </td>
 
             </tr>
@@ -167,9 +140,6 @@ export default function AdAnalyzeListPage() {
         <button className={ad.ad_paginationButton} onClick={() => handlePageChange(currentPage + 1)}>
           ▶
         </button>
-      </div>
-      <div className={ad.ad_complete}>
-      <button className={ad.ad_complete} onClick={() => handleUpdateField()}>저장</button>
       </div>
     </div>
   );

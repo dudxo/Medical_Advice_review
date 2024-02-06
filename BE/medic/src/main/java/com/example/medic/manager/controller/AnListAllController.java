@@ -37,10 +37,12 @@ public class AnListAllController {
     /*
     답변 배정일 , 진행상황
      */
-    @PutMapping("/an/update")
-    public ResponseEntity<Integer> updateAdvice(@RequestBody List<AnalyzeListDto> analyzeListDtos){
+    @PutMapping("/an/update/{anId}")
+    public ResponseEntity<Integer> updateAdvice(@PathVariable Long anId ,@RequestBody AnalyzeListDto analyzeListDtos){
         try{
-            anAllListService.updateAnalyzeList(analyzeListDtos);
+            logger.info("anid:{}",analyzeListDtos.getAdMdDate());
+            logger.info("anid1:{}",analyzeListDtos.getAnProgressStatus());
+            anAllListService.updateAdviceList(anId,analyzeListDtos);
             return ResponseEntity.ok(1);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
