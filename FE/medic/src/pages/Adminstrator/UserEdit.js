@@ -118,7 +118,7 @@ export default function UserEdit() {
     const fetchUserData = async () => {
       try {
         
-        const response = await axios.get(`/user/detail/${uId}`);
+        const response = await axios.get(`/admin/manageClient/detail/${uId}`);
         const userInfo = response.data;
         console.log(userInfo);
         setUId(userInfo.uid);
@@ -305,7 +305,7 @@ const input_name = e => {
 
 const user_modify = async(userInfo) => {
   console.log(2)
-  const response = await axios.put('/user/edit', userInfo)
+  const response = await axios.put('/admin/manageClient/modify', userInfo)
   console.log(response)
   if(response.data === '정보수정 완료!'){
       alert('정보수정이 완료되었습니다.')

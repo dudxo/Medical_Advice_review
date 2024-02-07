@@ -39,7 +39,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
 
     const getUserInfo = async() =>{
         try{
-            const response = await axios.get('/consultative/assignment/anlzye/${analyzeIndex.id}/details')
+            const response = await axios.get(`/consultative/assignedAnalyze/detail/${analyzeIndex.id}`)
             console.log(response.data)
             setUname(response.data.name)
             setUtel(response.data.userTel)
@@ -304,7 +304,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
                             anReqForm ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findrequestfile/${analyzeIndex}/anReqForm`}
+                                    href={`http://localhost:8080/analyze/findFile/${analyzeIndex}/anReqForm`}
                                     download="anReqForm.jpg"
                                 >
                                     다운로드
@@ -324,7 +324,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
                             anDiagnosis ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findrequestfile/${analyzeIndex}/anDiagnosis`}
+                                    href={`http://localhost:8080/analyze/findFile/${analyzeIndex}/anDiagnosis`}
                                     download="anDiagnosis.jpg"
                                 >
                                     다운로드
@@ -344,7 +344,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
                             anRecord ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findrequestfile/${analyzeIndex}/anRecord`}
+                                    href={`http://localhost:8080/analyze/findFile/${analyzeIndex}/anRecord`}
                                     download="anRecord.jpg"
                                 >
                                     다운로드
@@ -364,7 +364,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
                             anFilm ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findrequestfile/${analyzeIndex}/anFilm`}
+                                    href={`http://localhost:8080/analyze/findFile/${analyzeIndex}/anFilm`}
                                     download="anFilm.jpg"
                                 >
                                     다운로드

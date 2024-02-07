@@ -27,7 +27,7 @@ export default function WoundWritepage() {
             setIsUpdate(location.state.isUpdate)
             if(location.state.isUpdate){
                 try{
-                    const response = await axios.get(`/find/woinfo/detail/${location.state.woId}`)
+                    const response = await axios.get(`/woundInfo/detail/${location.state.woId}`)
                     setPostTitle(response.data.woName)
                     setWriter(response.data.woInstitution)
                     setWoundWrite(response.data.woContent)
@@ -51,7 +51,7 @@ export default function WoundWritepage() {
             'woRegDate' : today,
         }
         try{
-            const response = await axios.post('/post/woinfo', WoundInfo)
+            const response = await axios.post('/woundInfo/post', WoundInfo)
             navigate('/medic/medicalknowledge/woundInfo');
         } catch(err){
             console.log(err)
@@ -84,7 +84,7 @@ export default function WoundWritepage() {
         }
         try{
             if(window.confirm('수정하시겠습니까?')){
-                const response = axios.put(`/update/woinfo/${woId}`, upDatePost)
+                const response = axios.put(`/woundInfo/modify/${woId}`, upDatePost)
                 alert('수정되었습니다.')
                 navigate('/medic/medicalknowledge/woundInfo')
             }

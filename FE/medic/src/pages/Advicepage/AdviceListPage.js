@@ -20,7 +20,7 @@ export default function AdviceListPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await axios.get('/advice/list');
+        const resp = await axios.get('/user/advice/list');
         const data = resp.data.reverse()
         setAdviceList(data);
         console.log(resp)

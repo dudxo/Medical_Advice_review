@@ -14,11 +14,11 @@ export default function Mypage(){
     
     const myRequestcount = async()=>{
         try{
-            const advice = await axios.get('/mypage/myAdviceSituation')
+            const advice = await axios.get('/user/myPage/myAdviceSituation')
             setMyAdvice(advice.data)
-            const Analysis = await axios.get('/mypage/myAnalyzeSituation')
+            const Analysis = await axios.get('/user/myPage/myAnalyzeSituation')
             setMyAnalysis(Analysis.data)
-            const Translation = await axios.get('/mypage/myTranslationSituation')
+            const Translation = await axios.get('/user/myPage/myTranslateSituation')
             setMyTranslation(Translation.data)
             const CustomerInquiry = await axios.get(`/mypage/myCustomerInquiry`)
             setMyRequset(CustomerInquiry.data)

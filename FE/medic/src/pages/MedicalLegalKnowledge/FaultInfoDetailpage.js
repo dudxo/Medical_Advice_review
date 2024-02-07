@@ -23,12 +23,12 @@ export default function FaultInfoDetailpage(){
     const getFaultInfos = async (faultInfoId) => {
         
       // 본문 게시물 내용 상세 조회
-      const resp = await axios.get(`/find/mninfo/detail/${faultInfoId}`);
+      const resp = await axios.get(`/medicalNegligence/detail/${faultInfoId}`);
       const data = resp.data;
       setMedicalNegligenceInfoDetail(data);
 
       // 본문 게시물 이전글 정보 조회
-      const prev = await axios.get(`/find/mninfo/detail/prev/${faultInfoId}`)
+      const prev = await axios.get(`/medicalNegligence/detail/prev/${faultInfoId}`)
       const prevData = prev.data;
       setPrevNum(prevData.prevNum); // 이전 글 번호 값
       setPrevTitle(prevData.prevTitle);
@@ -36,7 +36,7 @@ export default function FaultInfoDetailpage(){
       setPrevDate(prevData.prevDate);
 
       // 본문 게시물 다음글 정보 조회
-      const next = await axios.get(`/find/mninfo/detail/next/${faultInfoId}`)
+      const next = await axios.get(`/medicalNegligence/detail/next/${faultInfoId}`)
       const nextData = next.data;
       setNextNum(nextData.nextNum);  // 다음 글 번호 값
       setNextTitle(nextData.nextTitle);
@@ -75,7 +75,7 @@ export default function FaultInfoDetailpage(){
   };
   
   const deleteFault = async(faultInfoId)=> {
-    const response = await axios.post(`/delete/mninfo/${faultInfoId}`);
+    const response = await axios.post(`/medicalNegligence/delete/${faultInfoId}`);
     // 삭제 응답에 따른 이동 여부 판단 로직 필요
     navigate('/medic/medicalknowledge/faultInfo');
   };

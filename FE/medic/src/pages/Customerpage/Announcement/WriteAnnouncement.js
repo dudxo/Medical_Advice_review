@@ -26,7 +26,7 @@ const WriteAnnouncement = () => {
       'amContent' : amContent
     }
     try{
-      const response = axios.post('/write/post', AnnoucementInfo)
+      const response = axios.post('/announcement/post', AnnoucementInfo)
       navigate('/medic/customer/announcement');
     } catch(err){
       console.log(err)

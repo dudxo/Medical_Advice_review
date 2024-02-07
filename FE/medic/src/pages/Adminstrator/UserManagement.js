@@ -14,7 +14,7 @@ export default function UserManagement() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/user/management');
+        const response = await axios.get('/admin/manageClient/list');
         console.log('response',response)
         setUserList(response.data);
       } catch (error) {
@@ -44,7 +44,7 @@ export default function UserManagement() {
     try {
       const confirmed = window.confirm('사용자를 삭제하시겠습니까?');
       if (confirmed) {
-        const response = await axios.delete(`/user/delete/${userId}`);
+        const response = await axios.delete(`/admin/manageClient/delete//${userId}`);
         const updatedUserList = userList.filter(user => user.uId !== userId);
         setUserList(updatedUserList);
         alert('사용자가 삭제되었습니다.');

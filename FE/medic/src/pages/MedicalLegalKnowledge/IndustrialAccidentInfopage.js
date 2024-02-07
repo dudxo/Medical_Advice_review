@@ -11,7 +11,7 @@ export default function IndustrialAccidentInfopage(){
   useEffect(() => {
     const getIndustrialAccidentInfos = async () => {
       try {
-        const resp = await axios.get('/find/industaccidentall');
+        const resp = await axios.get('/industrialAccident/list');
         const data = resp.data.reverse()
         setIndustrialAccidentInfos(data);
         console.log(resp);
@@ -25,7 +25,7 @@ export default function IndustrialAccidentInfopage(){
 
   const searchIndustrialAccidentInfo = async () => {
     try {
-      const resp = await axios.get(`/search/industacident?keyword=${searchKeyword}`);
+      const resp = await axios.get(`/industrialAccident/search?keyword=${searchKeyword}`);
       const data = resp.data;
       setIndustrialAccidentInfos(data);
     } catch (error) {

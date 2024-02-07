@@ -27,7 +27,7 @@ export default function TrafficAccidentWritepage() {
             setIsUpdate(location.state.isUpdate)
             if(location.state.isUpdate){
                 try{
-                    const response = await axios.get(`/find/tainfo/detail/${location.state.taId}`)
+                    const response = await axios.get(`/trafficAccident/detail/${location.state.taId}`)
                     setPostTitle(response.data.taName)
                     setWriter(response.data.taInstitution)
                     setTrafficWrite(response.data.taContent)
@@ -50,7 +50,7 @@ export default function TrafficAccidentWritepage() {
             'taRegDate' : today,
         }
         try{
-            const response = await axios.post('/post/tainfo', TrafficAccidentInfo)
+            const response = await axios.post('/trafficAccident/post', TrafficAccidentInfo)
             navigate('/medic/medicalknowledge/trafficAccidentInfo');
         } catch(err){
             console.log(err)
@@ -83,7 +83,7 @@ export default function TrafficAccidentWritepage() {
         }
         try{
             if(window.confirm('수정하시겠습니까?')){
-                const response = axios.put(`/update/tainfo/${taId}`, upDatePost)
+                const response = axios.put(`/trafficAccident/modify/${taId}`, upDatePost)
                 alert('수정되었습니다.')
                 navigate('/medic/medicalknowledge/trafficAccidentInfo')
             }

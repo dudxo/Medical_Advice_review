@@ -15,7 +15,7 @@ export default function DocManagement() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/doctor/management');
+        const response = await axios.get('/admin/manageConsultative/list');
         console.log(response)
         setDoctorList(response.data);
       } catch (error) {
@@ -44,7 +44,7 @@ export default function DocManagement() {
   const handleDeleteDoc = async (doctorId) => {
     try {
       const confirmed = window.confirm('사용자를 삭제하시겠습니까?');
-      const response = await axios.delete(`/doctor/delete/${doctorId}`);
+      const response = await axios.delete(`/admin/manageConsultative/delete/${doctorId}`);
       if (confirmed) {
         const updatedDoctorList = doctorList.filter(doctor => doctor.id !== doctorId);
         setDoctorList(updatedDoctorList);

@@ -23,12 +23,12 @@ export default function TrafficAccidentDetailInfopage(){
     const getTrafficAccidentInfos = async (trafficAccidentInfoId) => {
         
       // 본문 게시물 내용 상세 조회
-      const resp = await axios.get(`/find/tainfo/detail/${trafficAccidentInfoId}`);
+      const resp = await axios.get(`/trafficAccident/detail/${trafficAccidentInfoId}`);
       const data = resp.data;
       setTrafficAccidentInfoDetail(data);
 
       // 본문 게시물 이전글 정보 조회
-      const prev = await axios.get(`/find/tainfo/detail/prev/${trafficAccidentInfoId}`)
+      const prev = await axios.get(`/trafficAccident/detail/prev/${trafficAccidentInfoId}`)
       const prevData = prev.data;
       setPrevNum(prevData.prevNum); // 이전 글 번호 값
       setPrevTitle(prevData.prevTitle);
@@ -36,7 +36,7 @@ export default function TrafficAccidentDetailInfopage(){
       setPrevDate(prevData.prevDate);
 
       // 본문 게시물 다음글 정보 조회
-      const next = await axios.get(`/find/tainfo/detail/next/${trafficAccidentInfoId}`)
+      const next = await axios.get(`/trafficAccident/detail/next/${trafficAccidentInfoId}`)
       const nextData = next.data;
       setNextNum(nextData.nextNum);  // 다음 글 번호 값
       setNextTitle(nextData.nextTitle);
@@ -75,7 +75,7 @@ export default function TrafficAccidentDetailInfopage(){
   };
 
   const deleteTrafficAccident = async(trafficAccidentInfoId)=> {
-    const response = await axios.post(`/delete/tainfo/${trafficAccidentInfoId}`);
+    const response = await axios.post(`/trafficAccident/delete/${trafficAccidentInfoId}`);
     // 삭제 응답에 따른 이동 여부 판단 로직 필요
     navigate('/medic/medicalknowledge/trafficAccidentInfo');
   };

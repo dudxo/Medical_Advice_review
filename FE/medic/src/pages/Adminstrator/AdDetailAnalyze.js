@@ -44,7 +44,7 @@ export default function AdDetailAnalyze(){
     useEffect(()=>{
         const fetchData = async() => {
             try{
-                const response = await axios.get(`/an/detail/${index}`);
+                const response = await axios.get(`/admin/analyze/detail/${index}`);
                 setAnalyzeDetails(response.data);
                 console.log("response",response);
                 console.log("response1",response.data.analyzeRequests);
@@ -317,7 +317,7 @@ export default function AdDetailAnalyze(){
                             anReqForm ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anReqForm`}
+                                    href={`http://localhost:8080/analyze/findFile/${index}/anReqForm`}
                                     download="anReqForm.jpg"
                                 >
                                     다운로드
@@ -337,7 +337,7 @@ export default function AdDetailAnalyze(){
                             anDiagnosis ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anDiagnosis`}
+                                    href={`http://localhost:8080/analyze/findFile/${index}/anDiagnosis`}
                                     download="anDiagnosis.jpg"
                                 >
                                     다운로드
@@ -357,7 +357,7 @@ export default function AdDetailAnalyze(){
                             anRecord ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anRecord`}
+                                    href={`http://localhost:8080/analyze/findFile/${index}/anRecord`}
                                     download="anRecord.jpg"
                                 >
                                     다운로드
@@ -377,7 +377,7 @@ export default function AdDetailAnalyze(){
                             anFilm ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anFilm`}
+                                    href={`http://localhost:8080/analyze/findFile/${index}/anFilm`}
                                     download="anFilm.jpg"
                                 >
                                     다운로드
@@ -397,7 +397,7 @@ export default function AdDetailAnalyze(){
                             anOther ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anOther`}
+                                    href={`http://localhost:8080/analyze/findFile/${index}/anOther`}
                                     download="anOther.jpg"
                                 >
                                     다운로드

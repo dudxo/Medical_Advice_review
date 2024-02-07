@@ -53,7 +53,7 @@ export default function AdDetailTranslate(){
     useEffect(()=>{
         const fetchData = async() => {
             try{
-                const response = await axios.get(`/tr/detail/${index}`);
+                const response = await axios.get(`/admin/translate/detail/${index}`);
                 setTranslateDetails(response.data);
                 console.log("response",response);
                 const anptssnum = response.data.trPtSsNum.split('-');
@@ -202,7 +202,7 @@ export default function AdDetailTranslate(){
                             trMtl ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/translation/findrequestfile/${index}`}
+                                    href={`http://localhost:8080/translate/findFile/${index}`}
                                     download="adRecord.zip"
                                 >
                                     다운로드
@@ -222,7 +222,7 @@ export default function AdDetailTranslate(){
                             trAnswer ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/translateanswer/findrequestfile/${index}`}
+                                    href={`http://localhost:8080/assignedTranslate/findFile/${index}`}
                                     download="adRecord.zip"
                                 >
                                     다운로드

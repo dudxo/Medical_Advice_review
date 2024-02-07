@@ -13,7 +13,7 @@ export default function ConsultativeAnalyzeAssignmentpage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/analyze/list');
+        const response = await axios.get('/consultative/assignedAnalyze/list');
         console.log(response)
         setAnalyzeList(response.data);
       } catch (error) {

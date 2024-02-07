@@ -64,7 +64,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
 
     const getUserInfo = async() =>{
         try{
-            const response = await axios.get('/consultative/assignment/advice/${adviceIndex.id}/details')
+            const response = await axios.get(`/consultative/assignedAdvice/detail/${adviceIndex.id}`)
             console.log(response.data)
             setUname(response.data.name)
             setUtel(response.data.userTel)
@@ -434,7 +434,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                             adReqForm ? 
                             <button>
                                 <a
-                                    href={`http://localhost:8080/advice/findrequestfile/${adviceIndex}/adReqForm`}
+                                    href={`http://localhost:8080/advice/findFile/${adviceIndex}/adReqForm`}
                                     download="adReqForm.jpg"
                                 >
                                     다운로드
@@ -454,7 +454,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                             adDiagnosis ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/advice/findrequestfile/${adviceIndex}/adDiagnosis`}
+                                    href={`http://localhost:8080/advice/findFile/${adviceIndex}/adDiagnosis`}
                                     download="adDiagnosis.jpg"
                                 >
                                 다운로드
@@ -474,7 +474,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                             adRecord ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/advice/findrequestfile/${adviceIndex}/adRecord`}
+                                    href={`http://localhost:8080/advice/findFile/${adviceIndex}/adRecord`}
                                     download="adRecord.jpg"
                                 >
                                     다운로드
@@ -494,7 +494,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                             adFilm ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/advice/findrequestfile/${adviceIndex}/adFilm`}
+                                    href={`http://localhost:8080/advice/findFile/${adviceIndex}/adFilm`}
                                     download="adFilm.jpg"
                                 >다운로드</a>
                             </button>
@@ -512,7 +512,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                             adOther ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/advice/findrequestfile/${adviceIndex}/adOther`}
+                                    href={`http://localhost:8080/advice/findFile/${adviceIndex}/adOther`}
                                     download="adOther.jpg"
                                 >다운로드</a>
                             </button>

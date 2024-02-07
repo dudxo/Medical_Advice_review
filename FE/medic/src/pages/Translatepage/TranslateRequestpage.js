@@ -30,7 +30,7 @@ export default function TranslateRequestpage(){
 
     const getUserInfo = async() =>{
         try{
-            const response = await axios.get('/userInfo')
+            const response = await axios.get('/user/userInfo')
             console.log(response.data)
             setUname(response.data.name)
             setUtel(response.data.userTel)
@@ -110,7 +110,7 @@ export default function TranslateRequestpage(){
               "trMtl" : trFile_toString[0]
         })], {type : "application/json"}))
           try{
-              const response = axios.post('/translate/request', allTranslateRequest, {
+              const response = axios.post('/user/translate/request', allTranslateRequest, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

@@ -28,7 +28,7 @@ export default function WriteFaqPage  ()  {
     }
     try{
       console.log(FaqSituationDto)
-      const response = axios.post(`/write/faq/${'1'}`, FaqSituationDto)
+      const response = axios.post(`/faq/post/${'1'}`, FaqSituationDto)
       navigate('/medic/customer/FAQ');
     } catch(err){
       console.log(err)

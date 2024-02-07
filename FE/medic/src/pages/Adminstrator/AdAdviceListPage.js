@@ -24,7 +24,7 @@ export default function AdAdviceListPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/advice/all');
+        const response = await axios.get('/admin/advice/list');
         console.log(response);
         setAllAdviceList(response.data);
       } catch (error) {
@@ -86,7 +86,7 @@ export default function AdAdviceListPage() {
 
       console.log('Request Data:', updatedAdviceList);
 
-      const response = await axios.put('/advice/update/', updatedAdviceList);
+      const response = await axios.put('/admin/advice/updateStatus', updatedAdviceList);
 
       console.log('Update response:', response.data, assignmentDate);
 

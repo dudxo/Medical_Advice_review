@@ -26,7 +26,7 @@ export default function TranslateDetailpage(){
 
     const getTranslateRequest = async() => {
         try{
-            const response = await axios.get(`/translate/translateDetail/${index}`)
+            const response = await axios.get(`/user/translate/translateDetail/${index}`)
             setTranslateDetails(response.data);
             console.log(response.data)
             const trPtSsNum = response.data.trPtSsNum.split('-');
@@ -53,7 +53,7 @@ export default function TranslateDetailpage(){
 
     const getUserInfo = async() =>{
         try{
-            const response = await axios.get('/userInfo')
+            const response = await axios.get('/user/userInfo')
             console.log(response.data)
             setUname(response.data.name)
             setUtel(response.data.userTel)
@@ -191,7 +191,7 @@ export default function TranslateDetailpage(){
                             trMtl ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/translation/findrequestfile/${index}`}
+                                    href={`http://localhost:8080/translate/findFile/${index}`}
                                     download="adRecord.zip"
                                 >
                                     다운로드
@@ -212,7 +212,7 @@ export default function TranslateDetailpage(){
                             trAnswer ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/translateanswer/findrequestfile/${index}`}
+                                    href={`http://localhost:8080/assignedTranslate/findFile/${index}`}
                                     download="adRecord.zip"
                                 >
                                     다운로드

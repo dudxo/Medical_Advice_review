@@ -20,7 +20,7 @@ export default function CustomerInquiryDetail(){
 
     const getInquiryDetail = async()=>{
         try {
-            const response = await axios.get(`/qna/qnaDetail/${qaId}`);
+            const response = await axios.get(`/qna/detail/${qaId}`);
             setDetaillist(response.data);
             console.log(response.data)
         } catch (err) {

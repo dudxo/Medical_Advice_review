@@ -15,7 +15,7 @@ const AdTranslateListPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/translate/all');
+        const response = await axios.get('/admin/translate/list');
         setAllTransList(response.data);
       } catch (error) {
         console.error('번역 리스트를 가져오는 도중 에러 발생:', error);
@@ -83,7 +83,7 @@ const AdTranslateListPage = () => {
       });
 
       console.log('Request Data:', updatedTranslateList);
-      const response = await axios.put('/translate/update', updatedTranslateList);
+      const response = await axios.put('/admin/translate/updateStatus', updatedTranslateList);
       navigate('/');
     } catch (error) {
       console.error(`번역 업데이트 중 에러 발생:`, error);

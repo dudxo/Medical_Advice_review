@@ -11,7 +11,7 @@ export default function TrafficAccidentInfopage(){
   useEffect(() => {
     const getTrafficAccidentInfos = async () => {
       try {
-        const resp = await axios.get('/find/taInfoall');
+        const resp = await axios.get('/trafficAccident/list');
         const data = resp.data.reverse()
         setTrafficAccidentInfos(data);
         console.log(resp);
@@ -25,7 +25,7 @@ export default function TrafficAccidentInfopage(){
 
   const searchTrafficAccidentInfo = async () => {
     try {
-      const resp = await axios.get(`/search/tainfo?keyword=${searchKeyword}`);
+      const resp = await axios.get(`/trafficAccident/search?keyword=${searchKeyword}`);
       const data = resp.data;
       setTrafficAccidentInfos(data);
     } catch (error) {

@@ -14,7 +14,7 @@ export default function UserQnaAnswer({qaId, QuestionInfo}) {
 
     const getAnswer = async() => {
         try{
-            const response = await axios.get(`/qnaAnswer/findAnswer/${qaId}`)
+            const response = await axios.get(`/qna/findAnswer/${qaId}`)
             if(response.data){
               setAnswer(response.data)
               setIsAnswer(false)
@@ -47,7 +47,7 @@ export default function UserQnaAnswer({qaId, QuestionInfo}) {
     const btn_delete_myquestion = async(e) => {
       try{
         if(window.confirm("삭제하시겠습니까?")){
-          const response = await axios.delete(`/qna/deleteqna/${qaId}`)
+          const response = await axios.delete(`/qna/delete/${qaId}`)
           alert(response.data)
           navigate('/medic/customer/customerInquiry')
         }

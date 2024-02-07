@@ -14,7 +14,7 @@ export default function TranslateListPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await axios.get('/translation/list');
+        const resp = await axios.get('/user/translate/list');
         const data = resp.data.reverse()
         setTranslateList(data);
         console.log(resp)

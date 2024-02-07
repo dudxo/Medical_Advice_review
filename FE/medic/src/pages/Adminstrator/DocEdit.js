@@ -53,7 +53,7 @@ export default function DocEdit() {
   const fetchUserData = async () => {
     try {
       
-      const response = await axios.get(`/doc/detail/${cId}`);
+      const response = await axios.get(`/admin/manageConsultative/detail/${cId}`);
       const docInfo = response.data;
       console.log(docInfo);
       setCId(docInfo.cId);
@@ -188,7 +188,7 @@ const navigate = useNavigate();
 
   const doc_edit = async (docEdit) => {
     try {
-      const response = await axios.post('/doc/edit', docEdit);
+      const response = await axios.post('/admin/manageConsultative/modify', docEdit);
       console.log(response);
       
         alert('회원 정보가 수정되었습니다.');

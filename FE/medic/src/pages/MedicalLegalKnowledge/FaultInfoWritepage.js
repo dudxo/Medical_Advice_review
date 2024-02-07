@@ -27,7 +27,7 @@ export default function FaultInfoWritepage() {
             setIsUpdate(location.state.updatefault)
             if(location.state.updatefault){
                 try{
-                    const response = await axios.get(`/find/mninfo/detail/${location.state.faultInfoId}`)
+                    const response = await axios.get(`/medicalNegligence/detail/${location.state.faultInfoId}`)
                     console.log(response)
                     setPostTitle(response.data.mnName)
                     setWriter(response.data.mnInstitution)
@@ -52,7 +52,7 @@ export default function FaultInfoWritepage() {
             'mnRegDate' : today,
         }
         try{
-            const response = await axios.post('/post/mninfo', FaultInfo)
+            const response = await axios.post('/medicalNegligence/post', FaultInfo)
             navigate('/medic/medicalknowledge/faultInfo');
         } catch(err){
             console.log(err)
@@ -86,7 +86,7 @@ export default function FaultInfoWritepage() {
         }
         try{
             if(window.confirm('수정하시겠습니까?')){
-                const response = await axios.put(`/update/mninfo/${faultInfoId}`, upDatePost)
+                const response = await axios.put(`/medicalNegligence/modify/${faultInfoId}`, upDatePost)
                 alert('수정되었습니다.')
                 navigate('/medic/medicalknowledge/faultInfo')
             }

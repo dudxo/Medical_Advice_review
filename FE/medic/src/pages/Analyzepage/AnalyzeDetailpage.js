@@ -33,7 +33,7 @@ export default function AnalyzeDetailpage(){
 
     const getAnalyzeRequest = async() => {
             try{
-                const response = await axios.get(`/analyze/analyzeDetail/${index}`);
+                const response = await axios.get(`/user/analyze/detail/${index}`);
                 setAnalyzeDetails(response.data);
                 console.log("response",response);
                 console.log("response1",response.data.analyzeRequests);
@@ -84,7 +84,7 @@ export default function AnalyzeDetailpage(){
 
     const getUserInfo = async() =>{
         try{
-            const response = await axios.get('/userInfo')
+            const response = await axios.get('/user/userInfo')
             console.log(response.data)
             setUname(response.data.name)
             setUtel(response.data.userTel)
@@ -303,7 +303,7 @@ export default function AnalyzeDetailpage(){
                             anReqForm ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anReqForm`}
+                                    href={`http://localhost:8080/analyze/findFile/${index}/anReqForm`}
                                     download="anReqForm.jpg"
                                     style={{ display: imageError ? 'none' : 'block' }}
                                 >
@@ -325,7 +325,7 @@ export default function AnalyzeDetailpage(){
                             anDiagnosis ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anDiagnosis`}
+                                    href={`http://localhost:8080/analyze/findFile/${index}/anDiagnosis`}
                                     download="anDiagnosis.jpg"
                                     style={{ display: imageError ? 'none' : 'block' }}
                                 >
@@ -347,7 +347,7 @@ export default function AnalyzeDetailpage(){
                             anRecord ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anRecord`}
+                                    href={`http://localhost:8080/analyze/findFile/${index}/anRecord`}
                                     download="anRecord.jpg"
                                     style={{ display: imageError ? 'none' : 'block' }}
                                 >
@@ -369,7 +369,7 @@ export default function AnalyzeDetailpage(){
                             anFilm ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anFilm`}
+                                    href={`http://localhost:8080/analyze/findFile/${index}/anFilm`}
                                     download="anFilm.jpg"
                                     style={{ display: imageError ? 'none' : 'block' }}
                                 >
@@ -391,7 +391,7 @@ export default function AnalyzeDetailpage(){
                             anOther ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findrequestfile/${index}/anOther`}
+                                    href={`http://localhost:8080/analyze/findFile/${index}/anOther`}
                                     download="anOther.jpg"
                                     style={{ display: imageError ? 'none' : 'block' }}
                                 >

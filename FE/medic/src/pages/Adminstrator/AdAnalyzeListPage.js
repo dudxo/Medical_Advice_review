@@ -16,7 +16,7 @@ export default function AdAnalyzeListPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/analyze/all');
+        const response = await axios.get('/admin/analyze/list');
         console.log("res",response);
         setAllAnalyzeList(response.data);
    
@@ -82,7 +82,7 @@ export default function AdAnalyzeListPage() {
 
       console.log('Request Data:', updateAnalyzeList);
 
-      const response = await axios.put(`/an/update`, updateAnalyzeList);
+      const response = await axios.put(`/admin/analyze/updateStatus`, updateAnalyzeList);
       navigate('/');
     } catch (error) {
       console.error(`분석 업데이트 중 에러 발생:`, error);

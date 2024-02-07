@@ -37,7 +37,7 @@ export default function AnalyzeRequestpage(){
 
     const getUserInfo = async() =>{
         try{
-            const response = await axios.get('/userInfo')
+            const response = await axios.get('/user/userInfo')
             console.log(response.data)
             setUname(response.data.name)
             setUtel(response.data.userTel)
@@ -155,7 +155,7 @@ export default function AnalyzeRequestpage(){
             })], {type : "application/json"}))
 
           try{
-              const response = axios.post('/analyze/request', allAnalyzeRequest, {
+              const response = axios.post('/user/analyze/request', allAnalyzeRequest, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

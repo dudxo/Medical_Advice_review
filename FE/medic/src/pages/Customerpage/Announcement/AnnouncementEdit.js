@@ -80,7 +80,7 @@ console.log('ann',announceDetail)
 
   const announce_modify = async(announceInfo) => {
     console.log(2)
-    const response = await axios.put(`/update/post/${amId}`, announceInfo)
+    const response = await axios.put(`/announcement/modify/${amId}`, announceInfo)
     console.log(response)
     if(response.data === 1){
         alert('정보수정이 완료되었습니다.')

@@ -34,7 +34,7 @@ export default function AdminWriteQnaAnswer({qaId, answer}) {
         }
         try{
           if(window.confirm('답변을 작성하시겠습니까?')){
-            await axios.post(`/qnaAnswer/writeAnswer/${qaId}`, Adminanswer)
+            await axios.post(`/qna/writeAnswer/${qaId}`, Adminanswer)
             alert('작성되었습니다.')
           }
           setIsAnswer(true)
@@ -50,7 +50,7 @@ export default function AdminWriteQnaAnswer({qaId, answer}) {
         }
         try{
             if(window.confirm('답변을 수정하시겠습니까?')){
-              await axios.put(`/qnaAnswer/updateAnswer/${qaId}/${answer.qaAnswerId}`, AdminUpdateAnswer)
+              await axios.put(`/qna/modifyAnswer/${qaId}/${answer.qaAnswerId}`, AdminUpdateAnswer)
               alert('작성되었습니다.')
             }
             setIsAnswer(true)

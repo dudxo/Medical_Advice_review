@@ -811,7 +811,7 @@ export default function ChangeConsultativeInfopage(){
 
     const getMyInfo = async () => {
         try {
-            const response = await axios.get('/consultativeInfoAll');
+            const response = await axios.get('/consultative/consultativeInfoAll');
             const myInfo = response.data;
             console.log(myInfo);
             setCId(myInfo.cId);

@@ -116,7 +116,7 @@ export default function ModifyMyInfopage(){
     };
     const getMyInfo = async () => {
         try {
-            const response = await axios.get('/userInfoAll');
+            const response = await axios.get('/user/userInfoAll');
             const myInfo = response.data;
             console.log(myInfo);
             setUId(myInfo.uid);
@@ -233,7 +233,7 @@ export default function ModifyMyInfopage(){
     }
     const btn_progrm_deleteuser = async() => {
         try{
-            const response = await axios.delete('/user/deleteuser')
+            const response = await axios.delete('/user/deleteUser')
             if(response.data === '탈퇴 완료'){
                 alert('탈퇴가 정상적으로 이루어졌습니다.')
                 cookie.remove("uId")

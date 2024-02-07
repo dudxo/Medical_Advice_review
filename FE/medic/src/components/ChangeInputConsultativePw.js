@@ -61,7 +61,7 @@ export default function ChangeInputConsultativePw(){
             'cPw' : consultativePw,
         }
         try{
-            const response = await axios.post('/consultative/modifyConsultativeInfo', consultativePw)
+            const response = await axios.post('/consultative/modifyConsultativePw', consultativePw)
             alert(response.data)
             navigate('/')
         } catch(err){

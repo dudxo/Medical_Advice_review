@@ -22,7 +22,7 @@ export default function Announcementpage() {
   useEffect(() => {
     const getAnnouncements = async () => {
       try {
-        const resp = await axios.get('/post');
+        const resp = await axios.get('/announcement/list');
         const data = resp.data.reverse()
         setAnnouncements(data);
         console.log(resp);
@@ -78,7 +78,7 @@ export default function Announcementpage() {
   const handleDeleteAnnounce = async (amId) => {
     try {
       const confirmed = window.confirm('게시글을 삭제하시겠습니까?');
-      const response = await axios.delete(`/delete/post/${amId}`);
+      const response = await axios.delete(`/announcement/delete/${amId}`);
       if (confirmed) {
         alert('게시글이 삭제되었습니다.');
       } else {

@@ -37,7 +37,7 @@ export default function TranslateModifypage(){
 
     const getUserInfo = async() =>{
         try{
-            const response = await axios.get('/userInfo')
+            const response = await axios.get('/user/userInfo')
             console.log(response.data)
             setUname(response.data.name)
             setUtel(response.data.userTel)
@@ -56,7 +56,7 @@ export default function TranslateModifypage(){
 
     const getTranslateRequest = async() => {
         try{
-            const response = await axios.get(`/translate/translateDetail/${index}`)
+            const response = await axios.get(`/user/translate/translateDetail/${index}`)
             console.log(response.data)
             setTrptname(response.data.trPtName)
             const trPtSsNum = response.data.trPtSsNum.split('-');
@@ -122,7 +122,7 @@ export default function TranslateModifypage(){
         })], {type : "application/json"}))
 
         try{
-            const response = axios.put(`/translate/translateDetail/update/${index}`, updateTranslate, {
+            const response = axios.put(`/user/translate/translateDetail/update/${index}`, updateTranslate, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -282,7 +282,7 @@ export default function TranslateModifypage(){
                             <>
                                 <button>
                                     <a
-                                        href={`http://localhost:8080/translation/findrequestfile/${index}`}
+                                        href={`http://localhost:8080/translate/findFile/${index}`}
                                         download="adRecord.zip"
                                     >
                                         다운로드

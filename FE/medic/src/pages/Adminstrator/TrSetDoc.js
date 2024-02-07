@@ -17,7 +17,7 @@ export default function TrSetDoc() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/tr/docList');
+        const response = await axios.get('/admin/translate/consultativeList');
         console.log(response);
         setAllDocList(response.data);
       } catch (error) {
@@ -41,7 +41,7 @@ export default function TrSetDoc() {
 
       
       if (selectedCId !== null) {
-        const response = await axios.post(`/tr/set/doc/${index}`, { cId: selectedCId });
+        const response = await axios.post(`/admin/translate/setConsultative/${index}`, { cId: selectedCId });
         console.log('저장 응답:', response.data);
         navigate('/medic/adminstrator/trlist');
       } else {

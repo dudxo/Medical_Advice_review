@@ -68,7 +68,7 @@ export default function AdviceRequestpage(){
 
     const getUserInfo = async() =>{
         try{
-            const response = await axios.get('/userInfo')
+            const response = await axios.get('/user/userInfo')
             console.log(response.data)
             setUname(response.data.name)
             setUtel(response.data.userTel)
@@ -311,7 +311,7 @@ export default function AdviceRequestpage(){
         }
         console.log(allAdviceRequest)
         try{
-            const response = axios.post('/advice/request', allAdviceRequest,{
+            const response = axios.post('/user/advice/request', allAdviceRequest,{
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

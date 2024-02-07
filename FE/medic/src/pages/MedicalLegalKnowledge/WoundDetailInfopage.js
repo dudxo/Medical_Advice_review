@@ -23,12 +23,12 @@ export default function WoundAccidentDetailInfopage(){
     const getWoundInfos = async (woundInfoId) => {
         
         // 본문 게시물 내용 상세 조회
-        const resp = await axios.get(`/find/woinfo/detail/${woundInfoId}`);
+        const resp = await axios.get(`/woundInfo/detail/${woundInfoId}`);
         const data = resp.data;
         setWoundInfoDetail(data);
 
         // 본문 게시물 이전글 정보 조회
-        const prev = await axios.get(`/find/woinfo/detail/prev/${woundInfoId}`)
+        const prev = await axios.get(`/woundInfo/detail/prev/${woundInfoId}`)
         const prevData = prev.data;
         setPrevNum(prevData.prevNum); // 이전 글 번호 값
         setPrevTitle(prevData.prevTitle);
@@ -36,7 +36,7 @@ export default function WoundAccidentDetailInfopage(){
         setPrevDate(prevData.prevDate);
 
         // 본문 게시물 다음글 정보 조회
-        const next = await axios.get(`/find/woinfo/detail/next/${woundInfoId}`)
+        const next = await axios.get(`/woundInfo/detail/next/${woundInfoId}`)
         const nextData = next.data;
         setNextNum(nextData.nextNum);  // 다음 글 번호 값
         setNextTitle(nextData.nextTitle);
@@ -75,7 +75,7 @@ export default function WoundAccidentDetailInfopage(){
   };
 
   const deleteWound = async(woundInfoId)=> {
-    const response = await axios.post(`/delete/woinfo/${woundInfoId}`);
+    const response = await axios.post(`/woundInfo/delete/${woundInfoId}`);
     // 삭제 응답에 따른 이동 여부 판단 로직 필요
     navigate('/medic/medicalknowledge/woundInfo');
   };

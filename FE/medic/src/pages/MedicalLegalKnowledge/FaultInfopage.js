@@ -11,7 +11,7 @@ export default function FaultInfopage(){
     useEffect(() => {
         const getFaultInfos = async () => {
           try {
-            const resp = await axios.get('/find/mnInfoall');
+            const resp = await axios.get('/medicalNegligence/list');
             const data = resp.data.reverse()
             setFaultInfos(data);
             console.log(resp);
@@ -25,7 +25,7 @@ export default function FaultInfopage(){
 
   const searchMedicalNegligenceInfo = async () => {
     try {
-      const resp = await axios.get(`/search/mninfo?keyword=${searchKeyword}`);
+      const resp = await axios.get(`/medicalNegligence/search?keyword=${searchKeyword}`);
       const data = resp.data;
       setFaultInfos(data);
     } catch (error) {

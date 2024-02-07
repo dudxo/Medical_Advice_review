@@ -103,7 +103,7 @@ export default function AdviceModifypage(){
 
     const getUserInfo = async() =>{
         try{
-            const response = await axios.get('/userInfo')
+            const response = await axios.get('/user/userInfo')
             console.log(response.data)
             setUname(response.data.name)
             setUtel(response.data.userTel)
@@ -121,7 +121,7 @@ export default function AdviceModifypage(){
 
     const getAdviceRequest = async() => {
         try{
-            const response = await axios.get(`/advice/adviceDetail/${index}`)
+            const response = await axios.get(`/user/advice/detail/${index}`)
             console.log(response.data)
             setAdviceDetails(response.data);
             console.log("response",response);
@@ -299,7 +299,7 @@ const btn_advice_update = async() => {
         console.log(adQuestionContentArray)
 
     try{
-        const response = await axios.put(`/advice/adviceDetail/update/${index}`, allAdviceUpdate,{
+        const response = await axios.put(`/user/advice/detail/update/${index}`, allAdviceUpdate,{
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -695,7 +695,7 @@ return(
                     {
                         isAdReqForm ? 
                         <>
-                            <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findrequestfile/${index}/adReqForm`)}>미리보기</button>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findFile/${index}/adReqForm`)}>미리보기</button>
                             <button onClick={()=>setIsAdReqForm(!isAdReqForm)} >X</button>
                         </>
                         :
@@ -711,7 +711,7 @@ return(
                     {
                         isAdDiagnosis ?
                         <>
-                            <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findrequestfile/${index}/adDiagnosis`)}>미리보기</button>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findFile/${index}/adDiagnosis`)}>미리보기</button>
                             <button onClick={()=>setIsAdDiagnosis(!isAdDiagnosis)} >X</button>
                         </>
                         :
@@ -728,7 +728,7 @@ return(
                     {
                         isAdRecord ?
                         <>
-                            <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findrequestfile/${index}/adRecord`)}>미리보기</button>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findFile/${index}/adRecord`)}>미리보기</button>
                             <button onClick={()=>setIsAdRecord(!isAdRecord)} >X</button>
                         </>
                         :
@@ -744,7 +744,7 @@ return(
                     {
                         isAdFilm ? 
                         <>
-                            <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findrequestfile/${index}/adFilm`)}>미리보기</button>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findFile/${index}/adFilm`)}>미리보기</button>
                             <button onClick={()=>setIsAdFilm(!isAdFilm)} >X</button>
                         </>
                         :
@@ -760,7 +760,7 @@ return(
                     {
                         isAdOther ?
                         <>
-                            <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findrequestfile/${index}/adOther`)}>미리보기</button>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findFile/${index}/adOther`)}>미리보기</button>
                             <button onClick={()=>setIsAdOther(!isAdOther)} >X</button>
                         </>
                         :

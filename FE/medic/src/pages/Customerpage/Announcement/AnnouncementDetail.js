@@ -26,7 +26,7 @@ export default function AnnouncementDetail()  {
 
   const getAnnounceDetail = async()=>{
     try {
-        const response = await axios.get(`/detail/post/${amId}`);
+        const response = await axios.get(`/announcement/detail/${amId}`);
         setAnnounceDetail1(response.data);
         console.log(response.data)
     } catch (err) {

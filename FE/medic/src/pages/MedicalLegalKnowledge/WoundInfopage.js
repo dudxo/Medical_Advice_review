@@ -11,7 +11,7 @@ export default function WoundInfopage(){
   useEffect(() => {
     const getWoundInfos = async () => {
       try {
-        const resp = await axios.get('/find/woInfoall');
+        const resp = await axios.get('/woundInfo/list');
         const data = resp.data.reverse()
         setWoundInfos(data);
         console.log(resp);
@@ -25,7 +25,7 @@ export default function WoundInfopage(){
 
   const searchWoundInfo = async () => {
     try {
-      const resp = await axios.get(`/search/woinfo?keyword=${searchKeyword}`);
+      const resp = await axios.get(`/woundInfo/search?keyword=${searchKeyword}`);
       const data = resp.data;
       setWoundInfos(data);
     } catch (error) {

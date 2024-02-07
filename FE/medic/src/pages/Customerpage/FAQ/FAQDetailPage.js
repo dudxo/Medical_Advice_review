@@ -26,7 +26,7 @@ export default function FaqDetailPage()  {
 
   const getFaqDetail = async()=>{
     try {
-        const response = await axios.get(`/detail/faq/${faqId}`);
+        const response = await axios.get(`/faq/detail/${faqId}`);
         setFaqDetail(response.data);
         console.log(response.data)
     } catch (err) {

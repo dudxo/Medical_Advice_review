@@ -14,7 +14,7 @@ export default function AnalyzeListPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resp = await axios.get('/analyze/list');
+        const resp = await axios.get('/user/analyze/list');
         const data = resp.data.reverse()
         setAnalyzeList(data);
         console.log(data.anPtDiagnosis)

@@ -24,12 +24,12 @@ export default function IndustrialAccidentDetailInfopage(){
     const getIndustrialAccidentInfos = async (industrialAccidentInfoId) => {
         
       // 본문 게시물 내용 상세 조회
-      const resp = await axios.get(`/find/industacident/detail/${industrialAccidentInfoId}`);
+      const resp = await axios.get(`/industrialAccident/detail/${industrialAccidentInfoId}`);
       const data = resp.data;
       setIndustrialAccidentInfoDetail(data);
 
       // 본문 게시물 이전글 정보 조회
-      const prev = await axios.get(`/find/industacident/detail/prev/${industrialAccidentInfoId}`)
+      const prev = await axios.get(`/industrialAccident/detail/prev/${industrialAccidentInfoId}`)
       const prevData = prev.data;
       setPrevNum(prevData.prevNum); // 이전 글 번호 값
       setPrevTitle(prevData.prevTitle);
@@ -37,7 +37,7 @@ export default function IndustrialAccidentDetailInfopage(){
       setPrevDate(prevData.prevDate);
 
       // 본문 게시물 다음글 정보 조회
-      const next = await axios.get(`/find/industacident/detail/next/${industrialAccidentInfoId}`)
+      const next = await axios.get(`/industrialAccident/detail/next/${industrialAccidentInfoId}`)
       const nextData = next.data;
       setNextNum(nextData.nextNum);  // 다음 글 번호 값
       setNextTitle(nextData.nextTitle);
@@ -76,7 +76,7 @@ export default function IndustrialAccidentDetailInfopage(){
   };
 
   const deleteIndustrialAccident = async(industrialAccidentInfoId)=> {
-    const response = await axios.post(`/delete/industacident/${industrialAccidentInfoId}`);
+    const response = await axios.post(`/industrialAccident/delete/${industrialAccidentInfoId}`);
     // 삭제 응답에 따른 이동 여부 판단 로직 필요
     navigate('/medic/medicalknowledge/industrialAccidentInfo');
   };

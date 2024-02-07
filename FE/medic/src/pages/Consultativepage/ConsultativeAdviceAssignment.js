@@ -14,7 +14,7 @@ export default function ConsultativeAdviceAssignmentpage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/consultativce/advice/list');
+        const response = await axios.get('/consultative/assignedAdvice/list');
         console.log(response)
         setAdviceList(response.data);
       } catch (error) {

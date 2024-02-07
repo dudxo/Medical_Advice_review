@@ -80,7 +80,7 @@ console.log('ann',faqDetail)
 
   const faq_modify = async(faqInfo) => {
     console.log(2)
-    const response = await axios.put(`/faq/update/${faqId}`, faqInfo)
+    const response = await axios.put(`/faq/modify/${faqId}`, faqInfo)
     console.log(response)
     if(response.data === 1){
         alert('정보수정이 완료되었습니다.')

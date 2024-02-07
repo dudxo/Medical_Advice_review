@@ -11,11 +11,11 @@ export default function Mypage(){
     const navigate = useNavigate();
     const myAssignmentCount = async()=>{
         try{
-            const ConAdvice = await axios.get('/consultativeMypage/conAdviceSituation')
+            const ConAdvice = await axios.get('/consultative/myPage/assignedAdvice')
             setConAdvice(ConAdvice.data)
-            const ConAnalysis = await axios.get('/consultativeMypage/conAnalyzeSituation')
+            const ConAnalysis = await axios.get('/consultative/myPage/assignedAnalyze')
             setConAnalysis(ConAnalysis.data)
-            const ConTranslation = await axios.get('/consultativeMypage/conTranslationSituation')
+            const ConTranslation = await axios.get('/consultative/myPage/assignedTranslate')
             setConTranslation(ConTranslation.data)
         } catch(err){
             console.log(err)

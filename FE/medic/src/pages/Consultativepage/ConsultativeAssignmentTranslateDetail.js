@@ -31,7 +31,7 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
     const [trMtl, setTrMtl] = useState(false)
     const getUserInfo = async() =>{
         try{
-            const response = await axios.get(`/consultative/assignment/translate/${translateIndex.id}/details`)
+            const response = await axios.get(`/consultative/assignedTranslate/detail/${translateIndex.id}`)
             console.log(response.data)
             setUname(response.data.name)
             setUtel(response.data.userTel)
@@ -81,7 +81,7 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
         });
         
         try{
-            const response = axios.post(`/translate/answer/${trId}`, translateAnswer, {
+            const response = axios.post(`/consultative/assignedTranslate/saveFile/${trId}`, translateAnswer, {
                 headers : {
                     "Content-Type" : 'multipart/form-data',
                 },
@@ -206,7 +206,7 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
                             trMtl ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/translation/findrequestfile/${trId}`}
+                                    href={`http://localhost:8080/translate/findFile/${trId}`}
                                     style={{ display: imageError ? 'none' : 'block' }}
                                     download="adRecord.zip"
                                 >

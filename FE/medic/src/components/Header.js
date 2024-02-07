@@ -200,7 +200,7 @@ export default function Header({}) {
     }
     const getMyInfo = async() => {
         try {
-            const response = await axios.get('/userInfoAll');
+            const response = await axios.get('/user/userInfoAll');
             const myInfo = response.data;
             getAddress(myInfo)
             console.log(myInfo)

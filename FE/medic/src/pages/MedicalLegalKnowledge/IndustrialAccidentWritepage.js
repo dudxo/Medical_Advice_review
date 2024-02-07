@@ -28,7 +28,7 @@ export default function IndustrialAccidentWritepage() {
             setIsUpdate(location.state.isUpdate)
             if(location.state.isUpdate){
                 try{
-                    const response = await axios.get(`/find/industacident/detail/${location.state.IndustId}`)
+                    const response = await axios.get(`/industrialAccident/detail/${location.state.IndustId}`)
                     setPostTitle(response.data.iaName)
                     setWriter(response.data.iaInstitution)
                     setIndustrialWrite(response.data.iaContent)
@@ -51,7 +51,7 @@ export default function IndustrialAccidentWritepage() {
             'iaRegDate' : today,
         }
         try{
-            const response = await axios.post('/post/industacident', IndustrialAccidentInfo)
+            const response = await axios.post('/industrialAccident/post', IndustrialAccidentInfo)
             navigate('/medic/medicalknowledge/industrialAccidentInfo');
         } catch(err){
             console.log(err)
@@ -84,7 +84,7 @@ export default function IndustrialAccidentWritepage() {
         }
         try{
             if(window.confirm('수정하시겠습니까?')){
-                const response = await axios.put(`/update/industacident/${indusId}`, upDatePost)
+                const response = await axios.put(`/industrialAccident/modify/${indusId}`, upDatePost)
                 alert('수정되었습니다.')
                 navigate('/medic/medicalknowledge/industrialAccidentInfo')
             }

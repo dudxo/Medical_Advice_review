@@ -58,7 +58,7 @@ export default function AdviceDetailpage(){
 
     const getAdviceRequest = async() => {
         try{
-            const response = await axios.get(`/advice/adviceDetail/${index}`)
+            const response = await axios.get(`/user/advice/detail/${index}`)
             console.log(response.data)
             setAdviceDetails(response.data);
             console.log("response",response);
@@ -149,7 +149,7 @@ const generateOptions = (start, end) => {
     
     const getUserInfo = async() =>{
         try{
-            const response = await axios.get('/userInfo')
+            const response = await axios.get('/user/userInfo')
             console.log(response.data)
             setUname(response.data.name)
             setUtel(response.data.userTel)
@@ -454,7 +454,7 @@ const generateOptions = (start, end) => {
                             adReqForm ? 
                             <button>
                                 <a
-                                    href={`http://localhost:8080/advice/findrequestfile/${index}/adReqForm`}
+                                    href={`http://localhost:8080/advice/findFile/${index}/adReqForm`}
                                     download="adReqForm.jpg"
                                 >
                                     다운로드
@@ -474,7 +474,7 @@ const generateOptions = (start, end) => {
                             adDiagnosis ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/advice/findrequestfile/${index}/adDiagnosis`}
+                                    href={`http://localhost:8080/advice/findFile/${index}/adDiagnosis`}
                                     download="adDiagnosis.jpg"
                                 >
                                 다운로드
@@ -495,7 +495,7 @@ const generateOptions = (start, end) => {
                             adRecord ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/advice/findrequestfile/${index}/adRecord`}
+                                    href={`http://localhost:8080/advice/findFile/${index}/adRecord`}
                                     download="adRecord.jpg"
                                 >
                                     다운로드
@@ -516,7 +516,7 @@ const generateOptions = (start, end) => {
                             adFilm ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/advice/findrequestfile/${index}/adFilm`}
+                                    href={`http://localhost:8080/advice/findFile/${index}/adFilm`}
                                     download="adFilm.jpg"
                                 >다운로드</a>
                             </button>
@@ -535,7 +535,7 @@ const generateOptions = (start, end) => {
                             adOther ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/advice/findrequestfile/${index}/adOther`}
+                                    href={`http://localhost:8080/advice/findFile/${index}/adOther`}
                                     download="adOther.jpg"
                                 >다운로드</a>
                             </button>

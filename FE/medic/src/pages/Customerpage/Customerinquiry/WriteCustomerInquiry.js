@@ -54,7 +54,7 @@ export default function WriteCustomerInquiry() {
             'qaPw' : secretPw
         }
         try{
-            await axios.post('/qna/writeqna', InquiryInfo)
+            await axios.post('/qna/post', InquiryInfo)
             navigate('/medic/customer/customerInquiry');
         } catch(err){
             console.log(err)
@@ -84,7 +84,7 @@ export default function WriteCustomerInquiry() {
             'qaPw' : secretPw
         }
         try{
-            await axios.put(`/qna/updateqna/${qaId}`, updateqna)
+            await axios.put(`/qna/modify/${qaId}`, updateqna)
             alert('수정되었습니다.')
             navigate('/medic/customer/customerinquiry/')
         } catch(err){

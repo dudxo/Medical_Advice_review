@@ -57,7 +57,7 @@ export default function AnalyzeModifypage(){
 
     const getUserInfo = async() =>{
         try{
-            const response = await axios.get('/userInfo')
+            const response = await axios.get('/user/userInfo')
             console.log(response.data)
             setUname(response.data.name)
             setUtel(response.data.userTel)
@@ -75,7 +75,7 @@ export default function AnalyzeModifypage(){
 
     const getAnalyzeRequest = async() => {
         try{
-            const response = await axios.get(`/analyze/analyzeDetail/${index}`)
+            const response = await axios.get(`/user/analyze/detail/${index}`)
             console.log(response.data)
             setAnptname(response.data.anPtName)
             const an_PtSsNum = response.data.anPtSsNum.split('-');
@@ -87,11 +87,9 @@ export default function AnalyzeModifypage(){
             setAnEtcValue(response.data.anEtc)
             setAnQuestion(response.data.analyzeRequests);
             const anContented = response.data.analyzeRequests
-            // const anQuestionContentArray = anContented.map(item => item.anQuestionContent);
             setAnQuestionContentArray(() => anContented.map(item => item.anQuestionContent))
             console.log(anQuestionContentArray);
             setAnQuestionTotal(response.data.analyzeRequests.length);
-            // setAnAnswerContent(response.data.anAnswerContent)
             setIsAnReqForm(() => {
                 if(response.data.anReqForm === "empty_file"){
                     return false
@@ -136,28 +134,6 @@ export default function AnalyzeModifypage(){
         console.log(err)
     }  
 }
-
-// const isQuestionValid = () => {
-//     const valid = anQuestionContents.every(content => content);
-//     return valid;
-// }
-
-// const questionUpdate = async() => {
-//     if (!isQuestionValid()) {
-//         alert('질문지 수정을 확인해주세요.');
-//         return;
-//     }
-//     const updateQuestion = {
-//         "anQuestionContent" : anQuestionContents
-//     }
-//     try{
-//         const response = await axios.put(`/analyze/analyzeDetail/updateQuestion/${index}`, updateQuestion)
-//         alert('분석의뢰 질문 수정이 완료되었습니다.')
-//     } catch(err){
-//         console.log(err)
-//     }
-// }
-
 
 const isFormValid = () => {
     // 여러 입력 필드와 텍스트 영역의 유효성을 확인
@@ -216,7 +192,7 @@ const btn_analyze_update = async() => {
         console.log(anQuestionContentArray)
         
           try{
-              const response = await axios.put(`/analyze/analyzeDetail/update/${index}`, analyzeUpdate,{
+              const response = await axios.put(`/user/analyze/detail/update/${index}`, analyzeUpdate,{
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -228,24 +204,6 @@ const btn_analyze_update = async() => {
           }
       }
 
-    //   const renderQuestionInput = () => {
-    //     return Array.from({ length: anQuestionTotal }, (_, index) => (
-    //       <div className={analyzerequest.row_box} style={{height : 'auto'}} key={index}>
-    //         <div className={analyzerequest.title_box}>
-    //           질문 {index + 1} 입력
-    //         </div>
-    //         <div className={analyzerequest.input_box}>
-    //           <input
-    //             type="text"
-    //             name={`anQuestionContent_${index}`}
-    //             value={anQuestionContents[index] || ''}
-    //             onChange={(e) => handleQuestionContentChange(index, e)}
-    //             maxLength={300}
-    //           />
-    //         </div>
-    //       </div>
-    //     ));
-    // };
 
       const renderQuestionInputs = () => {
         return Array.from({ length: anQuestionTotal }, (_, index) => (
@@ -432,31 +390,6 @@ const btn_analyze_update = async() => {
                 </div>
                     {renderQuestionInputs()}
                 </div>
-                {/* <button onClick={() => setShowQuestionForm(!showQuestionForm)}>질문지 수정</button>
-                {showQuestionForm && (
-            <><div className={analyzerequest.iconbox} style={{ marginTop: '10px' }}>
-                <h3>
-                    <i className="fa-solid fa-circle icon"></i>
-                    질문지 수정
-                </h3>
-            </div><div className={analyzerequest.request_questiontable}>
-                    <div className={analyzerequest.row_box} style={{ height: 'auto' }}>
-                        <div className={analyzerequest.title_box}>
-                            질문 항목수
-                        </div>
-                        <div className={analyzerequest.input_box}>
-                            <input
-                                type="text"
-                                name="anQuestionTotal"
-                                value={anQuestionTotal}
-                                onChange={handleQuestionTotalChange} />
-                        </div>
-                    </div>
-                    {renderQuestionInput()}
-                    <button onClick={questionUpdate} >저장</button>
-                    <button onClick={() => setShowQuestionForm(false)}>취소</button>
-                </div></>
-            )} */}
              <div className={analyzerequest.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>
@@ -472,7 +405,7 @@ const btn_analyze_update = async() => {
                     {
                         isAnReqForm ? 
                         <>
-                            <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findrequestfile/${index}/anReqForm`)}>미리보기</button>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findFile/${index}/anReqForm`)}>미리보기</button>
                             <button onClick={()=>{
                                 setIsAnReqForm(!isAnReqForm)
                                 setAnReqForm(null)
@@ -491,7 +424,7 @@ const btn_analyze_update = async() => {
                     {
                         isAnDiagnosis ? 
                         <>
-                            <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findrequestfile/${index}/anDiagnosis`)}>미리보기</button>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findFile/${index}/anDiagnosis`)}>미리보기</button>
                             <button onClick={()=>{
                                 setIsAnDiagnosis(!isAnDiagnosis)
                                 setAnDiagnosis(null)
@@ -510,7 +443,7 @@ const btn_analyze_update = async() => {
                     {
                         isAnRecord ? 
                         <>
-                            <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findrequestfile/${index}/anRecord`)}>미리보기</button>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findFile/${index}/anRecord`)}>미리보기</button>
                             <button onClick={()=>{
                                 setIsAnRecord(!isAnRecord)
                                 setAnRecord(null)
@@ -529,7 +462,7 @@ const btn_analyze_update = async() => {
                     {
                         isAnFilm ? 
                         <>
-                            <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findrequestfile/${index}/anFilm`)}>미리보기</button>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findFile/${index}/anFilm`)}>미리보기</button>
                             <button onClick={()=>{
                                 setIsAnFilm(!isAnFilm)
                                 setAnFilm(null)
@@ -548,7 +481,7 @@ const btn_analyze_update = async() => {
                     {
                         isAnOther ? 
                         <>
-                            <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findrequestfile/${index}/anOther`)}>미리보기</button>
+                            <button onClick={()=>btn_open_image(`http://localhost:8080/analyze/findFile/${index}/anOther`)}>미리보기</button>
                             <button onClick={()=>{
                                 setIsAnOther(!isAnOther)
                                 setAnOther(null)

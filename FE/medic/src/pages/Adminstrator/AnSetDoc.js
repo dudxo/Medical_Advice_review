@@ -18,7 +18,7 @@ export default function AnSetDoc() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/an/docList');
+        const response = await axios.get('/admin/analyze/consultativeList');
         console.log(response);
         setAllDocList(response.data);
       } catch (error) {
@@ -46,7 +46,7 @@ export default function AnSetDoc() {
     try {
       const selectedCId = Array.from(selectedCIds)[0];
       if (selectedCId !== undefined) {
-        const response = await axios.post(`/an/set/doc/${index}`, { cId: selectedCId });
+        const response = await axios.post(`/admin/analyze/setConsultative/${index}`, { cId: selectedCId });
         console.log('저장 응답:', response.data);
         navigate('/medic/adminstrator/anlist');
       } else {

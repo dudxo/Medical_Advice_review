@@ -13,7 +13,7 @@ export default function ConsultativeTranslateAssignmentpage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/translation/list');
+        const response = await axios.get('/consultative/assignedTranslate/list');
         console.log(response)
         setTranslateList(response.data);
       } catch (error) {

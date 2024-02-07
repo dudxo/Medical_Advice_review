@@ -50,7 +50,7 @@ export default function CustomerInquirypage(){
             qaPw : qaPw
         }
         try {
-            const response = await axios.post(`/qna/checkpassword/${selectedQaId}`, qaPassword);
+            const response = await axios.post(`/qna/checkPassword/${selectedQaId}`, qaPassword);
             if (response.data) {
                 alert('확인되었습니다.')
                 btn_inquiryDetail(selectedQaId);
@@ -78,7 +78,7 @@ export default function CustomerInquirypage(){
     useEffect(() => {
         async function getQnaAll(){
             try {
-                const response = await axios.get('/qna/findAllQna');
+                const response = await axios.get('/qna/list');
                 console.log(response.data)
                 setQuiryList(response.data);
                 if(cookie.get('uRole') == 'admin'){
