@@ -22,7 +22,7 @@ public class AnalyzeSituationController {
 
     private final AnalyzeSituationService analyzeSituationService;
 
-    @GetMapping("/analyze/list")
+    @GetMapping("/user/analyze/list")
     public ResponseEntity<List<AnalyzeSituationDto>> getAnalyzeSituationList(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
@@ -39,7 +39,7 @@ public class AnalyzeSituationController {
         }
     }
 
-    @GetMapping("mypage/myAnalyzeSituation")
+    @GetMapping("/user/myPage/myAnalyzeSituation")
     public ResponseEntity<Integer> getAnalyzeCount(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String currentUid = (String) session.getAttribute("uId");

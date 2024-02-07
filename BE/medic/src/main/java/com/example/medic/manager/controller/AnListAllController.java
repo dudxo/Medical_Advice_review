@@ -23,7 +23,7 @@ public class AnListAllController {
     /*
     분석의뢰 목록 조회
      */
-    @GetMapping("/analyze/all")
+    @GetMapping("/admin/analyze/list")
     public ResponseEntity<List<AnalyzeListDto>> adGetAllList(){
         try{
             List<AnalyzeListDto> getAllAnList = anAllListService.anList();
@@ -37,7 +37,7 @@ public class AnListAllController {
     /*
     답변 배정일 , 진행상황
      */
-    @PutMapping("/an/update")
+    @PutMapping("/admin/analyze/updateStatus")
     public ResponseEntity<Integer> updateAdvice(@RequestBody List<AnalyzeListDto> analyzeListDtos){
         try{
             anAllListService.updateAnalyzeList(analyzeListDtos);
@@ -51,7 +51,7 @@ public class AnListAllController {
     /*
     전문의 목록 조회
      */
-    @GetMapping("/an/docList")
+    @GetMapping("/admin/analyze/consultativeList")
     public ResponseEntity<List<DocSetDto>> adGetDocList(){
         List<DocSetDto> consultatives =  anAllListService.consultatives();
 
@@ -61,7 +61,7 @@ public class AnListAllController {
     /*
     전문의 배정
      */
-    @PostMapping("/an/set/doc/{anId}")
+    @PostMapping("/admin/analyze/setConsultative/{anId}")
     public ResponseEntity<Integer> setAdDoc(@PathVariable Long anId, @RequestBody DocSetDto dto){
         try{
             if(anAllListService.setDoc(anId,dto)){
@@ -78,7 +78,7 @@ public class AnListAllController {
     /*
     상세페이지 조회
      */
-    @GetMapping("/an/detail/{anId}")
+    @GetMapping("/admin/analyze/detail/{anId}")
     public ResponseEntity<AnDetailDto> adDetail(@PathVariable Long anId){
         try{
             AnDetailDto anDetailDto = anAllListService.anDetailDto(anId);

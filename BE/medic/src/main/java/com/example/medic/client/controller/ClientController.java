@@ -30,7 +30,7 @@ public class ClientController {
     private final ClientService clientService;
     private final ModifyService modifyService;
 
-    @GetMapping("/userInfo")
+    @GetMapping("/user/userInfo")
     public ResponseEntity<ClientInfoDto> findUserInfo(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
@@ -42,7 +42,7 @@ public class ClientController {
         ClientInfoDto response = clientService.findClientInfo(clientInfoDto);
         return ResponseEntity.ok().body(response);
     }
-    @GetMapping("/userInfoAll")
+    @GetMapping("/user/userInfoAll")
     public ResponseEntity<ClientInfoAllDto> findUserInfoAll(HttpServletRequest request){
         HttpSession session = request.getSession();
         String uid = (String) session.getAttribute("uId");
@@ -83,7 +83,7 @@ public class ClientController {
             return new ResponseEntity<>("에러 발생", HttpStatus.BAD_REQUEST);
         }
     }
-    @DeleteMapping("/user/deleteuser")
+    @DeleteMapping("/user/deleteUser")
     public ResponseEntity<String> deleteUserInfo(HttpServletRequest request){
         try{
             HttpSession session = request.getSession();

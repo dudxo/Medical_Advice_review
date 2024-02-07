@@ -18,7 +18,7 @@ public class MedicalNegligenceInfoController {
     private final MedicalNegligenceInfoService medicalNegligenceInfoService;
 
     //전체 목록조회
-    @GetMapping("/find/mnInfoall")
+    @GetMapping("/medicalNegligence/list")
     public ResponseEntity<?> findMedicalNegligenceInfoAll(){
         try{
             List<MedicalNegligenceInfo> medicalNegligenceInfoList = medicalNegligenceInfoService.getAllMedicalNegligenceInfo();
@@ -29,7 +29,7 @@ public class MedicalNegligenceInfoController {
     }
 
     //상세 조회
-    @GetMapping("/find/mninfo/detail/{mnid}")
+    @GetMapping("/medicalNegligence/detail/{mnid}")
     public ResponseEntity<MedicalNegligenceInfoDto> findMedicalNegligenceInfoDetail(@PathVariable Long mnid){
         try{
             MedicalNegligenceInfoDto medicalNegligenceInfoDto = medicalNegligenceInfoService.getMedicalNegligenceInfoDetail(mnid);
@@ -40,7 +40,7 @@ public class MedicalNegligenceInfoController {
     }
 
     //이전 글 조회
-    @GetMapping("/find/mninfo/detail/prev/{mnid}")
+    @GetMapping("/medicalNegligence/detail/prev/{mnid}")
     public ResponseEntity<PrevMedicalNegligenceInfoDto> findPrevMedicalNegligenceInfo(@PathVariable Long mnid){
         try{
             PrevMedicalNegligenceInfoDto prevMedicalNegligenceInfoDto = medicalNegligenceInfoService.findPrevMedicalNegligenceInfo(mnid);
@@ -51,7 +51,7 @@ public class MedicalNegligenceInfoController {
     }
 
     //다음 글 조회
-    @GetMapping("/find/mninfo/detail/next/{mnid}")
+    @GetMapping("/medicalNegligence/detail/next/{mnid}")
     public ResponseEntity<NextMedicalNegligenceInfoDto> findNextMedicalNegligenceInfo(@PathVariable Long mnid){
         try{
             NextMedicalNegligenceInfoDto nextMedicalNegligenceInfoDto = medicalNegligenceInfoService.findNextMedicalNegligenceInfo(mnid);
@@ -62,7 +62,7 @@ public class MedicalNegligenceInfoController {
     }
 
     //등록
-    @PostMapping("/post/mninfo")
+    @PostMapping("/medicalNegligence/post")
     public ResponseEntity<String> insertMedicalNegligenceInfo(@RequestBody MedicalNegligenceInfoDto medicalNegligenceInfoDto){
         try{
             medicalNegligenceInfoService.insertMedicalNegligenceInfo(medicalNegligenceInfoDto);
@@ -73,7 +73,7 @@ public class MedicalNegligenceInfoController {
     }
 
     //수정
-    @PutMapping("/update/mninfo/{mnid}")
+    @PutMapping("/medicalNegligence/modify/{mnid}")
     public ResponseEntity<String> updateMedicalNegligenceInfo(@PathVariable Long mnid, @RequestBody MedicalNegligenceInfoDto medicalNegligenceInfoDto){
         try{
             medicalNegligenceInfoService.updateMedicalNegligenceInfo(mnid, medicalNegligenceInfoDto);
@@ -83,7 +83,7 @@ public class MedicalNegligenceInfoController {
         }
     }
     //삭제
-    @PostMapping("/delete/mninfo/{mnid}")
+    @PostMapping("/medicalNegligence/delete/{mnid}")
     public ResponseEntity<String> deleteMedicalNegligenceInfo(@PathVariable Long mnid){
         try{
             medicalNegligenceInfoService.deleteMedicalNegligenceInfo(mnid);
@@ -96,7 +96,7 @@ public class MedicalNegligenceInfoController {
     /**
      * 검색 기능
      */
-    @GetMapping("/search/mninfo")
+    @GetMapping("/medicalNegligence/search")
     public ResponseEntity<List<MedicalNegligenceInfo>> searchMedicalNegligenceInfo(@RequestParam String keyword) {
         try {
             List<MedicalNegligenceInfo> searchResults = medicalNegligenceInfoService.searchMedicalNegligenceInfo(keyword);

@@ -38,7 +38,7 @@ public class AnalyzeController {
      */
 
 
-    @PostMapping("analyze/request")
+    @PostMapping("/user/analyze/request")
     public ResponseEntity<String> saveAnalyzeRequest(@RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles,
                                                      @RequestPart(name = "dto") AnalyzeRequestDto analyzeRequestDto,
                                                      HttpServletRequest request) throws IOException {
@@ -57,7 +57,7 @@ public class AnalyzeController {
     /**
      * @return 분석의뢰 파일 조회
      */
-    @GetMapping("analyze/findrequestfile/{anId}/{filename}")
+    @GetMapping("/analyze/findFile/{anId}/{filename}")
     public ResponseEntity<?> findAnalyzeFile(@PathVariable Long anId, @PathVariable String filename) {
         try {
             Resource fileResource = analyzeFileService.findAnalyzeRequestFile(anId, filename);
@@ -75,7 +75,7 @@ public class AnalyzeController {
         }
     }
 
-    @GetMapping("/analyze/analyzeDetail/{anId}")
+    @GetMapping("/user/analyze/detail/{anId}")
     public ResponseEntity<AnalyzeResponseDto> findAnalyzeDetail(@PathVariable Long anId) {
         try {
             AnalyzeResponseDto analyzeResponseDto = analyzeService.getAnalyzeRequestDetail(anId);
@@ -88,7 +88,7 @@ public class AnalyzeController {
     /**
      * 분석의뢰 수정
      */
-    @PutMapping("/analyze/analyzeDetail/update/{anId}")
+    @PutMapping("/user/analyze/detail/update/{anId}")
     public ResponseEntity<String> updateAnalyzeRequest(@PathVariable Long anId,
                                                        @RequestPart(name = "dto") AnalyzeUpdateDto updateDto,
                                                        @RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles) throws IOException {
@@ -102,18 +102,4 @@ public class AnalyzeController {
     }
 }
 
-//    /**
-//     * 분석의뢰 질문지 수정
-//     */
-//    @PutMapping("/analyze/analyzeDetail/updateQuestion/{anId}")
-//    public ResponseEntity<String> updateQuestion(@PathVariable Long anId, @RequestBody AnalyzeQuestionDto analyzeQuestionDto) {
-//        boolean updated = analyzeService.updateQuestion(anId, analyzeQuestionDto);
-//
-//        if (updated) {
-//            return ResponseEntity.ok("분석의뢰 수정 성공");
-//        } else {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Analyze request with ID " + anId + " not found");
-//        }
-//    }
-//}
 

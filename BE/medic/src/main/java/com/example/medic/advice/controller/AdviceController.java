@@ -34,7 +34,7 @@ public class AdviceController {
     private static final Logger logger = LoggerFactory.getLogger(AdviceController.class);
 
     //받는타입 지정
-    @PostMapping(value = "/advice/request")
+    @PostMapping(value = "/user/advice/request")
     public ResponseEntity<String> saveAdviceRequest(@RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles,
                                                     @RequestPart(name = "dto") AllAdviceRequestDto allAdviceRequestDto,
                                                     HttpServletRequest request) throws IOException {
@@ -55,7 +55,7 @@ public class AdviceController {
     /**
      * 자문의뢰 상세조회
      */
-    @GetMapping("/advice/adviceDetail/{adId}")
+    @GetMapping("/user/advice/detail/{adId}")
     public ResponseEntity<AllAdviceRequestDto> findAdviceDetail(@PathVariable Long adId) {
         try {
             AllAdviceRequestDto allAdviceRequestDto = adviceService.getAdviceRequestDetail(adId);
@@ -69,7 +69,7 @@ public class AdviceController {
     /**
      * 자문의뢰 파일 조회
      */
-    @GetMapping("advice/findrequestfile/{adId}/{filename}")
+    @GetMapping("/advice/findFile/{adId}/{filename}")
     public ResponseEntity<?> findAdviceRequestFile(@PathVariable Long adId, @PathVariable String filename) {
         try {
             Resource fileResource = adviceFileService.findAdviceRequestFile(adId, filename);
@@ -89,7 +89,7 @@ public class AdviceController {
     /**
      * 자문의뢰 수정
      */
-    @PutMapping("/advice/adviceDetail/update/{adId}")
+    @PutMapping("/user/advice/detail/update/{adId}")
     public ResponseEntity<String> updateAdviceRequestList(@PathVariable Long adId,
                                                           @RequestPart(name = "dto") AdviceUpdateDto adviceUpdateDto,
                                                           @RequestPart(name = "files") List<MultipartFile> multipartFiles) throws IOException {
@@ -102,18 +102,5 @@ public class AdviceController {
         }
     }
 
-    /**
-     * 자문의뢰 질문지 수정
-     */
-    @PutMapping("/advice/adviceDetail/updateQuestion/{adId}")
-    public ResponseEntity<String> updateQuestion(@PathVariable Long adId, @RequestBody AdviceQuestionRequestDto adviceQuestionRequestDto) {
-        boolean updated = adviceService.updateQuestion(adId, adviceQuestionRequestDto);
-
-        if (updated) {
-            return ResponseEntity.ok("자문의뢰 수정 성공");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Advice request with ID " + adId + " not found");
-        }
-    }
 }
 

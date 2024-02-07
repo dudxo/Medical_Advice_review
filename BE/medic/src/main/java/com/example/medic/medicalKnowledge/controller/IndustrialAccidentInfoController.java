@@ -19,7 +19,7 @@ public class IndustrialAccidentInfoController {
     private final IndustrialAccidentInfoService industrialAccidentInfoService;
 
     //전체 목록조회
-    @GetMapping("/find/industaccidentall")
+    @GetMapping("/industrialAccident/list")
     public ResponseEntity<?> findIndustrialAccidentInfoAll(){
         try{
             List<IndustrialAccidentInfo> industrialAccidentInfoList = industrialAccidentInfoService.getAllIndustrialAccidentInfo();
@@ -30,7 +30,7 @@ public class IndustrialAccidentInfoController {
     }
 
     //상세 조회
-    @GetMapping("/find/industacident/detail/{iaid}")
+    @GetMapping("/industrialAccident/detail/{iaid}")
     public ResponseEntity<IndustrialAccidentInfoDto> findIndustrialAccidentInfoDetail(@PathVariable Long iaid){
         try{
             IndustrialAccidentInfoDto industrialAccidentInfoDto = industrialAccidentInfoService.getIndustrialAccidentInfoDetail(iaid);
@@ -41,7 +41,7 @@ public class IndustrialAccidentInfoController {
     }
 
     //이전 글 조회
-    @GetMapping("/find/industacident/detail/prev/{iaid}")
+    @GetMapping("/industrialAccident/detail/prev/{iaid}")
     public ResponseEntity<PrevIndustrialAccidentInfoDto> findPrevIndustrialAccidentInfo(@PathVariable Long iaid){
         try{
             PrevIndustrialAccidentInfoDto prevIndustrialAccidentInfoDto = industrialAccidentInfoService.findPrevIndustrialAccidentInfo(iaid);
@@ -52,7 +52,7 @@ public class IndustrialAccidentInfoController {
     }
 
     //다음 글 조회
-    @GetMapping("/find/industacident/detail/next/{iaid}")
+    @GetMapping("/industrialAccident/detail/next/{iaid}")
     public ResponseEntity<NextIndustrialAccidentInfoDto> findNextIndustrialAccidentInfo(@PathVariable Long iaid){
         try{
             NextIndustrialAccidentInfoDto nextIndustrialAccidentInfo = industrialAccidentInfoService.findNextIndustrialAccidentInfo(iaid);
@@ -63,7 +63,7 @@ public class IndustrialAccidentInfoController {
     }
 
     //등록
-    @PostMapping("/post/industacident")
+    @PostMapping("/industrialAccident/post")
     public ResponseEntity<String> insertIndustrialAccidentInfo(@RequestBody IndustrialAccidentInfoDto industrialAccidentInfoDto){
         try{
             industrialAccidentInfoService.insertIndustrialAccidentInfo(industrialAccidentInfoDto);
@@ -74,7 +74,7 @@ public class IndustrialAccidentInfoController {
     }
 
     //수정
-    @PutMapping("/update/industacident/{iaid}")
+    @PutMapping("/industrialAccident/modify/{iaid}")
     public ResponseEntity<String> updateIndustrialAccidentInfo(@PathVariable Long iaid, @RequestBody IndustrialAccidentInfoDto industrialAccidentInfoDto){
         try{
             industrialAccidentInfoService.updateIndustrialAccidentInfo(iaid, industrialAccidentInfoDto);
@@ -84,7 +84,7 @@ public class IndustrialAccidentInfoController {
         }
     }
     //삭제
-    @PostMapping("/delete/industacident/{iaid}")
+    @PostMapping("/industrialAccident/delete/{iaId}")
     public ResponseEntity<String> deleteIndustrialAccidentInfo(@PathVariable Long iaid){
         try{
             industrialAccidentInfoService.deleteIndustrialAccidentInfo(iaid);
@@ -97,7 +97,7 @@ public class IndustrialAccidentInfoController {
     /**
      * 검색 기능
      */
-    @GetMapping("/search/industacident")
+    @GetMapping("/industrialAccident/search")
     public ResponseEntity<List<IndustrialAccidentInfo>> searchIndustrialAccidentInfo(@RequestParam String keyword) {
         try {
             List<IndustrialAccidentInfo> searchResults = industrialAccidentInfoService.searchIndustrialAccidentInfo(keyword);

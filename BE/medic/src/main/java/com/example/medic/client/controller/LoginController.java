@@ -100,7 +100,7 @@ public class LoginController {
         }
     }
 
-    @PostMapping("login/findPw")
+    @PostMapping("/login/findPw")
     public ResponseEntity<String> findPw(@RequestBody LoginDto loginDto) {
         try {
             Optional<Client> optionalClient = loginService.findClient(loginDto);
@@ -115,7 +115,7 @@ public class LoginController {
         }
     }
 
-    @PostMapping("login/findPw/updatePw")
+    @PostMapping("/login/findPw/updatePw")
     public ResponseEntity<String> updatePw(@RequestBody LoginDto loginDto) {
         try {
             if (loginService.updatePassword(loginDto)) {

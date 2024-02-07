@@ -24,7 +24,7 @@ public class QnaController {
     private final QnaService qnaService;
 
     //마이페이지 문의건수 조회
-    @GetMapping("/mypage/myCustomerInquiry")
+    @GetMapping("/myPage/myQna")
     public ResponseEntity<Integer> getCustomerInquiryCount(HttpServletRequest request){
         HttpSession session = request.getSession();
         String currentUid = (String) session.getAttribute("uId");
@@ -43,7 +43,7 @@ public class QnaController {
     }
 
     //Qna 전체목록 조회
-    @GetMapping("/qna/findAllQna")
+    @GetMapping("/qna/list")
     public ResponseEntity<List<QnaResponseDto>> findQPostAll(){
         try{
             List<QnaResponseDto> qnaList= qnaService.findQPostAll();
@@ -56,7 +56,7 @@ public class QnaController {
     /**
      * Qna 상세조회
      */
-    @GetMapping("/qna/qnaDetail/{qaId}")
+    @GetMapping("/qna/detail/{qaId}")
     public ResponseEntity<QnaDetailResponseDto> findQPost(@PathVariable Long qaId){
         try{
             QnaDetailResponseDto qnaDetailResponseDto = qnaService.findQPost(qaId);
@@ -70,7 +70,7 @@ public class QnaController {
      *
      * Qna 비밀 게시글 비밀번호 검사
      */
-    @PostMapping("/qna/checkpassword/{qaId}")
+    @PostMapping("/qna/checkPassword/{qaId}")
     public ResponseEntity<Boolean> checkpasswordQpost(@PathVariable Long qaId, @RequestBody QnaPasswordDto qnaPasswordDto){
         try{
             boolean checkpw = qnaService.checkpasswordQpost(qaId, qnaPasswordDto);
@@ -81,7 +81,7 @@ public class QnaController {
     }
 
     //Qna 게시글 작성
-    @PostMapping("/qna/writeqna")
+    @PostMapping("/qna/post")
     public ResponseEntity<String> writeQPost(HttpServletRequest request, @RequestBody QnaRequestDto qnaRequestDto){
         HttpSession session = request.getSession();
         String currentUid = (String) session.getAttribute("uId");
@@ -95,7 +95,7 @@ public class QnaController {
     }
 
     //Qna 게시글 수정
-    @PutMapping("/qna/updateqna/{qaid}")
+    @PutMapping("/qna/modify/{qaid}")
     public ResponseEntity<String> updateQpost(HttpServletRequest request, @PathVariable Long qaid, @RequestBody QnaRequestDto qnaRequestDto){
         HttpSession session = request.getSession();
         String currentUid = (String) session.getAttribute("uId");
@@ -108,7 +108,7 @@ public class QnaController {
     }
 
     //Qna 게시글 삭제
-    @DeleteMapping("/qna/deleteqna/{qaid}")
+    @DeleteMapping("/qna/delete/{qaid}")
     public ResponseEntity<String> deleteQpost(@PathVariable Long qaid){
         qnaService.deleteQpost(qaid);
         try{

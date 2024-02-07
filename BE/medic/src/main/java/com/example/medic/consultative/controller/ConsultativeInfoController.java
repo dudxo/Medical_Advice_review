@@ -28,7 +28,7 @@ public class ConsultativeInfoController {
     private final ConsultativeService consultativeService;
     private final ModifyConsultativeService modifyConsultativeService;
 
-    @GetMapping("/consultativeInfoAll")
+    @GetMapping("/consultative/consultativeInfoAll")
     public ResponseEntity<ConsultativeDto> findConsultativeInfoAll(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String cId = (String) session.getAttribute("cId");
@@ -59,7 +59,7 @@ public class ConsultativeInfoController {
         }
     }
 
-    @PostMapping("/consultative/modifyConsultativeInfo")
+    @PostMapping("/consultative/modifyConsultativePw")
     public ResponseEntity<String> modifyPw(HttpServletRequest request, @RequestBody String consultativePw) {
         HttpSession session = request.getSession();
         String cId = (String) session.getAttribute("cId");

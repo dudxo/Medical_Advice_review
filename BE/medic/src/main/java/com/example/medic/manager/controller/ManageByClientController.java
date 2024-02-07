@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +27,7 @@ public class ManageByClientController {
     /**
      * 일반 회원 목록 조회
      */
-    @GetMapping("/user/management")
+    @GetMapping("/admin/manageClient/list")
     public ResponseEntity<List<ManagedClientInfoDto>> findAllClient() {
         List<ManagedClientInfoDto> response = clientManagementService.findAllClient();
         if (response == null) {
@@ -37,6 +39,7 @@ public class ManageByClientController {
     /**
      * 관리자 일반 회원 상세 조회
      */
+    @GetMapping("/admin/manageClient/detail/{uId}")
     public ResponseEntity<ManagedClientInfoDto> findDetailByClient(@RequestBody ClientInfoAllDto requestClientInfo) {
         String uId = requestClientInfo.getUId();
         if (uId == null || uId.isEmpty()) {
@@ -49,6 +52,7 @@ public class ManageByClientController {
     /**
      * 관리자 일반 회원 수정
      */
+    @PutMapping("/admin/manageClient/modify")
     public ResponseEntity<String> updateUserInfo(@RequestBody ManagedClientInfoDto requestManagedClientInfoDto) {
         if (!clientManagementService.updateClient(requestManagedClientInfoDto)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -59,6 +63,7 @@ public class ManageByClientController {
     /**
      * 관리자 일반 회원 삭제
      */
+    @DeleteMapping("/admin/manageClient/delete/{uId}")
     public ResponseEntity<String> deleteUserInfo(@RequestBody ManagedClientInfoDto requestManagedClientInfoDto) {
         if (!clientManagementService.deleteClient(requestManagedClientInfoDto)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

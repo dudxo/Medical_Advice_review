@@ -19,7 +19,7 @@ public class WoundInfoController {
     private final WoundInfoService woundInfoService;
 
     //전체 목록조회
-    @GetMapping("/find/woInfoall")
+    @GetMapping("/woundInfo/list")
     public ResponseEntity<?> findWoundInfoAll(){
         try{
             List<WoundInfo> woundInfoList = woundInfoService.getAllWoundInfo();
@@ -30,7 +30,7 @@ public class WoundInfoController {
     }
 
     //상세 조회
-    @GetMapping("/find/woinfo/detail/{woid}")
+    @GetMapping("/woundInfo/detail/{woid}")
     public ResponseEntity<WoundInfoDto> findWoundInfoDetail(@PathVariable Long woid){
         try{
             WoundInfoDto woundInfoDto = woundInfoService.getWoundInfoDetail(woid);
@@ -41,7 +41,7 @@ public class WoundInfoController {
     }
 
     //이전 글 조회
-    @GetMapping("/find/woinfo/detail/prev/{woid}")
+    @GetMapping("/woundInfo/detail/prev/{woid}")
     public ResponseEntity<PrevWoundInfoDto> findPrevWoundInfo(@PathVariable Long woid){
         try{
             PrevWoundInfoDto prevWoundInfo = woundInfoService.findPrevWoundInfo(woid);
@@ -52,7 +52,7 @@ public class WoundInfoController {
     }
 
     //다음 글 조회
-    @GetMapping("/find/woinfo/detail/next/{woid}")
+    @GetMapping("/woundInfo/detail/next/{woid}")
     public ResponseEntity<NextWoundInfoDto> findNextWoundInfo(@PathVariable Long woid){
         try{
             NextWoundInfoDto nextWoundInfo = woundInfoService.findNextWoundInfo(woid);
@@ -63,7 +63,7 @@ public class WoundInfoController {
     }
 
     //등록
-    @PostMapping("/post/woinfo")
+    @PostMapping("/woundInfo/post")
     public ResponseEntity<String> insertWoundInfo(@RequestBody WoundInfoDto woundInfoDto){
         try{
             woundInfoService.insertWoundInfo(woundInfoDto);
@@ -74,7 +74,7 @@ public class WoundInfoController {
     }
 
     //수정
-    @PutMapping("/update/woinfo/{woid}")
+    @PutMapping("/woundInfo/modify/{woid}")
     public ResponseEntity<String> updateWoundInfo(@PathVariable Long woid, @RequestBody WoundInfoDto woundInfoDto){
         try{
             woundInfoService.updateWoundInfo(woid, woundInfoDto);
@@ -84,7 +84,7 @@ public class WoundInfoController {
         }
     }
     //삭제
-    @PostMapping("/delete/woinfo/{woid}")
+    @PostMapping("/woundInfo/delete/{woid}")
     public ResponseEntity<String> deleteWoundInfo(@PathVariable Long woid){
         try{
             woundInfoService.deleteWoundInfo(woid);
@@ -97,7 +97,7 @@ public class WoundInfoController {
     /**
      * 검색 기능
      */
-    @GetMapping("/search/woinfo")
+    @GetMapping("/woundInfo/search")
     public ResponseEntity<List<WoundInfo>> searchWoundInfo(@RequestParam String keyword) {
         try {
             List<WoundInfo> searchResults = woundInfoService.searchWoundInfo(keyword);

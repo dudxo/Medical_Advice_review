@@ -22,7 +22,7 @@ public class TrListAllController {
     /*
     번역목록 조회
      */
-    @GetMapping("/translate/all")
+    @GetMapping("/admin/translate/list")
     public ResponseEntity<List<TranslateListDto>> adGetAllList(){
         try{
             List<TranslateListDto> getAllTrList = trAllListService.trList();
@@ -36,7 +36,7 @@ public class TrListAllController {
     /*
     번역배정일, 진행상황 설정
      */
-    @PutMapping("/translate/update")
+    @PutMapping("/admin/translate/updateStatus")
     public ResponseEntity<Integer> updateAdvice(@RequestBody List<TranslateListDto> translateListDtos){
 
         trAllListService.updateAdviceList(translateListDtos);
@@ -46,7 +46,7 @@ public class TrListAllController {
     /*
     전문의 목록
      */
-    @GetMapping("/tr/docList")
+    @GetMapping("/admin/translate/consultativeList")
     public ResponseEntity<List<DocSetDto>> adGetDocList(){
         List<DocSetDto> consultatives =  trAllListService.consultatives();
 
@@ -56,7 +56,7 @@ public class TrListAllController {
     /*
     전문의 배정
      */
-    @PostMapping("/tr/set/doc/{trId}")
+    @PostMapping("/admin/translate/setConsultative/{trId}")
     public ResponseEntity<Integer> setAdDoc(@PathVariable Long trId, @RequestBody DocSetDto dto){
         try{
             if(trAllListService.setDoc(trId,dto)){
@@ -73,7 +73,7 @@ public class TrListAllController {
     /*
     상세페이지 조회
      */
-    @GetMapping("/tr/detail/{trId}")
+    @GetMapping("/admin/translate/detail/{trId}")
     public ResponseEntity<TrDetailDto> adDetail(@PathVariable Long trId){
         try{
             TrDetailDto trDetailDto = trAllListService.trDetailDto(trId);

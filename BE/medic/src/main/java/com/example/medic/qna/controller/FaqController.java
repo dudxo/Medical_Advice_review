@@ -37,7 +37,7 @@ public class FaqController {
         }
     }
 
-    @GetMapping("/detail/faq/{faqId}")
+    @GetMapping("/faq/detail/{faqId}")
     public ResponseEntity<FaqSituationDto> detailFaq(@PathVariable Long faqId){
         if(faqId == null){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -48,7 +48,7 @@ public class FaqController {
     /*
     faq 작성
      */
-    @PostMapping("/write/faq/{mId}")
+    @PostMapping("/faq/post/{mId}")
     public ResponseEntity<Integer> writeFaq(@PathVariable String mId, @RequestBody FaqSituationDto faqSituationDto){
         try{
             logger.info("mid:{}",mId);
@@ -66,7 +66,7 @@ public class FaqController {
     /*
     faq 수정
      */
-    @PutMapping("/faq/update/{faqId}")
+    @PutMapping("/faq/modify/{faqId}")
     public ResponseEntity<Integer> updateFaqp(@PathVariable Long faqId, FaqSituationDto faqSituationDto){
         try{
             if(faqSituationService.updateFaq(faqId, faqSituationDto)){

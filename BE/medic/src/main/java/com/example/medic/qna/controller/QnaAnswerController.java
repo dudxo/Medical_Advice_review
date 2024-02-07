@@ -18,7 +18,7 @@ public class QnaAnswerController {
     private final QnaAnswerService qnaAnswerService;
 
     //문의 답변 조회
-    @GetMapping("/qnaAnswer/findAnswer/{qaId}")
+    @GetMapping("/qna/findAnswer/{qaId}")
     public ResponseEntity<QnaAnswerResponseDto> findQAnswer(@PathVariable Long qaId){
         try{
             QnaAnswerResponseDto qnaAnswerResponseDto = qnaAnswerService.findQAnswer(qaId);
@@ -30,7 +30,7 @@ public class QnaAnswerController {
     }
 
     //문의 답변 저장
-    @PostMapping("/qnaAnswer/writeAnswer/{qaId}")
+    @PostMapping("/qna/writeAnswer/{qaId}")
     public ResponseEntity<String> saveQAnswer(HttpServletRequest request, @PathVariable Long qaId, @RequestBody QnaAnswerRequestDto qnaAnswerRequestDto){
         HttpSession session = request.getSession();
         String currentUid = (String) session.getAttribute("uId");
@@ -43,7 +43,7 @@ public class QnaAnswerController {
     }
 
     //문의 답변 수정
-    @PutMapping("/qnaAnswer/updateAnswer/{qaId}/{qaAsId}")
+    @PutMapping("/qna/modifyAnswer/{qaId}/{qaAsId}")
     public ResponseEntity<String> updateQAnswer(HttpServletRequest request, @PathVariable Long qaId, @PathVariable Long qaAsId, @RequestBody QnaAnswerRequestDto qnaAnswerRequestDto){
         HttpSession session = request.getSession();
         String currentUid = (String) session.getAttribute("uId");
@@ -56,7 +56,7 @@ public class QnaAnswerController {
     }
 
     //문의 답변 삭제
-    @DeleteMapping("/qnaAnswer/deleteAnswer/{qaAsId}")
+    @DeleteMapping("/qna/deleteAnswer/{qaAsId}")
     public ResponseEntity<String> deleteQAnswer(@PathVariable Long qaAsId){
         qnaAnswerService.deleteQAnswer(qaAsId);
         try{

@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +20,7 @@ public class ConsultativeManagementController {
     /**
      * @return 전문의 목록 조회
      */
+    @GetMapping("/admin/manageConsultative/list")
     public ResponseEntity<List<ManagedConsultativeInfoDto>> findAllConsultative() {
         List<ManagedConsultativeInfoDto> response = consultativeManagementService.findAllConsultative();
         if (response == null) {
@@ -31,6 +32,7 @@ public class ConsultativeManagementController {
     /**
      * @return 관지라 특정 전문의 상세 조회
      */
+    @GetMapping("/admin/manageConsultative/detail/{cId}")
     public ResponseEntity<ManagedConsultativeInfoDto> findDetailByConsultative(@RequestBody ManagedConsultativeInfoDto managedConsultativeInfoDto) {
         String cId = managedConsultativeInfoDto.getCId();
         if (cId == null || cId.isEmpty()) {
@@ -43,6 +45,7 @@ public class ConsultativeManagementController {
     /**
      * @return 관리자 특정 전문의 정보 수정
      */
+    @PostMapping("/admin/manageConsultative/modify")
     public ResponseEntity<String> updateConsultativeInfo(@RequestBody ManagedConsultativeInfoDto managedConsultativeInfoDto) {
         if (!consultativeManagementService.updateDoctorManagement(managedConsultativeInfoDto)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -53,6 +56,7 @@ public class ConsultativeManagementController {
     /**
      * @return 관리자 특정 전문의 정보 삭제
      */
+    @DeleteMapping("/admin/manageConsultative/delete/{cId}")
     public ResponseEntity<String> deleteConsultativeInfO(@RequestBody ManagedConsultativeInfoDto managedConsultativeInfoDto) {
         if (!consultativeManagementService.deleteDoctorManagement(managedConsultativeInfoDto)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

@@ -20,7 +20,7 @@ public class AdviceSituationController {
 
     private final AdviceSituationService adviceSituationService;
 
-    @GetMapping("/advice/list")
+    @GetMapping("/user/advice/list")
     public ResponseEntity<List<AdviceSituationDto>> getAdviceSituationList(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
@@ -37,7 +37,7 @@ public class AdviceSituationController {
         }
     }
 
-    @GetMapping("mypage/myAdviceSituation")
+    @GetMapping("/user/myPage/myAdviceSituation")
     public ResponseEntity<Integer> getAdviceCount(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String currentUid = (String) session.getAttribute("uId");

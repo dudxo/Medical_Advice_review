@@ -34,7 +34,7 @@ public class TranslationController {
     /**
      * @return 번역 의뢰 신청 저장
      */
-    @PostMapping("/translate/request")
+    @PostMapping("/user/translate/request")
     public ResponseEntity<String> saveTranslationRequest(@RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles,
                                                          @RequestPart(name = "dto") TranslationRequestDto translationRequestDto,
                                                          HttpServletRequest request) throws IOException {
@@ -53,7 +53,7 @@ public class TranslationController {
     /**
      * @return 번역의뢰 파일 조회
      */
-    @GetMapping("translation/findrequestfile/{trId}")
+    @GetMapping("/translate/findFile/{trId}")
     public ResponseEntity<?> findTranslationFile(@PathVariable Long trId) {
         try {
             Resource fileResource = translationFileService.findTranslationFile(trId);
@@ -73,7 +73,7 @@ public class TranslationController {
     /**
      * 번역의뢰 상세 조회
      */
-    @GetMapping("/translate/translateDetail/{trId}")
+    @GetMapping("/user/translate/translateDetail/{trId}")
     public ResponseEntity<TranslationResponseDto> findTranslationDetail(@PathVariable Long trId){
         try{
             TranslationResponseDto translationResponseDto = translationServiceImpl.getTranslationDetail(trId);
@@ -87,7 +87,7 @@ public class TranslationController {
     /**
      * 번역의뢰 수정
      */
-    @PutMapping("/translate/translateDetail/update/{trId}")
+    @PutMapping("/user/translate/translateDetail/update/{trId}")
     public ResponseEntity<String> updateTranslationRequest(@PathVariable Long trId,
                                                            @RequestPart(name = "dto") TranslationResponseDto updateDto,
                                                            @RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles) throws IOException {

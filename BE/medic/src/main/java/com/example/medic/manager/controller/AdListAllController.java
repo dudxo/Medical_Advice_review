@@ -23,7 +23,7 @@ public class AdListAllController {
     /*
     전체 자문의뢰 목록 조회 컨트롤러
      */
-    @GetMapping("/advice/all")
+    @GetMapping("/admin/advice/list")
     public ResponseEntity<List<AdviceListDto>> adGetAllList(){
         try{
             List<AdviceListDto> getAllAdList = adAllListService.adList();
@@ -36,7 +36,7 @@ public class AdListAllController {
     /*
     배정일 및 진행상황 저장하는 컨트롤러
      */
-    @PutMapping("/advice/update")
+    @PutMapping("/admin/advice/updateStatus")
     public ResponseEntity<Integer> updateAdvice(@RequestBody List<AdviceListDto> adviceListDtos){
         for (AdviceListDto adviceListDto : adviceListDtos){
 //            logger.info("adviceListDtos:{}",adviceListDto.getAdmDate());
@@ -48,7 +48,7 @@ public class AdListAllController {
     /*
     전체 전문의 목록을 조회하는 컨트롤러
      */
-    @GetMapping("/ad/docList")
+    @GetMapping("/admin/advice/consultativeList")
     public ResponseEntity<List<DocSetDto>> adGetDocList(){
           List<DocSetDto> consultatives =  adAllListService.consultatives();
 
@@ -58,7 +58,7 @@ public class AdListAllController {
     /*
     자문의뢰에 전문의를 배정하는 컨트롤러
     */
-    @PostMapping("/ad/set/doc/{adId}")
+    @PostMapping("/admin/advice/setConsultative/{adId}")
     public ResponseEntity<Integer> setAdDoc(@PathVariable Long adId, @RequestBody DocSetDto dto){
         try{
             if(adAllListService.setDoc(adId,dto)){
@@ -75,7 +75,7 @@ public class AdListAllController {
     /*
     상세페이지 조회 컨트롤러
      */
-    @GetMapping("/ad/detail/{adId}")
+    @GetMapping("/admin/advice/detail/{adId}")
     public ResponseEntity<AdDetailDto> adDetail(@PathVariable Long adId){
         try{
             AdDetailDto adDetailDto = adAllListService.adDetailDto(adId);

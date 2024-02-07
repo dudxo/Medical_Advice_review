@@ -21,7 +21,7 @@ public class AnnouncementController {
     private final AnnouncementService announcementService;
     private final Logger logger = LoggerFactory.getLogger(ClientService.class);
 
-    @GetMapping("/post")
+    @GetMapping("/announcement/list")
     public ResponseEntity<?> getAllAnnounce(){
         try{
             List<Announcement> announcements= announcementService.getAllAnnounce();
@@ -31,7 +31,7 @@ public class AnnouncementController {
         }
     }
 
-    @GetMapping("/detail/post/{amId}")
+    @GetMapping("/announcement/detail/{amId}")
     public ResponseEntity<AnnouncementDto> findDetailAnnounce(@PathVariable Long amId) {
         try{
             logger.info("amId:{}",amId);
@@ -44,7 +44,7 @@ public class AnnouncementController {
 
 
 
-    @PostMapping("/write/post")
+    @PostMapping("/announcement/post")
     public ResponseEntity<String> writeAnnounce( @RequestBody AnnouncementDto announcementDto){
         try{
 //            announcementDto.setMId(mId);
@@ -56,7 +56,7 @@ public class AnnouncementController {
         }
     }
 
-    @PutMapping("/update/post/{amId}")
+    @PutMapping("/announcement/modify/{amId}")
     public ResponseEntity<Integer> updateAnnounce(@PathVariable Long amId,@RequestBody AnnouncementDto announcementDto){
         logger.info("amidid:{}",amId);
         logger.info("amididto:{}",announcementDto.getAmMdDate());
@@ -67,7 +67,7 @@ public class AnnouncementController {
         return ResponseEntity.ok(1);
     }
 
-    @DeleteMapping("/delete/post/{amId}")
+    @DeleteMapping("/announcement/delete/{amId}")
     public ResponseEntity<Integer> deleteAnnounce(@PathVariable Long amId){
         logger.info("amId:{}",amId);
         if(amId == null){

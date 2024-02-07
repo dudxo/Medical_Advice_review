@@ -24,7 +24,7 @@ public class TranslationSituationController {
     /**
      * 번역의뢰 현황 조회
      */
-    @GetMapping("/translation/list")
+    @GetMapping("/user/translate/list")
     public ResponseEntity<List<TranslationSituationDto>> getTranslationSituationList(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
@@ -42,7 +42,7 @@ public class TranslationSituationController {
     }
 
 
-    @GetMapping("mypage/myTranslationSituation")
+    @GetMapping("/user/myPage/myTranslateSituation")
     public ResponseEntity<Integer> getTranslationCount(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String currentUid = (String) session.getAttribute("uId");
