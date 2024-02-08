@@ -39,7 +39,6 @@ public class AdviceController {
                                                     @RequestPart(name = "dto") AllAdviceRequestDto allAdviceRequestDto,
                                                     HttpServletRequest request) throws IOException {
 
-        System.out.println(multipartFiles.size());
         HttpSession session = request.getSession();
         String uid = (String) session.getAttribute("uId");
 
@@ -92,7 +91,7 @@ public class AdviceController {
     @PutMapping("/user/advice/detail/update/{adId}")
     public ResponseEntity<String> updateAdviceRequestList(@PathVariable Long adId,
                                                           @RequestPart(name = "dto") AdviceUpdateDto adviceUpdateDto,
-                                                          @RequestPart(name = "files") List<MultipartFile> multipartFiles) throws IOException {
+                                                          @RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles) throws IOException {
         boolean updated = adviceService.updateAdviceRequest(adId, adviceUpdateDto, multipartFiles);
 
         if (updated) {

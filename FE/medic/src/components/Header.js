@@ -33,6 +33,7 @@ export default function Header({}) {
             if (response.status === 200) {
                 alert('로그아웃 되었습니다.');
                 cookies.remove('uId')
+                cookies.remove('uRole')
                 navigate('/');
             } else {
                 alert('현재 로그인된 세션이 없습니다.');

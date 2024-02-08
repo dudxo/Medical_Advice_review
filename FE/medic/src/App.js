@@ -69,12 +69,14 @@ import AdDetailTranslate from "./pages/Adminstrator/AdDetailTranslate";
 import ChangeConsultativePwpage from "./pages/Mypage/ChangeConsultativePwpage";
 import AnnouncementEdit from "./pages/Customerpage/Announcement/AnnouncementEdit";
 import FaqEdit  from "./pages/Customerpage/FAQ/FaqEdit";
+import ScrollToTop from "./components/ScrollToTop";
 
 export default function App(){
     return(
         <BrowserRouter>
         <div className="App">
             <Header/>
+            <ScrollToTop/>
             <div className="App-body">
                 <Routes>
                     <Route path='/' element={<Mainpage/>}/>
