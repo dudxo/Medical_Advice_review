@@ -117,7 +117,7 @@ export default function App(){
                     <Route path="/medic/consultative/assignmentAdviceList" element={<ConsultativeAdviceAssignment/>}/>
                     <Route path="/medic/consultative/assignmentAnalyzeList" element={<ConsultativeAnalyzeAssignment/>}/>
                     <Route path="/medic/consultative/assignmentTranslateList" element={<ConsultativeTranslateAssignment/>}/>
-                    <Route path="/medic/consultative/assignmentAdviceDetail" element={<ConsultativeAdviceAssignmentDetail/>}/>
+                    <Route path="/medic/consultative/assignmentAdviceDetail/:index" element={<ConsultativeAdviceAssignmentDetail/>}/>
                     <Route path="/medic/consultative/assignmentAnalyzeDetail" element={<ConsultativeAnalyzeAssignmenDetail/>}/>
                     <Route path="/medic/consultative/assignmentTranslateDetail" element={<ConsultativeTranslateAssignmentDetail/>}/>
                     <Route path="/medic/knowledge/industrialaccidentdetails" element={<IndustrialAccidentDetail/>}/>

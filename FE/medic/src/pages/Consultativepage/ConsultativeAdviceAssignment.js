@@ -25,8 +25,8 @@ export default function ConsultativeAdviceAssignmentpage() {
     fetchData();
   }, []);
 
-  const handledetailClick = (e, index) => {
-    navigate('/medic/consultative/assignmentAdviceDetail', {state : {index : index}})
+  const handledetailClick = (adId) => {
+    navigate(`/medic/consultative/assignmentAdviceDetail/${adId}`)
   }
   
   const formatDate = (dateString) => {
@@ -73,7 +73,7 @@ export default function ConsultativeAdviceAssignmentpage() {
                 {adviceList.map((advice, index) => (
                     rowIndex === index && (
                     <React.Fragment key={index}>
-                        <td className={assignmentAdvice.adviceList_td} onClick={() => handledetailClick(index)}>{index + 1}</td>
+                        <td className={assignmentAdvice.adviceList_td} onClick={() => handledetailClick(advice.adId)}>{index + 1}</td>
                         <td className={assignmentAdvice.adviceList_td}>{advice.adPtSub}</td>
                         <td className={assignmentAdvice.adviceList_td}>{advice.adPtDiagnosis}</td>
                         <td className={assignmentAdvice.adviceList_td}>

@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import assignmentadvicedetail from '../../css/ConsultativeAdviceAssignmentDetailpage.module.css'
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function ConsultativeAdviceAssignmentDetailpage(){
     const navigate = useNavigate();
-    const location = useLocation();
   
-    const adviceIndex = location.state.index + 1;
+    const {index} = useParams();
+    console.log(index)
+
     
     const [uname, setUname] = useState('')
     const [utel, setUtel] = useState('')
@@ -64,41 +65,52 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
 
     const getUserInfo = async() =>{
         try{
-            const response = await axios.get(`/consultative/assignedAdvice/detail/${adviceIndex.id}`)
-            console.log(response.data)
-            setUname(response.data.name)
+            const response = await axios.get(`/consultative/assignedAdvice/detail/${index}`)
+            console.log(response)
+            setUname(response.data.uname)
             setUtel(response.data.userTel)
             setUphone(response.data.userPhone)
             setUaddress(response.data.userAddress)
-            setAdptname(response.data.adptNmae)
-            setAdptssnum1(response.data.adptssnum1)
-            setAdptssnum2(response.data.adptssnum2)
-            setAdptsub(response.data.adptsub)
-            setAdptdiagnosis(response.data.adptdiagnosis)
-            setAdptrec(response.data.adptrec)
-            setAdptcmt(response.data.adptcmt)
+            setAdptname(response.data.adPtName)
+            setAdptsub(response.data.adPtSub)
+            setAdptdiagnosis(response.data.adPtDiagnosis)
+            setAdptrec(response.data.adPtRec)
+            setAdptcmt(response.data.adPtCmt)
             setInsurance(response.data.insurance)
-            setInsurename(response.data.insurename)
-            setInsuranceYear(response.data.insuranceYear)
-            setInsuranceMonth(response.data.insuranceMonth)
-            setInsuranceDay(response.data.insuranceDay)
+            setInsurename(response.data.insureName)
             setHospital(response.data.hospital)
-            setAdmstartYear(response.data.admstartYear)
-            setAdmstartMonth(response.data.admstartMonth)
-            setAdmstartDay(response.data.admstartDay)
-            setAdmendYear(response.data.admendYear)
-            setAdmendMonth(response.data.admendMonth)
-            setAdmendDay(response.data.admendDay)
-            setVisitstartYear(response.data.visitstartYear)
-            setVisitstartMonth(response.data.visitstartMonth)
-            setVisitstartDay(response.data.visitstartDay)
-            setVisitendYear(response.data.visitendYear)
-            setVisitendMonth(response.data.visitendMonth)
-            setVisitendDay(response.data.visitendDay)
             setTreatcmt(response.data.treatCmt)
-            setAdEtcValue(response.data.adEtcValue)
+            setAdEtcValue(response.data.adEtc)
             setAdQuestionTotal(response.data.adQuestionTotal)
-            setAdQuestionContents(response.data.adQuestionContents)
+            setAdQuestionContents(response.data.adQuestionContent)
+                        
+            const ad_PtSsNum = response.data.adPtSsNum.split('-');  // 주민번호 나누기
+            setAdptssnum1(ad_PtSsNum[0]);
+            setAdptssnum2(ad_PtSsNum[1]);
+            
+            const insure = response.data.insureDate.split('-'); // 계약 날짜 나누기
+            setInsuranceYear(insure[0])
+            setInsuranceMonth(insure[1])
+            setInsuranceDay(insure[2])
+
+            const adm_startDay = response.data.admStart.split('-'); // 입원 치료기간 나누기
+            setAdmstartYear(adm_startDay[0])
+            setAdmstartMonth(adm_startDay[1])
+            setAdmstartDay(adm_startDay[2])
+            const adm_endDay = response.data.admEnd.split('-');
+            setAdmendYear(adm_endDay[0])
+            setAdmendMonth(adm_endDay[1])
+            setAdmendDay(adm_endDay[2])
+
+            const visit_startDay = response.data.visitStart.split('-'); // 통원 치료기간 나누기
+            setVisitstartYear(visit_startDay[0])
+            setVisitstartMonth(visit_startDay[1])
+            setVisitstartDay(visit_startDay[2])
+            const visit_endDay = response.data.visitEnd.split('-');
+            setVisitendYear(visit_endDay[0])
+            setVisitendMonth(visit_endDay[1])
+            setVisitendDay(visit_endDay[2])
+
             setAdReqForm(() => {
                 if(response.data.adReqForm === "empty_file"){
                     return false
@@ -434,7 +446,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                             adReqForm ? 
                             <button>
                                 <a
-                                    href={`http://localhost:8080/advice/findFile/${adviceIndex}/adReqForm`}
+                                    href={`http://localhost:8080/advice/findFile/${index}/adReqForm`}
                                     download="adReqForm.jpg"
                                 >
                                     다운로드
@@ -454,7 +466,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                             adDiagnosis ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/advice/findFile/${adviceIndex}/adDiagnosis`}
+                                    href={`http://localhost:8080/advice/findFile/${index}/adDiagnosis`}
                                     download="adDiagnosis.jpg"
                                 >
                                 다운로드
@@ -474,7 +486,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                             adRecord ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/advice/findFile/${adviceIndex}/adRecord`}
+                                    href={`http://localhost:8080/advice/findFile/${index}/adRecord`}
                                     download="adRecord.jpg"
                                 >
                                     다운로드
@@ -494,7 +506,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                             adFilm ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/advice/findFile/${adviceIndex}/adFilm`}
+                                    href={`http://localhost:8080/advice/findFile/${index}/adFilm`}
                                     download="adFilm.jpg"
                                 >다운로드</a>
                             </button>
@@ -512,7 +524,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                             adOther ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/advice/findFile/${adviceIndex}/adOther`}
+                                    href={`http://localhost:8080/advice/findFile/${index}/adOther`}
                                     download="adOther.jpg"
                                 >다운로드</a>
                             </button>
