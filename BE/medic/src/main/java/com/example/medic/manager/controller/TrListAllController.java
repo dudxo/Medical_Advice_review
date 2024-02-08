@@ -36,11 +36,17 @@ public class TrListAllController {
     /*
     번역배정일, 진행상황 설정
      */
-    @PutMapping("/admin/translate/updateStatus")
-    public ResponseEntity<Integer> updateAdvice(@RequestBody List<TranslateListDto> translateListDtos){
 
-        trAllListService.updateAdviceList(translateListDtos);
-        return ResponseEntity.ok(1);
+
+    @PutMapping("/admin/translate/updateStatus{trId}")
+    public ResponseEntity<Integer> updateAdvice(@PathVariable Long trId,  @RequestBody TranslateListDto translateListDtos){
+        try{
+            trAllListService.updateAdviceList(trId,translateListDtos);
+            return ResponseEntity.ok(1);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
+        }
+
     }
 
     /*

@@ -42,8 +42,10 @@ public class TrAllListService {
 
             TranslationRequestFile translationRequestFiles = translationRequestList.getTranslationRequestFile();
 
+
                 TranslateListDto translateListDto = convertToDTO(translationRequestList, uName, translationRequestFiles);
                 translateListDtos.add(translateListDto);
+
 
         }
 
@@ -81,7 +83,8 @@ public class TrAllListService {
                 translationRequestList.getTrPtDiagnosis(),
                 translationRequestList.getTrRegDate(),
                 clientName,
-                (translationRequestList.getTranslationAssignment() != null && translationRequestList.getTranslationAssignment().getTamDate() != null) ? translationRequestList.getTranslationAssignment().getTamDate() : null,
+//                (translationRequestList.getTranslationAssignment() != null && translationRequestList.getTranslationAssignment().getTamDate() != null) ? translationRequestList.getTranslationAssignment().getTamDate() : null,
+                translationAssignment.getTamDate(),
                 translationRequestFile.getTrAnswerDate()
                 ,admProgressStatus
                 ,cName
@@ -91,28 +94,18 @@ public class TrAllListService {
     /*
     배정일, 진행상황 저장
      */
-    public void updateAdviceList(List<TranslateListDto> translateListDtos) {
+    public boolean updateAdviceList(Long trId, TranslateListDto translateListDto) {
 
-        for (TranslateListDto translateListDto : translateListDtos) {
-            Long adviceId = translateListDto.getTrId();
+        TranslationAssignment translationAssignment = translationAssignmentRepository.findByTrId(trId);
 
-            TranslationAssignment translationAssignment = translationAssignmentRepository.findByTrId(adviceId);
-            TranslationRequestFile translationRequestFile = translationRequestFileRepository.findByTrId(adviceId);
+        if(translationAssignment!=null){
 
-            if (translationAssignment != null) {
-
-                translationAssignment.updateStatusAndAdmDate(translateListDto.getTamDate(),translateListDto.getTrProgressStatus());
-
-                translationAssignmentRepository.save(translationAssignment);
-            }
-            if (translationRequestFile != null) {
-
-                translationRequestFile.updateAdAnswerDate(translateListDto.getTrAnswerDate());
-
-
-                translationRequestFileRepository.save(translationRequestFile);
-            }
+            translationAssignment.updateStatusAndAdmDate(translateListDto.getTamDate(),translateListDto.getTrProgressStatus());
+            translationAssignmentRepository.save(translationAssignment);
+            return true;
         }
+        return false;
+
 
 
     }

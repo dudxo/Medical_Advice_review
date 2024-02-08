@@ -37,10 +37,12 @@ public class AnListAllController {
     /*
     답변 배정일 , 진행상황
      */
-    @PutMapping("/admin/analyze/updateStatus")
-    public ResponseEntity<Integer> updateAdvice(@RequestBody List<AnalyzeListDto> analyzeListDtos){
+
+    @PutMapping("/admin/analyze/updateStatus{anId}")
+    public ResponseEntity<Integer> updateAdvice(@PathVariable Long anId ,@RequestBody AnalyzeListDto analyzeListDtos){
         try{
-            anAllListService.updateAnalyzeList(analyzeListDtos);
+
+            anAllListService.updateAdviceList(anId,analyzeListDtos);
             return ResponseEntity.ok(1);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

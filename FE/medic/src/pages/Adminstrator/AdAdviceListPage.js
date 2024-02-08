@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ad from '../../css/AdAdviceListPage.module.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
 
 export default function AdAdviceListPage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -10,6 +11,9 @@ export default function AdAdviceListPage() {
   const [responseDate, setResponseDate] = useState('');
   const [admProgressStatus, setProgressStatus] = useState('자문의뢰중');
   const itemsPerPage = 7;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const quiryList = allAdviceList.slice(startIndex, startIndex + itemsPerPage);
+
 
   const navigate = useNavigate();
 
@@ -18,7 +22,10 @@ export default function AdAdviceListPage() {
   };
 
   const btn_set_doctor = (index) => {
-    navigate(`/medic/adminstrator/docset/${index}`);
+    const selectedAdvice = allAdviceList[(index-1)];
+
+    navigate(`/medic/adminstrator/docset/${index}`,{state:{selectedAdvice}});
+
   };
 
   useEffect(() => {
@@ -115,10 +122,11 @@ export default function AdAdviceListPage() {
             <th className={ad.ad_th}>의뢰자문일</th>
             <th className={ad.ad_th}>진행상태</th>
             <th className={ad.ad_th}>전문의</th>
+            <th className={ad.ad_th}>편집</th>
           </tr>
         </thead>
         <tbody>
-          {allAdviceList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((advice, index) => (
+          {quiryList?.map((advice, index) => (
             <tr key={index}>
               <td className={ad.ad_td} onClick={() => btn_detail_advice(calculateNo(index))}>
                 {calculateNo(index)}
@@ -127,36 +135,27 @@ export default function AdAdviceListPage() {
               <td className={ad.ad_td}>{advice.adPtDiagnosis}</td>
               <td className={ad.ad_td}>{formatDate(advice.adRegDate)}</td>
               <td className={ad.ad_td}>
-                <input
-                  type="date"
-                  value={formatDate(advice.admDate)}
-                  onChange={(e) => handleInputChange(index, 'admDate', e.target.value)}
-                />
+                {formatDate(advice.admDate)}
               </td>
               <td className={ad.ad_td}>
-                <input
-                  type="date"
-                  value={formatDate(advice.adAnswerDate)}
-                />
+              {formatDate(advice.adAnswerDate)}
               </td>
               <td className={ad.ad_td}>
-                <select
-                  value={advice.admProgressStatus || '자문의뢰중'}
-                  onChange={(e) => handleInputChange(index, 'admProgressStatus', e.target.value)}
-                >
-                  <option value="자문의뢰중">자문의뢰중</option>
-                  <option value="자문배정중">자문배정중</option>
-                  <option value="결제하기">결제하기</option>
-                  <option value="자문완료">자문완료</option>
-                </select>
+              {advice.admProgressStatus||'자문의뢰중'}
               </td>
               <td className={ad.ad_td}>
   <span
     className="your-custom-style"
-    onClick={() => btn_set_doctor(calculateNo(index))}
+   
   >
-    {advice.cname||''}
+    {advice.cname||'미배정'}
   </span>
+</td>
+
+<td className={ad.ad_td}>
+<div  onClick={() => btn_set_doctor(calculateNo(index))}>
+<i class="fa-solid fa-pen-to-square"></i>
+</div>
 </td>
 
             </tr>
@@ -188,10 +187,7 @@ export default function AdAdviceListPage() {
           ▶
         </button>
       </div >
-      <div className={ad.ad_complete}>
-      <button className={ad.ad_complete} onClick={handleUpdateField}>저장</button>
-      </div>
-
+   
     </div>
   );
 }

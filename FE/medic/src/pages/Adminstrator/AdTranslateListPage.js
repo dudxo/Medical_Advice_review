@@ -10,7 +10,10 @@ const AdTranslateListPage = () => {
   const [assignmentDate, setAssignmentDate] = useState('');
   const [responseDate, setResponseDate] = useState('');
   const [trProgressStatus, setTrProgressStatus] = useState('');
+  console.log(allTransList)
   const itemsPerPage = 7;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const quiryList = allTransList.slice(startIndex, startIndex + itemsPerPage);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,7 +52,9 @@ const AdTranslateListPage = () => {
   };
 
   const btn_set_doctor = (index) => {
-    navigate(`/medic/adminstrator/trdocset/${index}`);
+    const selectedTranslate = allTransList[(index-1)]
+    console.log(selectedTranslate)
+    navigate(`/medic/adminstrator/trdocset/${index}`,{state:{selectedTranslate}});
   };
 
   const formatDate = (dateString) => {
@@ -109,47 +114,40 @@ const AdTranslateListPage = () => {
             <th className={ad.ad_th}>의뢰번역일</th>
             <th className={ad.ad_th}>진행상태</th>
             <th className={ad.ad_th}>전문의</th>
+            <th className={ad.ad_th}>편집</th>
           </tr>
         </thead>
         <tbody>
-          {allTransList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((trans, index) => (
+          {quiryList?.map((trans, index) => (
             <tr key={index}>
               <td className={ad.ad_td} onClick={() => btn_detail_translate(calculateNo(index))}>{calculateNo(index)}</td>
               <td className={ad.ad_td}>{trans.uname}</td>
               <td className={ad.ad_td}>{trans.trPtDiagnosis}</td>
               <td className={ad.ad_td}>{formatDate(trans.trRegDate)}</td>
               <td className={ad.ad_td}>
-                <input
-                  type="date"
-                  value={trans.tamDate}
-                  onChange={(e) => handleInputChange(index, 'tamDate', e.target.value)}
-                />
+              
+                  {formatDate(trans.tamDate)}
+                 
               </td>
               <td className={ad.ad_td}>
-                <input
-                  type="date"
-                  value={formatDate(trans.trAnswerDate)}
-                  onChange={(e) => setResponseDate(formatDate(e.target.value))}
-                />
+               
+                 {formatDate(trans.trAnswerDate)}
+               
               </td>
               <td className={ad.ad_td}>
-                <select
-                  value={trans.trProgressStatus}
-                  onChange={(e) => handleInputChange(index, 'trProgressStatus', e.target.value)}
-                >
-                  <option value="자문의뢰중">자문의뢰중</option>
-                  <option value="번역배정중">번역배정중</option>
-                  <option value="결제하기">결제하기</option>
-                  <option value="자문완료">자문완료</option>
-                </select>
+             {trans.trProgressStatus||"번역의뢰중"}
               </td>
               <td className={ad.ad_td}>
   <span
-    
-    onClick={() => btn_set_doctor(calculateNo(index))}
   >
-    {trans.cname||''}
+    {trans.cname||'미배정'}
   </span>
+</td>
+
+<td className={ad.ad_td}>
+<div  onClick={() => btn_set_doctor(calculateNo(index))}>
+<i class="fa-solid fa-pen-to-square"></i>
+</div>
 </td>
 
             </tr>
@@ -168,9 +166,6 @@ const AdTranslateListPage = () => {
         <button className={ad.ad_paginationButton} onClick={() => handlePageChange(currentPage + 1)}>
           ▶
         </button>
-      </div>
-      <div className={ad.ad_complete}>
-      <button className={ad.ad_complete} onClick={handleUpdateField}>저장</button>
       </div>
     </div>
   );

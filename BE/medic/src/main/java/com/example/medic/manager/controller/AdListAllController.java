@@ -36,12 +36,14 @@ public class AdListAllController {
     /*
     배정일 및 진행상황 저장하는 컨트롤러
      */
-    @PutMapping("/admin/advice/updateStatus")
-    public ResponseEntity<Integer> updateAdvice(@RequestBody List<AdviceListDto> adviceListDtos){
-        for (AdviceListDto adviceListDto : adviceListDtos){
-//            logger.info("adviceListDtos:{}",adviceListDto.getAdmDate());
-        }
-        adAllListService.updateAdviceList(adviceListDtos);
+
+    @PutMapping("/admin/advice/updateStatus/{adId}")
+    public ResponseEntity<Integer> updateAdvice(@PathVariable Long adId ,@RequestBody AdviceListDto adviceListDto){
+        logger.info("addtd:{}",adviceListDto.getAdmProgressStatus());
+        logger.info("addtd1:{}",adviceListDto.getAdmDate());
+
+
+        adAllListService.updateAdviceList(adId,adviceListDto);
         return ResponseEntity.ok(1);
     }
 

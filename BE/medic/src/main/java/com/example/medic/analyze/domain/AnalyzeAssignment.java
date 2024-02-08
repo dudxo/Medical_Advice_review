@@ -47,8 +47,8 @@ public class AnalyzeAssignment {
 
     }
 
-    public void updateStatusAndAdmDate(LocalDate admDate, String admProgressStatus) {
-        this.adMdDate = admDate;
+    public void updateStatusAndAdmDate(LocalDate adMdDate, String anProgressStatus) {
+        this.adMdDate = adMdDate;
         this.anProgressStatus = anProgressStatus;
 
     }

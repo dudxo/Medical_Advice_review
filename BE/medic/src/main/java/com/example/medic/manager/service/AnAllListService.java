@@ -1,5 +1,6 @@
 package com.example.medic.manager.service;
 
+import com.example.medic.advice.domain.AdviceAssignment;
 import com.example.medic.analyze.domain.AnalyzeAssignment;
 import com.example.medic.analyze.domain.AnalyzeRequest;
 import com.example.medic.analyze.domain.AnalyzeRequestList;
@@ -9,15 +10,13 @@ import com.example.medic.analyze.repository.AnalyzeRequestRepository;
 import com.example.medic.client.domain.Client;
 import com.example.medic.consultative.domain.Consultative;
 import com.example.medic.consultative.repository.ConsultativeRepository;
-import com.example.medic.manager.dto.AnDetailDto;
-import com.example.medic.manager.dto.AnalyzeListDto;
-import com.example.medic.manager.dto.DocSetDto;
-import com.example.medic.manager.dto.TranslateListDto;
+import com.example.medic.manager.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -71,7 +70,7 @@ public class AnAllListService {
             admProgressStatus = analyzeRequestList.getAnalyzeAssignment().getAnProgressStatus();
         }
         AnalyzeAssignment analyzeAssignment1 = analyzeRequestList.getAnalyzeAssignment();
-
+        LocalDate adMdDate = analyzeAssignment1.getAdMdDate();
         Consultative consultative = analyzeAssignment1.getConsultative();
 
         String cName = null;
@@ -84,7 +83,7 @@ public class AnAllListService {
                 analyzeRequestList.getAnPtDiagnosis(),
                 analyzeRequestList.getAnRegDate(),
                 clientName,
-               analyzeRequestList.getAnMdDate(),
+               adMdDate,
                 analyzeRequest.getAnAnswerDate()
                 ,admProgressStatus
                 ,cName
@@ -94,28 +93,19 @@ public class AnAllListService {
     /*
     배정일, 진행상황 설정
      */
-    public void updateAnalyzeList(List<AnalyzeListDto> analyzeListDtos) {
 
-        for (AnalyzeListDto analyzeListDto : analyzeListDtos) {
-            Long analyzeId = analyzeListDto.getAnId();
+    public boolean updateAdviceList(Long andId , AnalyzeListDto analyzeListDto) {
 
-            AnalyzeAssignment analyzeAssignment = analyzeAssignmentRepository.findByAnId(analyzeId);
-            AnalyzeRequest analyzeRequest = analyzeRequestRepository.findByAnId(analyzeId);
-
-            if (analyzeAssignment != null) {
-
-                analyzeAssignment.updateStatusAndAdmDate(analyzeListDto.getAdMdDate(),analyzeListDto.getAnProgressStatus());
-                analyzeAssignmentRepository.save(analyzeAssignment);
-            }
-
-            if (analyzeRequest != null) {
-                analyzeRequest.updateAdAnswerDate(analyzeRequest.getAnAnswerDate());
-
-               analyzeRequestRepository.save(analyzeRequest);
-            }
+       AnalyzeAssignment analyzeAssignment = analyzeAssignmentRepository.findByAnId(andId);
+       logger.info("aaa:{}",analyzeAssignment.getAdMdDate());
+        if(analyzeAssignment != null){
+            analyzeAssignment.updateStatusAndAdmDate(analyzeListDto.getAdMdDate() , analyzeListDto.getAnProgressStatus() );
+            analyzeAssignmentRepository.save(analyzeAssignment);
+            return true;
         }
-
+        return false;
     }
+
 
     /*
     전문의 목록
