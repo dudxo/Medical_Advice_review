@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ad from '../../css/AdAdviceListPage.module.css';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams , useLocation} from 'react-router-dom';
 
 export default function TrSetDoc() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -11,6 +11,20 @@ export default function TrSetDoc() {
   const {cId} = useState();
   const navigate = useNavigate();
   const itemsPerPage = 7;
+  
+  const location = useLocation();
+  const {selectedTranslate} = location.state;
+  console.log(selectedTranslate);
+  
+  const [tamDate , setTamDate] = useState();
+  const [trProgressStatus , setTrProgressStatus] = useState();
+
+  useEffect(() => {
+    if (selectedTranslate) {
+      setTamDate(selectedTranslate.tamDate);
+      setTrProgressStatus(selectedTranslate.trProgressStatus);
+    }
+  }, [selectedTranslate]);
   const [selectedCId, setSelectedCId] = useState(null);
 
 
@@ -36,6 +50,23 @@ export default function TrSetDoc() {
     setSelectedCId((prevSelectedCId) => (prevSelectedCId === cId ? null : cId));
   };
 
+  const input_tamDate = (e) =>{
+    setTamDate(e.target.value);
+  } ;
+
+  const input_trProgressStatus = (e) =>{
+    setTrProgressStatus(e.target.value);
+  } ;
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+  
+    return `${year}-${month}-${day}`;
+  };
+
   const handleSave = async () => {
     try {
 
@@ -57,6 +88,31 @@ export default function TrSetDoc() {
   const totalPages = Math.ceil(allDocList.length / itemsPerPage);
 
   const isSaveButtonEnabled = selectedCId !== null;
+
+  const btn_modify = e => {
+    if(window.confirm("배정하시겠습니까?")){
+        e.preventDefault()
+        console.log(tamDate)
+        console.log(trProgressStatus)
+        const info = {
+          'tamDate' : tamDate,
+          'trProgressStatus' : trProgressStatus
+        }
+        handleUpdateField(info)
+    }
+    
+  }
+
+  const handleUpdateField = async(info) => {
+    try{
+      const response = await axios.put(`/translate/update/${index}`,info);
+      console.log(response)
+    }catch(error){
+      console.error('에러발생')
+    }
+  }
+  
+
 
 
   return (
@@ -128,6 +184,62 @@ export default function TrSetDoc() {
         저장
       </button>
       </div>
+
+      <div className={ad.ad_iconbox}>
+        <h1>
+          <i className="fa-solid fa-circle icon"></i>
+          배정
+        </h1>
+      </div>
+      <table className={ad.ad_table}>
+        <thead>
+          <tr>
+            <th className={ad.ad_th}>NO.</th>
+            <th className={ad.ad_th}>이름</th>
+            <th className={ad.ad_th}>진단명</th>
+            <th className={ad.ad_th}>의뢰신청일</th>
+            <th className={ad.ad_th}>의뢰배정일</th>
+            <th className={ad.ad_th}>의뢰자문일</th>
+            <th className={ad.ad_th}>진행상태</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr key={index}>
+              <td className={ad.ad_td}>{selectedTranslate.trId}</td>
+              <td className={ad.ad_td}>{selectedTranslate.uname}</td>
+              <td className={ad.ad_td}>{selectedTranslate.trPtDiagnosis}</td>
+              <td className={ad.ad_td}>{selectedTranslate.trRegDate}</td>
+              <td className={ad.ad_td}>
+                <input
+                  type="date"
+                  value={formatDate(tamDate)||""}
+                  onChange={(e) => input_tamDate(e)}
+                />
+              </td>
+              <td className={ad.ad_td}>{selectedTranslate.anAnswerDate||""}</td>
+              <td className={ad.ad_td}>
+              <select
+                  value={trProgressStatus || '번역의뢰중'}
+                  onChange={(e) => input_trProgressStatus(e)}
+                >
+                  <option value="번역의뢰중">번역의뢰중</option>
+                  <option value="번역배정중">번역배정중</option>
+                  <option value="결제하기">결제하기</option>
+                  <option value="자문완료">자문완료</option>
+                </select>
+              </td>
+            </tr>
+          
+        </tbody>
+      </table>
+
+      <div className={ad.ad_complete}>
+        <button className={ad.ad_complete} onClick={btn_modify}>
+          배정
+        </button>
+      </div>
+
     </div>
 
   );

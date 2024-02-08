@@ -36,10 +36,11 @@ public class TrListAllController {
     /*
     번역배정일, 진행상황 설정
      */
-    @PutMapping("/translate/update")
-    public ResponseEntity<Integer> updateAdvice(@RequestBody List<TranslateListDto> translateListDtos){
+    @PutMapping("/translate/update/{trId}")
+    public ResponseEntity<Integer> updateAdvice(@PathVariable Long trId,  @RequestBody TranslateListDto translateListDtos){
 
-        trAllListService.updateAdviceList(translateListDtos);
+        logger.info("transdto:{}",translateListDtos.getTamDate());
+        trAllListService.updateAdviceList(trId,translateListDtos);
         return ResponseEntity.ok(1);
     }
 

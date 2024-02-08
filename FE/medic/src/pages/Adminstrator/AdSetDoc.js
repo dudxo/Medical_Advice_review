@@ -13,8 +13,8 @@ export default function AdSetDoc() {
   const location = useLocation();
   const {selectedAdvice} = location.state;
   console.log('sese', selectedAdvice);
-  const [admDate, setAdmDate] = useState(selectedAdvice.admDate);
-  const [admProgressStatus, setAdProgressStatus] = useState(selectedAdvice.admProgressStatus);
+  const [admDate, setAdmDate] = useState(selectedAdvice.admDate||"");
+  const [admProgressStatus, setAdProgressStatus] = useState(selectedAdvice.admProgressStatus||"");
   const {adId} = useState(selectedAdvice.adId);
   console.log('adid',adId)
   console.log(admDate);

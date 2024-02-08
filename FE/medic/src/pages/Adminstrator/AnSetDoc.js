@@ -15,8 +15,8 @@ export default function AnSetDoc() {
   console.log(selectedAnalyze)
   const navigate = useNavigate();
   const itemsPerPage = 7;
-  const [adMdDate,setAdMdDate] = useState(selectedAnalyze.adMdDate)
-  const [adProgressStatus , setAdProgressStatus] = useState(selectedAnalyze.anProgressStatus)
+  const [adMdDate,setAdMdDate] = useState(selectedAnalyze.adMdDate||"")
+  const [adProgressStatus , setAdProgressStatus] = useState(selectedAnalyze.anProgressStatus||"")
   console.log('aa',adMdDate);
   console.log('bb', adProgressStatus)
   useEffect(() => {
@@ -212,8 +212,8 @@ export default function AnSetDoc() {
                   value={adProgressStatus || '자문의뢰중'}
                   onChange={(e) => input_adProgressStatus(e)}
                 >
-                  <option value="자문의뢰중">자문의뢰중</option>
-                  <option value="자문배정중">자문배정중</option>
+                  <option value="자문의뢰중">분석의뢰중</option>
+                  <option value="자문배정중">분석배정중</option>
                   <option value="결제하기">결제하기</option>
                   <option value="자문완료">자문완료</option>
                 </select>
