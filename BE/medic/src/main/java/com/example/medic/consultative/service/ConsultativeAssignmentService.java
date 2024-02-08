@@ -18,7 +18,7 @@ public interface ConsultativeAssignmentService {
 
     List<AdviceSituationDto> findAllAssigmentAdvice(ConsultativeDto consultativeDto);
 
-    AllAdviceRequestDto findAssigmentAdviceDetail(ConsultativeDto consultativeDto, AllAdviceRequestDto allAdviceRequestDto);
+    AllAdviceRequestDto findAssigmentAdviceDetail(ConsultativeDto consultativeDto, Long adId);
 
     List<AnalyzeSituationDto> findAllAssigmentAnalyze(ConsultativeDto consultativeDto);
 

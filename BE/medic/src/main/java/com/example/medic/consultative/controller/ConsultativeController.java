@@ -53,7 +53,7 @@ public class ConsultativeController {
      * @return 배정 받은 특정 자문 의뢰 상세 조회
      */
     @GetMapping("/consultative/assignedAdvice/detail/{adId}")
-    public ResponseEntity<AllAdviceRequestDto> AssignAdviceDetails(@RequestBody AllAdviceRequestDto allAdviceRequestDto,
+    public ResponseEntity<AllAdviceRequestDto> AssignAdviceDetails(@PathVariable Long adId,
                                                                    HttpServletRequest request) {
         HttpSession session = request.getSession();
         String cId = (String) session.getAttribute("uId");
@@ -62,7 +62,7 @@ public class ConsultativeController {
                 .cId(cId)
                 .build();
         try {
-            AllAdviceRequestDto response = consultativeAssignmentService.findAssigmentAdviceDetail(consultativeDto, allAdviceRequestDto);
+            AllAdviceRequestDto response = consultativeAssignmentService.findAssigmentAdviceDetail(consultativeDto, adId);
             return ResponseEntity.ok(response);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
