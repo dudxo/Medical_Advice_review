@@ -84,6 +84,7 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
                         .adPtSub(adviceRequestList.getAdPtSub())
                         .adPtDiagnosis(adviceRequestList.getAdPtDiagnosis())
                         .adRegDate(adviceRequestList.getAdRegDate())
+                        .admDate(adviceAssignment.getAdmDate())
                         .build();
                 findAllAdviceSituationDto.add(adviceSituationDto);
             }
@@ -184,7 +185,6 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
                         .anPtDiagnosis(findAnalyzeRequest.getAnPtDiagnosis())
                         .anRegDate(findAnalyzeRequest.getAnRegDate())
                         .anMdDate(analyzeAssignment.getAdMdDate())
-                        .anId(findAnalyzeRequest.getAnId())
                         .build();
                 findAllAnalyzeSituationDto.add(analyzeSituationDto);
             }
