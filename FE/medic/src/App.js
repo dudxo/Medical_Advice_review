@@ -43,7 +43,7 @@ import ConsultativeAnalyzeAssignment from './pages/Consultativepage/Consultative
 import ConsultativeTranslateAssignment from './pages/Consultativepage/ConsultativeTranslateAssignment'
 import ConsultativeAdviceAssignmentDetail from './pages/Consultativepage/ConsultativeAssignmentAdviceDetail'
 import ConsultativeAnalyzeAssignmenDetail from "./pages/Consultativepage/ConsultativeAssignmentAnalyzeDetail";
-import ConsultativeTranslateAssignmentDetail from "./pages/Consultativepage/ConsultativeTranslateAssignment";
+import ConsultativeTranslateAssignmentDetail from "./pages/Consultativepage/ConsultativeAssignmentTranslateDetail";
 import IndustrialAccidentDetail from "./pages/MedicalLegalKnowledge/IndustrialAccidentDetailInfopage";
 import FaultInfoDetail from "./pages/MedicalLegalKnowledge/FaultInfoDetailpage";
 import TrafficAccidentDetail from "./pages/MedicalLegalKnowledge/TrafficAccidentDetailInfopage";
@@ -119,7 +119,7 @@ export default function App(){
                     <Route path="/medic/consultative/assignmentTranslateList" element={<ConsultativeTranslateAssignment/>}/>
                     <Route path="/medic/consultative/assignmentAdviceDetail/:index" element={<ConsultativeAdviceAssignmentDetail/>}/>
                     <Route path="/medic/consultative/assignmentAnalyzeDetail/:index" element={<ConsultativeAnalyzeAssignmenDetail/>}/>
-                    <Route path="/medic/consultative/assignmentTranslateDetail" element={<ConsultativeTranslateAssignmentDetail/>}/>
+                    <Route path="/medic/consultative/assignmentTranslateDetail/:index" element={<ConsultativeTranslateAssignmentDetail/>}/>
                     <Route path="/medic/knowledge/industrialaccidentdetails" element={<IndustrialAccidentDetail/>}/>
                     <Route path="/medic/medicalknowledge/faultinfo/faultinfodetails" element={<FaultInfoDetail/>}/>
                     <Route path="/medic/knowledge/trafficaccidentdetails" element={<TrafficAccidentDetail/>}/>

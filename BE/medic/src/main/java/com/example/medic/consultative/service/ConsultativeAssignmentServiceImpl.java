@@ -264,14 +264,16 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
             }
             List<TranslationSituationDto> findAllTranslationSituationDto = new ArrayList<>();
             Consultative findConsultative = consultativeRepository.findById(consultativeDto.getCId()).get();
-            List<TranslationRequestList> findAllTranslationRequestList =
-                    translationAssignmentRepository.findAllTranslationRequestListByConsultative(findConsultative);
-            for (TranslationRequestList translationRequestList : findAllTranslationRequestList) {
+            List<TranslationAssignment> findAllTranslationAssignment =
+                    translationAssignmentRepository.findAllTranslationAssignmentByConsultative(findConsultative);
+            for (TranslationAssignment translationAssignment : findAllTranslationAssignment) {
+                TranslationRequestList translationRequestList = translationAssignment.getTranslationRequestList();
                 TranslationSituationDto translationRequestDto = TranslationSituationDto.builder()
                         .trPtSub(translationRequestList.getTrPtSub())
                         .trPtDiagnosis(translationRequestList.getTrPtDiagnosis())
                         .trRegDate(translationRequestList.getTrRegDate())
                         .trId(translationRequestList.getTrId())
+                        .tamDate(translationAssignment.getTamDate())
                         .build();
                 findAllTranslationSituationDto.add(translationRequestDto);
             }
@@ -286,14 +288,14 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
      */
     @Override
     public TranslationResponseDto findAssignmentTranslationDetail(ConsultativeDto consultativeDto,
-                                                                  TranslationRequestDto translationRequestDto) throws NoSuchElementException {
+                                                                  Long trId) throws NoSuchElementException {
         try {
             if (consultativeDto.getCId() == null) {
                 throw new NoSuchElementException();
             }
             TranslationRequestList findTranslationRequestList =
-                    translationRequestListRepository.findById(translationRequestDto.getTrId()).get();
-            Client requestClient = translationRequestListRepository.findClientByTrId(findTranslationRequestList.getTrId());
+                    translationRequestListRepository.findById(trId).get();
+            Client requestClient = findTranslationRequestList.getClient();
             TranslationRequestFile findTranslationRequestFile =
                     translationRequestFileRepository.findByTranslationRequestList(findTranslationRequestList);
             TranslationAnswerFile findTranslationAnswerFile =

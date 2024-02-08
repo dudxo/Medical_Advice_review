@@ -26,7 +26,7 @@ public interface ConsultativeAssignmentService {
 
     List<TranslationSituationDto> findAllAssigmentTranslation(ConsultativeDto consultativeDto);
 
-    TranslationResponseDto findAssignmentTranslationDetail(ConsultativeDto consultativeDto, TranslationRequestDto translationRequestDto);
+    TranslationResponseDto findAssignmentTranslationDetail(ConsultativeDto consultativeDto, Long trId);
 
     boolean saveTranslationAnswerFile(ConsultativeDto consultativeDto, List<MultipartFile> multipartFiles, Long trId) throws IOException;
 

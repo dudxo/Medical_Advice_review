@@ -24,8 +24,8 @@ export default function ConsultativeTranslateAssignmentpage() {
     fetchData();
   }, []);
 
-  const handledetailClick = (e, index) => {
-    navigate('/medic/consultative/assignmentTranslateDetail', {state : {index : index}})
+  const handledetailClick = (trId) => {
+    navigate(`/medic/consultative/assignmentTranslateDetail/${trId}`)
   }
   
   const formatDate = (dateString) => {
@@ -72,14 +72,14 @@ export default function ConsultativeTranslateAssignmentpage() {
                 {translateList.map((translation, index) => (
                     rowIndex === index && (
                     <React.Fragment key={index}>
-                        <td className={assignmentTranslate.translateList_td} onClick={() => handledetailClick(index)}>{index + 1}</td>
+                        <td className={assignmentTranslate.translateList_td} onClick={() => handledetailClick(translation.trId)}>{index + 1}</td>
                         <td className={assignmentTranslate.translateList_td}>{translation.trPtSub}</td>
-                        <td className={assignmentTranslate.translateList_td}>{translation.trPtDiagnoze}</td>
+                        <td className={assignmentTranslate.translateList_td}>{translation.trPtDiagnosis}</td>
                         <td className={assignmentTranslate.translateList_td}>
-                            {formatDate(assignmentTranslate.trRegDate)}
+                            {formatDate(translation.trRegDate)}
                         </td>
-                        <td className={assignmentTranslate.translateList_td}>{'의뢰배정일'}</td>
-                        <td className={assignmentTranslate.translateList_td}>{'의뢰번역일'}</td>
+                        <td className={assignmentTranslate.translateList_td}>{translation.tamDate}</td>
+                        <td className={assignmentTranslate.translateList_td}>{translation.trAnswerDate === null ? '미답변' : translation.trAnswerDate}</td>
                         <td className={assignmentTranslate.translateList_td}>{'번역의뢰중'}</td>
                         {/* <td className={analyzelist.analyzeList_td}>
                         <select value={selectedStatus} onChange={(e) => handleStatusChange(e.target.value)}>
