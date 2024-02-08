@@ -15,7 +15,7 @@ public interface AnalyzeAssignmentRepository extends JpaRepository<AnalyzeAssign
 
     int countAllByConsultative(Consultative consultative);
 
-    List<AnalyzeRequestList> findAllAnalyzeRequestListByConsultative(Consultative consultative);
+    List<AnalyzeAssignment> findAllAnalyzeAssignmentByConsultative(Consultative consultative);
 
     @Query("SELECT an FROM AnalyzeAssignment an WHERE an.analyzeRequestList.anId = :anId")
     AnalyzeAssignment findByAnId(@Param("anId") Long anId);

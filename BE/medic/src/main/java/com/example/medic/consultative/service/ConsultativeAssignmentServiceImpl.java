@@ -84,7 +84,6 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
                         .adPtSub(adviceRequestList.getAdPtSub())
                         .adPtDiagnosis(adviceRequestList.getAdPtDiagnosis())
                         .adRegDate(adviceRequestList.getAdRegDate())
-                        .adId(adviceRequestList.getAdId())
                         .build();
                 findAllAdviceSituationDto.add(adviceSituationDto);
             }
@@ -171,21 +170,25 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
     @Override
     public List<AnalyzeSituationDto> findAllAssigmentAnalyze(ConsultativeDto consultativeDto) throws NoSuchElementException {
         try {
-            if (consultativeDto.getCId() == null) {
+            if (consultativeDto.getCId() == null) {     // 전문의 ID null 여부 체크
                 throw new NoSuchElementException("해당 전문의를 찾을 수 없습니다.");
             }
-            List<AnalyzeSituationDto> findAllAnalyzeSituationDto = new ArrayList<>();
-            Consultative findConsultative = consultativeRepository.findById(consultativeDto.getCId()).get();
-            List<AnalyzeRequestList> findAllAnalyzeRequestList = analyzeAssignmentRepository.findAllAnalyzeRequestListByConsultative(findConsultative);
-            for (AnalyzeRequestList analyzeRequestList : findAllAnalyzeRequestList) {
-                AnalyzeSituationDto analyzeSituationDto = AnalyzeSituationDto.builder()
-                        .anPtSub(analyzeRequestList.getAnPtSub())
-                        .anPtDiagnosis(analyzeRequestList.getAnPtDiagnosis())
-                        .anRegDate(analyzeRequestList.getAnRegDate())
-                        .anId(analyzeRequestList.getAnId())
+            List<AnalyzeSituationDto> findAllAnalyzeSituationDto = new ArrayList<>();     // 배정 분석 의뢰 목록 리스트 선언
+            Consultative findConsultative = consultativeRepository.findById(consultativeDto.getCId()).get();        // 배정된 목록을 불러올 전문의 찾기
+            List<AnalyzeAssignment> findAllAnalyzeRequestList = analyzeAssignmentRepository.findAllAnalyzeAssignmentByConsultative(findConsultative);    // 해당 전문의가 배정된 분석 목록 꺼내기
+            for (AnalyzeAssignment analyzeAssignment : findAllAnalyzeRequestList) {     // 배정 목록을 순회하며
+                AnalyzeRequestList findAnalyzeRequest = analyzeAssignment.getAnalyzeRequestList();      // 각 분석 의뢰에 접근해
+                AnalyzeSituationDto analyzeSituationDto = AnalyzeSituationDto.builder()        // 배정 목록 Dto에 맞게 변환
+                        .anId(findAnalyzeRequest.getAnId())
+                        .anPtSub(findAnalyzeRequest.getAnPtSub())
+                        .anPtDiagnosis(findAnalyzeRequest.getAnPtDiagnosis())
+                        .anRegDate(findAnalyzeRequest.getAnRegDate())
+                        .anMdDate(analyzeAssignment.getAdMdDate())
+                        .anId(findAnalyzeRequest.getAnId())
                         .build();
                 findAllAnalyzeSituationDto.add(analyzeSituationDto);
             }
+
             return findAllAnalyzeSituationDto;
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException();
@@ -198,13 +201,13 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
      */
     @Override
     public AnalyzeResponseDto findAssignmentAnalyzeDetail(ConsultativeDto consultativeDto,
-                                                         AnalyzeRequestDto analyzeRequestDto) throws NoSuchElementException {
+                                                         Long anId) throws NoSuchElementException {
         try {
             if (consultativeDto.getCId() == null) {
                 throw new NoSuchElementException();
             }
-            AnalyzeRequestList findAnalyzeRequestList = analyzeRequestListRepository.findById(analyzeRequestDto.getAnId()).get();
-            Client requestClient = analyzeRequestListRepository.findClientByAnId(findAnalyzeRequestList.getAnId());
+            AnalyzeRequestList findAnalyzeRequestList = analyzeRequestListRepository.findById(anId).get();
+            Client requestClient = findAnalyzeRequestList.getClient();
             List<AnalyzeRequest> findAnalyzeQuestion = analyzeRequestRepository.findAllByAnalyzeRequestList(findAnalyzeRequestList);
             AnalyzeRequestFile findAnalyzeFile = analyzeRequestFileRepository.findByAnalyzeRequestList(findAnalyzeRequestList);
 

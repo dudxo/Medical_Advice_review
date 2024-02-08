@@ -22,7 +22,7 @@ public interface ConsultativeAssignmentService {
 
     List<AnalyzeSituationDto> findAllAssigmentAnalyze(ConsultativeDto consultativeDto);
 
-    AnalyzeResponseDto findAssignmentAnalyzeDetail(ConsultativeDto consultativeDto, AnalyzeRequestDto analyzeRequestDto);
+    AnalyzeResponseDto findAssignmentAnalyzeDetail(ConsultativeDto consultativeDto, Long anId);
 
     List<TranslationSituationDto> findAllAssigmentTranslation(ConsultativeDto consultativeDto);
 

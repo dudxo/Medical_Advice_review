@@ -94,7 +94,7 @@ public class ConsultativeController {
      * @return 배정 받은 특정 분석 의뢰 상세 조회
      */
     @GetMapping("/consultative/assignedAnalyze/detail/{anId}")
-    public ResponseEntity<AnalyzeResponseDto> AssignAnalyzeDetails(@RequestBody AnalyzeRequestDto allAdviceRequestDto,
+    public ResponseEntity<AnalyzeResponseDto> AssignAnalyzeDetails(@PathVariable Long anId,
                                                                    HttpServletRequest request) {
         HttpSession session = request.getSession();
         String cId = (String) session.getAttribute("uId");
@@ -103,7 +103,7 @@ public class ConsultativeController {
                 .cId(cId)
                 .build();
         try {
-            AnalyzeResponseDto response = consultativeAssignmentService.findAssignmentAnalyzeDetail(consultativeDto, allAdviceRequestDto);
+            AnalyzeResponseDto response = consultativeAssignmentService.findAssignmentAnalyzeDetail(consultativeDto, anId);
             return ResponseEntity.ok(response);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

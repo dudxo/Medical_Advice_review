@@ -17,17 +17,17 @@ public class AnalyzeSituationDto {
     private String anPtSub;
     private String anPtDiagnosis;
     private LocalDate anRegDate;
-    private LocalDate adMdDate;
+    private LocalDate anMdDate;
     private LocalDate anAnswerDate;
     private String anProgressStatus;
 
-    public AnalyzeSituationDto(Long anId, String anPtSub, String anPtDiagnosis, LocalDate anRegDate, LocalDate adMdDate,
+    public AnalyzeSituationDto(Long anId, String anPtSub, String anPtDiagnosis, LocalDate anRegDate, LocalDate anMdDate,
                                LocalDate anAnswerDate, String anProgressStatus) {
         this.anId = anId;
         this.anPtSub = anPtSub;
         this.anPtDiagnosis = anPtDiagnosis;
         this.anRegDate = anRegDate;
-        this.adMdDate = adMdDate;
+        this.anMdDate = anMdDate;
         this.anAnswerDate = anAnswerDate;
         this.anProgressStatus = anProgressStatus;
     }
