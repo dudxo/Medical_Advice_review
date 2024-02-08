@@ -58,10 +58,16 @@ public class TranslationServiceImpl implements TranslationService {
             TranslationRequestList savedTranslationList = saveTranslationList(translationListDto, currentClient);
             saveTranslationFile(savedTranslationList, translationFileDto);
 
-            TranslationAssignment saveedTranslationAssignment = TranslationAssignment.builder()
+            TranslationAssignment savedTranslationAssignment = TranslationAssignment.builder()  // 번역 배정 생성
                     .translationRequestList(savedTranslationList)
                     .build();
-            translationAssignmentRepository.save(saveedTranslationAssignment);
+
+            TranslationAnswerFile savedTranslationAnswerFile = TranslationAnswerFile.builder()  // 번역 답변 생성
+                    .translationRequestList(savedTranslationList)
+                    .build();
+
+            translationAssignmentRepository.save(savedTranslationAssignment);
+            translationAnswerFileRepository.save(savedTranslationAnswerFile);
             return true;
         } catch (PersistenceException e) {
             logger.info("번역 의뢰 신청 저장중 이상 오류로 인한 실패");
