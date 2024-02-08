@@ -155,6 +155,7 @@ export default function AnalyzeRequestpage(){
             })], {type : "application/json"}))
 
           try{
+                console.log("allAnalyzeRequest : ", allAnalyzeRequest);
               const response = axios.post('/user/analyze/request', allAnalyzeRequest, {
                 headers: {
                     'Content-Type': 'multipart/form-data',

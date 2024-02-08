@@ -7,8 +7,6 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
     const navigate = useNavigate();
   
     const {index} = useParams();
-    console.log(index)
-
     
     const [uname, setUname] = useState('')
     const [utel, setUtel] = useState('')
