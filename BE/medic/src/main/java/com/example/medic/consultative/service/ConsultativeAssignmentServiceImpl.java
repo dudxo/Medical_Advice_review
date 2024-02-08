@@ -71,18 +71,20 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
     @Override
     public List<AdviceSituationDto> findAllAssigmentAdvice(ConsultativeDto consultativeDto) throws NoSuchElementException{
         try {
-            if (consultativeDto.getCId() == null) {
+            if (consultativeDto.getCId() == null) {     // 전문의 ID null 여부 체크
                 throw new NoSuchElementException("해당 전문의를 찾을 수 없습니다.");
             }
-            List<AdviceSituationDto> findAllAdviceSituationDto = new ArrayList<>();
-            Consultative findConsultative = consultativeRepository.findById(consultativeDto.getCId()).get();
-            List<AdviceRequestList> findAllAdviceRequestList = adviceAssignmentRepository.findAllAdviceRequestListByConsultative(findConsultative);
-            for (AdviceRequestList adviceRequestList : findAllAdviceRequestList) {
-                AdviceSituationDto adviceSituationDto = AdviceSituationDto.builder()
+            List<AdviceSituationDto> findAllAdviceSituationDto = new ArrayList<>();     // 배정 자문 의뢰 목록 리스트 선언
+            Consultative findConsultative = consultativeRepository.findById(consultativeDto.getCId()).get();        // 전문의 키 값을 통해 전문의 찾기
+            List<AdviceAssignment> findAllAdviceAssignment = adviceAssignmentRepository.findAllAdviceAssignmentByConsultative(findConsultative);    // 해당 전문의가 배정된 배정 목록 꺼내기
+            for (AdviceAssignment adviceAssignment : findAllAdviceAssignment) {     // 배정 목록을 순회하며
+                AdviceRequestList adviceRequestList = adviceAssignment.getAdviceRequestList();      // 각 자문 의뢰에 접근해
+                AdviceSituationDto adviceSituationDto = AdviceSituationDto.builder()        // 배정 목록 Dto에 맞게 변환
+                        .adId(adviceRequestList.getAdId())
                         .adPtSub(adviceRequestList.getAdPtSub())
                         .adPtDiagnosis(adviceRequestList.getAdPtDiagnosis())
                         .adRegDate(adviceRequestList.getAdRegDate())
-                        .adId(adviceRequestList.getAdId())
+                        .admDate(adviceAssignment.getAdmDate())
                         .build();
                 findAllAdviceSituationDto.add(adviceSituationDto);
             }
@@ -97,13 +99,13 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
      */
     @Override
     public AllAdviceRequestDto findAssigmentAdviceDetail(ConsultativeDto consultativeDto,
-                                                         AllAdviceRequestDto allAdviceRequestDto) throws NoSuchElementException {
+                                                         Long adId) throws NoSuchElementException {
         try {
             if (consultativeDto.getCId() == null) {
                 throw new NoSuchElementException();
             }
-            AdviceRequestList findAdviceRequestList = adviceRequestListRepository.findById(allAdviceRequestDto.getAdId()).get();
-            Client requestClient = adviceRequestListRepository.findClientByAdId(allAdviceRequestDto.getAdId());
+            AdviceRequestList findAdviceRequestList = adviceRequestListRepository.findById(adId).get();
+            Client requestClient = findAdviceRequestList.getClient();
             List<AdviceQuestion> findAdviceQuestion = adviceQuestionRepository.findAllByAdviceRequestList(findAdviceRequestList);
             AdviceFile findAdviceFile = adviceFileRepository.findByAdviceRequestList(findAdviceRequestList);
             DiagnosisRecord findDiagnosisRecord = diagnosisRecordRepository.findByAdviceRequestList(findAdviceRequestList);
@@ -169,21 +171,24 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
     @Override
     public List<AnalyzeSituationDto> findAllAssigmentAnalyze(ConsultativeDto consultativeDto) throws NoSuchElementException {
         try {
-            if (consultativeDto.getCId() == null) {
+            if (consultativeDto.getCId() == null) {     // 전문의 ID null 여부 체크
                 throw new NoSuchElementException("해당 전문의를 찾을 수 없습니다.");
             }
-            List<AnalyzeSituationDto> findAllAnalyzeSituationDto = new ArrayList<>();
-            Consultative findConsultative = consultativeRepository.findById(consultativeDto.getCId()).get();
-            List<AnalyzeRequestList> findAllAnalyzeRequestList = analyzeAssignmentRepository.findAllAnalyzeRequestListByConsultative(findConsultative);
-            for (AnalyzeRequestList analyzeRequestList : findAllAnalyzeRequestList) {
-                AnalyzeSituationDto analyzeSituationDto = AnalyzeSituationDto.builder()
-                        .anPtSub(analyzeRequestList.getAnPtSub())
-                        .anPtDiagnosis(analyzeRequestList.getAnPtDiagnosis())
-                        .anRegDate(analyzeRequestList.getAnRegDate())
-                        .anId(analyzeRequestList.getAnId())
+            List<AnalyzeSituationDto> findAllAnalyzeSituationDto = new ArrayList<>();     // 배정 분석 의뢰 목록 리스트 선언
+            Consultative findConsultative = consultativeRepository.findById(consultativeDto.getCId()).get();        // 배정된 목록을 불러올 전문의 찾기
+            List<AnalyzeAssignment> findAllAnalyzeRequestList = analyzeAssignmentRepository.findAllAnalyzeAssignmentByConsultative(findConsultative);    // 해당 전문의가 배정된 분석 목록 꺼내기
+            for (AnalyzeAssignment analyzeAssignment : findAllAnalyzeRequestList) {     // 배정 목록을 순회하며
+                AnalyzeRequestList findAnalyzeRequest = analyzeAssignment.getAnalyzeRequestList();      // 각 분석 의뢰에 접근해
+                AnalyzeSituationDto analyzeSituationDto = AnalyzeSituationDto.builder()        // 배정 목록 Dto에 맞게 변환
+                        .anId(findAnalyzeRequest.getAnId())
+                        .anPtSub(findAnalyzeRequest.getAnPtSub())
+                        .anPtDiagnosis(findAnalyzeRequest.getAnPtDiagnosis())
+                        .anRegDate(findAnalyzeRequest.getAnRegDate())
+                        .anMdDate(analyzeAssignment.getAdMdDate())
                         .build();
                 findAllAnalyzeSituationDto.add(analyzeSituationDto);
             }
+
             return findAllAnalyzeSituationDto;
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException();
@@ -196,13 +201,13 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
      */
     @Override
     public AnalyzeResponseDto findAssignmentAnalyzeDetail(ConsultativeDto consultativeDto,
-                                                         AnalyzeRequestDto analyzeRequestDto) throws NoSuchElementException {
+                                                         Long anId) throws NoSuchElementException {
         try {
             if (consultativeDto.getCId() == null) {
                 throw new NoSuchElementException();
             }
-            AnalyzeRequestList findAnalyzeRequestList = analyzeRequestListRepository.findById(analyzeRequestDto.getAnId()).get();
-            Client requestClient = analyzeRequestListRepository.findClientByAnId(findAnalyzeRequestList.getAnId());
+            AnalyzeRequestList findAnalyzeRequestList = analyzeRequestListRepository.findById(anId).get();
+            Client requestClient = findAnalyzeRequestList.getClient();
             List<AnalyzeRequest> findAnalyzeQuestion = analyzeRequestRepository.findAllByAnalyzeRequestList(findAnalyzeRequestList);
             AnalyzeRequestFile findAnalyzeFile = analyzeRequestFileRepository.findByAnalyzeRequestList(findAnalyzeRequestList);
 
@@ -259,14 +264,16 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
             }
             List<TranslationSituationDto> findAllTranslationSituationDto = new ArrayList<>();
             Consultative findConsultative = consultativeRepository.findById(consultativeDto.getCId()).get();
-            List<TranslationRequestList> findAllTranslationRequestList =
-                    translationAssignmentRepository.findAllTranslationRequestListByConsultative(findConsultative);
-            for (TranslationRequestList translationRequestList : findAllTranslationRequestList) {
+            List<TranslationAssignment> findAllTranslationAssignment =
+                    translationAssignmentRepository.findAllTranslationAssignmentByConsultative(findConsultative);
+            for (TranslationAssignment translationAssignment : findAllTranslationAssignment) {
+                TranslationRequestList translationRequestList = translationAssignment.getTranslationRequestList();
                 TranslationSituationDto translationRequestDto = TranslationSituationDto.builder()
                         .trPtSub(translationRequestList.getTrPtSub())
                         .trPtDiagnosis(translationRequestList.getTrPtDiagnosis())
                         .trRegDate(translationRequestList.getTrRegDate())
                         .trId(translationRequestList.getTrId())
+                        .tamDate(translationAssignment.getTamDate())
                         .build();
                 findAllTranslationSituationDto.add(translationRequestDto);
             }
@@ -281,14 +288,14 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
      */
     @Override
     public TranslationResponseDto findAssignmentTranslationDetail(ConsultativeDto consultativeDto,
-                                                                  TranslationRequestDto translationRequestDto) throws NoSuchElementException {
+                                                                  Long trId) throws NoSuchElementException {
         try {
             if (consultativeDto.getCId() == null) {
                 throw new NoSuchElementException();
             }
             TranslationRequestList findTranslationRequestList =
-                    translationRequestListRepository.findById(translationRequestDto.getTrId()).get();
-            Client requestClient = translationRequestListRepository.findClientByTrId(findTranslationRequestList.getTrId());
+                    translationRequestListRepository.findById(trId).get();
+            Client requestClient = findTranslationRequestList.getClient();
             TranslationRequestFile findTranslationRequestFile =
                     translationRequestFileRepository.findByTranslationRequestList(findTranslationRequestList);
             TranslationAnswerFile findTranslationAnswerFile =

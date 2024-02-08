@@ -1,9 +1,5 @@
 package com.example.medic.translation.service;
 
-import com.example.medic.analyze.domain.AnalyzeRequestFile;
-import com.example.medic.analyze.domain.AnalyzeRequestList;
-import com.example.medic.analyze.dto.AnalyzeRequestFileDto;
-import com.example.medic.analyze.dto.AnalyzeUpdateDto;
 import com.example.medic.client.domain.Client;
 import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.client.service.ClientService;
@@ -17,6 +13,7 @@ import com.example.medic.translation.dto.TranslationListDto;
 import com.example.medic.translation.dto.TranslationRequestDto;
 import com.example.medic.translation.dto.TranslationResponseDto;
 import com.example.medic.translation.repository.TranslationAnswerFileRepository;
+import com.example.medic.translation.repository.TranslationAssignmentRepository;
 import com.example.medic.translation.repository.TranslationRequestFileRepository;
 import com.example.medic.translation.repository.TranslationRequestListRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.PersistenceException;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,6 +40,7 @@ public class TranslationServiceImpl implements TranslationService {
     private final TranslationRequestFileRepository translationRequestFileRepository;
     private final TranslationRequestListRepository translationRequestListRepository;
     private final TranslationAnswerFileRepository translationAnswerFileRepository;
+    private final TranslationAssignmentRepository translationAssignmentRepository;
     private final ClientService clientService;
     private final FileHandler fileHandler;
 
@@ -61,9 +58,16 @@ public class TranslationServiceImpl implements TranslationService {
             TranslationRequestList savedTranslationList = saveTranslationList(translationListDto, currentClient);
             saveTranslationFile(savedTranslationList, translationFileDto);
 
-            TranslationAssignment saveedTranslationAssignment = TranslationAssignment.builder()
+            TranslationAssignment savedTranslationAssignment = TranslationAssignment.builder()  // 번역 배정 생성
                     .translationRequestList(savedTranslationList)
                     .build();
+
+            TranslationAnswerFile savedTranslationAnswerFile = TranslationAnswerFile.builder()  // 번역 답변 생성
+                    .translationRequestList(savedTranslationList)
+                    .build();
+
+            translationAssignmentRepository.save(savedTranslationAssignment);
+            translationAnswerFileRepository.save(savedTranslationAnswerFile);
             return true;
         } catch (PersistenceException e) {
             logger.info("번역 의뢰 신청 저장중 이상 오류로 인한 실패");

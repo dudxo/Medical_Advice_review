@@ -18,15 +18,15 @@ public interface ConsultativeAssignmentService {
 
     List<AdviceSituationDto> findAllAssigmentAdvice(ConsultativeDto consultativeDto);
 
-    AllAdviceRequestDto findAssigmentAdviceDetail(ConsultativeDto consultativeDto, AllAdviceRequestDto allAdviceRequestDto);
+    AllAdviceRequestDto findAssigmentAdviceDetail(ConsultativeDto consultativeDto, Long adId);
 
     List<AnalyzeSituationDto> findAllAssigmentAnalyze(ConsultativeDto consultativeDto);
 
-    AnalyzeResponseDto findAssignmentAnalyzeDetail(ConsultativeDto consultativeDto, AnalyzeRequestDto analyzeRequestDto);
+    AnalyzeResponseDto findAssignmentAnalyzeDetail(ConsultativeDto consultativeDto, Long anId);
 
     List<TranslationSituationDto> findAllAssigmentTranslation(ConsultativeDto consultativeDto);
 
-    TranslationResponseDto findAssignmentTranslationDetail(ConsultativeDto consultativeDto, TranslationRequestDto translationRequestDto);
+    TranslationResponseDto findAssignmentTranslationDetail(ConsultativeDto consultativeDto, Long trId);
 
     boolean saveTranslationAnswerFile(ConsultativeDto consultativeDto, List<MultipartFile> multipartFiles, Long trId) throws IOException;
 

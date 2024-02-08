@@ -75,7 +75,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 .anPtName(analyzeRequestDto.getAnPtName())
                 .anPtSsNum(analyzeRequestDto.getAnPtSsNum())
                 .anPtSub(analyzeRequestDto.getAnPtSub())
-                .anPtDiagnosis(analyzeRequestDto.getAnDiagnosis())
+                .anPtDiagnosis(analyzeRequestDto.getAnPtDiagnosis())
                 .anPtDiagContent(analyzeRequestDto.getAnPtDiagContent())
                 .anEtc(analyzeRequestDto.getAnEtc())
                 .build();

@@ -17,7 +17,7 @@ public interface TranslationAssignmentRepository extends JpaRepository<Translati
 
     int countAllByConsultative(Consultative consultative);
 
-    List<TranslationRequestList> findAllTranslationRequestListByConsultative(Consultative findConsultative);
+    List<TranslationAssignment> findAllTranslationAssignmentByConsultative(Consultative findConsultative);
 
     @Query("SELECT tr FROM TranslationAssignment tr WHERE tr.translationRequestList.trId = :trId")
     TranslationAssignment findByTrId(@Param("trId") Long trId);

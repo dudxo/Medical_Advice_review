@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import assignmentanalyzedetail from '../../css/ConsultativeAnalyzeAssignmentDetailpage.module.css'
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function ConsultativeAnalyzeAssignmentDetailpage(){
     const navigate = useNavigate();
-    const location = useLocation();
   
-    const analyzeIndex = location.state.index + 1;
+    const {index} = useParams();
     
     const [uname, setUname] = useState('')
     const [utel, setUtel] = useState('')
@@ -39,21 +38,24 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
 
     const getUserInfo = async() =>{
         try{
-            const response = await axios.get(`/consultative/assignedAnalyze/detail/${analyzeIndex.id}`)
-            console.log(response.data)
-            setUname(response.data.name)
+            const response = await axios.get(`/consultative/assignedAnalyze/detail/${index}`)
+            console.log(response)
+            setUname(response.data.uname)
             setUtel(response.data.userTel)
             setUphone(response.data.userPhone)
             setUaddress(response.data.userAddress)
-            setAnptname(response.data.anptNmae)
-            setAnptssnum1(response.data.anptssnum1)
-            setAnptssnum2(response.data.anptssnum2)
-            setAnptsub(response.data.anptsub)
-            setAnptdiagnosis(response.data.anptdiagnosis)
-            setAnptdiagcontent(response.data.anptdiagcontent)
-            setAnEtcValue(response.data.anEtcValue)
+            setAnptname(response.data.anPtName)
+            setAnptsub(response.data.anPtSub)
+            setAnptdiagnosis(response.data.anPtDiagnosis)
+            setAnptdiagcontent(response.data.anPtDiagContent)
+            setAnEtcValue(response.data.anEtc)
             setAnQuestionTotal(response.data.anQuestionTotal)
-            setAnQuestionContents(response.data.anQuestionContents)
+            setAnQuestionContents(response.data.anQuestionContent)
+
+            const an_PtSsNum = response.data.anPtSsNum.split('-');  // 주민번호 나누기
+            setAnptssnum1(an_PtSsNum[0]);
+            setAnptssnum2(an_PtSsNum[1]);
+
             setAnReqForm(() => {
                 if(response.data.anReqForm === "empty_file"){
                     return false
@@ -304,7 +306,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
                             anReqForm ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findFile/${analyzeIndex}/anReqForm`}
+                                    href={`http://localhost:8080/analyze/findFile/${index}/anReqForm`}
                                     download="anReqForm.jpg"
                                 >
                                     다운로드
@@ -324,7 +326,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
                             anDiagnosis ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findFile/${analyzeIndex}/anDiagnosis`}
+                                    href={`http://localhost:8080/analyze/findFile/${index}/anDiagnosis`}
                                     download="anDiagnosis.jpg"
                                 >
                                     다운로드
@@ -344,7 +346,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
                             anRecord ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findFile/${analyzeIndex}/anRecord`}
+                                    href={`http://localhost:8080/analyze/findFile/${index}/anRecord`}
                                     download="anRecord.jpg"
                                 >
                                     다운로드
@@ -364,7 +366,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
                             anFilm ?
                             <button>
                                 <a
-                                    href={`http://localhost:8080/analyze/findFile/${analyzeIndex}/anFilm`}
+                                    href={`http://localhost:8080/analyze/findFile/${index}/anFilm`}
                                     download="anFilm.jpg"
                                 >
                                     다운로드
