@@ -48,7 +48,7 @@ export default function UserQnaAnswer({qaId, QuestionInfo}) {
       try{
         if(window.confirm("삭제하시겠습니까?")){
           const response = await axios.delete(`/qna/delete/${qaId}`)
-          alert(response.data)
+          alert('삭제되었습니다.')
           navigate('/medic/customer/customerInquiry')
         }
       }catch(err){
