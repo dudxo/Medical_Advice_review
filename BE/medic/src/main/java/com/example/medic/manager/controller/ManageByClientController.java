@@ -40,6 +40,7 @@ public class ManageByClientController {
      * 관리자 일반 회원 상세 조회
      */
     @GetMapping("/admin/manageClient/detail/{uId}")
+
     public ResponseEntity<ManagedClientInfoDto> findDetailByClient(@RequestBody ClientInfoAllDto requestClientInfo) {
         String uId = requestClientInfo.getUId();
         if (uId == null || uId.isEmpty()) {

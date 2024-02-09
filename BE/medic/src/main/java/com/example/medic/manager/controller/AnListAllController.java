@@ -83,8 +83,9 @@ public class AnListAllController {
     @GetMapping("/admin/analyze/detail/{anId}")
     public ResponseEntity<AnDetailDto> adDetail(@PathVariable Long anId){
         try{
+
             AnDetailDto anDetailDto = anAllListService.anDetailDto(anId);
-            logger.info("adDetail:{}" ,anDetailDto);
+            logger.info("adDetail:{}" ,anId);
             return ResponseEntity.ok(anDetailDto);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

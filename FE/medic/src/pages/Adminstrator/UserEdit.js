@@ -8,9 +8,11 @@ export default function UserEdit() {
 
   // const selectedUser = JSON.parse(localStorage.getItem('selectedUser')) || {};
   const location = useLocation();
-  const userInfo = location.state.useredit || {};
+  const userInfo = location.state.useredit;
+  console.log('userinfo',userInfo);
 
   const [uId, setUId] = useState(userInfo.uid)
+  console.log('uid',uId)
   const [uRole, setURole] = useState(userInfo.urole);   //역할
   const [uPw, setUPw] = useState(userInfo.uPw)      //pw
   const [uName, setUName] = useState(userInfo.uname) //name
@@ -118,29 +120,29 @@ export default function UserEdit() {
     const fetchUserData = async () => {
       try {
         
-        const response = await axios.get(`/admin/manageClient/detail/${uId}`);
-        const userInfo = response.data;
-        console.log(userInfo);
-        setUId(userInfo.uid);
-        setUPw(userInfo.upw);
-        setUName(userInfo.uname);
-        setUEmail(userInfo.uemail);
-        setUserTel(userInfo.userTel);
-        setUserPhone(userInfo.userPhone);
-        setCompany(userInfo.company);
-        setCeo(userInfo.ceo);
-        setCpTel(userInfo.cpTel);
-        setCpFx(userInfo.cpFx);
-        setCpNum(userInfo.cpNum);
+        const response = await axios.get(`/admin/manageClient/detail/${uId}`,userInfo);
+        console.log('response',response);
+        setUId(response.uid);
+        setUPw(response.upw);
+        setUName(response.uname);
+        setUEmail(response.uemail);
+        setUserTel(response.userTel);
+        setUserPhone(response.userPhone);
+        setCompany(response.company);
+        setCeo(response.ceo);
+        setCpTel(response.cpTel);
+        setCpFx(response.cpFx);
+        setCpNum(
+          response.cpNum);
 
         // userAddress를 공백을 기준으로 나누기
-        const userAddressArray = userInfo.userAddress.split(" ");
+        const userAddressArray = response.userAddress.split(" ");
         setZipcodeNum(userAddressArray[0]);
         setZipcode(userAddressArray[1]);
         setDetailAddress(userAddressArray.slice(2).join(" "));
 
 // cpAddress를 공백을 기준으로 나누기
-        const cpAddressArray = userInfo.cpAddress.split(" ");
+        const cpAddressArray = response.cpAddress.split(" ");
         setCpZipcodeNum(cpAddressArray[0]);
         setCpZipcode(cpAddressArray[1]);
         setDetailCpAddress(cpAddressArray.slice(2).join(" "));
@@ -148,7 +150,6 @@ export default function UserEdit() {
 
         console.log('response1', response.data);
         
-        console.log('userinfo',userInfo)
       } catch (error) {
         console.error('유저 정보를 가져오는 도중 에러 발생', error);
       }
