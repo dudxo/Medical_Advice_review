@@ -9,11 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
@@ -40,8 +36,7 @@ public class ManageByClientController {
      * 관리자 일반 회원 상세 조회
      */
     @GetMapping("/admin/manageClient/detail/{uId}")
-    public ResponseEntity<ManagedClientInfoDto> findDetailByClient(@RequestBody ClientInfoAllDto requestClientInfo) {
-        String uId = requestClientInfo.getUId();
+    public ResponseEntity<ManagedClientInfoDto> findDetailByClient(@PathVariable String uId) {
         if (uId == null || uId.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }

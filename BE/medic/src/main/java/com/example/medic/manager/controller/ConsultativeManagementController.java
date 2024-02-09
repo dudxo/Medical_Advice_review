@@ -33,8 +33,7 @@ public class ConsultativeManagementController {
      * @return 관지라 특정 전문의 상세 조회
      */
     @GetMapping("/admin/manageConsultative/detail/{cId}")
-    public ResponseEntity<ManagedConsultativeInfoDto> findDetailByConsultative(@RequestBody ManagedConsultativeInfoDto managedConsultativeInfoDto) {
-        String cId = managedConsultativeInfoDto.getCId();
+    public ResponseEntity<ManagedConsultativeInfoDto> findDetailByConsultative(@PathVariable String cId) {
         if (cId == null || cId.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
