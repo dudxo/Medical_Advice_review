@@ -99,7 +99,7 @@ export default function ModifyInputUserPw(){
                             </h3>
                         </div>
                         <div className={modifypw.input_pwbox}>
-                            <input type="text" className={modifypw.input_currentpw} onChange={input_currentpw}/>
+                            <input type="password" className={modifypw.input_currentpw} onChange={input_currentpw}/>
                             <button className={modifypw.checkCurrentPw} disabled={checkCurrentPw} onClick={btn_checkCurrentPw}>비밀번호 확인</button>
                         </div> 
                     </>

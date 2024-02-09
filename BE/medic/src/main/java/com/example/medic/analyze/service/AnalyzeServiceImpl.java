@@ -108,7 +108,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                         .anReqForm(analyzeRequestDto.getAnReqForm().equals("no_empty_file") ? files.pollFirst() : analyzeRequestDto.getAnReqForm())
                         .anDiagnosis(analyzeRequestDto.getAnDiagnosis().equals("no_empty_file") ? files.pollFirst(): analyzeRequestDto.getAnDiagnosis())
                         .anRecord(analyzeRequestDto.getAnRecord().equals("no_empty_file") ? files.pollFirst(): analyzeRequestDto.getAnRecord())
-                        .anFilm(analyzeRequestDto.getAnFilm().equals("no_empty_file") ? files.pollFirst() : analyzeRequestDto.getAnRecord())
+                        .anFilm(analyzeRequestDto.getAnFilm().equals("no_empty_file") ? files.pollFirst() : analyzeRequestDto.getAnFilm())
                         .anOther(analyzeRequestDto.getAnOther().equals("no_empty-file") ? files.pollFirst() : analyzeRequestDto.getAnOther())
                         .build();
             }
@@ -330,7 +330,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                         .anReqForm(analyzeUpdateDto.getAnReqForm().equals("no_empty_file") ? files.pollFirst() : analyzeUpdateDto.getAnReqForm())
                         .anDiagnosis(analyzeUpdateDto.getAnDiagnosis().equals("no_empty_file") ? files.pollFirst(): analyzeUpdateDto.getAnDiagnosis())
                         .anRecord(analyzeUpdateDto.getAnRecord().equals("no_empty_file") ? files.pollFirst(): analyzeUpdateDto.getAnRecord())
-                        .anFilm(analyzeUpdateDto.getAnFilm().equals("no_empty_file") ? files.pollFirst() : analyzeUpdateDto.getAnRecord())
+                        .anFilm(analyzeUpdateDto.getAnFilm().equals("no_empty_file") ? files.pollFirst() : analyzeUpdateDto.getAnFilm())
                         .anOther(analyzeUpdateDto.getAnOther().equals("no_empty_file") ? files.pollFirst() : analyzeUpdateDto.getAnOther())
                         .build();
             }

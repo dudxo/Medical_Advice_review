@@ -406,7 +406,7 @@ export default function ModifyMyInfopage(){
         </div>
         <div className={joinpage.complete} style={{width: '550px'}}>
             <button type = "button" onClick={btn_progrm_modify} disabled={!infoEmpty} className={joinpage.btt_complete}>정보 수정 완료</button>
-            <button type = "button" onClick={btn_goto_mypage} className={joinpage.btt_complete}>목록</button>
+            <button type = "button" onClick={btn_goto_mypage} className={joinpage.btt_complete}>마이페이지</button>
             <button type = "button" onClick={btn_progrm_deleteuser} className={joinpage.btt_complete}>회원탈퇴</button>
         </div>
         </div>
