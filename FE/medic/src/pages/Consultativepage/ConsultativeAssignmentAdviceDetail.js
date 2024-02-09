@@ -49,7 +49,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
     const [adEtcValue, setAdEtcValue] = useState('');
 
     // 질문지
-    const [adQuestionTotal, setAdQuestionTotal] = useState(1);
+    const [adQuestionTotal, setAdQuestionTotal] = useState('');
     const [adQuestionContents, setAdQuestionContents] = useState([]);
     const [adAnswerContents, setAdAnswerContents] = useState([]);
 
@@ -79,7 +79,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
             setHospital(response.data.hospital)
             setTreatcmt(response.data.treatCmt)
             setAdEtcValue(response.data.adEtc)
-            setAdQuestionTotal(response.data.adQuestionTotal)
+            setAdQuestionTotal(response.data.adQuestionContent)
             setAdQuestionContents(response.data.adQuestionContent)
                         
             const ad_PtSsNum = response.data.adPtSsNum.split('-');  // 주민번호 나누기
@@ -422,7 +422,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                         <input
                             type="text"
                             name="adQuestionTotal"
-                            value={adQuestionTotal}
+                            value={adQuestionTotal.length}
                         />
                     </div>
                 </div>

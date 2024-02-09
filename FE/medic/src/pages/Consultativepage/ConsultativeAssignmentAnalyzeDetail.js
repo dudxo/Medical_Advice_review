@@ -25,7 +25,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
     const [anEtcValue, setAnEtcValue] = useState('');
 
     // 질문지
-    const [anQuestionTotal, setAnQuestionTotal] = useState(1);
+    const [anQuestionTotal, setAnQuestionTotal] = useState('');
     const [anQuestionContents, setAnQuestionContents] = useState([]);
     const [anAnswerContents, setAnAnswerContents] = useState([]);
     
@@ -49,7 +49,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
             setAnptdiagnosis(response.data.anPtDiagnosis)
             setAnptdiagcontent(response.data.anPtDiagContent)
             setAnEtcValue(response.data.anEtc)
-            setAnQuestionTotal(response.data.anQuestionTotal)
+            setAnQuestionTotal(response.data.anQuestionContent)
             setAnQuestionContents(response.data.anQuestionContent)
 
             const an_PtSsNum = response.data.anPtSsNum.split('-');  // 주민번호 나누기
@@ -284,7 +284,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
                         <input
                             type="text"
                             name="anQuestionTotal"
-                            value={anQuestionTotal}
+                            value={anQuestionTotal.length}
                         />
                     </div>
                 </div>
