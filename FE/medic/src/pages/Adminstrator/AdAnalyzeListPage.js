@@ -71,31 +71,6 @@ export default function AdAnalyzeListPage() {
     setCurrentPage(newPage);
   };
 
-<<<<<<< HEAD
-  const handleUpdateField = async () => {
-    try {
-      const updateAnalyzeList = allAnalyzeList.map((analyze, i) => {
-        if (i === (currentPage - 1) * itemsPerPage) {
-          return {
-            ...analyze,
-            adMdDate : formatDate(responseDate),
-            anAnswerDate: responseDate,
-            anProgressStatus: anProgressStatus,
-          };
-        }
-        return analyze;
-      });
-
-      console.log('Request Data:', updateAnalyzeList);
-
-      const response = await axios.put(`/admin/analyze/updateStatus`, updateAnalyzeList);
-      navigate('/');
-    } catch (error) {
-      console.error(`분석 업데이트 중 에러 발생:`, error);
-    }
-  };
-=======
->>>>>>> fix-usermanagement-m
 
   return (
     <div className={ad.ad_contents}>
@@ -133,7 +108,7 @@ export default function AdAnalyzeListPage() {
               {formatDate(analyze.anAnswerDate)}
               </td>
               <td className={ad.ad_td}>
-              {analyze.anProgressStatus}
+              {analyze.anProgressStatus||"분석의뢰중"}
               </td>
               <td className={ad.ad_td}>
       <span
