@@ -93,7 +93,7 @@ public class AdviceService {
                         .adReqForm(allAdviceRequestDto.getAdReqForm().equals("no_empty_file") ? files.pollFirst() : allAdviceRequestDto.getAdReqForm())
                         .adDiagnosis(allAdviceRequestDto.getAdDiagnosis().equals("no_empty_file") ? files.pollFirst(): allAdviceRequestDto.getAdDiagnosis())
                         .adRecord(allAdviceRequestDto.getAdRecord().equals("no_empty_file") ? files.pollFirst(): allAdviceRequestDto.getAdRecord())
-                        .adFilm(allAdviceRequestDto.getAdFilm().equals("no_empty_file") ? files.pollFirst() : allAdviceRequestDto.getAdRecord())
+                        .adFilm(allAdviceRequestDto.getAdFilm().equals("no_empty_file") ? files.pollFirst() : allAdviceRequestDto.getAdFilm())
                         .adOther(allAdviceRequestDto.getAdOther().equals("no_empty_file") ? files.pollFirst() : allAdviceRequestDto.getAdOther())
                         .build();
             }
@@ -398,7 +398,7 @@ public class AdviceService {
                         .adReqForm(adviceUpdateDto.getAdReqForm().equals("no_empty_file") ? files.pollFirst() : adviceUpdateDto.getAdReqForm())
                         .adDiagnosis(adviceUpdateDto.getAdDiagnosis().equals("no_empty_file") ? files.pollFirst(): adviceUpdateDto.getAdDiagnosis())
                         .adRecord(adviceUpdateDto.getAdRecord().equals("no_empty_file") ? files.pollFirst(): adviceUpdateDto.getAdRecord())
-                        .adFilm(adviceUpdateDto.getAdFilm().equals("no_empty_file") ? files.pollFirst() : adviceUpdateDto.getAdRecord())
+                        .adFilm(adviceUpdateDto.getAdFilm().equals("no_empty_file") ? files.pollFirst() : adviceUpdateDto.getAdFilm())
                         .adOther(adviceUpdateDto.getAdOther().equals("no_empty_file") ? files.pollFirst() : adviceUpdateDto.getAdOther())
                         .build();
             }
