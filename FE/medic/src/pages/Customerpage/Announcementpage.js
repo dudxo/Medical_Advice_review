@@ -27,7 +27,7 @@ export default function Announcementpage() {
         setAnnouncements(data);
         console.log(resp);
         console.log(cookie.get('uRole'))
-        if(cookie.get('uRole')== 'admin'){
+        if(cookie.get('uRole')== 'manager'){
           setIsAdmin(true)
         }else{
           setIsAdmin(false)

@@ -9,26 +9,26 @@ export default function WriteFaqPage  ()  {
   const [faq_titile, setFaqTitle] = useState('')
   const [faqAnswer, setFaqAnswer] = useState('')
   const [faqCount, setFaqContentcount] = useState(0)
-  const [writer, setWriter] = useState('1');
+  const [writer, setWriter] = useState('');
   
 
   const navigate = useNavigate();
   const cookie = new Cookies()
   useEffect(()=>{
     currentTimer();
-    setWriter(cookie.get('mId'))
+    setWriter(cookie.get('uId'))
   }, [])
 
   const faqWrite = async()=> {
     const today = new Date();
     const FaqSituationDto = {
       'faqQuestion' : faq_titile,
-      'faqDate' : today,
+      'faqRegDate' : today,
       'faqAnswer' : faqAnswer
     }
     try{
       console.log(FaqSituationDto)
-      const response = axios.post(`/faq/post/${'1'}`, FaqSituationDto)
+      const response = axios.post(`/faq/post/${writer}`, FaqSituationDto)
       navigate('/medic/customer/FAQ');
     } catch(err){
       console.log(err)
@@ -115,7 +115,8 @@ export default function WriteFaqPage  ()  {
           cols={60}
           rows={50}
           onChange={e => {
-            input_faq_Answer(e.target.value)
+            setFaqAnswer(e.target.value)
+            setFaqContentcount(e.target.value.length)
           }} maxLength={300}
           >
 
@@ -125,30 +126,7 @@ export default function WriteFaqPage  ()  {
 
       </div>  
 
-{/* 
-        <table className={writeannoucement.write_table}>
-          <tbody>
-            <tr>
-              <th className={writeannoucement.write_th}>질문</th>
-              <td className={writeannoucement.write_td}><input type="text" name="subject" onChange={input_faq_titile} maxLength={50}/></td>
-              <th className={writeannoucement.write_th}>작성자</th>
-              <td className={writeannoucement.write_td}><input type="text" disabled={true} name="writer" value={writer} maxLength={20}/></td>
-            </tr>
-            <tr>
-              <th className={writeannoucement.write_th}>비밀번호</th>
-              <td className={writeannoucement.write_td}><input type="password" name="password" maxLength={6}/></td>
-              <th className={writeannoucement.write_th}>등록일</th>
-              <td className={writeannoucement.write_td}><input type="text" name="date" value={timer} readOnly /></td>
-            </tr>
-            <tr>
-              <th className={writeannoucement.write_th}>내용</th>
-              <td className={writeannoucement.write_td} colSpan="3">
-                <textarea name="content" onChange={input_faq_Answer} maxLength={500}></textarea>
-                <span>{faqCount}/500</span>
-              </td>
-            </tr>
-          </tbody>
-        </table> */}
+
         <div className={writeannoucement.btn_writequestionbox}>
           <button type="button" onClick={faqWrite} className={writeannoucement.btn_writequestion}>작성</button>
           <button type="button" onClick={faqWrite} className={writeannoucement.btn_writequestion}>목록</button>

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import faq from '../../../css/Announcement.module.css'
+import faq from '../../../css/Announcement.module.css';
 import axios from 'axios';
 import { Cookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faTrash} from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export default function FAQpage() {
   const [faqList, setFaqList] = useState([]);
@@ -18,16 +18,16 @@ export default function FAQpage() {
     const getAnnouncements = async () => {
       try {
         const resp = await axios.get('/faq/list');
-        const data = resp.data.reverse()
+        const data = resp.data;
         setFaqList(data);
-        if(cookie.get('uRole')== 'admin'){
-          setIsAdmin(true)
-        }else{
-          setIsAdmin(false)
+        if (cookie.get('uRole') === 'manager') {
+          setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
         }
         console.log(resp);
       } catch (error) {
-        console.error('Error fetching announcements:', error);
+        console.error( error);
       }
     };
 
@@ -37,11 +37,13 @@ export default function FAQpage() {
   const handleDeleteAnnounce = async (faqId) => {
     try {
       const confirmed = window.confirm('게시글을 삭제하시겠습니까?');
-      const response = await axios.delete(`/faq/delete/${faqId}`);
       if (confirmed) {
+        await axios.delete(`/faq/delete/${faqId}`);
         alert('게시글이 삭제되었습니다.');
-      } else {
-        
+        // 삭제 후 FAQ 리스트 갱신
+        const resp = await axios.get('/faq/list');
+        const data = resp.data;
+        setFaqList(data);
       }
     } catch (error) {
       console.error('게시글 삭제 오류', error);
@@ -49,20 +51,20 @@ export default function FAQpage() {
     }
   }
 
-  
   const itemsPerPage = 7;
+  const reverseFaqList = [...faqList].reverse();
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const visibleQuiryList = faqList.reverse().slice(startIndex, startIndex + itemsPerPage);
-
+  const endIndex = Math.min(startIndex + itemsPerPage, reverseFaqList.length);
+  const visibleQuiryList = reverseFaqList.slice(startIndex, endIndex);
   
-  const handlePageChange = (newPage) => {
-    const totalPages = Math.ceil(faqList.length / itemsPerPage);
 
+  const totalPages = Math.ceil(faqList.length / itemsPerPage);
+
+  const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
   };
-
 
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
@@ -71,7 +73,6 @@ export default function FAQpage() {
   };
 
   const medicWrite = () => {
-    
     navigate('/medic/customer/faqwrite');
   };
 
@@ -104,77 +105,69 @@ export default function FAQpage() {
      
       <div className={faq.announce_quirytable}>
         <div className={faq.announce_quirylist_titlebox}>
-        
-
-             <div className={`${faq.announce_list_no} ${faq.announce_list_title}`}>NO.</div>
-              <div className={`${faq.announce_list_question} ${faq.announce_list_title}`}>질문</div>
-              <div className={ `${faq.announce_list_writedate} ${faq.announce_list_title}`}>등록일</div>
-              {isAdmin && (
-               
-               <div className={`${faq.announce_list_writedate} ${faq.announce_list_title}`}>
-          삭제
-      </div>
-    
-        )}
-        
+          <div className={`${faq.announce_list_no} ${faq.announce_list_title}`}>NO.</div>
+          <div className={`${faq.announce_list_question} ${faq.announce_list_title}`}>질문</div>
+          <div className={ `${faq.announce_list_writedate} ${faq.announce_list_title}`}>등록일</div>
+          {isAdmin && (
+            <div className={`${faq.announce_list_writedate} ${faq.announce_list_title}`}>
+              삭제
             </div>
-        
+          )}
+        </div>
           
-          <div className={faq.announce_quirylist_listbox}>
-              {visibleQuiryList?.map((list,index) => (
-                <div key = {index} className={faq.announce_quirylist_content}>
-                  <div className={`${faq.announce_quirylist_no} ${faq.announce_list_content}`} onClick={()=>goToDetailPage(list.faqId)} >
-                    {list.faqId}
-                </div>
-                <div className={`${faq.announce_quirylist_question} ${faq.announce_list_content}`} >
-                    {list.faqQuestion}
-                </div>
-                <div className={`${faq.announce_quirylist_writedate} ${faq.announce_list_content}`}>
-                    {formatDateString(list.faqRegDate)}
-                </div>
-                {isAdmin && (
-              <div className={`${faq.announce_quirylist_writedate} ${faq.announce_list_content}`} onClick={()=>handleDeleteAnnounce(list.faqId)}>
-              <FontAwesomeIcon icon={faTrash}  />
+        <div className={faq.announce_quirylist_listbox}>
+          {visibleQuiryList?.map((list, index) => (
+            <div key={index} className={faq.announce_quirylist_content}>
+              <div className={`${faq.announce_quirylist_no} ${faq.announce_list_content}`} onClick={() => goToDetailPage(list.faqId)}>
+                {list.faqId}
               </div>
-                )}
+              <div className={`${faq.announce_quirylist_question} ${faq.announce_list_content}`} >
+                {list.faqQuestion}
+              </div>
+              <div className={`${faq.announce_quirylist_writedate} ${faq.announce_list_content}`}>
+                {formatDateString(list.faqRegDate)}
+              </div>
+              {isAdmin && (
+                <div className={`${faq.announce_quirylist_writedate} ${faq.announce_list_content}`} onClick={() => handleDeleteAnnounce(list.faqId)}>
+                  <FontAwesomeIcon icon={faTrash}  />
                 </div>
-              ))}
-              </div>
-              </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
 
-               <div className={faq.complete}>
-            <button className={faq.btn_write_inquiry} onClick={medicWrite}>
-                작성
-            </button>
-        </div>
-        <div className={faq.pagination}>
-            <button
-            className={faq.paginationButton}
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            >
-            ◀
-            </button>
-            {[...Array(Math.ceil(faqList.length / itemsPerPage))].map((_, index) => (
-            <button
-                key={index}
-                className={faq.paginationButton}
-                onClick={() => handlePageChange(index + 1)}
-                disabled={currentPage === index + 1}
-            >
-                {index + 1}
-        
-            </button>
-            ))}
-            <button
-            className={faq.paginationButton}
-            onClick={() => handlePageChange(currentPage + 1)}
-            >
-            ▶
-            </button>
-        </div>
-        </div>
-    );
-  }
+      <div className={faq.complete}>
+        <button className={faq.btn_write_inquiry} onClick={medicWrite}>
+          작성
+        </button>
+      </div>
 
-         
+      <div className={faq.pagination}>
+        <button
+          className={faq.paginationButton}
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          ◀
+        </button>
+        {[...Array(Math.ceil(faqList.length / itemsPerPage))].map((_, index) => (
+          <button
+            key={index}
+            className={faq.paginationButton}
+            onClick={() => handlePageChange(index + 1)}
+            disabled={currentPage === index + 1}
+          >
+            {index + 1}
+          </button>
+        ))}
+        <button
+          className={faq.paginationButton}
+          onClick={() => handlePageChange(currentPage + 1)}
+        >
+          ▶
+        </button>
+      </div>
+    </div>
+  );
+}
