@@ -271,7 +271,7 @@ export default function AdviceRequestpage(){
         console.log(adFile)
         const adFile_toString = []
         adFile.forEach(file => {
-            if (file === null) {
+            if (file === null || typeof file === 'undefined') {
                 adFile_toString.push("empty_file")
                 console.log(adFile_toString)
             } else {
