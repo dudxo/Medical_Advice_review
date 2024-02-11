@@ -252,7 +252,7 @@ const btn_advice_update = async() => {
     const adFile = [adReqForm, adDiagnosis, adRecord, adFilm, adOther];
         const adFile_toString = []
         adFile.forEach(file => {
-            if (file === null) {
+            if (file === null || typeof file === 'undefined') {
                 adFile_toString.push("empty_file")
             } else {
                 if(typeof file === 'string'){
