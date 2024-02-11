@@ -292,6 +292,7 @@ public class AdviceService {
         AdviceFile adviceFile = adviceFileRepository.findById(adId).get();
         Long fid = adviceFileRepository.findByFileId(adId);
 
+
         AdviceFileRequestDto adviceFileRequestDto = splitUpdateToFileDto(updateDto, multipartFiles);
         deleteAdviceFile(adviceFile, adviceFileRequestDto);
 
