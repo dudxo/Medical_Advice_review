@@ -580,20 +580,7 @@ export default function AdviceRequestpage(){
                         자문의뢰신청서
                     </div>
                     <div className={advicerequest.input_box}>
-                        {adReqForm ? (
-                            <>
-                                <input type='file' className='input_adReqFom' accept="image/*" onChange={e => {
-                                    setAdReqForm(e.target.files[0]);
-                                }}/>
-                                <button onClick={(e) => {
-                                    setAdReqForm(null);
-                                    const input = document.querySelector('.input_adReqFom');
-                                    input.value = ''; // 파일 선택 input 태그의 값 초기화
-                                }}>X</button>
-                            </>
-                        ) : (
-                            <input type='file' accept="image/*" onChange={e => setAdReqForm(e.target.files[0])}/>
-                        )}
+                        <input type='file' accept="image/*" onChange={e => setAdReqForm(e.target.files[0])}/>
                     </div>
                 </div>
                 <div className={advicerequest.row_box} style={{height : 'auto'}}>
@@ -601,20 +588,7 @@ export default function AdviceRequestpage(){
                         진단서
                     </div>
                     <div className={advicerequest.input_box}>
-                    {adDiagnosis ? (
-                            <>
-                                <input type='file' className='input_adDiagnosis' accept="image/*" onChange={e => {
-                                    setAdDiagnosis(e.target.files[0]);
-                                }}/>
-                                <button onClick={(e) => {
-                                    setAdDiagnosis(null);
-                                    const input = document.querySelector('.input_adDiagnosis');
-                                    input.value = ''; // 파일 선택 input 태그의 값 초기화
-                                }}>X</button>
-                            </>
-                        ) : (
-                            <input type='file' accept="image/*" onChange={e => setAdDiagnosis(e.target.files[0])}/>
-                        )}
+                        <input type='file' accept="image/*" onChange={e => setAdDiagnosis(e.target.files[0])}/>
                     </div>
                 </div>
                 <div className={advicerequest.row_box} style={{height : 'auto'}}>
@@ -622,20 +596,7 @@ export default function AdviceRequestpage(){
                         의무기록지
                     </div>
                     <div className={advicerequest.input_box}>
-                    {adRecord ? (
-                            <>
-                                <input type='file' className='input_adRecord' accept="image/*" onChange={e => {
-                                    setAdRecord(e.target.files[0]);
-                                }}/>
-                                <button onClick={(e) => {
-                                    setAdRecord(null);
-                                    const input = document.querySelector('.input_adRecord');
-                                    input.value = ''; // 파일 선택 input 태그의 값 초기화
-                                }}>X</button>
-                            </>
-                        ) : (
-                            <input type='file' accept="image/*" onChange={e => setAdRecord(e.target.files[0])}/>
-                        )}
+                        <input type='file' accept="image/*" onChange={e => setAdRecord(e.target.files[0])}/>
                     </div>
                 </div>
                 <div className={advicerequest.row_box} style={{height : 'auto'}}>
@@ -643,20 +604,7 @@ export default function AdviceRequestpage(){
                         필름
                     </div>
                     <div className={advicerequest.input_box}>
-                    {adFilm ? (
-                            <>
-                                <input type='file' className='input_adFilm' accept="image/*" onChange={e => {
-                                    setAdFilm(e.target.files[0]);
-                                }}/>
-                                <button onClick={(e) => {
-                                    setAdFilm(null);
-                                    const input = document.querySelector('.input_adFilm');
-                                    input.value = ''; // 파일 선택 input 태그의 값 초기화
-                                }}>X</button>
-                            </>
-                        ) : (
-                            <input type='file' accept="image/*" onChange={e => setAdFilm(e.target.files[0])}/>
-                        )}
+                        <input type='file' accept="image/*" onChange={e => setAdFilm(e.target.files[0])}/>
                     </div>
                 </div>
                 <div className={advicerequest.row_box} style={{height : 'auto'}}>
@@ -664,20 +612,7 @@ export default function AdviceRequestpage(){
                         기타 자료
                     </div>
                     <div className={advicerequest.input_box}>
-                    {adOther ? (
-                            <>
-                                <input type='file' className='input_adOther' accept="image/*" onChange={e => {
-                                    setAdOther(e.target.files[0]);
-                                }}/>
-                                <button onClick={(e) => {
-                                    setAdOther(null);
-                                    const input = document.querySelector('.input_adOther');
-                                    input.value = ''; // 파일 선택 input 태그의 값 초기화
-                                }}>X</button>
-                            </>
-                        ) : (
-                            <input type='file' accept="image/*" onChange={e => setAdOther(e.target.files[0])}/>
-                        )}
+                        <input type='file' accept="image/*" onChange={e => setAdOther(e.target.files[0])}/>
                     </div>
                 </div>
                 <div className={advicerequest.complete}>
