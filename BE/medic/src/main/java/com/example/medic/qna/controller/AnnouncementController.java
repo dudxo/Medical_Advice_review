@@ -3,6 +3,7 @@ package com.example.medic.qna.controller;
 import com.example.medic.client.service.ClientService;
 import com.example.medic.qna.domain.Announcement;
 import com.example.medic.qna.dto.AnnouncementDto;
+import com.example.medic.qna.dto.FaqSituationDto;
 import com.example.medic.qna.repository.AnnouncementRepository;
 import com.example.medic.qna.service.AnnouncementService;
 import lombok.RequiredArgsConstructor;
@@ -75,6 +76,28 @@ public class AnnouncementController {
         }
         announcementService.deleteAnnouncement(amId);
         return ResponseEntity.ok(1);
+    }
+
+    /**
+     * 이전글
+     */
+
+    @GetMapping("/announcement/detail/prev/{amId}")
+    public ResponseEntity<AnnouncementDto> findPrevAnnouncementInfo(@PathVariable Long amId)  {
+     AnnouncementDto announcementDto = announcementService.findPrevAnnouncementInfo(amId);
+     return ResponseEntity.ok(announcementDto);
+
+    }
+
+    /**
+     * 다음글
+     */
+
+    @GetMapping("/announcement/detail/next/{amId}")
+    public ResponseEntity<AnnouncementDto> findNextAnnouncementInfo(@PathVariable Long amId)  {
+        AnnouncementDto announcementDto = announcementService.findNextAnnouncementInfo(amId);
+        return ResponseEntity.ok(announcementDto);
+
     }
 
 }

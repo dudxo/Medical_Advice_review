@@ -16,18 +16,20 @@ public class AnnouncementDto {
     private LocalDate amRegDate;
     private String amContent;
     private LocalDate amMdDate;
+    private Long amId;
 
 
     private String mId;
 
     @Builder
-    public  AnnouncementDto(String amName, LocalDate amRegDate, String amContent, String mId, LocalDate amMdDate) {
+    public  AnnouncementDto(String amName, LocalDate amRegDate, String amContent, String mId, LocalDate amMdDate,Long amId) {
 
                this.amContent = amContent;
                this.amRegDate = amRegDate;
                this.amName = amName;
                this.mId = mId;
                this.amMdDate = amMdDate;
+               this.amId = amId;
 
     }
 

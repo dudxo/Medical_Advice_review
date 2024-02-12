@@ -9,7 +9,6 @@ export default function AnnouncementEdit()  {
   const location = useLocation();
   const cookie = new Cookies();
   const [announceDetail,setAnnounceDetail] = useState(location.state.announceDetail);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [amContent , setAmContent] = useState(announceDetail.amContent);
   const [amRegDate, setAmRegDate] = useState(announceDetail.amRegDate);
   const [amMdDate, setAmMdDate] = useState(announceDetail.amMdDate);
@@ -17,9 +16,11 @@ export default function AnnouncementEdit()  {
   const [amId , setAmId] = useState(location.state.amId);
   const [mId, setMid] = useState(announceDetail.mId);
   const [timer, setTimer] = useState("");
+  const [writer, setWriter] = useState('');
 
   useEffect(()=>{
     currentTimer();
+    setWriter(cookie.get('uId'))
   })
 
   const input_amName = (e) =>{
@@ -113,7 +114,7 @@ console.log('ann',announceDetail)
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
         
-                        <input type='text' value={amId} className={announcedetail.inputWithoutBorder} ></input>
+                        <input type='text' value={writer} className={announcedetail.inputWithoutBorder} readOnly={true} ></input>
                     </div>
                 </div> 
                 <div className={announcedetail.detail_writerinfo}>
@@ -122,7 +123,7 @@ console.log('ann',announceDetail)
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
                         
-                        <input value={formatDateString(amRegDate)} className={announcedetail.inputWithoutBorder} onChange={e=>input_amRegDate(e)}></input>
+                        <input value={formatDateString(amRegDate)} className={announcedetail.inputWithoutBorder}readOnly={true}></input>
                     </div>
                 </div>   
                  <div className={announcedetail.detail_writerinfo}>
@@ -130,7 +131,7 @@ console.log('ann',announceDetail)
                         수정일
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
-                    <input value={timer}  className={announcedetail.inputWithoutBorder} readOnly={true} onChange = {e=>input_amMdDate(e)}></input>
+                    <input value={timer}  className={announcedetail.inputWithoutBorder} readOnly={true} ></input>
                     </div>
                   </div>  
             </div>
@@ -148,39 +149,7 @@ console.log('ann',announceDetail)
 </div>
         </div>
     <br></br>
-    
-    <div className={announcedetail.detail_table} style={{height: '85px'}}>
-        <div className={announcedetail.detail_rowbox}>
-                <div className={announcedetail.detail_title} style={{width : '213px'}}>
-                      이전글
-                </div>
-                <div className={announcedetail.detail_titleinputbox}>
-                   이전글
-                </div>
-                <div className={announcedetail.detail_title} style={{width : '213px'}}>
-                      등록일
-                </div>
-                <div className={announcedetail.detail_titleinputbox}>
-                   등록일
-                </div>
-
-            </div>
-        <div className={announcedetail.detail_rowbox}>
-                <div className={announcedetail.detail_title} style={{width : '210px'}}>
-                      다음글
-                </div>
-                <div className={announcedetail.detail_titleinputbox}>
-                   다음글
-                </div>
-                <div className={announcedetail.detail_title} style={{width : '210px'}}>
-                      등록일
-                </div>
-                <div className={announcedetail.detail_titleinputbox}>
-                   등록일
-                </div>
-            </div>
-        </div>
-        
+            
         <div className={announcedetail.complete}>
           <button type="button" onClick={medicannounce} className={announcedetail.btt_write}>
             목록

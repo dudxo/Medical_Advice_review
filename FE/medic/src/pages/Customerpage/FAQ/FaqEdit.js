@@ -23,19 +23,6 @@ export default function FaqEdit()  {
     setWriter(cookie.get('uId'))
   })
 
-  const input_faq_Question = (e) =>{
-    setFaqQuestion(e.target.value)
-  }
-
-  const input_faqRegDate = (e) =>{
-    setFaqRegDate(e.target.value)
-  }
-  const input_faq_Answer = (e) =>{
-    setFaqAnswer(e.target.value)
-  }
-  const input_faqMdDate = (e)=>{
-    setFaqMdDate(e.target.value)
-  }
 
   const currentTimer = () => {
     const date = new Date();

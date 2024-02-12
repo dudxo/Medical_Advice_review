@@ -20,16 +20,13 @@ export default function FaqDetailPage()  {
 
   const [prevNum, setPrevNum] = useState('');
 
-  const [prevFaq,setPrevFaq] = useState([]);
-  const [nextFaq,setNextFaq] = useState([]);
 
   const [prevTitle, setPrevTitle] = useState('');
   const [nextTitle, setNextTitle] = useState('');
   const [prevFaqId, setPrevFaqId] = useState('');
   const [nextFaqId, setNextFaqId] = useState('');
 
-  const [prevPageFaqDetail, setPrevPageFaqDetail] = useState(null); // 이전 페이지의 FAQ 정보를 저장할 상태
-  const [nextPageFaqDetail, setNextPageFaqDetail] = useState(null); // 다음 페이지의 FAQ 정보를 저장할 상태
+
 
   const getFaqDetail = async(faqId)=>{
     try {
@@ -41,23 +38,6 @@ export default function FaqDetailPage()  {
     }
 }
 
-const fetchPrevPageFaqDetail = async (prevFaqId) => {
-  try {
-    const response = await axios.get(`/faq/detail/${prevFaqId}`);
-    setPrevPageFaqDetail(response.data);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const fetchNextPageFaqDetail = async (nextFaqId) => {
-  try {
-    const response = await axios.get(`/faq/detail/${nextFaqId}`);
-    setNextPageFaqDetail(response.data);
-  } catch (err) {
-    console.log(err);
-  }
-};
 
 useEffect(() => {
   const fetchData = async () => {
@@ -66,14 +46,14 @@ useEffect(() => {
     console.log('prevData', prev)
     setPrevTitle(prevData.faqQuestion);
     setPrevFaqId(prevData.faqId);
-    fetchPrevPageFaqDetail(prevData.faqId); 
+ 
 
     const next = await axios.get(`/faq/detail/next/${faqId}`)
     const nextData = next.data;
     console.log('nextData', next)
     setNextFaqId(nextData.faqId);
     setNextTitle(nextData.faqQuestion);
-    fetchNextPageFaqDetail(nextData.faqId);
+  
   };
 
   fetchData();

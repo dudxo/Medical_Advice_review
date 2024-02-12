@@ -4,7 +4,9 @@ import com.example.medic.client.service.ClientService;
 import com.example.medic.manager.domain.Manager;
 import com.example.medic.manager.repository.ManagerRepository;
 import com.example.medic.qna.domain.Announcement;
+import com.example.medic.qna.domain.Faq;
 import com.example.medic.qna.dto.AnnouncementDto;
+import com.example.medic.qna.dto.FaqSituationDto;
 import com.example.medic.qna.repository.AnnouncementRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -117,4 +119,37 @@ public class AnnouncementService {
 
 
     }
+
+    /**
+     * 이전글
+     */
+    public AnnouncementDto findPrevAnnouncementInfo(Long amId) {
+        Announcement announcement = announcementRepository.findPrevAnnouncementInfo(amId);
+        if(announcement != null){
+            AnnouncementDto announcementDto = AnnouncementDto.builder()
+                    .amName(announcement.getAmName())
+                    .amContent(announcement.getAmContent())
+                    .amRegDate(announcement.getAmRegDate())
+                    .amId(announcement.getAmId())
+                    .build();
+            return announcementDto;
+        }else return null;
+
+    }
+
+    /**
+     * 다음글
+     */
+    public AnnouncementDto findNextAnnouncementInfo(Long amId) {
+        Announcement announcement = announcementRepository.findNextAnnouncementInfo(amId);
+        if(announcement != null){
+            AnnouncementDto announcementDto = AnnouncementDto.builder()
+                    .amName(announcement.getAmName())
+                    .amRegDate(announcement.getAmRegDate())
+                    .amContent(announcement.getAmContent())
+                    .amId(announcement.getAmId())
+                    .build();
+            return announcementDto;
+        }else return null;
+         }
 }
