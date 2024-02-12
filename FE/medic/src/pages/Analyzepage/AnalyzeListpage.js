@@ -82,7 +82,7 @@ export default function AnalyzeListPage() {
         <td className={analyzelist.analyzeList_td}>{analyzeRequestList.anPtSub}</td>
         <td className={analyzelist.analyzeList_td}>{analyzeRequestList.anPtDiagnosis}</td>
         <td className={analyzelist.analyzeList_td}>{formatDate(analyzeRequestList.anRegDate)}</td>
-        <td className={analyzelist.analyzeList_td}>{formatDate(analyzeRequestList.adMdDate)}</td>
+        <td className={analyzelist.analyzeList_td}>{formatDate(analyzeRequestList.anMdDate)}</td>
         <td className={analyzelist.analyzeList_td}>{formatDate(analyzeRequestList.anAnswerDate)}</td>
         <td className={analyzelist.analyzeList_td}>{analyzeRequestList.anProgressStatus}</td>
       </React.Fragment>

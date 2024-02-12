@@ -252,4 +252,18 @@ public class ConsultativeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    /**
+     * 배정받은 번역의뢰 답변지 저장
+     */
+    @PutMapping("/consultative/assignedAnalyze/answer/{anId}")
+    public ResponseEntity<String> saveAnalyzeResponse(@RequestBody AnalyzeResponseDto responseDto,
+                                                      @PathVariable Long anId) {
+        boolean saved = consultativeAssignmentService.saveAnalyzeResponse(responseDto, anId);
+        if (saved) {
+            return ResponseEntity.ok("분석 의뢰 답변 저장이 완료되었습니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("분석 의뢰 답변 저장 중 오류 발생");
+        }
+    }
 }

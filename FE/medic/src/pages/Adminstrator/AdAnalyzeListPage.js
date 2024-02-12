@@ -72,6 +72,30 @@ export default function AdAnalyzeListPage() {
   };
 
 
+  const handleUpdateField = async () => {
+    try {
+      const updateAnalyzeList = allAnalyzeList.map((analyze, i) => {
+        if (i === (currentPage - 1) * itemsPerPage) {
+          return {
+            ...analyze,
+            adMdDate : formatDate(responseDate),
+            anAnswerDate: responseDate,
+            anProgressStatus: anProgressStatus,
+          };
+        }
+        return analyze;
+      });
+
+      console.log('Request Data:', updateAnalyzeList);
+
+      const response = await axios.put(`/admin/analyze/updateStatus`, updateAnalyzeList);
+      navigate('/');
+    } catch (error) {
+      console.error(`분석 업데이트 중 에러 발생:`, error);
+    }
+  };
+
+
   return (
     <div className={ad.ad_contents}>
       <div className={ad.ad_iconbox}>
