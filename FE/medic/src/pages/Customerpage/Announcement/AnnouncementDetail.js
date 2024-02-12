@@ -44,7 +44,7 @@ const editAnnouncement = () => {
 
 useEffect(() => {
   getAnnounceDetail()
-  if(cookie.get('uRole')== 'admin'){
+  if(cookie.get('uRole')== 'manager'){
     setIsAdmin(true)
   }else{
     setIsAdmin(false)

@@ -15,11 +15,12 @@ export default function FaqEdit()  {
   const [faqMdDate, setFaqMdDate] = useState(faqDetail.faqMdDate);
   const [faqQuestion , setFaqQuestion] = useState(faqDetail.faqQuestion);
   const [faqId , setFaqId] = useState(location.state.faqId);
-//   const [mId, setMid] = useState(faqDetail.mId);
   const [timer, setTimer] = useState("");
+  const [writer, setWriter] = useState('');
 
   useEffect(()=>{
     currentTimer();
+    setWriter(cookie.get('uId'))
   })
 
   const input_faq_Question = (e) =>{
@@ -60,31 +61,30 @@ console.log('ann',faqDetail)
   };
 
   const medicannounce = () => {
-    navigate('/medic/customer/announcement');
+    navigate('/medic/customer/FAQ');
   };
 
   const btn_faq_modify = e => {
     if(window.confirm("수정하시겠습니까?")){
         e.preventDefault()
         const faqInfo = {
-            // 'mId' : mId,
            'faqQuestion' : faqQuestion,
            'faqRegDate' : faqRegDate,
            'faqMdDate': formatDateString(new Date()),
            'faqAnswer' : faqAnswer
         } 
         faq_modify(faqInfo)
+        console.log('faqfa',faqInfo);
     }
     
   }
 
   const faq_modify = async(faqInfo) => {
-    console.log(2)
     const response = await axios.put(`/faq/modify/${faqId}`, faqInfo)
     console.log(response)
     if(response.data === 1){
         alert('정보수정이 완료되었습니다.')
-        navigate('/medic/customer/announcement')
+        navigate('/medic/customer/FAQ')
     }
   }
 
@@ -94,7 +94,7 @@ console.log('ann',faqDetail)
             <div className={announcedetail.inquiry_title}>
                 <h1>
                     <i className="fa-solid fa-circle icon"></i>
-                    공지사항
+                    FAQ 수정
                 </h1>
             </div>
         <div className={announcedetail.detail_table}>
@@ -103,7 +103,7 @@ console.log('ann',faqDetail)
                     제목
                 </div>
                 <div className={announcedetail.detail_titleinputbox}>
-                    <input type='text' value={faqQuestion} className={announcedetail.inputWithoutBorder} onChange={e=>input_faq_Question(e)}></input>
+                    <input type='text' value={faqQuestion} className={announcedetail.inputWithoutBorder} onChange={e=>setFaqQuestion(e.target.value)}></input>
                 </div>
             </div>
             <div className={announcedetail.detail_rowbox}>
@@ -113,7 +113,7 @@ console.log('ann',faqDetail)
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
         
-                        <input type='text' value={faqId} className={announcedetail.inputWithoutBorder} ></input>
+                        <input type='text' value={writer} className={announcedetail.inputWithoutBorder} ></input>
                     </div>
                 </div> 
                 <div className={announcedetail.detail_writerinfo}>
@@ -122,7 +122,7 @@ console.log('ann',faqDetail)
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
                         
-                        <input value={formatDateString(faqRegDate)} className={announcedetail.inputWithoutBorder} onChange={e=>input_faqRegDate(e)}></input>
+                        <input value={formatDateString(faqRegDate)} className={announcedetail.inputWithoutBorder} readOnly ={true}></input>
                     </div>
                 </div>   
                  <div className={announcedetail.detail_writerinfo}>
@@ -141,7 +141,8 @@ console.log('ann',faqDetail)
   <div className={announcedetail.detail_content}>
     <textarea
       value={faqAnswer}
-      onChange={(e) => input_faq_Answer(e)}
+      onChange={(e) => 
+      setFaqAnswer(e.target.value)}
       className={announcedetail.textareaWithoutBorder}
     ></textarea>
   </div>
@@ -149,37 +150,7 @@ console.log('ann',faqDetail)
         </div>
     <br></br>
     
-    <div className={announcedetail.detail_table} style={{height: '85px'}}>
-        <div className={announcedetail.detail_rowbox}>
-                <div className={announcedetail.detail_title} style={{width : '213px'}}>
-                      이전글
-                </div>
-                <div className={announcedetail.detail_titleinputbox}>
-                   이전글
-                </div>
-                <div className={announcedetail.detail_title} style={{width : '213px'}}>
-                      등록일
-                </div>
-                <div className={announcedetail.detail_titleinputbox}>
-                   등록일
-                </div>
 
-            </div>
-        <div className={announcedetail.detail_rowbox}>
-                <div className={announcedetail.detail_title} style={{width : '210px'}}>
-                      다음글
-                </div>
-                <div className={announcedetail.detail_titleinputbox}>
-                   다음글
-                </div>
-                <div className={announcedetail.detail_title} style={{width : '210px'}}>
-                      등록일
-                </div>
-                <div className={announcedetail.detail_titleinputbox}>
-                   등록일
-                </div>
-            </div>
-        </div>
         
         <div className={announcedetail.complete}>
           <button type="button" onClick={medicannounce} className={announcedetail.btt_write}>

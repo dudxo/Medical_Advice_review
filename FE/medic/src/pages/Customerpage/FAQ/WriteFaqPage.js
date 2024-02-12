@@ -93,17 +93,7 @@ export default function WriteFaqPage  ()  {
             {timer}
           </div>
           </div>
-          <div className={writeannoucement.write_writerinfo}>
-            <div className={writeannoucement.write_title} >
-              비밀번호
-            </div>
-         
-          <div className={writeannoucement.write_writerinfocontent}>
-          <input
-          type='password'
-          ></input>
-          </div>
-          </div>
+
         </div>
 
         <div className={`${writeannoucement.write_rowbox} ${writeannoucement.write_contentrowbox}`}>

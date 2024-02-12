@@ -70,8 +70,10 @@ public class FaqController {
     faq 수정
      */
     @PutMapping("/faq/modify/{faqId}")
-    public ResponseEntity<Integer> updateFaqp(@PathVariable Long faqId, FaqSituationDto faqSituationDto){
+    public ResponseEntity<Integer> updateFaq(@PathVariable Long faqId, @RequestBody  FaqSituationDto faqSituationDto){
         try{
+            logger.info("faqid:{}",faqId);
+            logger.info("faqid2:{}",faqSituationDto);
             if(faqSituationService.updateFaq(faqId, faqSituationDto)){
                 return ResponseEntity.ok(1);
             }

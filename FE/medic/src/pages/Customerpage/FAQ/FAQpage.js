@@ -18,7 +18,11 @@ export default function FAQpage() {
     const getAnnouncements = async () => {
       try {
         const resp = await axios.get('/faq/list');
-        const data = resp.data;
+        const data = resp.data.reverse(); // 데이터 역순으로 설정
+        // 번호 재조정
+        data.forEach((faq, index) => {
+          faq.no = index + 1;
+        });
         setFaqList(data);
         if (cookie.get('uRole') === 'manager') {
           setIsAdmin(true);
@@ -27,7 +31,7 @@ export default function FAQpage() {
         }
         console.log(resp);
       } catch (error) {
-        console.error( error);
+        console.error(error);
       }
     };
 
@@ -42,22 +46,24 @@ export default function FAQpage() {
         alert('게시글이 삭제되었습니다.');
         // 삭제 후 FAQ 리스트 갱신
         const resp = await axios.get('/faq/list');
-        const data = resp.data;
+        const data = resp.data.reverse(); // 데이터 역순으로 설정
+        // 번호 재조정
+        data.forEach((faq, index) => {
+          faq.no = index + 1;
+        });
         setFaqList(data);
       }
     } catch (error) {
       console.error('게시글 삭제 오류', error);
       alert('게시글 삭제 중 오류가 발생했습니다.');
     }
-  }
+  };
 
   const itemsPerPage = 7;
-  const reverseFaqList = [...faqList].reverse();
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, reverseFaqList.length);
-  const visibleQuiryList = reverseFaqList.slice(startIndex, endIndex);
+  const endIndex = Math.min(startIndex + itemsPerPage, faqList.length);
+  const visibleQuiryList = faqList.slice(startIndex, endIndex);
   
-
   const totalPages = Math.ceil(faqList.length / itemsPerPage);
 
   const handlePageChange = (newPage) => {
@@ -119,7 +125,7 @@ export default function FAQpage() {
           {visibleQuiryList?.map((list, index) => (
             <div key={index} className={faq.announce_quirylist_content}>
               <div className={`${faq.announce_quirylist_no} ${faq.announce_list_content}`} onClick={() => goToDetailPage(list.faqId)}>
-                {list.faqId}
+                {faqList.length - startIndex - index} {/* 수정된 부분 */}
               </div>
               <div className={`${faq.announce_quirylist_question} ${faq.announce_list_content}`} >
                 {list.faqQuestion}

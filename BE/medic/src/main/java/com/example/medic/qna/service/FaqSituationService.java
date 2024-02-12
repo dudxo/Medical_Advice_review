@@ -49,9 +49,7 @@ public class FaqSituationService {
     public Boolean writeFaq(String mId , FaqSituationDto faqSituationDto) {
         try {
             Manager manager = managerRepository.findById(mId).get();
-            logger.info("manager1:{}",manager);
-            logger.info("midd:{}",mId);
-            logger.info("managerrole:{}",manager.getMRole());
+
             if(manager.getMRole().equals("manager")){
                 Faq faq = Faq.builder()
                         .faqAnswer(faqSituationDto.getFaqAnswer())
@@ -72,11 +70,11 @@ public class FaqSituationService {
     }
         public Boolean updateFaq(Long faqId, FaqSituationDto faqSituationDto){
         try{
+            logger.info("faqdtd:{}", faqSituationDto.getFaqQuestion());
                 Faq faq = faqRepository.findById(faqId).get();
                 faq.updateFaq(faqSituationDto.getFaqMdDate(), faqSituationDto.getFaqQuestion(), faqSituationDto.getFaqAnswer(),faqSituationDto.getFaqRegDate());
                     faqRepository.save(faq);
                 return true;
-
 
 
         }catch (Exception e){
