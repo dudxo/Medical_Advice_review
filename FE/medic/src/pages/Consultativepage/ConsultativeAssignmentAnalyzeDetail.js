@@ -36,6 +36,8 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
     const [anFilm, setAnFilm] = useState(false)
     const [anOther, setAnOther] = useState(false)
 
+    const [anAnswerDate, setAnAnswerDate] = useState('');
+
     const getUserInfo = async() =>{
         try{
             const response = await axios.get(`/consultative/assignedAnalyze/detail/${index}`)
@@ -118,7 +120,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
               />
             </div>
             <div className={assignmentanalyzedetail.title_box}>
-              답변 입력
+              답변 {index + 1}
             </div>
             <div className={assignmentanalyzedetail.input_box}>
               <input
@@ -138,6 +140,32 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
         newAnswerContents[index] = event.target.value;
         setAnAnswerContents(newAnswerContents);
     };
+
+    const saveAnalysisResponse = async () => {
+
+        const today = new Date()
+        try {
+            const response = await axios.put(`/consultative/assignedAnalyze/answer/${index}`, {
+                anAnswerContent: anAnswerContents,
+                anAnswerDate: today
+            });
+            alert('분석의뢰 답변이 저장되었습니다.')
+            navigate('/')
+            console.log(response.data); // 성공 시 서버로부터의 응답 확인
+            // TODO: 성공적으로 저장되었다는 메시지를 사용자에게 표시할 수 있음
+        } catch (error) {
+            console.error('Error saving analysis response:', error);
+            // TODO: 에러 발생 시 사용자에게 알림을 제공할 수 있음
+        }
+    };
+    
+    const btn_analyze_request = async() => {
+        if (isFormValid()) {
+            await saveAnalysisResponse();
+        } else {
+            alert('답변을 모두 입력해주세요.');
+        }
+    };
     
     const isFormValid = () => {
         // 여러 입력 필드와 텍스트 영역의 유효성을 확인
@@ -148,33 +176,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
         return isadAnswerContentsInfoValid;
     };
 
-    const btn_analyze_request = async() => {
-         // 유효성 검사
-        if (!isFormValid()) {
-            alert('입력값을 확인해주세요.');
-            return;
-        }
     
-        const answerList = anAnswerContents.map((answer, index) => {
-            return {
-              question: anQuestionContents[index],
-              answer: answer,
-            };
-        });
-
-        const analyzeRequest = {
-            "diagRound" : 1,
-            "answerList" : answerList
-        };
-
-        try{
-            const response = axios.post('/analyze/request', analyzeRequest)
-            alert('분석의뢰 답변이 저장되었습니다.')
-            navigate('/')
-        } catch(err){
-            console.log(err)
-        }
-    }
     const btn_analyze_cancle = async() => {
         navigate('/')
     }
