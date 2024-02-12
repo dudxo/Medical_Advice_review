@@ -71,7 +71,6 @@ export default function AdAnalyzeListPage() {
     setCurrentPage(newPage);
   };
 
-<<<<<<< HEAD
   const handleUpdateField = async () => {
     try {
       const updateAnalyzeList = allAnalyzeList.map((analyze, i) => {
@@ -94,8 +93,7 @@ export default function AdAnalyzeListPage() {
       console.error(`분석 업데이트 중 에러 발생:`, error);
     }
   };
-=======
->>>>>>> fix-usermanagement-m
+
 
   return (
     <div className={ad.ad_contents}>
