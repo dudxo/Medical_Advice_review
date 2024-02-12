@@ -8,17 +8,17 @@ import com.example.medic.analyze.domain.AnalyzeAssignment;
 import com.example.medic.analyze.domain.AnalyzeRequest;
 import com.example.medic.analyze.domain.AnalyzeRequestFile;
 import com.example.medic.analyze.domain.AnalyzeRequestList;
-import com.example.medic.analyze.dto.AnalyzeRequestDto;
-import com.example.medic.analyze.dto.AnalyzeResponseDto;
-import com.example.medic.analyze.dto.AnalyzeSituationDto;
+import com.example.medic.analyze.dto.*;
 import com.example.medic.analyze.repository.AnalyzeAssignmentRepository;
 import com.example.medic.analyze.repository.AnalyzeRequestFileRepository;
 import com.example.medic.analyze.repository.AnalyzeRequestListRepository;
 import com.example.medic.analyze.repository.AnalyzeRequestRepository;
 import com.example.medic.analyze.service.AnalyzeServiceImpl;
 import com.example.medic.client.domain.Client;
+import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.consultative.domain.Consultative;
 import com.example.medic.consultative.dto.ConsultativeDto;
+import com.example.medic.consultative.dto.ConsultativeInfoDto;
 import com.example.medic.consultative.repository.ConsultativeRepository;
 import com.example.medic.files.handler.FileHandler;
 import com.example.medic.translation.domain.TranslationAnswerFile;
@@ -34,22 +34,26 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.PersistenceException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignmentService{
 
     private final Logger logger = LoggerFactory.getLogger(ConsultativeAssignmentServiceImpl.class);
+    private final ConsultativeService consultativeService;
     private final ConsultativeRepository consultativeRepository;
     private final AdviceAssignmentRepository adviceAssignmentRepository;
     private final AdviceRequestListRepository adviceRequestListRepository;
@@ -412,4 +416,66 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
             throw new NoSuchElementException();
         }
     }
+
+    @Transactional
+    public boolean saveAnalyzeResponse(AnalyzeResponseDto responseDto, Long anId) {
+        try {
+            AnalyzeRequestList analyzeRequestList = analyzeRequestListRepository.findById(anId)
+                    .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 분석의뢰 ID입니다."));
+
+            LocalDate anAnswerDate = responseDto.getAnAnswerDate();
+
+            AnalyzeQuestionDto analyzeQuestionDtoList = splitResponseToQuestionDto(responseDto);
+
+            saveAnalyzeQuestion(analyzeRequestList, analyzeQuestionDtoList, anAnswerDate);
+
+            logger.info("분석 의뢰 답변 저장이 완료되었습니다.");
+            return true;
+        } catch (Exception e) {
+            logger.error("분석 의뢰 답변 저장 중 오류 발생: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    public AnalyzeQuestionDto splitResponseToQuestionDto(AnalyzeResponseDto analyzeResponseDto) {
+        return AnalyzeQuestionDto.builder()
+                .anAnswerContent(analyzeResponseDto.getAnAnswerContent())
+                .build();
+    }
+
+
+
+
+    @Transactional
+    public void saveAnalyzeQuestion(AnalyzeRequestList savedAnalyzeRequestList, AnalyzeQuestionDto analyzeQuestionDto,
+                                    LocalDate anAnswerDate) throws PersistenceException {
+        try {
+            List<AnalyzeRequest> analyzeRequests = savedAnalyzeRequestList.getAnalyzeRequests();
+            List<String> answerContents = analyzeQuestionDto.getAnAnswerContent();
+
+            // 기존에 저장된 답변 업데이트
+            for (int i = 0; i < analyzeRequests.size(); i++) {
+                AnalyzeRequest analyzeRequest = analyzeRequests.get(i);
+                String answerContent = null; // 기본값으로 null로 설정
+
+                // 새로운 답변이 존재하는 경우에만 가져옴
+                if (answerContents != null && i < answerContents.size()) {
+                    answerContent = answerContents.get(i);
+                }
+
+                // 답변 업데이트
+                analyzeRequest.updateAnAnswerContent(answerContent);
+
+                // 답변일 업데이트
+                analyzeRequest.updateAnAnswerDate(anAnswerDate);
+
+                analyzeRequestRepository.save(analyzeRequest);
+            }
+        } catch (PersistenceException e) {
+            logger.info("분석 의뢰 답변지 저장 실패");
+            throw new PersistenceException();
+        }
+    }
+
+
 }
