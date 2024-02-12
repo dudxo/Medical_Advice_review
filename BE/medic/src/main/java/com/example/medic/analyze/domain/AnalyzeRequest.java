@@ -41,9 +41,16 @@ public class AnalyzeRequest {
         this.analyzeRequestList = analyzeRequestList;
     }
 
+    public void updateAnAnswerContent(String anAnswerContent) {
+        this.anAnswerContent = anAnswerContent;
+    }
+
 
     public void updateAdAnswerDate(LocalDate anAnswerDate) {
         this.anAnswerDate = anAnswerDate;
     }
 
+    public void updateAnAnswerDate(LocalDate anAnswerDate) {
+        this.anAnswerDate = anAnswerDate;
+    }
 }
