@@ -1,13 +1,16 @@
 package com.example.medic.qna.controller;
 
 import com.example.medic.manager.controller.AdListAllController;
+import com.example.medic.medicalKnowledge.repository.IndustrialAccidentInfoRepository;
 import com.example.medic.qna.domain.Faq;
 import com.example.medic.qna.dto.AnnouncementDto;
 import com.example.medic.qna.dto.FaqSituationDto;
+import com.example.medic.qna.repository.FaqRepository;
 import com.example.medic.qna.service.FaqSituationService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -67,8 +70,10 @@ public class FaqController {
     faq 수정
      */
     @PutMapping("/faq/modify/{faqId}")
-    public ResponseEntity<Integer> updateFaqp(@PathVariable Long faqId, FaqSituationDto faqSituationDto){
+    public ResponseEntity<Integer> updateFaq(@PathVariable Long faqId, @RequestBody  FaqSituationDto faqSituationDto){
         try{
+            logger.info("faqid:{}",faqId);
+            logger.info("faqid2:{}",faqSituationDto);
             if(faqSituationService.updateFaq(faqId, faqSituationDto)){
                 return ResponseEntity.ok(1);
             }
@@ -93,4 +98,28 @@ public class FaqController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0);
         }
     }
+
+    /**
+     * 이전글
+     */
+
+    @GetMapping("/faq/detail/prev/{faqId}")
+    public ResponseEntity<FaqSituationDto> findPrevFaqInfo(@PathVariable Long faqId)  {
+                logger.info("prid:{}",faqId);
+            FaqSituationDto prevFaqInfoDto = faqSituationService.findPrevFaqInfo(faqId);
+            return ResponseEntity.ok(prevFaqInfoDto);
+    }
+
+    /**
+     * 다음글
+     */
+
+    @GetMapping("/faq/detail/next/{faqId}")
+    public ResponseEntity<FaqSituationDto> findNextFaqInfo(@PathVariable Long faqId)  {
+        logger.info("neid:{}",faqId);
+        FaqSituationDto prevFaqInfoDto = faqSituationService.findNextFaqInfo(faqId);
+        return ResponseEntity.ok(prevFaqInfoDto);
+
+    }
 }
+

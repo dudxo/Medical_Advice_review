@@ -33,23 +33,6 @@ export default function AdDetailTranslate(){
 
     const navigate = useNavigate()
 
-    // const getUserInfo = async() =>{
-    //     try{
-    //         const response = await axios.get('/userInfo')
-    //         console.log(response.data)
-    //         setUname(response.data.name)
-    //         setUtel(response.data.userTel)
-    //         setUphone(response.data.userPhone)
-    //         setUaddress(response.data.userAddress)
-    //     } catch(err){
-    //         console.log(err)
-    //     }  
-    // }
-
-    // useEffect(()=>{
-    //     getUserInfo()
-    // }, [])
-
     useEffect(()=>{
         const fetchData = async() => {
             try{
@@ -82,7 +65,7 @@ export default function AdDetailTranslate(){
         fetchData();
     }, [])
     const btn_translate_list = async() => {
-        navigate('/medic/adminstrator/adtranslatelistpage')
+        navigate('/medic/adminstrator/trlist')
     }
 
     return(

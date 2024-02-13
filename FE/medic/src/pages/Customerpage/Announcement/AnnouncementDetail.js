@@ -9,22 +9,18 @@ export default function AnnouncementDetail()  {
   const location = useLocation();
   const cookie = new Cookies();
   const [isAdmin, setIsAdmin] = useState(false);
-  const [announceDetail,setAnnounceDetail ] = useState(location.state.announceDetail);
-  const previousAnnounce = location.state.previousAnnounce;
-  const nextAnnounce = location.state.nextAnnounce;
+  const [announceDetail,setAnnounceDetail ] = useState(location.state.announceDetail);;
   const [announceDetail1,setAnnounceDetail1 ] = useState([]);
-  const [amName,setAmName] = useState(announceDetail1.amName);
-  const [amRegDate,setAmRegDate] = useState(announceDetail1.amReg);
-  console.log('1',previousAnnounce)
   const amId = location.state.amid;
+  console.log(announceDetail)
   console.log('amId',amId)
   const [prevTitle, setPrevTitle] = useState('');
   const [nextTitle, setNextTitle] = useState('');
-  const [prevDate, setPrevDate] = useState('');
-  const [nextDate, setNextDate] = useState('');
+  const [prevAnId, setPrevAnId] = useState('');
+  const [nextAnId, setNextAnId] = useState('');
 
 
-  const getAnnounceDetail = async()=>{
+  const getAnnounceDetail = async(amId)=>{
     try {
         const response = await axios.get(`/announcement/detail/${amId}`);
         setAnnounceDetail1(response.data);
@@ -37,20 +33,73 @@ export default function AnnouncementDetail()  {
 const editAnnouncement = () => {
   navigate(`/medic/customer/announcement/edit/${amId}`,
   {state : {
-    announceDetail : announceDetail1,
+    announceDetail : announceDetail,
     amId : amId
   }});
 }
 
 useEffect(() => {
-  getAnnounceDetail()
-  if(cookie.get('uRole')== 'admin'){
+  getAnnounceDetail(amId)
+  if(cookie.get('uRole')== 'manager'){
     setIsAdmin(true)
   }else{
     setIsAdmin(false)
   }
 
 }, []);
+
+useEffect(() => {
+  const fetchData = async () => {
+    const prev = await axios.get(`/announcement/detail/prev/${amId}`)
+    const prevData = prev.data;
+    console.log('prevData', prev)
+    setPrevTitle(prevData.amName);
+    setPrevAnId(prevData.amId);
+ 
+
+    const next = await axios.get(`/announcement/detail/next/${amId}`)
+    const nextData = next.data;
+    console.log('nextData', next)
+    setNextAnId(nextData.amId);
+    setNextTitle(nextData.amName);
+  
+  };
+
+  fetchData();
+}, [amId]);
+
+const nextDetailPage = async (nextAmId) => {
+  try {
+    const response = await axios.get(`/announcement/detail/${nextAnId}`);
+    navigate('/medic/customer/announcement/announcementdetails', {
+      state: {
+        amid: nextAnId,
+        announceDetail : response.data,
+      },
+    });
+    window.location.reload()
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const prevDetailPage = async (prevAmId) => {
+  try {
+    console.log('prevAnId', prevAnId)
+    const response = await axios.get(`/announcement/detail/${prevAnId}`);
+    navigate('/medic/customer/announcement/announcementdetails', {
+      state: {
+        amid: prevAnId,
+        announceDetail : response.data,
+      },
+    });
+    window.location.reload()
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
 
   const formatDateString = (dateString) => {
     if (dateString) {
@@ -84,7 +133,7 @@ useEffect(() => {
                     제목
                 </div>
                 <div className={announcedetail.detail_titleinputbox}>
-                    {announceDetail.amName}
+                    {announceDetail1.amName}
                 </div>
             </div>
             <div className={announcedetail.detail_rowbox}>
@@ -93,7 +142,7 @@ useEffect(() => {
                         작성자
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
-                        {announceDetail.amId}
+                        {announceDetail1.mid}
                     </div>
                 </div> 
                 <div className={announcedetail.detail_writerinfo}>
@@ -101,7 +150,7 @@ useEffect(() => {
                         작성일
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
-                        {formatDateString(announceDetail.amRegDate)}
+                        {formatDateString(announceDetail1.amRegDate)}
                     </div>
                 </div>   
                 <div className={announcedetail.detail_writerinfo}>
@@ -109,7 +158,7 @@ useEffect(() => {
                         수정일
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
-                        {formatDateString(announceDetail.amMdDate)}
+                        {formatDateString(announceDetail1.amMdDate)}
                     </div>
                 </div>  
             </div>
@@ -118,7 +167,7 @@ useEffect(() => {
                     <h3 style={{paddingLeft: '20px'}}>내용</h3>
                 </div>
                 <div className={announcedetail.detail_content} >
-                    {announceDetail.amContent}
+                    {announceDetail1.amContent}
                 </div>  
             </div>
         </div>
@@ -129,13 +178,13 @@ useEffect(() => {
     이전글
   </div>
   <div className={announcedetail.detail_titleinputbox}>
-    {previousAnnounce ? previousAnnounce.amName || '' : ''}
-  </div>
-  <div className={announcedetail.detail_title} style={{ width: '213px' }}>
-    등록일
-  </div>
-  <div className={announcedetail.detail_titleinputbox}>
-    {previousAnnounce ? previousAnnounce.amRegDate || '' : ''}
+  {prevTitle ? (
+    <span onClick={() => prevDetailPage(prevAnId)}>
+      {prevTitle}
+    </span>
+  ) : (
+    '이전 글이 없습니다.'
+  )}
   </div>
 </div>
 <div className={announcedetail.detail_rowbox}>
@@ -143,13 +192,13 @@ useEffect(() => {
     다음글
   </div>
   <div className={announcedetail.detail_titleinputbox}>
-    {nextAnnounce ? nextAnnounce.amName || '' : ''}
-  </div>
-  <div className={announcedetail.detail_title} style={{ width: '210px' }}>
-    등록일
-  </div>
-  <div className={announcedetail.detail_titleinputbox}>
-    {nextAnnounce ? nextAnnounce.amRegDate || '' : ''}
+  {nextTitle ? (
+    <span onClick={() => nextDetailPage(nextAnId)}>
+      {nextTitle}
+    </span>
+  ) : (
+    '다음 글이 없습니다.'
+  )}
   </div>
 </div>
 
@@ -174,43 +223,3 @@ useEffect(() => {
   );
 };
 
-      {/* <form>
-        <table className={announcedetail.announcedetail_table}>
-          <tr>
-            <th className={announcedetail.announcedetail_th}>제목</th>
-            <td className={announcedetail.announcedetail_td}>{announcementdetail.amName}</td>
-            <th className={announcedetail.announcedetail_th}>등록일</th>
-            <td className={announcedetail.announcedetail_td}>{formatDateString(announcementdetail.amRegDate)}</td>
-          </tr>
-          <th className={announcedetail.announcedetail_th}>내용</th>
-          <td colSpan="3" className={announcedetail.announcedetail_td}>
-            <div className={announcedetail.content}>{announcementdetail.amContent}</div>
-          </td>
-          <tr></tr>
-        </table>
-        <br />
-        <div className={announcedetail.secondTable}>
-          <table className={announcedetail.announcedetail_table}>
-            <tr>
-              <th className={announcedetail.announcedetail_th}>이전글</th>
-              <td className={announcedetail.announcedetail_td}>{prevTitle}</td>
-              <td className={announcedetail.announcedetail_td}>건강관리공단</td>
-              <td className={announcedetail.announcedetail_td}>{formatDateString(prevDate)}</td>
-            </tr>
-            <tr>
-              <th className={announcedetail.announcedetail_th}>다음글</th>
-              <td className={announcedetail.announcedetail_td}>{nextTitle}</td>
-              <td className={announcedetail.announcedetail_td}>건강관리공단</td>
-              <td className={announcedetail.announcedetail_td}>{formatDateString(nextDate)}</td>
-            </tr>
-          </table>
-        </div>
-        <div className={announcedetail.complete}>
-          <button type="button" onClick={medicannounce} className={announcedetail.btt_write}>
-            목록
-          </button>
-        </div>
-      </form>
-     </div>
-  );
-}; */};

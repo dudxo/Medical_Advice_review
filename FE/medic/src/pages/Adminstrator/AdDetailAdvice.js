@@ -160,13 +160,14 @@
             return questionCount.map((question, index) => (
               <div className={advicerequest.row_box} style={{ height: 'auto' }} key={index}>
                 <div className={advicerequest.title_box}>
-                  질문 {index + 1} 입력
+                  질문 {index + 1} 
                 </div>
                 <div className={advicerequest.input_box}>
                   <input
                     type="text"
                     value={question.adQuestionContent || ''}
                     maxLength={300}
+                    readOnly={true}
                   />
                 </div>
               </div>
@@ -177,13 +178,14 @@
             return questionCount.map((question, index) => (
               <div className={advicerequest.row_box} style={{ height: 'auto' }} key={index}>
                 <div className={advicerequest.title_box}>
-                  질문 {index + 1} 입력
+                  답변 {index + 1}
                 </div>
                 <div className={advicerequest.input_box}>
                   <input
                     type="text"
                     value={question.adAnswerContent || ''}
                     maxLength={300}
+                    readOnly={true}
                   />
                 </div>
               </div>
@@ -193,7 +195,7 @@
 
     
         const btn_advice_list = async() => {
-            navigate('/medic/adminstrator/adadvicelistpage')
+            navigate('/medic/adminstrator/adlist')
         }
 
 

@@ -77,7 +77,7 @@ export default function AdSetDoc() {
 
   const handleUpdateField = async(info) => {
     try{
-      const response = await axios.put(`/advice/update/${index}`,info);
+      const response = await axios.put(`/admin/advice/updateStatus/${index}`,info);
       console.log(response)
     }catch(error){
       console.error('에러발생')

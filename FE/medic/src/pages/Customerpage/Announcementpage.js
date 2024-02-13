@@ -27,7 +27,7 @@ export default function Announcementpage() {
         setAnnouncements(data);
         console.log(resp);
         console.log(cookie.get('uRole'))
-        if(cookie.get('uRole')== 'admin'){
+        if(cookie.get('uRole')== 'manager'){
           setIsAdmin(true)
         }else{
           setIsAdmin(false)
@@ -123,7 +123,7 @@ export default function Announcementpage() {
             {visibleQuiryList?.map((quiry, index) => (
                 <div key={index} className={announce.announce_quirylist_content}>
                 <div className={`${announce.announce_quirylist_no} ${announce.announce_list_content}`} onClick={()=>goToDetailPage(quiry.amId)}>
-                    {quiry.amId}
+                    {announcements.length - startIndex - index}
                 </div>
                 <>
                 

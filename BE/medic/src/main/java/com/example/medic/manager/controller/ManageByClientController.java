@@ -36,7 +36,9 @@ public class ManageByClientController {
      * 관리자 일반 회원 상세 조회
      */
     @GetMapping("/admin/manageClient/detail/{uId}")
+
     public ResponseEntity<ManagedClientInfoDto> findDetailByClient(@PathVariable String uId) {
+
         if (uId == null || uId.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }

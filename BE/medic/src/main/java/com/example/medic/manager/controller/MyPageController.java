@@ -13,6 +13,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MyPageController {
     private final MyPageService myPageService;
 
+    @GetMapping("/admin/userCount")
+    public ResponseEntity<Long> userRequestCount(){
+        try{
+            long userCount = myPageService.getUserCount();
+            return ResponseEntity.ok(userCount);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/admin/consultativeCount")
+    public ResponseEntity<Long> consultativeRequestCount(){
+        try{
+            long consultativeCount = myPageService.getConsultativeCount();
+            return ResponseEntity.ok(consultativeCount);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
     @GetMapping("/admin/qnaCount")
     public ResponseEntity<Long> qnaRequestCount(){
         try{
