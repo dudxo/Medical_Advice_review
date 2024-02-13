@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,8 +18,15 @@ public class AdviceQuestionRequestDto {
 
     private List<String> adQuestionContent;
 
-    private String adAnswerContent;
+    private List<String> adAnswerContent;
 
     private LocalDate adAnswerDate;
+
+    public List<String> getAdAnswerContent() {
+        if (adAnswerContent == null) {
+            return new ArrayList<>();
+        }
+        return adAnswerContent;
+    }
 
 }
