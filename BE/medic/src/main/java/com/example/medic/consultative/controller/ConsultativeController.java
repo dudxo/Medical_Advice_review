@@ -254,7 +254,7 @@ public class ConsultativeController {
     }
 
     /**
-     * 배정받은 번역의뢰 답변지 저장
+     * 배정받은 분석의뢰 답변지 저장
      */
     @PutMapping("/consultative/assignedAnalyze/answer/{anId}")
     public ResponseEntity<String> saveAnalyzeResponse(@RequestBody AnalyzeResponseDto responseDto,
@@ -264,6 +264,20 @@ public class ConsultativeController {
             return ResponseEntity.ok("분석 의뢰 답변 저장이 완료되었습니다.");
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("분석 의뢰 답변 저장 중 오류 발생");
+        }
+    }
+
+    /**
+     * 배정받은 자문의뢰 답변지 저장
+     */
+    @PutMapping("/consultative/assignedAdvice/answer/{adId}")
+    public ResponseEntity<String> saveAdviceResponse(@RequestBody AllAdviceRequestDto responseDto,
+                                                      @PathVariable Long adId) {
+        boolean saved = consultativeAssignmentService.saveAdviceResponse(responseDto, adId);
+        if (saved) {
+            return ResponseEntity.ok("자문 의뢰 답변 저장이 완료되었습니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("자문 의뢰 답변 저장 중 오류 발생");
         }
     }
 }
