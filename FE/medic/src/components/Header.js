@@ -98,9 +98,9 @@ export default function Header({}) {
         }
     }
     
-    const btn_program_faultInfo_view = (e) => {
+    const btn_program_medicalNegligence_view = (e) => {
         if (isSession) {
-            navigate('/medic/medicalknowledge/faultInfo');
+            navigate('/medic/medicalknowledge/medicalNegligence');
         } else {
             alert('로그인 후 이용해주세요!');
             navigate('/mediclogin');
@@ -271,7 +271,7 @@ export default function Header({}) {
                 <li>
                     <button>의료법률지식</button>
                     <ul className={`${navigator.submenu}`}>
-                        <li><span onClick={btn_program_faultInfo_view}>의료과실 정보</span></li>
+                        <li><span onClick={btn_program_medicalNegligence_view}>의료과실 정보</span></li>
                         <li><span onClick={btn_program_industrialAccidentInfo_view}>산업재해 정보</span></li>
                         <li><span onClick={btn_program_trafficAccidentInfo_view}>교통사고 정보</span></li>
                         <li><span onClick={btn_program_woundInfo_view}>상해 정보</span></li>
