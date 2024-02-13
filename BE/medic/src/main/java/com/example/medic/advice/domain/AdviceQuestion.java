@@ -50,4 +50,8 @@ public class AdviceQuestion {
         this.adAnswerDate = adAnswerDate;
     }
 
+    public void updateAdAnswerContent(String adAnswerContent) {
+        this.adAnswerContent = adAnswerContent;
+    }
+
 }
