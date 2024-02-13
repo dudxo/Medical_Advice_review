@@ -19,8 +19,8 @@ import TranslateDetailpage from './pages/Translatepage/TranslateDetailpage'
 import TranslateModifypage from './pages/Translatepage/TranslateModifypage'
 import CustomerInquirypage from './pages/Customerpage/CustomerInquirypage';
 import WriteCustomerInquiry from './pages/Customerpage/Customerinquiry/WriteCustomerInquiry'
-import FaultInfopage from './pages/MedicalLegalKnowledge/FaultInfopage'
-import FaultInfoWritepage from "./pages/MedicalLegalKnowledge/FaultInfoWritepage";
+import MedicalNegligencepage from './pages/MedicalLegalKnowledge/MedicalNegligencepage'
+import MedicalNegligenceWritepage from "./pages/MedicalLegalKnowledge/MedicalNegligenceWritepage";
 import IndustrialAccidentInfopage from './pages/MedicalLegalKnowledge/IndustrialAccidentInfopage'
 import IndustrialAccidentWritepage from './pages/MedicalLegalKnowledge/IndustrialAccidentWritepage'
 import TrafficAccidentInfopage from'./pages/MedicalLegalKnowledge/TrafficAccidentInfopage'
@@ -45,7 +45,7 @@ import ConsultativeAdviceAssignmentDetail from './pages/Consultativepage/Consult
 import ConsultativeAnalyzeAssignmenDetail from "./pages/Consultativepage/ConsultativeAssignmentAnalyzeDetail";
 import ConsultativeTranslateAssignmentDetail from "./pages/Consultativepage/ConsultativeAssignmentTranslateDetail";
 import IndustrialAccidentDetail from "./pages/MedicalLegalKnowledge/IndustrialAccidentDetailInfopage";
-import FaultInfoDetail from "./pages/MedicalLegalKnowledge/FaultInfoDetailpage";
+import MedicalNegligenceDetailpage from "./pages/MedicalLegalKnowledge/MedicalNegligenceDetailpage";
 import TrafficAccidentDetail from "./pages/MedicalLegalKnowledge/TrafficAccidentDetailInfopage";
 import WoundDetail from "./pages/MedicalLegalKnowledge/WoundDetailInfopage";
 import ModifyMyPwpage from "./pages/Mypage/ModifyMyPwpage";
@@ -100,8 +100,8 @@ export default function App(){
                     <Route path="/medic/customer/customerinquiry/customerinquirydetails" element={<CustomerInquiryDetail/>}/>
                     <Route path='/medic/customer/announcement' element={<Announcementpage/>}/>
                     <Route path='/medic/customer/FAQ' element={<FAQpage/>}/>
-                    <Route path='/medic/medicalknowledge/faultInfo' element={<FaultInfopage/>}/>
-                    <Route path='/medic/medicalknowledge/faultinfo/faultinfowrite' element={<FaultInfoWritepage/>}/>
+                    <Route path='/medic/medicalknowledge/medicalNegligence' element={<MedicalNegligencepage/>}/>
+                    <Route path='/medic/medicalknowledge/medicalNegligence/writemedicalNegligence' element={<MedicalNegligenceWritepage/>}/>
                     <Route path='/medic/medicalknowledge/industrialAccidentInfo' element={<IndustrialAccidentInfopage/>}/>
                     <Route path='/medic/admin/knowledge/industrialAccidentInfo/writeindustrialaccident' element={<IndustrialAccidentWritepage/>}/>
                     <Route path='/medic/medicalknowledge/trafficAccidentInfo' element={<TrafficAccidentInfopage/>}/>
@@ -123,7 +123,7 @@ export default function App(){
                     <Route path="/medic/consultative/assignmentAnalyzeDetail/:index" element={<ConsultativeAnalyzeAssignmenDetail/>}/>
                     <Route path="/medic/consultative/assignmentTranslateDetail/:index" element={<ConsultativeTranslateAssignmentDetail/>}/>
                     <Route path="/medic/knowledge/industrialaccidentdetails" element={<IndustrialAccidentDetail/>}/>
-                    <Route path="/medic/medicalknowledge/faultinfo/faultinfodetails" element={<FaultInfoDetail/>}/>
+                    <Route path="/medic/medicalknowledge/medicalNegligence/medicalNegligencedetails" element={<MedicalNegligenceDetailpage/>}/>
                     <Route path="/medic/knowledge/trafficaccidentdetails" element={<TrafficAccidentDetail/>}/>
                     <Route path="/medic/knowledge/wounddetails" element={<WoundDetail/>}/>
                     <Route path="/medic/mypage/modifymyinfo/modifyMyPw" element={<ModifyMyPwpage/>}/>
