@@ -1,6 +1,7 @@
 package com.example.medic.consultative.service;
 
 import com.example.medic.advice.domain.*;
+import com.example.medic.advice.dto.AdviceQuestionRequestDto;
 import com.example.medic.advice.dto.AdviceSituationDto;
 import com.example.medic.advice.dto.AllAdviceRequestDto;
 import com.example.medic.advice.repository.*;
@@ -417,6 +418,9 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
         }
     }
 
+    /**
+     * 배정받은 분석의뢰 답변 저장
+     */
     @Transactional
     public boolean saveAnalyzeResponse(AnalyzeResponseDto responseDto, Long anId) {
         try {
@@ -473,6 +477,69 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
             }
         } catch (PersistenceException e) {
             logger.info("분석 의뢰 답변지 저장 실패");
+            throw new PersistenceException();
+        }
+    }
+
+    /**
+     * 배정받은 자문의뢰 답변 저장
+     */
+    @Transactional
+    public boolean saveAdviceResponse(AllAdviceRequestDto responseDto, Long adId) {
+        try {
+            AdviceRequestList adviceRequestList = adviceRequestListRepository.findById(adId)
+                    .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 자문의뢰 ID입니다."));
+
+            LocalDate adAnswerDate = responseDto.getAdAnswerDate();
+
+            AdviceQuestionRequestDto adviceQuestionRequestDtoList = splitResponseToQuestionDto(responseDto);
+
+            saveAdviceQuestion(adviceRequestList, adviceQuestionRequestDtoList, adAnswerDate);
+
+            logger.info("분석 의뢰 답변 저장이 완료되었습니다.");
+            return true;
+        } catch (Exception e) {
+            logger.error("분석 의뢰 답변 저장 중 오류 발생: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    public AdviceQuestionRequestDto splitResponseToQuestionDto(AllAdviceRequestDto allAdviceRequestDto) {
+        return AdviceQuestionRequestDto.builder()
+                .adAnswerContent(allAdviceRequestDto.getAdAnswerContent())
+                .build();
+    }
+
+
+
+
+    @Transactional
+    public void saveAdviceQuestion(AdviceRequestList savedAdviceRequestList, AdviceQuestionRequestDto adviceQuestionRequestDto,
+                                    LocalDate adAnswerDate) throws PersistenceException {
+        try {
+            List<AdviceQuestion> adviceQuestions = savedAdviceRequestList.getAdviceQuestions();
+            List<String> answerContents = adviceQuestionRequestDto.getAdAnswerContent();
+
+            // 기존에 저장된 답변 업데이트
+            for (int i = 0; i < adviceQuestions.size(); i++) {
+                AdviceQuestion adviceQuestion = adviceQuestions.get(i);
+                String answerContent = null; // 기본값으로 null로 설정
+
+                // 새로운 답변이 존재하는 경우에만 가져옴
+                if (answerContents != null && i < answerContents.size()) {
+                    answerContent = answerContents.get(i);
+                }
+
+                // 답변 업데이트
+                adviceQuestion.updateAdAnswerContent(answerContent);
+
+                // 답변일 업데이트
+                adviceQuestion.updateAdAnswerDate(adAnswerDate);
+
+                adviceQuestionRepository.save(adviceQuestion);
+            }
+        } catch (PersistenceException e) {
+            logger.info("자문 의뢰 답변지 저장 실패");
             throw new PersistenceException();
         }
     }
