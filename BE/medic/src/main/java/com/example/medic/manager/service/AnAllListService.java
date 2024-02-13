@@ -164,8 +164,7 @@ public class AnAllListService {
         AnalyzeRequestList analyzeRequestList = analyzeRequestListRepository.findById(anId).get();
         Client client = analyzeRequestList.getClient();
         List<AnalyzeRequest> analyzeRequests = analyzeRequestRepository.findByAnIds(anId);
-        logger.info("anid:{}" ,anId);
-        logger.info("anaana:{}",analyzeRequests.get(0).getAnAnswerContent());
+
 
        AnDetailDto anDetailDto = AnDetailDto.builder()
                .uId(client.getUId())

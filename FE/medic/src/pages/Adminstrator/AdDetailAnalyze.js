@@ -97,18 +97,6 @@ export default function AdDetailAnalyze(){
         fetchData();
     }, [])
 
-    // const getUserInfo = async() =>{
-    //     try{
-    //         const response = await axios.get('/userInfo')
-    //         console.log(response.data)
-    //         setUname(response.data.name)
-    //         setUtel(response.data.userTel)
-    //         setUphone(response.data.userPhone)
-    //         setUaddress(response.data.userAddress)
-    //     } catch(err){
-    //         console.log(err)
-    //     }  
-    // }
     const renderQuestionInputs = () => {
         if (!anQuestion || anQuestion.length === 0) {
             return null; // 또는 다른 처리를 수행하거나 빈 배열을 반환
@@ -117,13 +105,14 @@ export default function AdDetailAnalyze(){
             
           <div className={analyzerequest.row_box} style={{ height: 'auto' }} key={index}>
             <div className={analyzerequest.title_box}>
-              질문 {index + 1} 입력
+              질문 {index + 1} 
             </div>
             <div className={analyzerequest.input_box}>
               <input
                 type="text"
                 value={question.anQuestionContent || ''}
                 maxLength={300}
+                readOnly={true}
               />
             </div>
           </div>
@@ -132,19 +121,20 @@ export default function AdDetailAnalyze(){
 
       const renderAnswerInputs = () => {
         if (!anQuestion || anQuestion.length === 0) {
-            return null; // 또는 다른 처리를 수행하거나 빈 배열을 반환
+            return null; 
           }
           
         return anQuestion.map((question, index) => (
           <div className={analyzerequest.row_box} style={{ height: 'auto' }} key={index}>
             <div className={analyzerequest.title_box}>
-              질문 {index + 1} 입력
+              답변 {index + 1} 
             </div>
             <div className={analyzerequest.input_box}>
               <input
                 type="text"
-                value={question.anQuestionContent || ''}
+                value={question.anQuestionAnswer || ''}
                 maxLength={300}
+                readOnly={true}
               />
             </div>
           </div>
@@ -156,7 +146,7 @@ export default function AdDetailAnalyze(){
  
       
       const btn_analyze_list = async() => {
-          navigate('/medic/adminstrator/adanalyzelistpage')
+          navigate('/medic/adminstrator/anlist')
       }
 
     return(
