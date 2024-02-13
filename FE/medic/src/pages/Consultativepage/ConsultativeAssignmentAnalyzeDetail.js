@@ -53,6 +53,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
             setAnEtcValue(response.data.anEtc)
             setAnQuestionTotal(response.data.anQuestionContent)
             setAnQuestionContents(response.data.anQuestionContent)
+            setAnAnswerContents(response.data.anAnswerContent)
 
             const an_PtSsNum = response.data.anPtSsNum.split('-');  // 주민번호 나누기
             setAnptssnum1(an_PtSsNum[0]);
@@ -149,13 +150,12 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
                 anAnswerContent: anAnswerContents,
                 anAnswerDate: today
             });
+            setAnAnswerDate(today);
             alert('분석의뢰 답변이 저장되었습니다.')
             navigate('/')
-            console.log(response.data); // 성공 시 서버로부터의 응답 확인
-            // TODO: 성공적으로 저장되었다는 메시지를 사용자에게 표시할 수 있음
+            console.log(response.data); 
         } catch (error) {
             console.error('Error saving analysis response:', error);
-            // TODO: 에러 발생 시 사용자에게 알림을 제공할 수 있음
         }
     };
     

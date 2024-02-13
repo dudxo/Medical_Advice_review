@@ -53,6 +53,8 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
     const [adQuestionContents, setAdQuestionContents] = useState([]);
     const [adAnswerContents, setAdAnswerContents] = useState([]);
 
+    const [adAnswerDate, setAdAnswerDate] = useState('');
+
     //자문 파일
     const [adReqForm, setAdReqForm] = useState(false)
     const [adDiagnosis, setAdDiagnosis] = useState(false)
@@ -81,6 +83,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
             setAdEtcValue(response.data.adEtc)
             setAdQuestionTotal(response.data.adQuestionContent)
             setAdQuestionContents(response.data.adQuestionContent)
+            setAdAnswerContents(response.data.adAnswerContent)
                         
             const ad_PtSsNum = response.data.adPtSsNum.split('-');  // 주민번호 나누기
             setAdptssnum1(ad_PtSsNum[0]);
@@ -191,42 +194,26 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
         setAdAnswerContents(newAnswerContents);
     };
     
-    const isFormValid = () => {
-        // 여러 입력 필드와 텍스트 영역의 유효성을 확인
-        
-        const isadAnswerContentsInfoValid = adAnswerContents.every(content => content); // 모든 질문 내용이 비어있지 않아야 함
-      
-        // 모든 조건을 만족하면 true를 반환
-        return isadAnswerContentsInfoValid;
+    const btn_advice_request = async() => {
+            await saveAdviceisResponse();
     };
     
-    const btn_advice_request = async() => {
-         // 유효성 검사
-        if (!isFormValid()) {
-            alert('입력값을 확인해주세요.');
-            return;
-        }
-    
-        const answerList = adAnswerContents.map((answer, index) => {
-            return {
-              question: adQuestionContents[index],
-              answer: answer,
-            };
-        });
 
-        const adviceRequest = {
-            "diagRound" : 1,
-            "answerList" : answerList
-        };
-
+    const saveAdviceisResponse = async () => {
+        const today = new Date()
         try{
-            const response = axios.post('/advice/request', adviceRequest)
+            const response = axios.put(`/consultative/assignedAdvice/answer/${index}`, {
+                adAnswerContent: adAnswerContents,
+                adAnswerDate: today
+            });
+            setAdAnswerDate(today);
             alert('자문의뢰 답변이 저장되었습니다.')
             navigate('/')
-        } catch(err){
-            console.log(err)
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error saving advice response:', error);
         }
-    }
+    };
     const btn_advice_cancle = async() => {
         navigate('/')
     }
