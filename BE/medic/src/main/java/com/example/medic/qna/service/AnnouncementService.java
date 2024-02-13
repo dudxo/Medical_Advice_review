@@ -54,19 +54,17 @@ public class AnnouncementService {
      */
 
     public Announcement saveAnnouncement(AnnouncementDto announcementDto) {
-//        String managerId = "qkralstj";
-//        Manager manager = managerRepository.findById(managerId).get();
-//        announcementDto.setMId(managerId);
+        String mid = announcementDto.getMId();
+        Manager manager = managerRepository.findById(mid).get();
+
 
         Announcement announcement = Announcement.builder()
 
                 .amName(announcementDto.getAmName())
                 .amRegDate(announcementDto.getAmRegDate())
                 .amContent(announcementDto.getAmContent())
-//                .manager(manager)
+                .manager(manager)
                 .build();
-
-            logger.info("announcement:{}",announcement);
         return announcementRepository.save(announcement);
     }
 
@@ -77,14 +75,13 @@ public class AnnouncementService {
      */
     public AnnouncementDto announcdDetial(Long amId){
         Announcement announcement = announcementRepository.findById(amId).get();
-        Announcement announcement1 = announcementRepository.findById(amId-1).get();
-        Announcement announcement2 = announcementRepository.findById(amId+1).get();
 
         AnnouncementDto announcementDto = AnnouncementDto.builder()
                 .amContent(announcement.getAmContent())
                 .amName(announcement.getAmName())
                 .amRegDate(announcement.getAmRegDate())
                 .amMdDate(announcement.getAmMdDate())
+                .mId(announcement.getManager().getMId())
                 .build();
         return announcementDto;
     }
@@ -131,6 +128,7 @@ public class AnnouncementService {
                     .amContent(announcement.getAmContent())
                     .amRegDate(announcement.getAmRegDate())
                     .amId(announcement.getAmId())
+                    .amMdDate(announcement.getAmMdDate())
                     .build();
             return announcementDto;
         }else return null;
@@ -148,6 +146,7 @@ public class AnnouncementService {
                     .amRegDate(announcement.getAmRegDate())
                     .amContent(announcement.getAmContent())
                     .amId(announcement.getAmId())
+                    .amMdDate(announcement.getAmMdDate())
                     .build();
             return announcementDto;
         }else return null;

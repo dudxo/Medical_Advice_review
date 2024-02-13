@@ -23,7 +23,8 @@ const WriteAnnouncement = () => {
     const AnnoucementInfo = {
       'amName' : annoucement_titile,
       'amRegDate' : today,
-      'amContent' : amContent
+      'amContent' : amContent,
+      'mId' : writer
     }
     try{
       const response = axios.post('/announcement/post', AnnoucementInfo)
@@ -61,13 +62,11 @@ const WriteAnnouncement = () => {
           <tbody>
             <tr>
               <th className={writeannoucement.write_th}>제목</th>
-              <td className={writeannoucement.write_td}><input type="text" name="subject" onChange={input_annoucement_titile} maxLength={50}/></td>
-              <th className={writeannoucement.write_th}>작성자</th>
-              <td className={writeannoucement.write_td}><input type="text" disabled={true} name="writer" value={writer} maxLength={20}/></td>
+              <td className={writeannoucement.write_td} colSpan="3"><input type="text" name="subject" onChange={input_annoucement_titile} maxLength={50}/></td>
             </tr>
             <tr>
-              <th className={writeannoucement.write_th}>비밀번호</th>
-              <td className={writeannoucement.write_td}><input type="password" name="password" maxLength={6}/></td>
+            <th className={writeannoucement.write_th}>작성자</th>
+              <td className={writeannoucement.write_td}><input type="text" disabled={true} name="writer" value={writer} maxLength={20} width={900}/></td>
               <th className={writeannoucement.write_th}>등록일</th>
               <td className={writeannoucement.write_td}><input type="text" name="date" value={timer} readOnly /></td>
             </tr>

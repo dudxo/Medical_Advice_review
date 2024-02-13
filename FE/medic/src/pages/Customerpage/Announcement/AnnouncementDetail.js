@@ -12,6 +12,7 @@ export default function AnnouncementDetail()  {
   const [announceDetail,setAnnounceDetail ] = useState(location.state.announceDetail);;
   const [announceDetail1,setAnnounceDetail1 ] = useState([]);
   const amId = location.state.amid;
+  console.log(announceDetail)
   console.log('amId',amId)
   const [prevTitle, setPrevTitle] = useState('');
   const [nextTitle, setNextTitle] = useState('');
@@ -84,6 +85,7 @@ const nextDetailPage = async (nextAmId) => {
 
 const prevDetailPage = async (prevAmId) => {
   try {
+    console.log('prevAnId', prevAnId)
     const response = await axios.get(`/announcement/detail/${prevAnId}`);
     navigate('/medic/customer/announcement/announcementdetails', {
       state: {
@@ -131,7 +133,7 @@ const prevDetailPage = async (prevAmId) => {
                     제목
                 </div>
                 <div className={announcedetail.detail_titleinputbox}>
-                    {announceDetail.amName}
+                    {announceDetail1.amName}
                 </div>
             </div>
             <div className={announcedetail.detail_rowbox}>
@@ -140,7 +142,7 @@ const prevDetailPage = async (prevAmId) => {
                         작성자
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
-                        {announceDetail.amId}
+                        {announceDetail1.mid}
                     </div>
                 </div> 
                 <div className={announcedetail.detail_writerinfo}>
@@ -148,7 +150,7 @@ const prevDetailPage = async (prevAmId) => {
                         작성일
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
-                        {formatDateString(announceDetail.amRegDate)}
+                        {formatDateString(announceDetail1.amRegDate)}
                     </div>
                 </div>   
                 <div className={announcedetail.detail_writerinfo}>
@@ -156,7 +158,7 @@ const prevDetailPage = async (prevAmId) => {
                         수정일
                     </div>
                     <div className={announcedetail.detail_writerinfocontent}>
-                        {formatDateString(announceDetail.amMdDate)}
+                        {formatDateString(announceDetail1.amMdDate)}
                     </div>
                 </div>  
             </div>
@@ -165,7 +167,7 @@ const prevDetailPage = async (prevAmId) => {
                     <h3 style={{paddingLeft: '20px'}}>내용</h3>
                 </div>
                 <div className={announcedetail.detail_content} >
-                    {announceDetail.amContent}
+                    {announceDetail1.amContent}
                 </div>  
             </div>
         </div>
