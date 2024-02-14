@@ -57,13 +57,13 @@ public class AdviceRequestList {
     @JsonIgnore
     private Client client;
 
-    @OneToMany(mappedBy = "adviceRequestList")
+    @OneToMany(mappedBy = "adviceRequestList" , cascade = CascadeType.ALL)
     private List<DiagnosisRecord> diagnosisRecords = new ArrayList<>();
 
-    @OneToMany(mappedBy = "adviceRequestList")
+    @OneToMany(mappedBy = "adviceRequestList", cascade = CascadeType.ALL)
     private List<AdviceFile> AdviceFiles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "adviceRequestList")
+    @OneToMany(mappedBy = "adviceRequestList" , cascade = CascadeType.ALL)
     private List<AdviceQuestion> AdviceQuestions = new ArrayList<>();
 
 

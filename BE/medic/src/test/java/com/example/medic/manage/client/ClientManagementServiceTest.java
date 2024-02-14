@@ -215,8 +215,10 @@ public class ClientManagementServiceTest {
                 .uId("admin44")
                 .build();
 
+        String uId = "admin44";
+
         //when
-        clientManagementService.deleteClient(managedClientInfoDto);
+        clientManagementService.deleteClient(uId);
         Optional<Client> findClient = clientRepository.findByUId("admin44");
 
         //then

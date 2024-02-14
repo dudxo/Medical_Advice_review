@@ -54,13 +54,13 @@ public class AnalyzeRequestList {
     @JsonIgnore
     private Client client;
 
-    @OneToOne(mappedBy = "analyzeRequestList")
+    @OneToOne(mappedBy = "analyzeRequestList" , cascade = CascadeType.ALL)
     private AnalyzeAssignment analyzeAssignment;
 
-    @OneToMany(mappedBy = "analyzeRequestList")
+    @OneToMany(mappedBy = "analyzeRequestList" , cascade = CascadeType.ALL)
     private List<AnalyzeRequest> analyzeRequests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "analyzeRequestList")
+    @OneToMany(mappedBy = "analyzeRequestList" , cascade = CascadeType.ALL)
     private List<AnalyzeRequestFile> analyzeRequestFiles = new ArrayList<>();
 
     @Builder(toBuilder = true)

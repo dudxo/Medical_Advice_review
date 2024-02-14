@@ -1,38 +1,37 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import user from '../../css/UserEdit.module.css';
-import { useNavigate, useParams ,useLocation} from "react-router-dom";
+import { useNavigate,useLocation} from "react-router-dom";
 
 
 export default function UserEdit() {
 
-  // const selectedUser = JSON.parse(localStorage.getItem('selectedUser')) || {};
   const location = useLocation();
   const userInfo = location.state.useredit;
   console.log('userinfo',userInfo);
 
   const [uId, setUId] = useState(userInfo.uid)
   console.log('uid',uId)
-  const [uRole, setURole] = useState(userInfo.urole);   //역할
-  const [uPw, setUPw] = useState(userInfo.uPw)      //pw
-  const [uName, setUName] = useState(userInfo.uname) //name
-  const [uEmail, setUEmail] = useState(userInfo.uEmail) //email
-  const [userTel, setUserTel] = useState(userInfo.userTel) //tel
-  const [userPhone, setUserPhone] = useState(userInfo.userPhone) //
-  const [zipcodeNum, setZipcodeNum] = useState(userInfo.zipcodeNum)
-  const [zipcode, setZipcode] = useState(userInfo.zipCode)
-  const [detailAddress, setDetailAddress] = useState(userInfo.detailAddress)
-  const [userAddress, setUserAddress] = useState(userInfo.userAddress)
+  const [uRole, setURole] = useState();   //역할
+  const [uPw, setUPw] = useState()      //pw
+  const [uName, setUName] = useState() //name
+  const [uEmail, setUEmail] = useState() //email
+  const [userTel, setUserTel] = useState() //tel
+  const [userPhone, setUserPhone] = useState() //
+  const [zipcodeNum, setZipcodeNum] = useState()
+  const [zipcode, setZipcode] = useState()
+  const [detailAddress, setDetailAddress] = useState()
+  const [userAddress, setUserAddress] = useState()
 
-  const [company, setCompany] = useState(userInfo.company) //업체명
-  const [ceo, setCeo] = useState(userInfo.ceo) //대표자명
-  const [cpTel, setCpTel] = useState(userInfo.cpTel) //회사 전화번호
-  const [cpFx, setCpFx] = useState(userInfo.cpFx) //회사 팩스번호
-  const [cpNum, setCpNum] = useState(userInfo.cpNum) //회사 사업자번호
-  const [cpZipcodeNum, setCpZipcodeNum] = useState(userInfo.cpZipcodeNum)
-  const [cpZipcode, setCpZipcode] = useState(userInfo.cpZipcode)
-  const [detailCpAddress, setDetailCpAddress] = useState(userInfo.detailCpAddress)
-  const [cpAddress, setCpAddress] = useState(userInfo.cpAddress) //회사 주소
+  const [company, setCompany] = useState() //업체명
+  const [ceo, setCeo] = useState() //대표자명
+  const [cpTel, setCpTel] = useState() //회사 전화번호
+  const [cpFx, setCpFx] = useState() //회사 팩스번호
+  const [cpNum, setCpNum] = useState() //회사 사업자번호
+  const [cpZipcodeNum, setCpZipcodeNum] = useState()
+  const [cpZipcode, setCpZipcode] = useState()
+  const [detailCpAddress, setDetailCpAddress] = useState()
+  const [cpAddress, setCpAddress] = useState() //회사 주소
 
 
   const [generalUser, setGeneralUser] = useState(false)
@@ -117,97 +116,63 @@ export default function UserEdit() {
       fetchUserData();
 
   },[]);
-    const fetchUserData = async () => {
-      try {
-        
-        const response = await axios.get(`/admin/manageClient/detail/${uId}`,userInfo);
-        console.log('response',response);
-        setUId(response.uid);
-        setUPw(response.upw);
-        setUName(response.uname);
-        setUEmail(response.uemail);
-        setUserTel(response.userTel);
-        setUserPhone(response.userPhone);
-        setCompany(response.company);
-        setCeo(response.ceo);
-        setCpTel(response.cpTel);
-        setCpFx(response.cpFx);
-        setCpNum(
-          response.cpNum);
+  const fetchUserData = async () => {
+    try {
+        const response = await axios.get(`/admin/manageClient/detail/${uId}`);
+        console.log('response', response);
 
-        // userAddress를 공백을 기준으로 나누기
-        const userAddressArray = response.userAddress.split(" ");
-        setZipcodeNum(userAddressArray[0]);
-        setZipcode(userAddressArray[1]);
-        setDetailAddress(userAddressArray.slice(2).join(" "));
+        setURole(response.data.urole)
+       selectUserRole(response.data.urole)
+        setUId(response.data.uid);
+        setUPw(response.data.upw);
+        setUName(response.data.uname);
+        setUEmail(response.data.uemail);
+        setUserTel(response.data.userTel);
+        setUserPhone(response.data.userPhone);
+        setCompany(response.data.company);
+        setCeo(response.data.ceo);
+        setCpTel(response.data.cpTel);
+        setCpFx(response.data.cpFx);
+        setCpNum(response.data.cpNum);
 
-// cpAddress를 공백을 기준으로 나누기
-        const cpAddressArray = response.cpAddress.split(" ");
-        setCpZipcodeNum(cpAddressArray[0]);
-        setCpZipcode(cpAddressArray[1]);
-        setDetailCpAddress(cpAddressArray.slice(2).join(" "));
+        // userAddress가 정의되어 있는지 확인 후 설정
+        if (response.data.userAddress) {
+            const userAddressArray = response.data.userAddress.split(" ");
+            setZipcodeNum(userAddressArray[0]);
+            setZipcode(userAddressArray[1]);
+            setDetailAddress(userAddressArray.slice(2).join(" "));
+        }
 
+        // cpAddress가 정의되어 있는지 확인 후 설정
+        if (response.data.cpAddress) {
+            const cpAddressArray = response.data.cpAddress.split(" ");
+            setCpZipcodeNum(cpAddressArray[0]);
+            setCpZipcode(cpAddressArray[1]);
+            setDetailCpAddress(cpAddressArray.slice(2).join(" "));
+        }
 
         console.log('response1', response.data);
-        
-      } catch (error) {
+    } catch (error) {
         console.error('유저 정보를 가져오는 도중 에러 발생', error);
-      }
-  } 
-   
+    }
+}
+
   
 
 
-  // 상태 변수 초기화
-  const [idchk, setIdchk] = useState(true); // 기존 회원 정보 수정 시에는 아이디 중복 검사를 하지 않습니다.
-  const [pwchk, setPwchk] = useState(true); // 기존 회원 정보 수정 시에는 비밀번호 검사를 하지 않습니다.
-  const [infoEmpty, setInfoEmpty] = useState(true); // 기존 회원 정보가 있으므로 초기에는 비어 있지 않습니다.
-
   const navigate = useNavigate();
-
-  // // 회원 정보가 변경될 때마다 실행되는 효과
-  // useEffect(() => {
-  //   // 모든 필드가 채워져 있으면 정보 비어 있음 상태를 true로 설정
-  //   if (
-  //     userInfo.urole &&
-  //     userInfo.uid &&
-  //     userInfo.uPw &&
-  //     userInfo.uname &&
-  //     userInfo.uemail &&
-  //     userInfo.userTel &&
-  //     userInfo.userPhone &&
-  //     userInfo.userAddress &&
-  //     userInfo.company &&
-  //     userInfo.ceo &&
-  //     userInfo.cpTel &&
-  //     userInfo.cpFx &&
-  //     userInfo.cpNum &&
-  //     userInfo.cpAddress &&
-  //     idchk &&
-  //     pwchk
-  //   ) {
-  //     setInfoEmpty(true);
-  //   } else {
-  //     setInfoEmpty(false);
-  //   }
-  // }, [userInfo, idchk, pwchk]);
-
-  // 회원 구분 라디오 선택 시 실행되는 함수
-  // const radio_select_userRole = (e) => {
-  //   setUserInfo({ ...userInfo, uRole: e.target.value });
-  // };
 
   // 아이디 중복 확인 버튼 클릭 시 실행되는 함수
   const btn_progrm_idConfirm = async () => {
-    if (userInfo.uId === '') {
+    if (uId === '') {
       alert('아이디를 입력해주세요.');
       return;
     }
     try {
-      const response = await axios.get(`/signUp/${userInfo.uid}`);
+      const response = await axios.get(`/signUp/${uId}`);
       console.log(response);
-      setIdchk(response.data === 1);
-      if (response.data === 1) {
+      // setIdchk(response.data === 1);
+      if (response.data === 1) {  
         alert('사용가능한 아이디입니다.');
       } else {
         alert('이미 사용중인 아이디 입니다.');
@@ -218,20 +183,20 @@ export default function UserEdit() {
   };
 
   // 아이디 입력 시 실행되는 함수
-  // const input_id = (e) => {
-  //   setUserInfo({ ...userInfo, uId: e.target.value });
-  // };
+  const input_id = (e) => {
+    setUId(e.target.value);
+  };
 
   // 비밀번호 입력 시 실행되는 함수
-  // const input_pw = (e) => {
-  //   setUserInfo({ ...userInfo, uPw: e.target.value });
-  // };
+  const input_pw = (e) => {
+   setUPw(e.target.value);
+  };
 
   // 비밀번호 확인 입력 시 실행되는 함수
   const input_pwchk = (e) => {
     const re_pw = e.target.value;
-    setPwchk(userInfo.uPw === re_pw);
-    if (userInfo.uPw === re_pw) {
+    // setPwchk(uPw === re_pw);
+    if (uPw === re_pw) {
       alert('입력하신 비밀번호와 일치합니다.');
     } else {
       alert('입력하신 비밀번호와 일치하지 않습니다.');
@@ -242,18 +207,6 @@ export default function UserEdit() {
     setURole(e.target.value)
 }
 
-  useEffect(()=>{
-    if(uRole && uPw && uEmail && userTel && userPhone && userAddress && company && ceo && cpTel && cpFx && cpNum && cpAddress){
-        setInfoEmpty(true);
-    } else{
-        setInfoEmpty(false)
-    }
-}, [uRole,  uPw,  uEmail,  userTel,  userPhone,  userAddress,  company,  ceo,  cpTel,  cpFx,  cpNum,  cpAddress])
-
-
-const changeMyPw = e => {
-    navigate('/medic/mypage/modifymyinfo/modifyMyPw', {state:{upw : uPw}})
-}
 const input_email = e => {
     setUEmail(e.target.value)
 }
@@ -303,38 +256,40 @@ const input_cp_details_zipcode = e => {
 const input_name = e => {
   setUName(e.target.value)
 }
-
-const user_modify = async(userInfo) => {
-  console.log(2)
-  const response = await axios.put('/admin/manageClient/modify', userInfo)
-  console.log(response)
-  if(response.data === '정보수정 완료!'){
-      alert('정보수정이 완료되었습니다.')
-      navigate('/medic/mypage')
+const btn_progrm_modify = async (e) => {
+  e.preventDefault();
+  if (window.confirm("수정하시겠습니까?")) {
+    const userInfo = {
+      'uId': uId,
+      'uPw': uPw,
+      'uRole': uRole,
+      'uEmail': uEmail,
+      'uName': uName,
+      'userTel': userTel,
+      'userPhone': userPhone,
+      // 사용자가 주소를 수정하지 않은 경우 이전 주소 값을 전송합니다.
+      'userAddress': zipcodeNum && zipcode && detailAddress ? `${zipcodeNum} ${zipcode} ${detailAddress}` : userInfo.userAddress,
+      'company': company,
+      'ceo': ceo,
+      'cpTel': cpTel,
+      'cpFx': cpFx,
+      'cpNum': cpNum,
+      // 사용자가 회사 주소를 수정하지 않은 경우 이전 주소 값을 전송합니다.
+      'cpAddress': cpZipcodeNum && cpZipcode && detailCpAddress ? `${cpZipcodeNum} ${cpZipcode} ${detailCpAddress}` : userInfo.cpAddress
+    };
+    try {
+      const response = await axios.put('/admin/manageClient/modify', userInfo);
+      if (response.data === '사용자 정보 업데이트 완료') {
+        alert('정보수정이 완료되었습니다.');
+        navigate('/medic/adminstrator/usermanagement');
+      }
+    } catch (error) {
+      console.error("Error during user modification:", error);
+      alert('회원 정보 수정 중 오류가 발생했습니다.');
+    }
   }
-}
+};
 
-const btn_progrm_modify = e => {
-  if(window.confirm("수정하시겠습니까?")){
-      e.preventDefault()
-      const userInfo = {
-        'uId' : uId,
-          'uRole' : uRole,
-          'uEmail' : uEmail,
-          'userTel' : userTel,
-          'userPhone' : userPhone,
-          'userAddress' : userAddress,
-          'company' : company,
-          'ceo' : ceo,
-          'cpTel' : cpTel,
-          'cpFx' : cpFx,
-          'cpNum' : cpNum,
-          'cpAddress' : cpAddress
-      } 
-      user_modify(userInfo)
-  }
-  
-}
   // 회원 정보 수정 완료 버튼 클릭 시 실행되는 함수
   const btn_progrm_edit = (e) => {
     e.preventDefault();
@@ -354,12 +309,13 @@ const btn_progrm_modify = e => {
         'cpNum' : userInfo.cpNum,
         'cpAddress' : cpAddress
     }
+    console.log('useredit',userEdit)
     user_edit(userEdit);
   };
 
   const user_edit = async (userEdit) => {
     try {
-      const response = await axios.post('/user/edit', userEdit);
+      const response = await axios.put('/admin/manageClient/modify', userEdit);
       console.log(response);
       
         alert('회원 정보가 수정되었습니다.');
@@ -370,6 +326,10 @@ const btn_progrm_modify = e => {
       alert('회원 정보 수정 중 오류가 발생했습니다.');
     }
   };
+
+  const btn_user_list = async() => {
+    navigate('/medic/adminstrator/usermanagement')
+}
 
   return (
     <div className={user.useredit_wrap}>
@@ -408,8 +368,7 @@ const btn_progrm_modify = e => {
             <td colSpan="3" className={user.useredit_td}>
               <div className={user.uid}>
                 <input  type="text" name="id"
-    
-                  // onChange={input_id}
+                  onChange={input_id}
                   maxLength={12}
                   value={uId}
                 />
@@ -426,8 +385,8 @@ const btn_progrm_modify = e => {
                         </td>
                         <td className={user.useredit_td}>
                             <input type="password" name="pw" 
-                            // onChange={input_pw} 
-                            value={userInfo.uPw} maxLength={15}/>
+                            onChange={input_pw} 
+                            value={uPw} maxLength={15}/>
                         </td>
                         <td className={user.useredit_th}>
                             비밀번호 재입력
@@ -553,6 +512,10 @@ const btn_progrm_modify = e => {
 
       <div className={user.useredit_complete}>
             <button type = "button" onClick={btn_progrm_modify}  className={user.useredit_btt_complete}>회원 수정 완료</button>
+        </div>
+
+        <div className={user.useredit_complete}>
+            <button type = "button" onClick={btn_user_list}  className={user.useredit_btt_complete}>목록</button>
         </div>
     </div>
   );
