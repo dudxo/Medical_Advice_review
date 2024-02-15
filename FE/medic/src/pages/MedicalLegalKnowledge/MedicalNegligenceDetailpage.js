@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import medicalNegligencedetails from '../../css/MedicalNegligenceDetailpage.module.css';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
 
 export default function MedicalNegligenceDetailpage(){
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [isAdmin, setIsAdmin] = useState(false);
+  const cookie = new Cookies();
   const medicalNegligenceId = location.state.medicalNegligenceId;   // 상세 게시글 번호 리스트
 
   const [prevNum, setPrevNum] = useState('');
@@ -43,6 +45,12 @@ export default function MedicalNegligenceDetailpage(){
       setNextTitle(nextData.nextTitle);
       setNextWriter(nextData.nextWriter);
       setNextDate(nextData.nextDate);
+
+      if(cookie.get('uRole') === 'manager'){
+        setIsAdmin(true)
+      }else{
+        setIsAdmin(false)
+      }
     };
 
     getMedicalNegligences(medicalNegligenceId);
@@ -68,7 +76,7 @@ export default function MedicalNegligenceDetailpage(){
     }});
   };
 
-  const medicmedicalNegligence = () => {
+  const updateMedicalNegligence = () => {
     navigate('/medic/medicalknowledge/medicalNegligence/writemedicalNegligence', {state : {
       medicalNegligenceId : medicalNegligenceId,
       updateMedicalNegligence : true
@@ -128,12 +136,16 @@ export default function MedicalNegligenceDetailpage(){
           <button type="button" onClick={btn_medicmedicalNegligence_list} className={medicalNegligencedetails.btt_write}>
             목록
           </button>
-          <button type="button" onClick={medicmedicalNegligence} className={medicalNegligencedetails.btt_write}>
-            수정
-          </button>
-          <button type="button" onClick={() => deleteMedicalNegligence(medicalNegligenceId)} className={medicalNegligencedetails.btt_write}>
-            삭제
-          </button>
+          {isAdmin && (
+            <button type="button" onClick={updateMedicalNegligence} className={medicalNegligencedetails.btt_write}>
+              수정
+            </button>
+          )}
+          {isAdmin && (
+            <button type="button" onClick={() => deleteMedicalNegligence(medicalNegligenceId)} className={medicalNegligencedetails.btt_write}>
+              삭제
+            </button>
+          )}
         </div>
       </form>
     </div>

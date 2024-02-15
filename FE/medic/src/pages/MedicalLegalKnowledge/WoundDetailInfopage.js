@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import woundAccidentDetail from '../../css/WoundAccidentInfoDetail.module.css';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
 
 export default function WoundAccidentDetailInfopage(){
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [isAdmin, setIsAdmin] = useState(false);
+  const cookie = new Cookies();
   const woundInfoId = location.state.woundInfoId;   // 상세 게시글 번호 리스트
 
   const [prevNum, setPrevNum] = useState('');
@@ -43,6 +45,12 @@ export default function WoundAccidentDetailInfopage(){
         setNextTitle(nextData.nextTitle);
         setNextWriter(nextData.nextWriter);
         setNextDate(nextData.nextDate);
+
+        if(cookie.get('uRole') === 'manager'){
+          setIsAdmin(true)
+        }else{
+          setIsAdmin(false)
+        }
     };
     getWoundInfos(woundInfoId);
 
@@ -68,7 +76,7 @@ export default function WoundAccidentDetailInfopage(){
     }});
   };
 
-  const medicWound = () => {
+  const updateWound = () => {
     navigate('/medic/medicalknowledge/woundInfo/writewound', {state : {
       woId : woundInfoId,
       isUpdate : true
@@ -80,6 +88,10 @@ export default function WoundAccidentDetailInfopage(){
     // 삭제 응답에 따른 이동 여부 판단 로직 필요
     navigate('/medic/medicalknowledge/woundInfo');
   };
+
+  const btn_wound_list = e => {
+    navigate('/medic/medicalknowledge/woundInfo');
+  }
 
   return (
     <div className={woundAccidentDetail.detailform}>
@@ -122,15 +134,19 @@ export default function WoundAccidentDetailInfopage(){
           </table>
         </div>
         <div className={woundAccidentDetail.complete}>
-          <button type="button" onClick={medicWound} className={woundAccidentDetail.btt_write}>
+          <button type="button" onClick={btn_wound_list} className={woundAccidentDetail.btt_write}>
             목록
           </button>
-          <button type="button" onClick={medicWound} className={woundAccidentDetail.btt_write}>
-            수정
-          </button>
-          <button type="button" onClick={() => deleteWound(woundInfoId)} className={woundAccidentDetail.btt_write}>
-            삭제
-          </button>
+          {isAdmin && (
+            <button type="button" onClick={updateWound} className={woundAccidentDetail.btt_write}>
+              수정
+            </button>
+          )}
+          {isAdmin && (
+            <button type="button" onClick={() => deleteWound(woundInfoId)} className={woundAccidentDetail.btt_write}>
+              삭제
+            </button>
+          )}
         </div>
       </form>
     </div>

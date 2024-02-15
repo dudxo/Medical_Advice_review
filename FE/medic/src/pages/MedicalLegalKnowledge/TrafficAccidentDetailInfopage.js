@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import trafficAccidentDetail from '../../css/TrafficAccidentDetailInfo.module.css';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
 
 export default function TrafficAccidentDetailInfopage(){
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [isAdmin, setIsAdmin] = useState(false);
+  const cookie = new Cookies();
   const trafficAccidentInfoId = location.state.trafficAccidentInfoId;   // 상세 게시글 번호 리스트
 
   const [prevNum, setPrevNum] = useState('');
@@ -42,6 +44,12 @@ export default function TrafficAccidentDetailInfopage(){
       setNextTitle(nextData.nextTitle);
       setNextWriter(nextData.nextWriter);
       setNextDate(nextData.nextDate);
+
+      if(cookie.get('uRole') === 'manager'){
+        setIsAdmin(true)
+      }else{
+        setIsAdmin(false)
+      }
     };
     getTrafficAccidentInfos(trafficAccidentInfoId);
 
@@ -67,7 +75,7 @@ export default function TrafficAccidentDetailInfopage(){
     }});
   };
 
-  const medicTrafficAccident = () => {
+  const updateTrafficAccident = () => {
     navigate('/medic/medicalknowledge/trafficAccidentInfo/writetrafficAccident', {state : {
       taId : trafficAccidentInfoId,
       isUpdate : true
@@ -79,6 +87,10 @@ export default function TrafficAccidentDetailInfopage(){
     // 삭제 응답에 따른 이동 여부 판단 로직 필요
     navigate('/medic/medicalknowledge/trafficAccidentInfo');
   };
+
+  const btn_trafficAccident_list = e => {
+    navigate('/medic/medicalknowledge/trafficAccidentInfo');
+  }
 
   return (
     <div className={trafficAccidentDetail.detailform}>
@@ -121,15 +133,19 @@ export default function TrafficAccidentDetailInfopage(){
           </table>
         </div>
         <div className={trafficAccidentDetail.complete}>
-          <button type="button" onClick={medicTrafficAccident} className={trafficAccidentDetail.btt_write}>
+          <button type="button" onClick={btn_trafficAccident_list} className={trafficAccidentDetail.btt_write}>
             목록
           </button>
-          <button type="button" onClick={medicTrafficAccident} className={trafficAccidentDetail.btt_write}>
-            수정
-          </button>
-          <button type="button" onClick={() => deleteTrafficAccident(trafficAccidentInfoId)} className={trafficAccidentDetail.btt_write}>
-            삭제
-          </button>
+          {isAdmin && (
+            <button type="button" onClick={updateTrafficAccident} className={trafficAccidentDetail.btt_write}>
+              수정
+            </button>
+          )}
+          {isAdmin && (
+            <button type="button" onClick={() => deleteTrafficAccident(trafficAccidentInfoId)} className={trafficAccidentDetail.btt_write}>
+              삭제
+            </button>
+          )}
         </div>
       </form>
     </div>
