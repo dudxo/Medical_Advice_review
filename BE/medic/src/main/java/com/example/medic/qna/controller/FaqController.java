@@ -1,7 +1,9 @@
 package com.example.medic.qna.controller;
 
 import com.example.medic.manager.controller.AdListAllController;
+import com.example.medic.medicalKnowledge.domain.IndustrialAccidentInfo;
 import com.example.medic.medicalKnowledge.repository.IndustrialAccidentInfoRepository;
+import com.example.medic.qna.domain.Announcement;
 import com.example.medic.qna.domain.Faq;
 import com.example.medic.qna.dto.AnnouncementDto;
 import com.example.medic.qna.dto.FaqSituationDto;
@@ -121,5 +123,7 @@ public class FaqController {
         return ResponseEntity.ok(prevFaqInfoDto);
 
     }
+
+
 }
 

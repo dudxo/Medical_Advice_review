@@ -60,13 +60,13 @@ public class Client {
 
     @OneToMany(mappedBy = "client")
     private List<Qna> qnas = new ArrayList<>();
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client" , cascade = CascadeType.ALL)
     private List<AdviceRequestList> adviceRequests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client"  , cascade = CascadeType.ALL)
     private List<AnalyzeRequestList> analyzeRequestLists = new ArrayList<>();
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client" ,  cascade = CascadeType.ALL)
     private List<TranslationRequestList> translationRequestLists = new ArrayList<>();
 
 

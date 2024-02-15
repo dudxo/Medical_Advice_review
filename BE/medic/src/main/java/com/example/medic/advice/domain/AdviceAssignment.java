@@ -60,5 +60,8 @@ public class AdviceAssignment {
         this.consultative = consultative;
 
     }
+    public void setConsultativeToNull() {
+        this.consultative = null;
+    }
 
 }

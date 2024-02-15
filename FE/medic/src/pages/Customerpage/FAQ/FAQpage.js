@@ -10,6 +10,7 @@ export default function FAQpage() {
   const [faqList, setFaqList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [searchKeyword,setSearchKeyword] = useState("");
 
   const cookie = new Cookies();
   const navigate = useNavigate();
@@ -18,8 +19,8 @@ export default function FAQpage() {
     const getAnnouncements = async () => {
       try {
         const resp = await axios.get('/faq/list');
-        const data = resp.data.reverse(); // 데이터 역순으로 설정
-        // 번호 재조정
+        const data = resp.data.reverse(); 
+
         data.forEach((faq, index) => {
           faq.no = index + 1;
         });
@@ -38,16 +39,27 @@ export default function FAQpage() {
     getAnnouncements();
   }, []); 
 
+  
+  const searchFaqInfo = async () => {
+    try {
+      const resp = await axios.get(`/faq/search/${searchKeyword}`);
+      const data = resp.data;
+      setFaqList(data);
+    } catch (error) {
+      console.error('faq 정보 검색 실패:', error);
+    }
+  };
+
   const handleDeleteAnnounce = async (faqId) => {
     try {
       const confirmed = window.confirm('게시글을 삭제하시겠습니까?');
       if (confirmed) {
         await axios.delete(`/faq/delete/${faqId}`);
         alert('게시글이 삭제되었습니다.');
-        // 삭제 후 FAQ 리스트 갱신
+      
         const resp = await axios.get('/faq/list');
-        const data = resp.data.reverse(); // 데이터 역순으로 설정
-        // 번호 재조정
+        const data = resp.data.reverse(); 
+    
         data.forEach((faq, index) => {
           faq.no = index + 1;
         });
@@ -109,6 +121,16 @@ export default function FAQpage() {
         </h1>
       </div>
      
+      <div>
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요"
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+        />
+        <button onClick={searchFaqInfo}>검색</button>
+      </div>
+
       <div className={faq.announce_quirytable}>
         <div className={faq.announce_quirylist_titlebox}>
           <div className={`${faq.announce_list_no} ${faq.announce_list_title}`}>NO.</div>
@@ -125,7 +147,7 @@ export default function FAQpage() {
           {visibleQuiryList?.map((list, index) => (
             <div key={index} className={faq.announce_quirylist_content}>
               <div className={`${faq.announce_quirylist_no} ${faq.announce_list_content}`} onClick={() => goToDetailPage(list.faqId)}>
-                {faqList.length - startIndex - index} {/* 수정된 부분 */}
+                {faqList.length - startIndex - index} 
               </div>
               <div className={`${faq.announce_quirylist_question} ${faq.announce_list_content}`} >
                 {list.faqQuestion}

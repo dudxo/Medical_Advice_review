@@ -15,6 +15,7 @@ export default function Announcementpage() {
   const navigate = useNavigate();
   const cookie = new Cookies();
   const itemsPerPage = 7;
+  const [searchKeyword,setSearchKeyword] = useState("");
   const startIndex = (currentPage - 1) * itemsPerPage;
   const reverseQuiryList = [...announcements].reverse();
   const visibleQuiryList = announcements.slice(startIndex, startIndex + itemsPerPage);
@@ -39,6 +40,17 @@ export default function Announcementpage() {
 
     getAnnouncements();
   }, []);
+
+  const searchAnnounceInfo = async () => {
+    try {
+      const resp = await axios.get(`/announcement/search/${searchKeyword}`);
+      const data = resp.data;
+      setAnnouncements(data);
+    } catch (error) {
+      console.error('공지사항 정보 검색 실패:', error);
+    }
+  };
+
 
   const formatDateString = (dateString) => {
     const date = new Date(dateString);
@@ -99,6 +111,16 @@ export default function Announcementpage() {
         </h2>
       </div>
       <br />
+
+      <div>
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요"
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+        />
+        <button onClick={searchAnnounceInfo}>검색</button>
+      </div>
 
       <div className={announce.announce_quirytable}>
             <div className={announce.announce_quirylist_titlebox}>

@@ -74,26 +74,6 @@ const AdTranslateListPage = () => {
     setCurrentPage(newPage);
   };
 
-  const handleUpdateField = async () => {
-    try {
-      const updatedTranslateList = allTransList.map((trans, i) => {
-        if(i===currentPage-2){
-          return{
-            trAnswerDate: responseDate,
-            tamDate: assignmentDate,
-            trProgressStatus: trProgressStatus
-          }  
-        }
-        return trans;
-      });
-
-      console.log('Request Data:', updatedTranslateList);
-      const response = await axios.put('/admin/translate/updateStatus', updatedTranslateList);
-      navigate('/');
-    } catch (error) {
-      console.error(`번역 업데이트 중 에러 발생:`, error);
-    }
-  };
 
   return (
     <div className={ad.ad_contents}>
@@ -114,7 +94,7 @@ const AdTranslateListPage = () => {
             <th className={ad.ad_th}>의뢰번역일</th>
             <th className={ad.ad_th}>진행상태</th>
             <th className={ad.ad_th}>전문의</th>
-            <th className={ad.ad_th}>편집</th>
+            <th className={ad.ad_th}>배정</th>
           </tr>
         </thead>
         <tbody>

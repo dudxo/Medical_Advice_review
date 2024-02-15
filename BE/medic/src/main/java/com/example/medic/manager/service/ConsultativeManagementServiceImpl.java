@@ -1,14 +1,17 @@
 package com.example.medic.manager.service;
 
 
+import com.example.medic.advice.domain.AdviceAssignment;
 import com.example.medic.advice.repository.AdviceAssignmentRepository;
 import com.example.medic.advice.repository.AdviceRequestListRepository;
+import com.example.medic.analyze.domain.AnalyzeAssignment;
 import com.example.medic.analyze.repository.AnalyzeAssignmentRepository;
 import com.example.medic.analyze.repository.AnalyzeRequestListRepository;
 import com.example.medic.client.domain.Client;
 import com.example.medic.consultative.domain.Consultative;
 import com.example.medic.consultative.repository.ConsultativeRepository;
 import com.example.medic.manager.dto.ManagedConsultativeInfoDto;
+import com.example.medic.translation.domain.TranslationAssignment;
 import com.example.medic.translation.repository.TranslationAssignmentRepository;
 import com.example.medic.translation.repository.TranslationRequestListRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +20,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +35,8 @@ public class ConsultativeManagementServiceImpl implements ConsultativeManagement
     private final TranslationAssignmentRepository translationAssignmentRepository;
     private final ConsultativeRepository consultativeRepository;
     private final Logger LOGGER = LoggerFactory.getLogger(ConsultativeManagementServiceImpl.class);
+    @PersistenceContext
+    private EntityManager entityManager;
 
     /**
      * @return 관리자 전문의 목록 조회
@@ -88,6 +96,7 @@ public class ConsultativeManagementServiceImpl implements ConsultativeManagement
     @Override
     @Transactional
     public boolean updateDoctorManagement(ManagedConsultativeInfoDto managedConsultativeInfoDto) {
+        LOGGER.info("cid",managedConsultativeInfoDto.getCId());
         Consultative currentClient = consultativeRepository.findById(managedConsultativeInfoDto.getCId()).get();
         if (currentClient == null) {
             LOGGER.info("[Error] {} 유저가 존재하지 않습니다.", managedConsultativeInfoDto.getCId());
@@ -101,16 +110,40 @@ public class ConsultativeManagementServiceImpl implements ConsultativeManagement
     /**
      * @return 관리자 특정 전문의 삭제
      */
+    /**
+     * @return 관리자 특정 전문의 삭제
+     */
     @Override
+    @Transactional
     public boolean deleteDoctorManagement(ManagedConsultativeInfoDto managedConsultativeInfoDto) {
-        Consultative currentClient = consultativeRepository.findById(managedConsultativeInfoDto.getCId()).get();
-        if (currentClient == null) {
+        Consultative consultative = consultativeRepository.findById(managedConsultativeInfoDto.getCId()).orElse(null);
+        if (consultative != null) {
+            List<AdviceAssignment> adviceAssignments = consultative.getAdviceAssignments();
+            for (AdviceAssignment assignment : adviceAssignments) {
+                assignment.setConsultativeToNull();
+                adviceAssignmentRepository.save(assignment);
+            }
+
+            List<AnalyzeAssignment> analyzeAssignments = consultative.getAnalyzeAssignments();
+            for(AnalyzeAssignment analyzeAssignment : analyzeAssignments){
+                analyzeAssignment.setConsultativeToNull();
+                analyzeAssignmentRepository.save(analyzeAssignment);
+            }
+            // consultative 테이블의 c_id 값을 null로 설정하거나 다른 값으로 업데이트합니다.
+
+            List<TranslationAssignment> translationAssignments = consultative.getTranslationAssignments();
+            for(TranslationAssignment translationAssignment : translationAssignments){
+                translationAssignment.setConsultativeToNull();
+                translationAssignmentRepository.save(translationAssignment);
+            }
+            consultativeRepository.delete(consultative);
+            return true;
+        } else {
             LOGGER.info("[Error] {} 유저가 존재하지 않습니다.", managedConsultativeInfoDto.getCId());
             return false;
         }
-        consultativeRepository.delete(currentClient);
-        return true;
     }
+
 
     /**
      * 전문의 배정 분석 의뢰 전체 건수 조회
@@ -132,4 +165,5 @@ public class ConsultativeManagementServiceImpl implements ConsultativeManagement
     public int countByAdvice(Consultative consultative) {
         return adviceAssignmentRepository.countAllByConsultative(consultative);
     }
+
 }

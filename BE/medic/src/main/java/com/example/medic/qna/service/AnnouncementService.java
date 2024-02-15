@@ -151,4 +151,13 @@ public class AnnouncementService {
             return announcementDto;
         }else return null;
          }
+
+    /**
+     *
+     * @return 검색
+     */
+    public List<Announcement> searchAnnouncementInfo(String keyword) {
+        return announcementRepository.findByAmName(keyword);
+    }
+
 }

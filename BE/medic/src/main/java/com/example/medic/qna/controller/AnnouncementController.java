@@ -99,5 +99,18 @@ public class AnnouncementController {
         return ResponseEntity.ok(announcementDto);
 
     }
+    /**
+     *
+     * @return 검색
+     */
+    @GetMapping("/announcement/search/{keyword}")
+    public ResponseEntity<List<Announcement>> searchFaq(@PathVariable String keyword) {
+        try {
+            List<Announcement> searchResults =announcementService.searchAnnouncementInfo(keyword);
+            return ResponseEntity.ok(searchResults);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }
