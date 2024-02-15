@@ -1,6 +1,7 @@
 package com.example.medic.medicalKnowledge.domain;
 
 import com.example.medic.manager.domain.Manager;
+import com.example.medic.medicalKnowledge.dto.IndustrialAccidentInfoDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Builder;
@@ -53,4 +54,13 @@ public class IndustrialAccidentInfo {
         this.iaContent = iaContent;
         this.manager = manager;
     }
+
+    public void updateIndustrialAccidentInfo(IndustrialAccidentInfoDto industrialAccidentInfoDto, Manager modifier) {
+        this.iaName = industrialAccidentInfoDto.getIaName();
+        this.iaInstitution = industrialAccidentInfoDto.getIaInstitution();
+        this.iaMdDate = industrialAccidentInfoDto.getIaMdDate();
+        this.iaContent = industrialAccidentInfoDto.getIaContent();
+        this.manager = modifier;
+    }
+
 }
