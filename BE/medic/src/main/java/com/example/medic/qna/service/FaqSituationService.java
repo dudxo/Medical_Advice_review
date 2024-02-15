@@ -3,6 +3,7 @@ package com.example.medic.qna.service;
 import com.example.medic.manager.controller.AdListAllController;
 import com.example.medic.manager.domain.Manager;
 import com.example.medic.manager.repository.ManagerRepository;
+import com.example.medic.medicalKnowledge.domain.IndustrialAccidentInfo;
 import com.example.medic.medicalKnowledge.repository.IndustrialAccidentInfoRepository;
 import com.example.medic.qna.domain.Faq;
 import com.example.medic.qna.dto.AnnouncementDto;
@@ -128,6 +129,14 @@ public class FaqSituationService {
         } else {
             return null;
         }
+    }
+
+    /**
+     *
+     * @return 검색
+     */
+    public List<Faq> searchFaqInfo(String keyword) {
+        return faqRepository.findByFaqQuestion(keyword);
     }
 
 
