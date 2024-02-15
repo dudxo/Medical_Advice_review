@@ -333,14 +333,18 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
      * 번역의뢰 답변파일 저장
      */
     @Override
-    public boolean saveTranslationAnswerFile(ConsultativeDto consultativeDto, List<MultipartFile> multipartFiles, Long trId) throws IOException {
+    public boolean saveTranslationAnswerFile(ConsultativeDto consultativeDto, List<MultipartFile> multipartFiles, Long trId, TranslationAnswerFileRequestDto translationAnswerFileRequestDto) throws IOException {
         Consultative consultative = consultativeRepository.findById(consultativeDto.getCId()).get();
         TranslationRequestList translationRequestList = translationRequestListRepository.findById(trId).get();
-        TranslationAnswerFileRequestDto translationAnswerFileRequestDto = splitTranslationAnswerFile(consultativeDto, multipartFiles);
+        Long traId = translationAnswerFileRepository.findByFileId(trId);
+
+        TranslationAnswerFileRequestDto newtranslationAnswerFileRequestDto = splitTranslationAnswerFile(consultativeDto, multipartFiles);
 
         try{
             TranslationAnswerFile translationAnswerFile = TranslationAnswerFile.builder()
-                    .trAnswer(translationAnswerFileRequestDto.getTrAnswer())
+                    .trAnswerId(traId)
+                    .trAnswer(newtranslationAnswerFileRequestDto.getTrAnswer())
+                    .trAnswerDate(translationAnswerFileRequestDto.getTrAnswerDate())
                     .translationRequestList(translationRequestList)
                     .consultative(consultative)
                     .build();
@@ -366,7 +370,7 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
                 }
                 Deque <String> files = fileHandler.parseFile(projectPath, multipartFiles);
                 return TranslationAnswerFileRequestDto.builder()
-                        .trAnswer(consultativeDto.getTrAnswer())
+                        .trAnswer(files.pollFirst())
                         .build();
             }
         } catch (NullPointerException e){

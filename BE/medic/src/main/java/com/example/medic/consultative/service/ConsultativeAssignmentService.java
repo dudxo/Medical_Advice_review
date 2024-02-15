@@ -6,6 +6,7 @@ import com.example.medic.analyze.dto.AnalyzeRequestDto;
 import com.example.medic.analyze.dto.AnalyzeResponseDto;
 import com.example.medic.analyze.dto.AnalyzeSituationDto;
 import com.example.medic.consultative.dto.ConsultativeDto;
+import com.example.medic.translation.dto.TranslationAnswerFileRequestDto;
 import com.example.medic.translation.dto.TranslationRequestDto;
 import com.example.medic.translation.dto.TranslationResponseDto;
 import com.example.medic.translation.dto.TranslationSituationDto;
@@ -28,7 +29,7 @@ public interface ConsultativeAssignmentService {
 
     TranslationResponseDto findAssignmentTranslationDetail(ConsultativeDto consultativeDto, Long trId);
 
-    boolean saveTranslationAnswerFile(ConsultativeDto consultativeDto, List<MultipartFile> multipartFiles, Long trId) throws IOException;
+    boolean saveTranslationAnswerFile(ConsultativeDto consultativeDto, List<MultipartFile> multipartFiles, Long trId, TranslationAnswerFileRequestDto translationAnswerFileRequestDto) throws IOException;
 
     int getAssignmentAdviceCount(String cId);
 

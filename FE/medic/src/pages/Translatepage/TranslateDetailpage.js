@@ -4,8 +4,6 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 
 export default function TranslateDetailpage(){
-    const [imageError, setImageError] = useState(false);
-
     const navigate = useNavigate();
     const [translateDetails, setTranslateDetails] = useState({});
 
@@ -40,10 +38,10 @@ export default function TranslateDetailpage(){
                 }
             })
             setTrAnswer(()=>{
-                if(response.data.trAnswer === "empty_file"){
-                    return false
-                } else{
+                if(response.data.trAnswer){
                     return true
+                } else{
+                    return false
                 }
             })
     } catch(err){
@@ -200,7 +198,6 @@ export default function TranslateDetailpage(){
                             :
                             "해당 파일이 존재하지 않습니다."
                         }
-                        
                     </div>
                 </div>
                 <div className={translaterequest.row_box} style={{height : 'auto'}}>
@@ -213,7 +210,7 @@ export default function TranslateDetailpage(){
                             <button>
                                 <a
                                     href={`http://localhost:8080/assignedTranslate/findFile/${index}`}
-                                    download="adRecord.zip"
+                                    download="trAnswer.zip"
                                 >
                                     다운로드
                                 </a>
@@ -221,13 +218,12 @@ export default function TranslateDetailpage(){
                             :
                             "해당 파일이 존재하지 않습니다."
                         }
-                        
                     </div>
                 </div>
                 <div className={translaterequest.complete}>
-                <button type="button" onClick={btn_goto_list} className={translaterequest.btt_complete}>목록</button>
-                <button type="button" onClick={btn_edit} className={translaterequest.btt_complete}>수정</button>
-                 </div>
+                    <button type="button" onClick={btn_goto_list} className={translaterequest.btt_complete}>목록</button>
+                    <button type="button" onClick={btn_edit} className={translaterequest.btt_complete}>수정</button>
+                </div>
             </div>
         </div>
     )
