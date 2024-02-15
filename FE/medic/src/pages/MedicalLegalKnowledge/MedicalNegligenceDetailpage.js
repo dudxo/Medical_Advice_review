@@ -26,6 +26,7 @@ export default function MedicalNegligenceDetailpage(){
       const resp = await axios.get(`/medicalNegligence/detail/${medicalNegligenceId}`);
       const data = resp.data;
       setMedicalNegligenceDetail(data);
+      console.log("본문 게시물 : {}", data)
 
       // 본문 게시물 이전글 정보 조회
       const prev = await axios.get(`/medicalNegligence/detail/prev/${medicalNegligenceId}`)
@@ -98,7 +99,7 @@ export default function MedicalNegligenceDetailpage(){
             <th className={medicalNegligencedetails.medicalNegligencedetail_th}>제목</th>
             <td className={medicalNegligencedetails.medicalNegligencedetail_td}>{medicalNegligenceDetail.mnName}</td>
             <th className={medicalNegligencedetails.medicalNegligencedetail_th}>등록일</th>
-            <td className={medicalNegligencedetails.medicalNegligencedetail_td}>{formatDateString(medicalNegligenceDetail.mnRegdate)}</td>
+            <td className={medicalNegligencedetails.medicalNegligencedetail_td}>{formatDateString(medicalNegligenceDetail.mnRegDate)}</td>
           </tr>
           <th className={medicalNegligencedetails.medicalNegligencedetail_th}>내용</th>
           <td colSpan="3" className={medicalNegligencedetails.medicalNegligencedetail_td}>

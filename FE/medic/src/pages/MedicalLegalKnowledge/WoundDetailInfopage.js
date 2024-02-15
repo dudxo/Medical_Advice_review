@@ -26,6 +26,7 @@ export default function WoundAccidentDetailInfopage(){
         const resp = await axios.get(`/woundInfo/detail/${woundInfoId}`);
         const data = resp.data;
         setWoundInfoDetail(data);
+        console.log("본문 게시물 : {}", data)
 
         // 본문 게시물 이전글 정보 조회
         const prev = await axios.get(`/woundInfo/detail/prev/${woundInfoId}`)
@@ -95,7 +96,7 @@ export default function WoundAccidentDetailInfopage(){
             <th className={woundAccidentDetail.wounddetail_th}>제목</th>
             <td className={woundAccidentDetail.wounddetail_td}>{woundInfoDetail.woName}</td>
             <th className={woundAccidentDetail.wounddetail_th}>등록일</th>
-            <td className={woundAccidentDetail.wounddetail_td}>{formatDateString(woundInfoDetail.woRegdate)}</td>
+            <td className={woundAccidentDetail.wounddetail_td}>{formatDateString(woundInfoDetail.woRegDate)}</td>
           </tr>
           <th className={woundAccidentDetail.wounddetail_th}>내용</th>
           <td colSpan="3" className={woundAccidentDetail.wounddetail_td}>
