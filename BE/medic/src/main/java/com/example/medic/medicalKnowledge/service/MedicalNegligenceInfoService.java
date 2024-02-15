@@ -28,13 +28,20 @@ public class MedicalNegligenceInfoService {
 
         if(optionalMedicalNegligenceInfo.isPresent()){
             MedicalNegligenceInfo medicalNegligenceInfo = optionalMedicalNegligenceInfo.get();
-            MedicalNegligenceInfoDto medicalNegligenceInfoDto = MedicalNegligenceInfoDto.builder()
-                    .mnName(medicalNegligenceInfo.getMnName())
-                    .mnRegDate(medicalNegligenceInfo.getMnMdDate())
-                    .mnInstitution(medicalNegligenceInfo.getMnInstitution())
-                    .mnContent(medicalNegligenceInfo.getMnContent())
-                    .build();
-            return medicalNegligenceInfoDto;
+            if (medicalNegligenceInfo.getMnMdDate() != null) {
+                return MedicalNegligenceInfoDto.builder()
+                        .mnName(medicalNegligenceInfo.getMnName())
+                        .mnRegDate(medicalNegligenceInfo.getMnMdDate())
+                        .mnInstitution(medicalNegligenceInfo.getMnInstitution())
+                        .mnContent(medicalNegligenceInfo.getMnContent())
+                        .build();
+            } else {
+                return MedicalNegligenceInfoDto.builder()
+                        .mnName(medicalNegligenceInfo.getMnName())
+                        .mnRegDate(medicalNegligenceInfo.getMnRegdate())
+                        .mnInstitution(medicalNegligenceInfo.getMnInstitution())
+                        .mnContent(medicalNegligenceInfo.getMnContent())
+                        .build();}
         }else{
             return null;
         }

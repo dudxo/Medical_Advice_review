@@ -29,13 +29,21 @@ public class WoundInfoService {
         Optional<WoundInfo> optionalWoundInfo = woundInfoRepository.findById(woid);
         if(optionalWoundInfo.isPresent()){
             WoundInfo woundInfo = optionalWoundInfo.get();
-            WoundInfoDto woundInfoDto = WoundInfoDto.builder()
-                    .woName(woundInfo.getWoName())
-                    .woContent(woundInfo.getWoContent())
-                    .woRegDate(woundInfo.getWoRegdate())
-                    .woInstitution(woundInfo.getWoInstitution())
-                    .build();
-            return woundInfoDto;
+            if (woundInfo.getWoMdDate() != null) {
+                return WoundInfoDto.builder()
+                        .woName(woundInfo.getWoName())
+                        .woContent(woundInfo.getWoContent())
+                        .woRegDate(woundInfo.getWoMdDate())
+                        .woInstitution(woundInfo.getWoInstitution())
+                        .build();
+            } else {
+                return WoundInfoDto.builder()
+                        .woName(woundInfo.getWoName())
+                        .woContent(woundInfo.getWoContent())
+                        .woRegDate(woundInfo.getWoRegdate())
+                        .woInstitution(woundInfo.getWoInstitution())
+                        .build();
+            }
         }else{
             return null;
         }

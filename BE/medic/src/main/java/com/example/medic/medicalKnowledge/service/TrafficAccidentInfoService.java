@@ -26,13 +26,21 @@ public class TrafficAccidentInfoService {
 
         if(optionalTrafficAccidentInfo.isPresent()){
             TrafficAccidentInfo trafficAccidentInfo = optionalTrafficAccidentInfo.get();
-            TrafficAccidentInfoDto trafficAccidentInfoDto = TrafficAccidentInfoDto.builder()
-                    .taName(trafficAccidentInfo.getTaName())
-                    .taContent(trafficAccidentInfo.getTaContent())
-                    .taRegDate(trafficAccidentInfo.getTaMdDate())
-                    .taInstitution(trafficAccidentInfo.getTaInstitution())
-                    .build();
-            return trafficAccidentInfoDto;
+            if (trafficAccidentInfo.getTaMdDate() != null) {
+                return TrafficAccidentInfoDto.builder()
+                        .taName(trafficAccidentInfo.getTaName())
+                        .taContent(trafficAccidentInfo.getTaContent())
+                        .taRegDate(trafficAccidentInfo.getTaMdDate())
+                        .taInstitution(trafficAccidentInfo.getTaInstitution())
+                        .build();
+            } else {
+                return TrafficAccidentInfoDto.builder()
+                        .taName(trafficAccidentInfo.getTaName())
+                        .taContent(trafficAccidentInfo.getTaContent())
+                        .taRegDate(trafficAccidentInfo.getTaRegdate())
+                        .taInstitution(trafficAccidentInfo.getTaInstitution())
+                        .build();
+            }
         }else{
             return null;
         }

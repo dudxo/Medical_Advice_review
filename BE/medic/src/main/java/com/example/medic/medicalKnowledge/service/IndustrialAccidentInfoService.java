@@ -26,13 +26,21 @@ public class IndustrialAccidentInfoService {
 
         if(optionalIndustrialAccidentInfo.isPresent()){
             IndustrialAccidentInfo industrialAccidentInfo = optionalIndustrialAccidentInfo.get();
-            IndustrialAccidentInfoDto industrialAccidentInfoDto = IndustrialAccidentInfoDto.builder()
-                    .iaName(industrialAccidentInfo.getIaName())
-                    .iaContent(industrialAccidentInfo.getIaContent())
-                    .iaInstitution(industrialAccidentInfo.getIaInstitution())
-                    .iaRegDate(industrialAccidentInfo.getIaRegDate())
-                    .build();
-            return industrialAccidentInfoDto;
+            if (industrialAccidentInfo.getIaMdDate() != null) {
+                return IndustrialAccidentInfoDto.builder()
+                        .iaName(industrialAccidentInfo.getIaName())
+                        .iaContent(industrialAccidentInfo.getIaContent())
+                        .iaInstitution(industrialAccidentInfo.getIaInstitution())
+                        .iaRegDate(industrialAccidentInfo.getIaMdDate())
+                        .build();
+            } else {
+                return IndustrialAccidentInfoDto.builder()
+                        .iaName(industrialAccidentInfo.getIaName())
+                        .iaContent(industrialAccidentInfo.getIaContent())
+                        .iaInstitution(industrialAccidentInfo.getIaInstitution())
+                        .iaRegDate(industrialAccidentInfo.getIaRegDate())
+                        .build();
+            }
         }else{
             return null;
         }
