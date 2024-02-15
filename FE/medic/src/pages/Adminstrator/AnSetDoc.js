@@ -63,8 +63,8 @@ export default function AnSetDoc() {
 
   const handleSave = async () => {
     try {
-      const selectedCId = Array.from(selectedCIds)[0];
-      if (selectedCId !== undefined) {
+      // const selectedCId = Array.from(selectedCIds)[0];
+      if (selectedCId !== null) {
         const response = await axios.post(`/admin/analyze/setConsultative/${index}`, { cId: selectedCId });
         console.log('저장 응답:', response.data);
         navigate('/medic/adminstrator/anlist');
@@ -92,7 +92,7 @@ export default function AnSetDoc() {
 
   const handleUpdateField = async(info) => {
     try{
-      const response = await axios.put(`/an/update/${index}`,info);
+      const response = await axios.put(`/admin/analyze/updateStatus/${index}`,info);
       console.log(response)
     }catch(error){
       console.error('에러발생')

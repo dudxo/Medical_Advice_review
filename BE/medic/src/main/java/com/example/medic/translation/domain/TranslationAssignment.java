@@ -54,5 +54,8 @@ public class TranslationAssignment {
         this.consultative = consultative;
 
     }
+    public void setConsultativeToNull() {
+        this.consultative = null;
+    }
 
 }

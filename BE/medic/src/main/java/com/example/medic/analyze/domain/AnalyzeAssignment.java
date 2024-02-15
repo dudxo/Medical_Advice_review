@@ -57,4 +57,7 @@ public class AnalyzeAssignment {
         this.consultative = consultative;
     }
 
+    public void setConsultativeToNull() {
+        this.consultative = null;
+    }
     }

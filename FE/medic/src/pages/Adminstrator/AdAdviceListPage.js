@@ -93,7 +93,7 @@ export default function AdAdviceListPage() {
 
       console.log('Request Data:', updatedAdviceList);
 
-      const response = await axios.put('/admin/advice/updateStatus', updatedAdviceList);
+      const response = await axios.put('/advice/update/', updatedAdviceList);
 
       console.log('Update response:', response.data, assignmentDate);
 
@@ -122,7 +122,7 @@ export default function AdAdviceListPage() {
             <th className={ad.ad_th}>의뢰자문일</th>
             <th className={ad.ad_th}>진행상태</th>
             <th className={ad.ad_th}>전문의</th>
-            <th className={ad.ad_th}>편집</th>
+            <th className={ad.ad_th}>배정</th>
           </tr>
         </thead>
         <tbody>

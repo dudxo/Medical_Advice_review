@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Controller
 @RequiredArgsConstructor
@@ -34,6 +35,7 @@ public class ConsultativeManagementController {
      */
     @GetMapping("/admin/manageConsultative/detail/{cId}")
     public ResponseEntity<ManagedConsultativeInfoDto> findDetailByConsultative(@PathVariable String cId) {
+
         if (cId == null || cId.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
@@ -55,7 +57,7 @@ public class ConsultativeManagementController {
     /**
      * @return 관리자 특정 전문의 정보 삭제
      */
-    @DeleteMapping("/admin/manageConsultative/delete/{cId}")
+    @PostMapping("/admin/manageConsultative/delete/{cId}")
     public ResponseEntity<String> deleteConsultativeInfO(@RequestBody ManagedConsultativeInfoDto managedConsultativeInfoDto) {
         if (!consultativeManagementService.deleteDoctorManagement(managedConsultativeInfoDto)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

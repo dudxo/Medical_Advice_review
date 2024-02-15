@@ -194,8 +194,7 @@ export default function UserEdit() {
 
   // 비밀번호 확인 입력 시 실행되는 함수
   const input_pwchk = (e) => {
-    const re_pw = e.target.value;
-    // setPwchk(uPw === re_pw);
+    const re_pw = e.target.value; 
     if (uPw === re_pw) {
       alert('입력하신 비밀번호와 일치합니다.');
     } else {
