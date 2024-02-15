@@ -38,4 +38,6 @@ public class TranslationResponseDto {
     private String userPhone;
 
     private String userAddress;
+
+    private LocalDate tamDate;
 }

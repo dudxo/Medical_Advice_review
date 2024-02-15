@@ -204,6 +204,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
         AnalyzeRequestList analyzeRequestList = analyzeRequestListRepository.findById(anId).get();
         AnalyzeRequestFile analyzeRequestFile = analyzeRequestFileRepository.findById(anId).get();
         List<AnalyzeRequest> analyzeRequests = analyzeRequestRepository.findByAnIds(anId);
+        AnalyzeAssignment analyzeAssignment = analyzeAssignmentRepository.findByAnId(anId);
 
 
         AnalyzeResponseDto analyzeResponseDto = AnalyzeResponseDto.builder()
@@ -220,6 +221,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 .anRecord(analyzeRequestFile.getAnRecord())
                 .anFilm(analyzeRequestFile.getAnFilm())
                 .anOther(analyzeRequestFile.getAnOther())
+                .adMdDate(analyzeAssignment.getAdMdDate())
                 .build();
 
         return analyzeResponseDto;

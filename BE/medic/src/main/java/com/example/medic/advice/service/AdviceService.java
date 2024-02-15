@@ -252,6 +252,7 @@ public class AdviceService {
         AdviceRequestList adviceRequestList = adviceRequestListRepository.findById(adId).get();
         AdviceFile adviceFile = adviceFileRepository.findById(adId).get();
         List<AdviceQuestion> adviceQuestions = adviceQuestionRepository.findByAdIds(adId);
+        AdviceAssignment adviceAssignment = adviceAssignmentRepository.findByAdId(adId);
 
         logger.info("adviceQuestion:{}",adviceQuestions.get(0));
         AllAdviceRequestDto allAdviceRequestDto = AllAdviceRequestDto.builder()
@@ -278,6 +279,7 @@ public class AdviceService {
                 .adFilm(adviceFile.getAdFilm())
                 .adOther(adviceFile.getAdOther())
                 .adviceQuestions(adviceQuestions)
+                .admDate(adviceAssignment.getAdmDate())
                 .build();
 
         return allAdviceRequestDto;

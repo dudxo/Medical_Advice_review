@@ -31,7 +31,7 @@ public class ConsultativeInfoController {
     @GetMapping("/consultative/consultativeInfoAll")
     public ResponseEntity<ConsultativeDto> findConsultativeInfoAll(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        String cId = (String) session.getAttribute("cId");
+        String cId = (String) session.getAttribute("uId");
 
         ConsultativeDto consultativeDto = ConsultativeDto.builder()
                 .cId(cId)
@@ -46,7 +46,7 @@ public class ConsultativeInfoController {
                                                        @RequestBody ModifyConsultativeDto modifyConsultativeDto) {
         try {
             HttpSession session = request.getSession();
-            String cId = (String) session.getAttribute("cId");
+            String cId = (String) session.getAttribute("uId");
 
             ConsultativeInfoDto consultativeInfoDto = ConsultativeInfoDto.builder()
                     .cId(cId)
@@ -62,7 +62,7 @@ public class ConsultativeInfoController {
     @PostMapping("/consultative/modifyConsultativePw")
     public ResponseEntity<String> modifyPw(HttpServletRequest request, @RequestBody String consultativePw) {
         HttpSession session = request.getSession();
-        String cId = (String) session.getAttribute("cId");
+        String cId = (String) session.getAttribute("uId");
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(consultativePw);
@@ -79,7 +79,7 @@ public class ConsultativeInfoController {
     public ResponseEntity<String> deleteConsultativeInfo(HttpServletRequest request) {
         try {
             HttpSession session = request.getSession();
-            String cId = (String) session.getAttribute("cId");
+            String cId = (String) session.getAttribute("uId");
 
             ConsultativeInfoDto consultativeInfoDto = ConsultativeInfoDto.builder()
                     .cId(cId)

@@ -168,6 +168,7 @@ public class TranslationServiceImpl implements TranslationService {
         TranslationRequestList translationRequestList = translationRequestListRepository.findById(trId).get();
         TranslationRequestFile translationRequestFile = translationRequestFileRepository.findById(trId).get();
         TranslationAnswerFile translationAnswerFile = translationAnswerFileRepository.findAnswerFileById(trId);
+        TranslationAssignment translationAssignment = translationAssignmentRepository.findByTrId(trId);
 
         TranslationResponseDto translationResponseDto = TranslationResponseDto.builder()
                 .trId(translationRequestList.getTrId())
@@ -179,6 +180,7 @@ public class TranslationServiceImpl implements TranslationService {
                 .trEtc(translationRequestList.getTrEtc())
                 .trMtl(translationRequestFile.getTrMtl())
                 .trAnswer(translationAnswerFile == null ? "empty_file" : translationAnswerFile.getTrAnswer())
+                .tamDate(translationAssignment.getTamDate())
                 .build();
 
         return translationResponseDto;

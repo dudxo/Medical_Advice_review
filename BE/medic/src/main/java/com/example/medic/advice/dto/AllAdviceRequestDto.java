@@ -85,6 +85,9 @@ public class AllAdviceRequestDto {
 
     private List<AdviceQuestion> adviceAnswers;
 
+    /*자문배정일*/
+    private LocalDate admDate;
+
     @Builder
     public AllAdviceRequestDto(Long adId, String adPtName, String adPtSsNum, String adPtSub, String adPtDiagnosis,
                                String adPtRec, String adPtCmt, String insurance, String insureDate,
@@ -94,7 +97,8 @@ public class AllAdviceRequestDto {
                                String adOther, String hospital, String admStart, String admEnd,
                                String visitStart, String visitEnd, String treatCmt, int diagRound,
                                String uName, String userTel, String userPhone, String userAddress,
-                               List<AdviceQuestion> adviceQuestions, List<AdviceQuestion> adviceAnswers){
+                               List<AdviceQuestion> adviceQuestions, List<AdviceQuestion> adviceAnswers,
+                               LocalDate admDate){
         this.adId = adId;
         this.adPtName = adPtName;
         this.adPtSsNum = adPtSsNum;
@@ -129,5 +133,6 @@ public class AllAdviceRequestDto {
         this.userAddress = userAddress;
         this.adviceQuestions = adviceQuestions;
         this.adviceAnswers = adviceAnswers;
+        this.admDate = admDate;
     }
 }
