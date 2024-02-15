@@ -1,6 +1,8 @@
 package com.example.medic.medicalKnowledge.service;
 
 import com.example.medic.manager.domain.Manager;
+import com.example.medic.manager.dto.ManagerInfoDto;
+import com.example.medic.manager.repository.ManagerRepository;
 import com.example.medic.medicalKnowledge.domain.TrafficAccidentInfo;
 import com.example.medic.medicalKnowledge.dto.TrafficAccidentInfoDto;
 import com.example.medic.medicalKnowledge.repository.TrafficAccidentInfoJpaRepository;
@@ -17,6 +19,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TrafficAccidentInfoService {
     private final TrafficAccidentInfoJpaRepository trafficAccidentInfoJpaRepository;
+    private final ManagerRepository managerRepository;
+
     public List<TrafficAccidentInfo> getAllTrafficAccidentInfo(){
         return trafficAccidentInfoJpaRepository.findAll();
     }
@@ -26,47 +30,48 @@ public class TrafficAccidentInfoService {
 
         if(optionalTrafficAccidentInfo.isPresent()){
             TrafficAccidentInfo trafficAccidentInfo = optionalTrafficAccidentInfo.get();
-            TrafficAccidentInfoDto trafficAccidentInfoDto = TrafficAccidentInfoDto.builder()
-                    .taName(trafficAccidentInfo.getTaName())
-                    .taContent(trafficAccidentInfo.getTaContent())
-                    .taRegDate(trafficAccidentInfo.getTaMdDate())
-                    .taInstitution(trafficAccidentInfo.getTaInstitution())
-                    .build();
-            return trafficAccidentInfoDto;
+            if (trafficAccidentInfo.getTaMdDate() != null) {
+                return TrafficAccidentInfoDto.builder()
+                        .taName(trafficAccidentInfo.getTaName())
+                        .taContent(trafficAccidentInfo.getTaContent())
+                        .taRegDate(trafficAccidentInfo.getTaMdDate())
+                        .taInstitution(trafficAccidentInfo.getTaInstitution())
+                        .build();
+            } else {
+                return TrafficAccidentInfoDto.builder()
+                        .taName(trafficAccidentInfo.getTaName())
+                        .taContent(trafficAccidentInfo.getTaContent())
+                        .taRegDate(trafficAccidentInfo.getTaRegdate())
+                        .taInstitution(trafficAccidentInfo.getTaInstitution())
+                        .build();
+            }
         }else{
             return null;
         }
     }
 
-    public TrafficAccidentInfo insertTrafficAccidentInfo(TrafficAccidentInfoDto trafficAccidentInfoDto){
-//        String managerId = "qkralstj";
-//        Manager manager = managerRepository.findById(managerId).get();
-//        announcementDto.setMId(managerId);
+    public TrafficAccidentInfo insertTrafficAccidentInfo(TrafficAccidentInfoDto trafficAccidentInfoDto,
+                                                         ManagerInfoDto writerInfoDto){
+        Manager writer = managerRepository.findByMId(writerInfoDto.getMId()).get();
         TrafficAccidentInfo trafficAccidentInfo = TrafficAccidentInfo.builder()
                 .taName(trafficAccidentInfoDto.getTaName())
                 .taInstitution(trafficAccidentInfoDto.getTaInstitution())
                 .taRegDate(trafficAccidentInfoDto.getTaRegDate())
                 .taContent(trafficAccidentInfoDto.getTaContent())
-                .manager(trafficAccidentInfoDto.getManager())
+                .manager(writer)
                 .build();
 
         return trafficAccidentInfoJpaRepository.save(trafficAccidentInfo);
     }
-    public TrafficAccidentInfo updateTrafficAccidentInfo(Long taid, TrafficAccidentInfoDto trafficAccidentInfoDto){
+    public TrafficAccidentInfo updateTrafficAccidentInfo(Long taid, TrafficAccidentInfoDto trafficAccidentInfoDto,
+                                                         ManagerInfoDto modifierInfoDto){
         TrafficAccidentInfo trafficAccidentInfo = findTrafficAccidentInfo(taid);
-        Manager manager = trafficAccidentInfoJpaRepository.findManagerByTaid(taid);
+        Manager modifier = managerRepository.findByMId(modifierInfoDto.getMId()).get();
         if(trafficAccidentInfo == null){
             throw new IllegalArgumentException("게시글을 찾을 수 없습니다.");
         }
-        TrafficAccidentInfo responsetrafficAccidentInfo = trafficAccidentInfo.builder()
-                .taId(taid)
-                .taName(trafficAccidentInfoDto.getTaName())
-                .taInstitution(trafficAccidentInfoDto.getTaInstitution())
-                .taMdDate(trafficAccidentInfoDto.getTaMdDate())
-                .taContent(trafficAccidentInfoDto.getTaContent())
-                .manager(manager)
-                .build();
-        return trafficAccidentInfoJpaRepository.save(responsetrafficAccidentInfo);
+        trafficAccidentInfo.updateTrafficAccidentInfo(trafficAccidentInfoDto, modifier);
+        return trafficAccidentInfoJpaRepository.save(trafficAccidentInfo);
     }
     public void deleteTrafficAccidentInfo(Long taid){
         TrafficAccidentInfo trafficAccidentInfo = findTrafficAccidentInfo(taid);

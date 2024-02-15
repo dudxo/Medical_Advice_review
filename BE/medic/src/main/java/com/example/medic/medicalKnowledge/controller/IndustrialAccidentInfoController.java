@@ -1,5 +1,7 @@
 package com.example.medic.medicalKnowledge.controller;
 
+import com.example.medic.client.dto.ClientInfoDto;
+import com.example.medic.manager.dto.ManagerInfoDto;
 import com.example.medic.medicalKnowledge.domain.IndustrialAccidentInfo;
 import com.example.medic.medicalKnowledge.dto.IndustrialAccidentInfoDto;
 import com.example.medic.medicalKnowledge.repository.IndustrialAccidentInfoRepository;
@@ -11,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -64,9 +69,15 @@ public class IndustrialAccidentInfoController {
 
     //등록
     @PostMapping("/industrialAccident/post")
-    public ResponseEntity<String> insertIndustrialAccidentInfo(@RequestBody IndustrialAccidentInfoDto industrialAccidentInfoDto){
+    public ResponseEntity<String> insertIndustrialAccidentInfo(@RequestBody IndustrialAccidentInfoDto industrialAccidentInfoDto, HttpServletRequest request){
         try{
-            industrialAccidentInfoService.insertIndustrialAccidentInfo(industrialAccidentInfoDto);
+            HttpSession session = request.getSession();
+            String mid = (String) session.getAttribute("uId");
+
+            ManagerInfoDto writerInfoDto = ManagerInfoDto.builder()
+                    .mId(mid)
+                    .build();
+            industrialAccidentInfoService.insertIndustrialAccidentInfo(industrialAccidentInfoDto, writerInfoDto);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -75,16 +86,23 @@ public class IndustrialAccidentInfoController {
 
     //수정
     @PutMapping("/industrialAccident/modify/{iaid}")
-    public ResponseEntity<String> updateIndustrialAccidentInfo(@PathVariable Long iaid, @RequestBody IndustrialAccidentInfoDto industrialAccidentInfoDto){
+    public ResponseEntity<String> updateIndustrialAccidentInfo(@PathVariable Long iaid, @RequestBody IndustrialAccidentInfoDto industrialAccidentInfoDto,
+                                                               HttpServletRequest request){
         try{
-            industrialAccidentInfoService.updateIndustrialAccidentInfo(iaid, industrialAccidentInfoDto);
+            HttpSession session = request.getSession();
+            String mid = (String) session.getAttribute("uId");
+
+            ManagerInfoDto modifierInfoDto = ManagerInfoDto.builder()
+                    .mId(mid)
+                    .build();
+            industrialAccidentInfoService.updateIndustrialAccidentInfo(iaid, industrialAccidentInfoDto, modifierInfoDto);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
     //삭제
-    @PostMapping("/industrialAccident/delete/{iaId}")
+    @PostMapping("/industrialAccident/delete/{iaid}")
     public ResponseEntity<String> deleteIndustrialAccidentInfo(@PathVariable Long iaid){
         try{
             industrialAccidentInfoService.deleteIndustrialAccidentInfo(iaid);

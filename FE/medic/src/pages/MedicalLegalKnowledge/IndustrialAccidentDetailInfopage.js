@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import industrialAccidentDetail from '../../css/IndustrialAccidentInfoDetail.module.css';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Cookies } from 'react-cookie';
 
 export default function IndustrialAccidentDetailInfopage(){
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [isAdmin, setIsAdmin] = useState(false);
+  const cookie = new Cookies();
   const industrialAccidentInfoId = location.state.industrialAccidentInfoId;   // 상세 게시글 번호 리스트
 
 
@@ -43,6 +45,12 @@ export default function IndustrialAccidentDetailInfopage(){
       setNextTitle(nextData.nextTitle);
       setNextWriter(nextData.nextWriter);
       setNextDate(nextData.nextDate);
+
+      if(cookie.get('uRole') === 'manager'){
+        setIsAdmin(true)
+      }else{
+        setIsAdmin(false)
+      }
   };
   getIndustrialAccidentInfos(industrialAccidentInfoId);
   }, [industrialAccidentInfoId]);
@@ -68,7 +76,7 @@ export default function IndustrialAccidentDetailInfopage(){
   };
 
 
-  const medicIndustrialAccident = () => {
+  const udpateIndustrialAccident = () => {
     navigate('/medic/admin/knowledge/industrialAccidentInfo/writeindustrialaccident', {state : {
       IndustId : industrialAccidentInfoId,
       isUpdate : true
@@ -80,6 +88,10 @@ export default function IndustrialAccidentDetailInfopage(){
     // 삭제 응답에 따른 이동 여부 판단 로직 필요
     navigate('/medic/medicalknowledge/industrialAccidentInfo');
   };
+
+  const btn_industrialAccident_list = e => {
+    navigate('/medic/medicalknowledge/industrialAccidentInfo');
+  }
 
   return (
     <div className={industrialAccidentDetail.detailform}>
@@ -122,15 +134,19 @@ export default function IndustrialAccidentDetailInfopage(){
           </table>
         </div>
         <div className={industrialAccidentDetail.complete}>
-          <button type="button" onClick={medicIndustrialAccident} className={industrialAccidentDetail.btt_write}>
+          <button type="button" onClick={btn_industrialAccident_list} className={industrialAccidentDetail.btt_write}>
             목록
           </button>
-          <button type="button" onClick={medicIndustrialAccident} className={industrialAccidentDetail.btt_write}>
-            수정
-          </button>
-          <button type="button" onClick={() => deleteIndustrialAccident(industrialAccidentInfoId)} className={industrialAccidentDetail.btt_write}>
-            삭제
-          </button>
+          {isAdmin && (
+            <button type="button" onClick={udpateIndustrialAccident} className={industrialAccidentDetail.btt_write}>
+              수정
+            </button>
+          )}
+          {isAdmin && (
+            <button type="button" onClick={() => deleteIndustrialAccident(industrialAccidentInfoId)} className={industrialAccidentDetail.btt_write}>
+              삭제
+            </button>
+          )}
         </div>
       </form>
     </div>

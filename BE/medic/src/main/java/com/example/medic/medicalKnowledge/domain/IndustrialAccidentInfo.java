@@ -1,15 +1,15 @@
 package com.example.medic.medicalKnowledge.domain;
 
 import com.example.medic.manager.domain.Manager;
+import com.example.medic.medicalKnowledge.dto.IndustrialAccidentInfoDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -27,12 +27,10 @@ public class IndustrialAccidentInfo {
     @NotNull
     private String iaInstitution;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull
-    private Date iaRegDate;
+    private LocalDate iaRegDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date iaMdDate;
+    private LocalDate iaMdDate;
 
     @NotNull
     private String iaContent;
@@ -43,8 +41,8 @@ public class IndustrialAccidentInfo {
     private Manager manager;
 
     @Builder
-    private IndustrialAccidentInfo(Long iaId, String iaName, String iaInstitution, Date iaRegDate, Date iaMdDate, String iaContent,
-                                   Manager manager){
+    private IndustrialAccidentInfo(Long iaId, String iaName, String iaInstitution, LocalDate iaRegDate,
+                                   LocalDate iaMdDate, String iaContent, Manager manager){
         this.iaId = iaId;
         this.iaName = iaName;
         this.iaInstitution = iaInstitution;
@@ -53,4 +51,13 @@ public class IndustrialAccidentInfo {
         this.iaContent = iaContent;
         this.manager = manager;
     }
+
+    public void updateIndustrialAccidentInfo(IndustrialAccidentInfoDto industrialAccidentInfoDto, Manager modifier) {
+        this.iaName = industrialAccidentInfoDto.getIaName();
+        this.iaInstitution = industrialAccidentInfoDto.getIaInstitution();
+        this.iaMdDate = industrialAccidentInfoDto.getIaMdDate();
+        this.iaContent = industrialAccidentInfoDto.getIaContent();
+        this.manager = modifier;
+    }
+
 }

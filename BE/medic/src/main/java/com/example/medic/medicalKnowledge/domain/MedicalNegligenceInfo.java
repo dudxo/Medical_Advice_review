@@ -1,6 +1,8 @@
 package com.example.medic.medicalKnowledge.domain;
 
 import com.example.medic.manager.domain.Manager;
+import com.example.medic.medicalKnowledge.dto.IndustrialAccidentInfoDto;
+import com.example.medic.medicalKnowledge.dto.MedicalNegligenceInfoDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Builder;
@@ -49,5 +51,13 @@ public class MedicalNegligenceInfo {
         this.mnMdDate = mnMdDate;
         this.mnContent = mnContent;
         this.manager = manager;
+    }
+
+    public void updateMedicalNegligenceInfo(MedicalNegligenceInfoDto medicalNegligenceInfoDto, Manager modifier) {
+        this.mnName = medicalNegligenceInfoDto.getMnName();
+        this.mnInstitution = medicalNegligenceInfoDto.getMnInstitution();
+        this.mnMdDate = medicalNegligenceInfoDto.getMnMdDate();
+        this.mnContent = medicalNegligenceInfoDto.getMnContent();
+        this.manager = modifier;
     }
 }

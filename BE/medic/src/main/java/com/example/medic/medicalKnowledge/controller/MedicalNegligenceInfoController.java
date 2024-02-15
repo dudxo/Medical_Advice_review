@@ -1,5 +1,6 @@
 package com.example.medic.medicalKnowledge.controller;
 
+import com.example.medic.manager.dto.ManagerInfoDto;
 import com.example.medic.medicalKnowledge.domain.MedicalNegligenceInfo;
 import com.example.medic.medicalKnowledge.dto.MedicalNegligenceInfoDto;
 import com.example.medic.medicalKnowledge.repository.MedicalNegligenceInfoRepository.NextMedicalNegligenceInfoDto;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 @Controller
 @AllArgsConstructor
@@ -63,9 +66,16 @@ public class MedicalNegligenceInfoController {
 
     //등록
     @PostMapping("/medicalNegligence/post")
-    public ResponseEntity<String> insertMedicalNegligenceInfo(@RequestBody MedicalNegligenceInfoDto medicalNegligenceInfoDto){
+    public ResponseEntity<String> insertMedicalNegligenceInfo(@RequestBody MedicalNegligenceInfoDto medicalNegligenceInfoDto,
+                                                              HttpServletRequest request){
         try{
-            medicalNegligenceInfoService.insertMedicalNegligenceInfo(medicalNegligenceInfoDto);
+            HttpSession session = request.getSession();
+            String mid = (String) session.getAttribute("uId");
+
+            ManagerInfoDto writerInfoDto = ManagerInfoDto.builder()
+                    .mId(mid)
+                    .build();
+            medicalNegligenceInfoService.insertMedicalNegligenceInfo(medicalNegligenceInfoDto, writerInfoDto);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -74,9 +84,16 @@ public class MedicalNegligenceInfoController {
 
     //수정
     @PutMapping("/medicalNegligence/modify/{mnid}")
-    public ResponseEntity<String> updateMedicalNegligenceInfo(@PathVariable Long mnid, @RequestBody MedicalNegligenceInfoDto medicalNegligenceInfoDto){
+    public ResponseEntity<String> updateMedicalNegligenceInfo(@PathVariable Long mnid, @RequestBody MedicalNegligenceInfoDto medicalNegligenceInfoDto,
+                                                              HttpServletRequest request){
         try{
-            medicalNegligenceInfoService.updateMedicalNegligenceInfo(mnid, medicalNegligenceInfoDto);
+            HttpSession session = request.getSession();
+            String mid = (String) session.getAttribute("uId");
+
+            ManagerInfoDto modifierInfoDto = ManagerInfoDto.builder()
+                    .mId(mid)
+                    .build();
+            medicalNegligenceInfoService.updateMedicalNegligenceInfo(mnid, medicalNegligenceInfoDto, modifierInfoDto);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

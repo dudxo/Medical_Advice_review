@@ -1,5 +1,6 @@
 package com.example.medic.medicalKnowledge.controller;
 
+import com.example.medic.manager.dto.ManagerInfoDto;
 import com.example.medic.medicalKnowledge.domain.TrafficAccidentInfo;
 import com.example.medic.medicalKnowledge.dto.TrafficAccidentInfoDto;
 import com.example.medic.medicalKnowledge.repository.TrafficAccidentInfoJpaRepository.PrevTrafficAccidentInfoDto;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -64,9 +67,16 @@ public class TrafficAccidentInfoController {
 
     //등록
     @PostMapping("/trafficAccident/post")
-    public ResponseEntity<String> insertTrafficAccidentInfo(@RequestBody TrafficAccidentInfoDto trafficAccidentInfoDto){
+    public ResponseEntity<String> insertTrafficAccidentInfo(@RequestBody TrafficAccidentInfoDto trafficAccidentInfoDto,
+                                                            HttpServletRequest request){
         try{
-            trafficAccidentInfoService.insertTrafficAccidentInfo(trafficAccidentInfoDto);
+            HttpSession session = request.getSession();
+            String mid = (String) session.getAttribute("uId");
+
+            ManagerInfoDto writerInfoDto = ManagerInfoDto.builder()
+                    .mId(mid)
+                    .build();
+            trafficAccidentInfoService.insertTrafficAccidentInfo(trafficAccidentInfoDto, writerInfoDto);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -75,9 +85,16 @@ public class TrafficAccidentInfoController {
 
     //수정
     @PutMapping("/trafficAccident/modify/{taid}")
-    public ResponseEntity<String> updateTrafficAccidentInfo(@PathVariable Long taid, @RequestBody TrafficAccidentInfoDto trafficAccidentInfoDto){
+    public ResponseEntity<String> updateTrafficAccidentInfo(@PathVariable Long taid, @RequestBody TrafficAccidentInfoDto trafficAccidentInfoDto,
+                                                            HttpServletRequest request){
         try{
-            trafficAccidentInfoService.updateTrafficAccidentInfo(taid, trafficAccidentInfoDto);
+            HttpSession session = request.getSession();
+            String mid = (String) session.getAttribute("uId");
+
+            ManagerInfoDto modifierInfoDto = ManagerInfoDto.builder()
+                    .mId(mid)
+                    .build();
+            trafficAccidentInfoService.updateTrafficAccidentInfo(taid, trafficAccidentInfoDto, modifierInfoDto);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
