@@ -9,16 +9,16 @@ export default function ChangeConsultativeInfopage(){
     const myInfo = location.state.myInfo
 
     const [cId, setCId] = useState(myInfo.cId)
-    const [cRole, setCRole] = useState(myInfo.cId)
+    const [cRole, setCRole] = useState(myInfo.cRole)
     const [cPw, setCPw] = useState(myInfo.cPw)
     const [department, setDepartment] = useState(myInfo.department)
     const [cName, setCName] = useState(myInfo.cName)
     const [cEmail, setCEmail] = useState(myInfo.cEmail)
     const [cTel, setCTel] = useState(myInfo.cTel)
     const [cPhone, setCPhone] = useState(myInfo.cPhone)
-    const [zipcodeNum, setZipcodeNum] = useState(myInfo.zipcodeNum)
-    const [zipcode, setZipcode] = useState(myInfo.zipcode)
-    const [detailAddress, setDetailAddress] = useState(myInfo.detailAddress)
+    const [zipcodeNum, setZipcodeNum] = useState(myInfo.cZipcodeNum)
+    const [zipcode, setZipcode] = useState(myInfo.cZipCode)
+    const [detailAddress, setDetailAddress] = useState(myInfo.cDetailAddress)
     const [cAddress, setCAddress] = useState(myInfo.cAddress)
 
     const [hospName, setHospName] = useState(myInfo.hospName)
@@ -63,6 +63,10 @@ export default function ChangeConsultativeInfopage(){
     const [emergency, setEmergency] = useState(false)
     const [nuclear, setNuclear] = useState(false)
     const [occupational, setOccupational] = useState(false)
+
+    useEffect(() => {
+        console.log(myInfo);
+    }, [myInfo]);
 
     const selectCRole = (c_role) => {
         switch (c_role) {
@@ -814,17 +818,16 @@ export default function ChangeConsultativeInfopage(){
             const response = await axios.get('/consultative/consultativeInfoAll');
             const myInfo = response.data;
             console.log(myInfo);
-            setCId(myInfo.cId);
-            setCPw(myInfo.cPw);
-            setCName(myInfo.cName);
-            setCEmail(myInfo.cEmail);
-            setCTel(myInfo.cTel);
-            setCAddress(myInfo.cAddress);
+            setCId(myInfo.cid);
+            setCPw(myInfo.cpw);
+            setCName(myInfo.cname);
+            setCEmail(myInfo.cemail);
+            setCTel(myInfo.ctel);
+            setCPhone(myInfo.cphone)
             setHospName(myInfo.hospName);
             setHospTel(myInfo.hospTel);
             setHospFx(myInfo.hospFx);
             setHospNum(myInfo.hospNum);
-            setHospAddress(myInfo.hospAddress);
         } catch (err) {
             console.log(err);
         }
@@ -832,7 +835,7 @@ export default function ChangeConsultativeInfopage(){
 
     useEffect(()=> {
         getMyInfo();
-        selectCRole(myInfo.cRole);
+        selectCRole(myInfo.crole);
         selectDepartment(myInfo.department);
     }, [])
 
@@ -1013,7 +1016,7 @@ export default function ChangeConsultativeInfopage(){
                         </td>
                         <td colSpan="3" className={ChangeConsultativeInfo.joinpage_td}>
                             <div className={ChangeConsultativeInfo.id}>
-                                {cId}
+                                <input type="text" value={cId} disabled />
                             </div>
                         </td>
                     </tr>
@@ -1100,7 +1103,7 @@ export default function ChangeConsultativeInfopage(){
                         일반전화
                     </td>
                     <td className={ChangeConsultativeInfo.joinpage_td}>
-                        <input type="text" name="hosp_tel" value={cTel} onChange={input_hosp_tel} maxLength={13}/>
+                        <input type="text" name="hosp_tel" value={hospTel} onChange={input_hosp_tel} maxLength={13}/>
                     </td>
                     <td className={ChangeConsultativeInfo.joinpage_th}>
                         팩스번호

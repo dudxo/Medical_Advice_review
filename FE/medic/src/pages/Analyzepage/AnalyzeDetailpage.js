@@ -105,7 +105,11 @@ export default function AnalyzeDetailpage(){
     }
 
     const btn_edit = () => {
-        navigate(`/medic/analyze/analyzeUpdate/${index}`);
+        if (analyzeDetails.adMdDate == null) {
+            navigate(`/medic/analyze/analyzeUpdate/${index}`);
+        } else {
+            alert("분석의뢰 신청이 전문의에게 배정된 이후로는 수정할 수 없습니다.")
+        }
     }
 
     const renderQuestionInputs = () => {

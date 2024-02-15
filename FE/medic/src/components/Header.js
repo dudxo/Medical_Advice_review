@@ -8,6 +8,7 @@ export default function Header({}) {
     const navigate = useNavigate();
     const cookies = new Cookies();
     const [isSession, setIsSession] = useState();
+    const [uRole, setURole] = useState(cookies.get('uRole'));
     const uId = cookies.get('uId')
     useEffect(() => {
         if(cookies.get('uId')){
@@ -16,6 +17,11 @@ export default function Header({}) {
             setIsSession(false)
         }
     },[uId])
+
+    useEffect(() => {
+        setURole(cookies.get('uRole'));
+    }, [cookies.get('uRole')]);
+
     const btn_program_Mainpage_view = e => {
         navigate('/')
     }
@@ -191,44 +197,71 @@ export default function Header({}) {
         if (myInfo) {
             const uAdd = myInfo.userAddress.split(' ');
             const cAdd = myInfo.cpAddress.split(' ');
+            const cadd = myInfo.cAddress.split(' ');
+            const hpadd = myInfo.hospAddress.split(' ');
             myInfo['zipcodeNum'] = uAdd[0]
             myInfo['zipCode'] = uAdd[1]
             myInfo['detailAddress'] = uAdd[2]
             myInfo['cpZipcodeNum'] = cAdd[0]
             myInfo['cpZipcode'] = cAdd[1]
             myInfo['detailCpAddress'] = cAdd[2]
+            myInfo['cZipcodeNum'] = cadd[0]
+            myInfo['cZipCode'] = cadd[1]
+            myInfo['cDetailAddress'] = cadd[2]
+            myInfo['hpZipcodeNum'] = hpadd[0]
+            myInfo['hpZipcode'] = hpadd[1]
+            myInfo['detailHpAddress'] = hpadd[2]
+            
         }
     }
-    const getMyInfo = async() => {
+    const getMyInfo = async () => {
         try {
-            const response = await axios.get('/user/userInfoAll');
+            const role = cookies.get('uRole');
+            let endpoint = '/user/userInfoAll';
+            if (role === 'docter') {
+                endpoint = '/consultative/consultativeInfoAll';
+            }
+            const response = await axios.get(endpoint);
             const myInfo = response.data;
-            getAddress(myInfo)
-            console.log(myInfo)
-            return myInfo
+            getAddress(myInfo);
+            console.log(myInfo);
+            return myInfo;
         } catch (err) {
             console.log(err);
-            return err
+            return err;
         }
-    }
-    const btn_program_changeMemberInfo_view = async(e) => {
+    };
+    const btn_program_changeMemberInfo_view = async (e) => {
         if (isSession) {
-            const myInfo = await getMyInfo()
-            console.log(myInfo)
-            navigate('/medic/mypage/modifymyinfo', {state : {myInfo : myInfo}});
+            const myInfo = await getMyInfo();
+            const role = cookies.get('uRole');
+            let nextPage = '/medic/mypage/modifymyinfo';
+    
+            if (role === 'docter') {
+                nextPage = '/medic/mypage/ChangeConsultativeInfo';
+            }
+            
+            console.log(myInfo);
+            navigate(nextPage, { state: { myInfo: myInfo } });
         } else {
             alert('로그인 후 이용해주세요!');
             navigate('/mediclogin');
         }
-    }
+    };
+    
     const btn_program_mypage_view = e => {
-        if (isSession) {
-            navigate('/medic/mypage');
+    if (isSession) {
+        const role = cookies.get('uRole');
+        if (role === 'docter') {
+            navigate('/medic/consultativeMypage');
         } else {
-            alert('로그인 후 이용해주세요!');
-            navigate('/mediclogin');
+            navigate('/medic/mypage');
         }
+    } else {
+        alert('로그인 후 이용해주세요!');
+        navigate('/mediclogin');
     }
+}
     
     return (
         <div className={navigator.main_header}>

@@ -74,7 +74,11 @@ export default function TranslateDetailpage(){
     }
 
     const btn_edit = () => {
-        navigate(`/medic/translate/translateUpdate/${index}`);
+        if (translateDetails.tamDate == null) {
+            navigate(`/medic/translate/translateUpdate/${index}`);
+        } else {
+            alert("번역의뢰 신청이 전문의에게 배정된 이후로는 수정할 수 없습니다.")
+        }
     }
 
     const formatDateString = (dateString) => {

@@ -27,16 +27,16 @@ export default function Mypage(){
     }, [])
 
     const btn_show_conAdvice = e => {
-        navigate('/medic/conAdvice/conAdviceList')
+        navigate('/medic/consultative/assignmentAdviceList')
         
         
     }
     const btn_show_conAnalysis = e => {
-        navigate('/medic/conAnalysis/conAnalysisList')
+        navigate('/medic/consultative/assignmentAnalyzeList')
     }
 
     const btn_show_conTranslaion = e => {
-        navigate('/medic/conTranslate/conTranslateList')
+        navigate('/medic/consultative/assignmentTranslateList')
     }
     return(
         <div className={consultativeMypage.consultativeMypage_box}>
