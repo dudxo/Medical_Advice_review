@@ -87,7 +87,6 @@ public class IndustrialAccidentInfoController {
     @PostMapping("/industrialAccident/delete/{iaid}")
     public ResponseEntity<String> deleteIndustrialAccidentInfo(@PathVariable Long iaid){
         try{
-            System.out.println("iaid = " + iaid);
             industrialAccidentInfoService.deleteIndustrialAccidentInfo(iaid);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
