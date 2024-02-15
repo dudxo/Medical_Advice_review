@@ -1,6 +1,7 @@
 package com.example.medic.medicalKnowledge.service;
 
 import com.example.medic.manager.domain.Manager;
+import com.example.medic.manager.dto.ManagerInfoDto;
 import com.example.medic.manager.repository.ManagerRepository;
 import com.example.medic.medicalKnowledge.domain.MedicalNegligenceInfo;
 import com.example.medic.medicalKnowledge.dto.MedicalNegligenceInfoDto;
@@ -47,35 +48,28 @@ public class MedicalNegligenceInfoService {
         }
     }
 
-    public MedicalNegligenceInfo insertMedicalNegligenceInfo(MedicalNegligenceInfoDto medicalNegligenceInfoDto){
-//        String managerId = "qkralstj";
-//        Manager manager = managerRepository.findById(managerId).get();
-//        announcementDto.setMId(managerId);
+    public MedicalNegligenceInfo insertMedicalNegligenceInfo(MedicalNegligenceInfoDto medicalNegligenceInfoDto,
+                                                             ManagerInfoDto writerInfoDto){
+        Manager writer = managerRepository.findByMId(writerInfoDto.getMId()).get();
         MedicalNegligenceInfo medicalNegligenceInfo = MedicalNegligenceInfo.builder()
                 .mnName(medicalNegligenceInfoDto.getMnName())
                 .mnInstitution(medicalNegligenceInfoDto.getMnInstitution())
                 .mnRegDate(medicalNegligenceInfoDto.getMnRegDate())
                 .mnContent(medicalNegligenceInfoDto.getMnContent())
-                .manager(medicalNegligenceInfoDto.getManager())
+                .manager(writer)
                 .build();
 
         return medicalNegligenceInfoRepository.save(medicalNegligenceInfo);
     }
-    public MedicalNegligenceInfo updateMedicalNegligenceInfo(Long mnid, MedicalNegligenceInfoDto medicalNegligenceInfoDto){
+    public MedicalNegligenceInfo updateMedicalNegligenceInfo(Long mnid, MedicalNegligenceInfoDto medicalNegligenceInfoDto,
+                                                             ManagerInfoDto modifierInfoDto){
         MedicalNegligenceInfo medicalNegligenceInfo = findMedicalNegligenceInfo(mnid);
-        Manager manager = medicalNegligenceInfoRepository.findManagerByMnid(mnid);
+        Manager modifier = managerRepository.findByMId(modifierInfoDto.getMId()).get();
         if(medicalNegligenceInfo == null){
             throw new IllegalArgumentException("게시글을 찾을 수 없습니다.");
         }
-        MedicalNegligenceInfo updateMedicalNegligenceInfo = medicalNegligenceInfo.builder()
-                .mnId(mnid)
-                .mnName(medicalNegligenceInfoDto.getMnName())
-                .mnInstitution(medicalNegligenceInfoDto.getMnInstitution())
-                .mnMdDate(medicalNegligenceInfoDto.getMnMdDate())
-                .mnContent(medicalNegligenceInfoDto.getMnContent())
-                .manager(manager)
-                .build();
-        return medicalNegligenceInfoRepository.save(updateMedicalNegligenceInfo);
+        medicalNegligenceInfo.updateMedicalNegligenceInfo(medicalNegligenceInfoDto, modifier);
+        return medicalNegligenceInfoRepository.save(medicalNegligenceInfo);
     }
     public void deleteMedicalNegligenceInfo(Long mnid){
         MedicalNegligenceInfo medicalNegligenceInfo = findMedicalNegligenceInfo(mnid);
