@@ -1,5 +1,6 @@
 package com.example.medic.medicalKnowledge.controller;
 
+import com.example.medic.manager.dto.ManagerInfoDto;
 import com.example.medic.medicalKnowledge.domain.WoundInfo;
 import com.example.medic.medicalKnowledge.dto.WoundInfoDto;
 import com.example.medic.medicalKnowledge.service.WoundInfoService;
@@ -11,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -64,9 +67,15 @@ public class WoundInfoController {
 
     //등록
     @PostMapping("/woundInfo/post")
-    public ResponseEntity<String> insertWoundInfo(@RequestBody WoundInfoDto woundInfoDto){
+    public ResponseEntity<String> insertWoundInfo(@RequestBody WoundInfoDto woundInfoDto, HttpServletRequest request){
         try{
-            woundInfoService.insertWoundInfo(woundInfoDto);
+            HttpSession session = request.getSession();
+            String mid = (String) session.getAttribute("uId");
+
+            ManagerInfoDto writerInfoDto = ManagerInfoDto.builder()
+                    .mId(mid)
+                    .build();
+            woundInfoService.insertWoundInfo(woundInfoDto, writerInfoDto);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -75,9 +84,16 @@ public class WoundInfoController {
 
     //수정
     @PutMapping("/woundInfo/modify/{woid}")
-    public ResponseEntity<String> updateWoundInfo(@PathVariable Long woid, @RequestBody WoundInfoDto woundInfoDto){
+    public ResponseEntity<String> updateWoundInfo(@PathVariable Long woid, @RequestBody WoundInfoDto woundInfoDto,
+                                                  HttpServletRequest request){
         try{
-            woundInfoService.updateWoundInfo(woid, woundInfoDto);
+            HttpSession session = request.getSession();
+            String mid = (String) session.getAttribute("uId");
+
+            ManagerInfoDto modifierInfoDto = ManagerInfoDto.builder()
+                    .mId(mid)
+                    .build();
+            woundInfoService.updateWoundInfo(woid, woundInfoDto, modifierInfoDto);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

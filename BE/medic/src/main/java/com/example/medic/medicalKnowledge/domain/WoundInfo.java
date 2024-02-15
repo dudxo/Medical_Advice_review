@@ -1,6 +1,8 @@
 package com.example.medic.medicalKnowledge.domain;
 
 import com.example.medic.manager.domain.Manager;
+import com.example.medic.medicalKnowledge.dto.TrafficAccidentInfoDto;
+import com.example.medic.medicalKnowledge.dto.WoundInfoDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import lombok.Builder;
@@ -51,5 +53,13 @@ public class WoundInfo {
         this.woMdDate = woMdDate;
         this.woContent = woContent;
         this.manager = manager;
+    }
+
+    public void updateWoundInfo(WoundInfoDto woundInfoDto, Manager modifier) {
+        this.woName = woundInfoDto.getWoName();
+        this.woInstitution = woundInfoDto.getWoInstitution();
+        this.woMdDate = woundInfoDto.getWoMdDate();
+        this.woContent = woundInfoDto.getWoContent();
+        this.manager = modifier;
     }
 }

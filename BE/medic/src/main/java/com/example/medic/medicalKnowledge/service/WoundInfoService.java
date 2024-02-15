@@ -1,6 +1,8 @@
 package com.example.medic.medicalKnowledge.service;
 
 import com.example.medic.manager.domain.Manager;
+import com.example.medic.manager.dto.ManagerInfoDto;
+import com.example.medic.manager.repository.ManagerRepository;
 import com.example.medic.medicalKnowledge.domain.WoundInfo;
 import com.example.medic.medicalKnowledge.dto.WoundInfoDto;
 import com.example.medic.medicalKnowledge.repository.WoundInfoRepository;
@@ -19,6 +21,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class WoundInfoService {
     private final WoundInfoRepository woundInfoRepository;
+    private final ManagerRepository managerRepository;
+
     private final Logger logger = LoggerFactory.getLogger(WoundInfoService.class);
 
     public List<WoundInfo> getAllWoundInfo(){
@@ -49,35 +53,26 @@ public class WoundInfoService {
         }
     }
 
-    public WoundInfo insertWoundInfo(WoundInfoDto woundInfoDto){
-//        String managerId = "qkralstj";
-//        Manager manager = managerRepository.findById(managerId).get();
-//        announcementDto.setMId(managerId);
+    public WoundInfo insertWoundInfo(WoundInfoDto woundInfoDto, ManagerInfoDto writerInfoDto){
+        Manager writer = managerRepository.findByMId(writerInfoDto.getMId()).get();
         WoundInfo woundInfo = WoundInfo.builder()
                 .woName(woundInfoDto.getWoName())
                 .woInstitution(woundInfoDto.getWoInstitution())
                 .woRegDate(woundInfoDto.getWoRegDate())
                 .woContent(woundInfoDto.getWoContent())
-                .manager(woundInfoDto.getManager())
+                .manager(writer)
                 .build();
 
         return woundInfoRepository.save(woundInfo);
     }
-    public WoundInfo updateWoundInfo(Long woid, WoundInfoDto woundInfoDto){
+    public WoundInfo updateWoundInfo(Long woid, WoundInfoDto woundInfoDto, ManagerInfoDto modifierInfoDto){
         WoundInfo woundInfo = findWoundInfo(woid);
-        Manager manager = woundInfoRepository.findManagerByWoid(woid);
+        Manager modifier = managerRepository.findByMId(modifierInfoDto.getMId()).get();
         if(woundInfo == null){
             throw new IllegalArgumentException("게시글을 찾을 수 없습니다.");
         }
-        WoundInfo responsewoundInfo = woundInfo.builder()
-                .woId(woid)
-                .woName(woundInfoDto.getWoName())
-                .woInstitution(woundInfoDto.getWoInstitution())
-                .woMdDate(woundInfoDto.getWoMdDate())
-                .woContent(woundInfoDto.getWoContent())
-                .manager(manager)
-                .build();
-        return woundInfoRepository.save(responsewoundInfo);
+        woundInfo.updateWoundInfo(woundInfoDto, modifier);
+        return woundInfoRepository.save(woundInfo);
     }
     public void deleteWoundInfo(Long woid){
         WoundInfo woundInfo = findWoundInfo(woid);
