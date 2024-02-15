@@ -84,9 +84,10 @@ public class IndustrialAccidentInfoController {
         }
     }
     //삭제
-    @PostMapping("/industrialAccident/delete/{iaId}")
+    @PostMapping("/industrialAccident/delete/{iaid}")
     public ResponseEntity<String> deleteIndustrialAccidentInfo(@PathVariable Long iaid){
         try{
+            System.out.println("iaid = " + iaid);
             industrialAccidentInfoService.deleteIndustrialAccidentInfo(iaid);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
