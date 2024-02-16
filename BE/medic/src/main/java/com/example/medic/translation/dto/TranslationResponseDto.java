@@ -40,4 +40,6 @@ public class TranslationResponseDto {
     private String userAddress;
 
     private LocalDate tamDate;
+
+    private String trProgressStatus;
 }

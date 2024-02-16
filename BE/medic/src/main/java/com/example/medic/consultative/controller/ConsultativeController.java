@@ -174,6 +174,25 @@ public class ConsultativeController {
     }
 
     /**
+     * 배정 받은 번역 의뢰 답변파일 수정
+     */
+    @PutMapping("/consultative/assignedTranslate/updateFile/{trId}")
+    public ResponseEntity<String> updateTranslationAnswerFile(@RequestPart(name = "files") List<MultipartFile> multipartFiles,
+                                                            @PathVariable Long trId,
+                                                            HttpServletRequest request) throws IOException {
+        HttpSession session = request.getSession();
+        String cId = (String) session.getAttribute("uId");
+
+        ConsultativeDto consultativeDto = ConsultativeDto.builder()
+                .cId(cId)
+                .build();
+        if(consultativeAssignmentService.updateTranslationAnswerFile(consultativeDto, multipartFiles, trId)){
+            return ResponseEntity.ok("저장되었습니다.");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
+    }
+
+    /**
      * API 미구현
      * @return 번역 의뢰 답변파일 조회
      */
