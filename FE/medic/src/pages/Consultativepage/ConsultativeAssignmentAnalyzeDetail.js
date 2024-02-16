@@ -381,7 +381,19 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
                         기타자료
                     </div>
                     <div className={assignmentanalyzedetail.input_box}>
-                        <input type='file'/>
+                    {
+                            anOther ?
+                            <button>
+                                <a
+                                    href={`http://localhost:8080/analyze/findFile/${index}/anOther`}
+                                    download="anOther.jpg"
+                                >
+                                    다운로드
+                                </a>
+                            </button>
+                            :
+                            "해당 파일이 존재하지 않습니다."
+                        }
                     </div>
                 </div>
                 <div className={assignmentanalyzedetail.complete}>

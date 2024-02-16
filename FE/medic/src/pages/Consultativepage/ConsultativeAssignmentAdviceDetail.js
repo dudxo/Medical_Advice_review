@@ -118,6 +118,12 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
             setVisitendMonth(visit_endDay[1])
             setVisitendDay(visit_endDay[2])
 
+            console.log(response.data.adReqForm)
+            console.log(response.data.adDiagnosis)
+            console.log(response.data.adRecord)
+            console.log(response.data.adFilm)
+            console.log(response.data.adOther)
+
             setAdReqForm(() => {
                 if(response.data.adReqForm === "empty_file"){
                     return false

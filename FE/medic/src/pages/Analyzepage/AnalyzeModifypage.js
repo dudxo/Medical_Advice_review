@@ -157,7 +157,7 @@ const btn_analyze_update = async() => {
           const anFile = [anReqForm, anDiagnosis, anRecord, anFilm, anOther];
         const anFile_toString = []
         anFile.forEach(file => {
-            if (file === null) {
+            if (file === null || typeof file === 'undefined') {
                 anFile_toString.push("empty_file")
             } else {
                 if(typeof file === 'string'){

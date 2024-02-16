@@ -17,8 +17,7 @@ import TranslateRequestpage from './pages/Translatepage/TranslateRequestpage'
 import TranslateListpage from './pages/Translatepage/TranslateListpage'
 import TranslateDetailpage from './pages/Translatepage/TranslateDetailpage'
 import TranslateModifypage from './pages/Translatepage/TranslateModifypage'
-import CustomerInquirypage from './pages/Customerpage/CustomerInquirypage';
-import WriteCustomerInquiry from './pages/Customerpage/Customerinquiry/WriteCustomerInquiry'
+import Qnapage from "./pages/Customerpage/Qnapage";
 import MedicalNegligencepage from './pages/MedicalLegalKnowledge/MedicalNegligencepage'
 import MedicalNegligenceWritepage from "./pages/MedicalLegalKnowledge/MedicalNegligenceWritepage";
 import IndustrialAccidentInfopage from './pages/MedicalLegalKnowledge/IndustrialAccidentInfopage'
@@ -37,7 +36,6 @@ import FinduserInfopage from "./pages/FinduserInfo/FinduserInfopage";
 import Updatepw from './pages/FinduserInfo/Updatepw'
 import ChangeConsultativeInfo from "./pages/Mypage/ChangeConsultativeInfopage";
 import ModifyMyInfopage from "./pages/Mypage/ModifyMyInfopage"
-import CustomerInquiryDetail from "./pages/Customerpage/Customerinquiry/CustomerinquiryDetail";
 import ConsultativeAdviceAssignment from './pages/Consultativepage/ConsultativeAdviceAssignment'
 import ConsultativeAnalyzeAssignment from './pages/Consultativepage/ConsultativeAnalyzeAssignment'
 import ConsultativeTranslateAssignment from './pages/Consultativepage/ConsultativeTranslateAssignment'
@@ -70,6 +68,8 @@ import ChangeConsultativePwpage from "./pages/Mypage/ChangeConsultativePwpage";
 import AnnouncementEdit from "./pages/Customerpage/Announcement/AnnouncementEdit";
 import FaqEdit  from "./pages/Customerpage/FAQ/FaqEdit";
 import ScrollToTop from "./components/ScrollToTop";
+import WriteQna from "./pages/Customerpage/Qna/WriteQna";
+import QnaDetail from "./pages/Customerpage/Qna/QnaDetail";
 
 export default function App(){
     return(
@@ -95,9 +95,9 @@ export default function App(){
                     <Route path='/medic/translate/translateList' element={<TranslateListpage/>}/>
                     <Route path='/medic/translate/translateDetail/:index' element={<TranslateDetailpage/>}/>
                     <Route path='/medic/translate/translateUpdate/:index' element={<TranslateModifypage/>}/>
-                    <Route path='/medic/customer/customerInquiry' element={<CustomerInquirypage/>}/>
-                    <Route path="/medic/customer/customerinquiry/writecustomerinquiry" element={<WriteCustomerInquiry/>}/>
-                    <Route path="/medic/customer/customerinquiry/customerinquirydetails" element={<CustomerInquiryDetail/>}/>
+                    <Route path='/medic/customer/customerInquiry' element={<Qnapage/>}/>
+                    <Route path="/medic/customer/customerinquiry/writecustomerinquiry" element={<WriteQna/>}/>
+                    <Route path="/medic/customer/customerinquiry/customerinquirydetails" element={<QnaDetail/>}/>
                     <Route path='/medic/customer/announcement' element={<Announcementpage/>}/>
                     <Route path='/medic/customer/FAQ' element={<FAQpage/>}/>
                     <Route path='/medic/medicalknowledge/medicalNegligence' element={<MedicalNegligencepage/>}/>

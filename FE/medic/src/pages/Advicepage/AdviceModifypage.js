@@ -250,9 +250,10 @@ const btn_advice_update = async() => {
     const visitEnd = visit_endYear + '-' + visit_endMonth + '-' + visit_endDay
     
     const adFile = [adReqForm, adDiagnosis, adRecord, adFilm, adOther];
+    console.log(adFile)
         const adFile_toString = []
         adFile.forEach(file => {
-            if (file === null) {
+            if (file === null || typeof file === 'undefined') {
                 adFile_toString.push("empty_file")
             } else {
                 if(typeof file === 'string'){
@@ -263,7 +264,6 @@ const btn_advice_update = async() => {
                 }
             }
         });
-        console.log(allAdviceUpdate.getAll('files'));
         console.log(adFile_toString)
         const formData = new FormData();
         allAdviceUpdate.append("dto", new Blob([JSON.stringify({
@@ -705,7 +705,10 @@ return(
                         isAdReqForm ? 
                         <>
                             <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findFile/${index}/adReqForm`)}>미리보기</button>
-                            <button onClick={()=>setIsAdReqForm(!isAdReqForm)} >X</button>
+                            <button onClick={()=>{
+                                setAdReqForm(null)
+                                setIsAdReqForm(false)
+                                }} >X</button>
                         </>
                         :
                         <input type='file' accept="image/*" onChange={(e) => setAdReqForm(e.target.files[0])} />
@@ -721,7 +724,10 @@ return(
                         isAdDiagnosis ?
                         <>
                             <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findFile/${index}/adDiagnosis`)}>미리보기</button>
-                            <button onClick={()=>setIsAdDiagnosis(!isAdDiagnosis)} >X</button>
+                            <button onClick={()=>{
+                                setAdDiagnosis(null)
+                                setIsAdDiagnosis(false)
+                                }} >X</button>
                         </>
                         :
                         <input type='file' accept="image/*" onChange={e => setAdDiagnosis(e.target.files[0])}/>    
@@ -738,7 +744,10 @@ return(
                         isAdRecord ?
                         <>
                             <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findFile/${index}/adRecord`)}>미리보기</button>
-                            <button onClick={()=>setIsAdRecord(!isAdRecord)} >X</button>
+                            <button onClick={()=>{
+                                setAdRecord(null)
+                                setIsAdRecord(false)                                
+                                }} >X</button>
                         </>
                         :
                         <input type='file' accept="image/*" onChange={e => setAdRecord(e.target.files[0])}/>
@@ -754,7 +763,10 @@ return(
                         isAdFilm ? 
                         <>
                             <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findFile/${index}/adFilm`)}>미리보기</button>
-                            <button onClick={()=>setIsAdFilm(!isAdFilm)} >X</button>
+                            <button onClick={()=>{
+                                setAdFilm(null)
+                                setIsAdFilm(false)
+                                }} >X</button>
                         </>
                         :
                         <input type='file' accept="image/*" onChange={e => setAdFilm(e.target.files[0])}/>
@@ -770,7 +782,10 @@ return(
                         isAdOther ?
                         <>
                             <button onClick={()=>btn_open_image(`http://localhost:8080/advice/findFile/${index}/adOther`)}>미리보기</button>
-                            <button onClick={()=>setIsAdOther(!isAdOther)} >X</button>
+                            <button onClick={()=>{
+                                setAdOther(null)
+                                setIsAdOther(false)
+                                }} >X</button>
                         </>
                         :
                         <input type='file' accept="image/*" onChange={e => setAdOther(e.target.files[0])}/>

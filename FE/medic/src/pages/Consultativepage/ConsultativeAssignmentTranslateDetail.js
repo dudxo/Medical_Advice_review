@@ -8,6 +8,8 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
   
     const {index} = useParams();
     
+    const translateAnswer = new FormData();
+
     const [uname, setUname] = useState('')
     const [utel, setUtel] = useState('')
     const [uphone, setUphone] = useState('')
@@ -20,14 +22,20 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
     const [tr_ptsub, setTrptsub] = useState('');
     const [tr_ptdiagnosis, setTrptdiagnosis] = useState('')
     const [tr_ptdiagcontent, setTrptdiagcontent] = useState('')
+
+    const [trProgressStatus, setTrProgressStatus] = useState(false)
    
     //기타사항
     const [trEtcValue, setTrEtcValue] = useState('');
     const allTranslateRequest = new FormData()
 
     //답변
-    const [answerFile, setAnswerFile] = useState(false)
+    const [isAnswer, setIsAnswer] = useState(false)
+    const [trAnswer, setTrAnswer] = useState(false)
+
+    //번역요청파일
     const [trMtl, setTrMtl] = useState(false)
+
     const getUserInfo = async() =>{
         try{
             const response = await axios.get(`/consultative/assignedTranslate/detail/${index}`)
@@ -41,6 +49,11 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
             setTrptdiagnosis(response.data.trPtDiagnosis)
             setTrptdiagcontent(response.data.trPtDiagContent)
             setTrEtcValue(response.data.trEtc)
+            if(response.data.trProgressStatus === '결제하기'){
+                setTrProgressStatus(true)
+            } else{
+                setTrProgressStatus(false)
+            }
 
             const trPtSsNum = response.data.trPtSsNum.split('-');  // 주민번호 나누기
             setTrptssnum1(trPtSsNum[0]);
@@ -53,6 +66,14 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
                     return true
                 }
             })
+
+            setIsAnswer(()=>{
+                if(response.data.trAnswer){
+                    return true
+                } else{
+                    return false
+                }
+            })
         } catch(err){
             console.log(err)
         }  
@@ -61,42 +82,63 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
     useEffect(()=>{
         getUserInfo()
     }, [])
-    const isAnswerFile = e => {
-        if(e.target.value !== null){
-            setAnswerFile(true)
-        }
-    }
 
     const btn_translate_request = async() => {
-         // 유효성 검사
-        // if (answerFile) {
-        //     alert('입력값을 확인해주세요.');
-        //     return;
-        // }
-    
-        // const fileInputs = document.querySelectorAll('input[type="file"]');
-        // fileInputs.forEach((fileInput) => {
-        //     const files = fileInput.files;
-        //     for (let i = 0; i < files.length; i++) {
-        //         translateAnswer.append('files', files[i]);
-        //     }
-        // });
-        
-        // try{
-        //     const response = axios.post(`/consultative/assignedTranslate/saveFile/${index}`, translateAnswer, {
-        //         headers : {
-        //             "Content-Type" : 'multipart/form-data',
-        //         },
-        //     })
-        //     alert('번역의뢰 답변이 저장되었습니다.')
-        //     navigate('/')
-        // } catch(err){
-        //     console.log(err)
-        // }
+        if (!isAnswer) {
+            alert('입력값을 확인해주세요.');
+            return;
+        }
+        const today = new Date()
+        translateAnswer.append('files', trAnswer)  
+        translateAnswer.append("dto", new Blob([JSON.stringify({
+              "trAnswerDate" : today
+        })], {type : "application/json"}))
+        try{
+            const response = axios.post(`/consultative/assignedTranslate/saveFile/${index}`, translateAnswer, {
+                headers : {
+                    "Content-Type" : 'multipart/form-data',
+                },
+            })
+            alert('번역의뢰 답변이 저장되었습니다.')
+            navigate('/')
+        } catch(err){
+            console.log(err)
+        }
     }
     const btn_translate_cancle = async() => {
         navigate('/')
     }
+
+    const btn_modify_trAnswer = e => {
+        if(window.confirm('수정하시겠습니까?')){
+            setIsAnswer(false)
+            setTrAnswer(null)
+        }
+    }
+    const btn_translate_update = async() => {
+        if (!isAnswer) {
+            alert('입력값을 확인해주세요.');
+            return;
+        }
+        const today = new Date()
+        translateAnswer.append('files', trAnswer)  
+        try{
+            const response = axios.put(`/consultative/assignedTranslate/updateFile/${index}`, translateAnswer, {
+                headers : {
+                    "Content-Type" : 'multipart/form-data',
+                },
+            })
+            alert('번역의뢰 답변이 수정되었습니다.')
+            navigate('/')
+        } catch(err){
+            console.log(err)
+        }
+    }
+    useEffect(()=>{
+        if(!(trAnswer === null && typeof trAnswer === 'undefined')){
+            setIsAnswer(true)
+        }
+    }, [trAnswer])
     return(
         <div className={assignmenttranslatedetail.translaterequest_wrap}>
             <div className={assignmenttranslatedetail.iconbox}>
@@ -209,7 +251,6 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
                             <button>
                                 <a
                                     href={`http://localhost:8080/translate/findFile/${index}`}
-                                    // style={{ display: imageError ? 'none' : 'block' }}
                                     download="adRecord.zip"
                                 >
                                     다운로드
@@ -220,17 +261,43 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
                         }
                         
                     </div>
+                </div>
+                <div className={assignmenttranslatedetail.row_box} style={{height : 'auto'}}>
                     <div className={assignmenttranslatedetail.title_box}>
                         번역자료
                     </div>
                     <div className={assignmenttranslatedetail.input_box}>
-                        <input type='file' accept='application/zip' onChange={isAnswerFile}/>
+                        {
+                            isAnswer ?
+                            <>
+                                <button>
+                                    <a
+                                        href={`http://localhost:8080/translate/findFile/${index}`}
+                                        download="adRecord.zip"
+                                    >
+                                        다운로드
+                                    </a>
+                                </button>
+                                <button onClick={
+                                    btn_modify_trAnswer
+                                } >수정</button>
+                            </>
+                            :
+                            <input type='file' accept='application/zip' onChange={(e)=> setTrAnswer(e.target.files[0])}/>
+                        }
                     </div>
                 </div>
                 <div className={assignmenttranslatedetail.complete}>
-                    <button type = "button" className={assignmenttranslatedetail.btt_complete} onClick={btn_translate_request}>번역의뢰 답변 저장</button>
+                {isAnswer ?
+                    trProgressStatus ?
+                    <></>
+                    :
+                    <button type="button" className={assignmenttranslatedetail.btt_complete} onClick={btn_translate_update}>번역의뢰 답변 수정</button>
+                    :
+                    <button type="button" className={assignmenttranslatedetail.btt_complete} onClick={btn_translate_request}>번역의뢰 답변 저장</button>
+                }        
                     <button type = "button" className={assignmenttranslatedetail.btt_complete} onClick={btn_translate_cancle}>취소</button>
-                 </div>
+                </div>
             </div>
         </div>
     )

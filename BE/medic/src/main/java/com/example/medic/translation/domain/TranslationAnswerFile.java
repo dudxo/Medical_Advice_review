@@ -6,6 +6,7 @@ import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.bytebuddy.asm.Advice;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -34,9 +35,10 @@ public class TranslationAnswerFile {
     private Consultative consultative;
 
     @Builder
-    TranslationAnswerFile(Long trAnswerId, String trAnswer, TranslationRequestList translationRequestList, Consultative consultative) {
+    TranslationAnswerFile(Long trAnswerId, String trAnswer, LocalDate trAnswerDate, TranslationRequestList translationRequestList, Consultative consultative) {
         this.trAnswerId = trAnswerId;
         this.trAnswer = trAnswer;
+        this.trAnswerDate = trAnswerDate;
         this.translationRequestList = translationRequestList;
         this.consultative = consultative;
     }

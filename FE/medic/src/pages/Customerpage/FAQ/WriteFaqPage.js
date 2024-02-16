@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import writeannoucement from '../../../css/WriteCustomerInquiry.module.css';
+import writeannoucement from '../../../css/WriteQna.module.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
