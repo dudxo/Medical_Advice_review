@@ -57,12 +57,14 @@ public class AnalyzeResponseDto {
 
     private LocalDate adMdDate;
 
+    private String anProgressStatus;
+
     private AnalyzeResponseDto(Long anId, String anPtName, String anPtSsNum, String anPtSub, String anPtDiagnosis,
                                String anPtDiagContent, String anEtc, Date anRegDate, Date anMdDate,
                                List<String> anQuestionContent, List<String> anAnswerContent, LocalDate anAnswerDate,
                                String anReqForm, String anDiagnosis, String anRecord, String anFilm, String anOther, String uName,
                                String userTel, String userPhone, String userAddress, List<AnalyzeRequest> analyzeRequests,
-                               LocalDate adMdDate) {
+                               LocalDate adMdDate, String anProgressStatus) {
         this.anId = anId;
         this.anPtName = anPtName;
         this.anPtSsNum = anPtSsNum;
@@ -86,5 +88,6 @@ public class AnalyzeResponseDto {
         this.userAddress = userAddress;
         this.analyzeRequests = analyzeRequests;
         this.adMdDate = adMdDate;
+        this.anProgressStatus = anProgressStatus;
     }
 }

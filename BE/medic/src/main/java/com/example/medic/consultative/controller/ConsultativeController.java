@@ -8,6 +8,7 @@ import com.example.medic.analyze.dto.AnalyzeSituationDto;
 import com.example.medic.consultative.dto.ConsultativeDto;
 import com.example.medic.consultative.service.ConsultativeAssignmentServiceImpl;
 import com.example.medic.consultative.service.ConsultativeFileService;
+import com.example.medic.translation.dto.TranslationAnswerFileRequestDto;
 import com.example.medic.translation.dto.TranslationRequestDto;
 import com.example.medic.translation.dto.TranslationResponseDto;
 import com.example.medic.translation.dto.TranslationSituationDto;
@@ -157,6 +158,7 @@ public class ConsultativeController {
      */
     @PostMapping("/consultative/assignedTranslate/saveFile/{trId}")
     public ResponseEntity<String> saveTranslationAnswerFile(@RequestPart(name = "files") List<MultipartFile> multipartFiles,
+                                                            @RequestPart(name = "dto") TranslationAnswerFileRequestDto translationAnswerFileRequestDto,
                                                             @PathVariable Long trId,
                                                             HttpServletRequest request) throws IOException {
         HttpSession session = request.getSession();
@@ -165,7 +167,26 @@ public class ConsultativeController {
         ConsultativeDto consultativeDto = ConsultativeDto.builder()
                 .cId(cId)
                 .build();
-        if(consultativeAssignmentService.saveTranslationAnswerFile(consultativeDto, multipartFiles, trId)){
+        if(consultativeAssignmentService.saveTranslationAnswerFile(consultativeDto, multipartFiles, trId, translationAnswerFileRequestDto)){
+            return ResponseEntity.ok("저장되었습니다.");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
+    }
+
+    /**
+     * 배정 받은 번역 의뢰 답변파일 수정
+     */
+    @PutMapping("/consultative/assignedTranslate/updateFile/{trId}")
+    public ResponseEntity<String> updateTranslationAnswerFile(@RequestPart(name = "files") List<MultipartFile> multipartFiles,
+                                                            @PathVariable Long trId,
+                                                            HttpServletRequest request) throws IOException {
+        HttpSession session = request.getSession();
+        String cId = (String) session.getAttribute("uId");
+
+        ConsultativeDto consultativeDto = ConsultativeDto.builder()
+                .cId(cId)
+                .build();
+        if(consultativeAssignmentService.updateTranslationAnswerFile(consultativeDto, multipartFiles, trId)){
             return ResponseEntity.ok("저장되었습니다.");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");

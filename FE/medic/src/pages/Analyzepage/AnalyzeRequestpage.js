@@ -131,7 +131,7 @@ export default function AnalyzeRequestpage(){
           const anFile = [anReqForm, anDiagnosis, anRecord, anFilm, anOther]
           const anFile_toString = []
           anFile.forEach(file => {
-            if (file === null) {
+            if (file === null || typeof file === 'undefined') {
                 anFile_toString.push("empty_file")
             } else {
                 allAnalyzeRequest.append('files', file);
@@ -338,7 +338,7 @@ export default function AnalyzeRequestpage(){
                     </div>
                 </div>
                 <div className={analyzerequest.complete}>
-                    <button type = "button" className={analyzerequest.btt_complete} onClick={btn_analyze_request}>자문 의뢰신청</button>
+                    <button type = "button" className={analyzerequest.btt_complete} onClick={btn_analyze_request}>분석 의뢰신청</button>
                     <button type = "button" className={analyzerequest.btt_complete} onClick={btn_analyze_cancle}>취소</button>
                  </div>
             </div>

@@ -62,11 +62,16 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
     const [adFilm, setAdFilm] = useState(false)
     const [adOther, setAdOther] = useState(false)
 
+    const [admProgressStatus, setAdmProgressStatus] = useState('');
+
+    const [assignmentAdvice, setAssignmentAdvice] = useState('');
+
 
     const getUserInfo = async() =>{
         try{
             const response = await axios.get(`/consultative/assignedAdvice/detail/${index}`)
             console.log(response)
+            setAssignmentAdvice(response.data)
             setUname(response.data.uname)
             setUtel(response.data.userTel)
             setUphone(response.data.userPhone)
@@ -84,6 +89,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
             setAdQuestionTotal(response.data.adQuestionContent)
             setAdQuestionContents(response.data.adQuestionContent)
             setAdAnswerContents(response.data.adAnswerContent)
+            setAdmProgressStatus(response.data.admProgressStatus)
                         
             const ad_PtSsNum = response.data.adPtSsNum.split('-');  // 주민번호 나누기
             setAdptssnum1(ad_PtSsNum[0]);
@@ -111,6 +117,12 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
             setVisitendYear(visit_endDay[0])
             setVisitendMonth(visit_endDay[1])
             setVisitendDay(visit_endDay[2])
+
+            console.log(response.data.adReqForm)
+            console.log(response.data.adDiagnosis)
+            console.log(response.data.adRecord)
+            console.log(response.data.adFilm)
+            console.log(response.data.adOther)
 
             setAdReqForm(() => {
                 if(response.data.adReqForm === "empty_file"){
@@ -195,7 +207,11 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
     };
     
     const btn_advice_request = async() => {
+        if (assignmentAdvice.admProgressStatus == '결제하기') {
+            alert("회원에게 답변이 전달되면 답변을 수정할 수 없습니다.");
+        } else {
             await saveAdviceisResponse();
+        }
     };
     
 

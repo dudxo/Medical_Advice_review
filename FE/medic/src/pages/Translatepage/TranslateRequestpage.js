@@ -91,7 +91,7 @@ export default function TranslateRequestpage(){
           const trFile = [trMtl]
           const trFile_toString = []
           trFile.forEach(file => {
-            if(file === null){
+            if(file === null || typeof file === 'undefined'){
                 trFile_toString.push("empty_file")
             }else{
                 allTranslateRequest.append('files', file)
@@ -242,7 +242,7 @@ export default function TranslateRequestpage(){
                     </div>
                 </div>
                 <div className={translaterequest.complete}>
-                    <button type = "button" className={translaterequest.btt_complete} onClick={btn_translate_request}>자문 의뢰신청</button>
+                    <button type = "button" className={translaterequest.btt_complete} onClick={btn_translate_request}>번역 의뢰신청</button>
                     <button type = "button" className={translaterequest.btt_complete} onClick={btn_translate_cancle}>취소</button>
                  </div>
             </div>

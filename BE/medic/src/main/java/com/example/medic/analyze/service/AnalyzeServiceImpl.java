@@ -109,7 +109,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                         .anDiagnosis(analyzeRequestDto.getAnDiagnosis().equals("no_empty_file") ? files.pollFirst(): analyzeRequestDto.getAnDiagnosis())
                         .anRecord(analyzeRequestDto.getAnRecord().equals("no_empty_file") ? files.pollFirst(): analyzeRequestDto.getAnRecord())
                         .anFilm(analyzeRequestDto.getAnFilm().equals("no_empty_file") ? files.pollFirst() : analyzeRequestDto.getAnFilm())
-                        .anOther(analyzeRequestDto.getAnOther().equals("no_empty-file") ? files.pollFirst() : analyzeRequestDto.getAnOther())
+                        .anOther(analyzeRequestDto.getAnOther().equals("no_empty_file") ? files.pollFirst() : analyzeRequestDto.getAnOther())
                         .build();
             }
         } catch (NullPointerException e) {
@@ -265,7 +265,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 .anfId(fid)
                 .anReqForm(analyzeRequestFileDto.getAnReqForm())
                 .anDiagnosis(analyzeRequestFileDto.getAnDiagnosis())
-                .anRecord(analyzeRequestFile.getAnRecord())
+                .anRecord(analyzeRequestFileDto.getAnRecord())
                 .anFilm(analyzeRequestFileDto.getAnFilm())
                 .anOther(analyzeRequestFileDto.getAnOther())
                 .analyzeRequestList(analyzeRequestList)

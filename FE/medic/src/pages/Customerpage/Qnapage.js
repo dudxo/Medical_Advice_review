@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import cusinquiry from '../../css/CustomerInquirypage.module.css'
+import cusinquiry from '../../css/Qnapage.module.css'
 import {useNavigate} from 'react-router-dom'
 import axios from "axios";
 import { Cookies } from "react-cookie";
-import QaPasswordModal from "./Customerinquiry/QaPassordModal";
+import QaPasswordModal from "./Qna/QaPassordModal";
 
-export default function CustomerInquirypage(){
+export default function Qnapage(){
     const [quiryList, setQuiryList] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
     const [isAdmin, setIsAdmin] = useState(false);
@@ -24,6 +24,8 @@ export default function CustomerInquirypage(){
     const navigate = useNavigate();
     const cookie = new Cookies();
 
+    const uRole = cookie.get('uRole')
+    console.log(uRole)
     const handlePageChange = (newPage) => {
       const totalPages = Math.ceil(quiryList.length / itemsPerPage);
   
@@ -141,9 +143,15 @@ export default function CustomerInquirypage(){
             </div>
         </div>
         <div className={cusinquiry.btn_write_inquirybox}>
-            <button className={cusinquiry.btn_write_inquiry} onClick={btn_write_inquiry}>
-                문의하기
-            </button>
+                {
+                    uRole === 'doctor' || uRole === 'manager'? 
+                    <></>
+                    :
+                    <button className={cusinquiry.btn_write_inquiry} onClick={btn_write_inquiry}>
+                            문의하기
+                    </button>
+                }
+            
         </div>
         <div className={cusinquiry.pagination}>
             <button

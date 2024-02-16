@@ -157,7 +157,7 @@ const btn_analyze_update = async() => {
           const anFile = [anReqForm, anDiagnosis, anRecord, anFilm, anOther];
         const anFile_toString = []
         anFile.forEach(file => {
-            if (file === null) {
+            if (file === null || typeof file === 'undefined') {
                 anFile_toString.push("empty_file")
             } else {
                 if(typeof file === 'string'){
@@ -215,7 +215,7 @@ const btn_analyze_update = async() => {
               <input
                 type="text"
                 name={`anQuestionContent_${index}`}
-                value={anQuestionContentArray[index]}
+                value={anQuestionContentArray[index] || ''}
                 onChange={(e) => handleQuestionContentChange(index, e)}
                 maxLength={300}
               />
@@ -230,8 +230,17 @@ const btn_analyze_update = async() => {
   
     const handleQuestionTotalChange = (e) => {
         let value = parseInt(e.target.value, 10);
-        value = isNaN(value) ? '' : Math.min(Math.max(value, 1), 5); // Ensure the value is between 1 and 10
+        value = isNaN(value) ? 1 : Math.min(Math.max(value, 1), 5); // Ensure the value is between 1 and 5
         setAnQuestionTotal(value);
+    
+        const newContents = anQuestionContentArray.slice(0, value);
+        
+        if (value > anQuestionContentArray.length) {
+            for (let i = anQuestionContentArray.length; i < value; i++) {
+                newContents[i] = '';
+            }
+        }
+        setAnQuestionContentArray(newContents);
     };
       
     const handleQuestionContentChange = (index, e) => {
