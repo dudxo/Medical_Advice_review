@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import writecustomerinquiry from '../../../css/WriteCustomerInquiry.module.css';
+import writecustomerinquiry from '../../../css/WriteQna.module.css';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Cookies } from 'react-cookie';
 
-export default function WriteCustomerInquiry() {
+export default function WriteQna() {
     const [timer, setTimer] = useState("");
     const [inquiryQuestion, setInquiryQuestion] = useState('')
     const [isSecret, setIsSecret] = useState(false)

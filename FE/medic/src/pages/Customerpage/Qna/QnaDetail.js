@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import writecustomerinquiry from '../../../css/WriteCustomerInquiry.module.css';
+import writecustomerinquiry from '../../../css/WriteQna.module.css';
 import { useLocation, useNavigate } from "react-router-dom";
 import AdminQnaAnswer from '../../../components/AdminQnaAnswer.js'
 import UserQnaAnswer from '../../../components/UserQnaAnswer.js'
 import { Cookies } from "react-cookie";
 import AdminWriteQnaAnswer from "../../../components/AdminWriteQnaAnswer.js";
 
-export default function CustomerInquiryDetail(){
+export default function QnaDetail(){
     const [detaillist, setDetaillist] = useState({});
     const cookies = new Cookies()
     const navigate = useNavigate();

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import cusinquiry from '../../css/CustomerInquirypage.module.css'
+import cusinquiry from '../../css/Qnapage.module.css'
 import {useNavigate} from 'react-router-dom'
 import axios from "axios";
 import { Cookies } from "react-cookie";
-import QaPasswordModal from "./Customerinquiry/QaPassordModal";
+import QaPasswordModal from "./Qna/QaPassordModal";
 
-export default function CustomerInquirypage(){
+export default function Qnapage(){
     const [quiryList, setQuiryList] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
     const [isAdmin, setIsAdmin] = useState(false);

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import customerinquirydetails from '../css/CustomerInquiryDetails.module.css'
-import writecustomerinquiry from '../css/WriteCustomerInquiry.module.css';
+import customerinquirydetails from '../css/QnaDetails.module.css'
+import writecustomerinquiry from '../css/WriteQna.module.css';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AdminQnaAnswer from "./AdminQnaAnswer";
