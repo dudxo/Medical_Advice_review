@@ -24,6 +24,8 @@ export default function CustomerInquirypage(){
     const navigate = useNavigate();
     const cookie = new Cookies();
 
+    const uRole = cookie.get('uRole')
+    console.log(uRole)
     const handlePageChange = (newPage) => {
       const totalPages = Math.ceil(quiryList.length / itemsPerPage);
   
@@ -141,9 +143,15 @@ export default function CustomerInquirypage(){
             </div>
         </div>
         <div className={cusinquiry.btn_write_inquirybox}>
-            <button className={cusinquiry.btn_write_inquiry} onClick={btn_write_inquiry}>
-                문의하기
-            </button>
+                {
+                    uRole === 'doctor' || uRole === 'manager'? 
+                    <></>
+                    :
+                    <button className={cusinquiry.btn_write_inquiry} onClick={btn_write_inquiry}>
+                            문의하기
+                    </button>
+                }
+            
         </div>
         <div className={cusinquiry.pagination}>
             <button
