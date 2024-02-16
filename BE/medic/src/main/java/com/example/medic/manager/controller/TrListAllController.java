@@ -38,7 +38,7 @@ public class TrListAllController {
      */
 
 
-    @PutMapping("/admin/translate/updateStatus{trId}")
+    @PutMapping("/admin/translate/updateStatus/{trId}")
     public ResponseEntity<Integer> updateAdvice(@PathVariable Long trId,  @RequestBody TranslateListDto translateListDtos){
         try{
             trAllListService.updateAdviceList(trId,translateListDtos);
@@ -85,6 +85,17 @@ public class TrListAllController {
             TrDetailDto trDetailDto = trAllListService.trDetailDto(trId);
             logger.info("adDetail:{}" ,trDetailDto);
             return ResponseEntity.ok(trDetailDto);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/admin/trnaslation/status/{trId}")
+    public ResponseEntity<TranslateListDto> trStatus(@PathVariable Long trId){
+        try{
+            TranslateListDto translateListDto = trAllListService.translateListDto(trId);
+
+            return  ResponseEntity.ok(translateListDto);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }

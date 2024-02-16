@@ -1,5 +1,6 @@
 package com.example.medic.manager.controller;
 
+import com.example.medic.manager.dto.AdviceListDto;
 import com.example.medic.manager.dto.AnDetailDto;
 import com.example.medic.manager.dto.AnalyzeListDto;
 import com.example.medic.manager.dto.DocSetDto;
@@ -38,7 +39,7 @@ public class AnListAllController {
     답변 배정일 , 진행상황
      */
 
-    @PutMapping("/admin/analyze/updateStatus{anId}")
+    @PutMapping("/admin/analyze/updateStatus/{anId}")
     public ResponseEntity<Integer> updateAdvice(@PathVariable Long anId ,@RequestBody AnalyzeListDto analyzeListDtos){
         try{
 
@@ -87,6 +88,16 @@ public class AnListAllController {
             AnDetailDto anDetailDto = anAllListService.anDetailDto(anId);
             logger.info("adDetail:{}" ,anId);
             return ResponseEntity.ok(anDetailDto);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/admin/analyze/status/{anId}")
+    public ResponseEntity<AnalyzeListDto> anStatus(@PathVariable Long anId){
+        try{
+            AnalyzeListDto analyzeListDto = anAllListService.analyzeListDto(anId);
+            return  ResponseEntity.ok(analyzeListDto);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }

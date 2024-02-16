@@ -11,9 +11,14 @@ export default function AdAnalyzeListPage() {
   const [responseDate, setResponseDate] = useState('');
   const [anProgressStatus, setAnProgressStatus] = useState('자문의뢰중');
   const itemsPerPage = 7;
+  const [filteredAdviceList, setFilteredAdviceList] = useState([]);
+
   const navigate = useNavigate();
   const startIndex = (currentPage - 1) * itemsPerPage;
   const quiryList = allAnalyzeList.slice(startIndex, startIndex + itemsPerPage);
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const renderList = filteredAdviceList.length > 0 ? filteredAdviceList : quiryList;
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,8 +58,8 @@ export default function AdAnalyzeListPage() {
   };
 
   const btn_set_doctor = (index) => {
-    const selectedAnalyze = allAnalyzeList[(index-1)];
-    navigate(`/medic/adminstrator/andocset/${index}`,{state:{selectedAnalyze}});
+    const anId= index;
+    navigate(`/medic/adminstrator/andocset/${index}`,{state:{anId}});
   };
 
   const formatDate = (dateString) => {
@@ -95,6 +100,13 @@ export default function AdAnalyzeListPage() {
     }
   };
 
+  const searchInfo = () => {
+    const filteredList = allAnalyzeList.filter(advice =>
+      advice.uname.toLowerCase().includes(searchKeyword.toLowerCase())
+    );
+    setFilteredAdviceList(filteredList);
+  };
+
 
   return (
     <div className={ad.ad_contents}>
@@ -103,6 +115,15 @@ export default function AdAnalyzeListPage() {
           <i className="fa-solid fa-circle icon"></i>
           분석의뢰 현황
         </h1>
+      </div>
+      <div>
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요"
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+        />
+        <button onClick={searchInfo}>검색</button>
       </div>
       <table className={ad.ad_table}>
         <thead>
@@ -119,9 +140,9 @@ export default function AdAnalyzeListPage() {
           </tr>
         </thead>
         <tbody>
-          {quiryList?.map((analyze, index) => (
+          {renderList?.map((analyze, index) => (
             <tr key={index}>
-              <td className={ad.ad_td} onClick={() => btn_detail_analyze(calculateNo(index))}>{calculateNo(index)}</td>
+              <td className={ad.ad_td} onClick={() => btn_detail_analyze(analyze.anId)}>{calculateNo(index)}</td>
               <td className={ad.ad_td}>{analyze.uname}</td>
               <td className={ad.ad_td}>{analyze.anPtDiagnosis}</td>
               <td className={ad.ad_td}>{formatDate(analyze.anRegDate)}</td>
@@ -136,14 +157,14 @@ export default function AdAnalyzeListPage() {
               </td>
               <td className={ad.ad_td}>
       <span
-    onClick={() => btn_set_doctor(calculateNo(index))}
+   
   >
     {analyze.cname||''}
   </span>
 </td>
 
 <td className={ad.ad_td}>
-<div  onClick={() => btn_set_doctor(calculateNo(index))}>
+<div  onClick={() => btn_set_doctor(analyze.anId)}>
 <i class="fa-solid fa-pen-to-square"></i>
 </div>
 </td>

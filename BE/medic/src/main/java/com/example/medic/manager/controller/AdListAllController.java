@@ -89,5 +89,13 @@ public class AdListAllController {
     }
 
 
-
+    @GetMapping("/admin/advice/status/{adId}")
+    public ResponseEntity<AdviceListDto> adStatus(@PathVariable Long adId){
+        try{
+            AdviceListDto  adviceListDto = adAllListService.adviceListDto(adId);
+            return  ResponseEntity.ok(adviceListDto);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }

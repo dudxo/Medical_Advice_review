@@ -1,6 +1,9 @@
 package com.example.medic.manager.service;
 
 
+import com.example.medic.advice.domain.AdviceAssignment;
+import com.example.medic.advice.domain.AdviceQuestion;
+import com.example.medic.advice.domain.AdviceRequestList;
 import com.example.medic.client.domain.Client;
 import com.example.medic.consultative.domain.Consultative;
 import com.example.medic.consultative.repository.ConsultativeRepository;
@@ -187,6 +190,31 @@ public class TrAllListService {
 
         return trDetailDto;
     }
+
+    public TranslateListDto translateListDto(Long trId){
+        logger.info("trid:{}",trId);
+        TranslationAssignment translationAssignment = translationAssignmentRepository.findByTrId(trId);
+        logger.info("trid1:{}",translationAssignment.getTrProgressStatus());
+        TranslationRequestList translationRequestList = translationAssignment.getTranslationRequestList();
+        logger.info("trid2:{}",translationRequestList.getTrPtDiagnosis());
+        TranslationRequestFile translationRequestFile = translationRequestList.getTranslationRequestFile();
+        logger.info("trid3:{}",translationRequestFile.getTrAnswerDate());
+
+        Client client  = translationRequestList.getClient();
+        logger.info("trid4:{}",client.getUName());
+        TranslateListDto translateListDto = TranslateListDto.builder()
+                .trAnswerDate(translationRequestFile.getTrAnswerDate())
+                .trId(trId)
+                .tamDate(translationAssignment.getTamDate())
+                .trRegDate(translationRequestList.getTrRegDate())
+                .uName(client.getUName())
+                .trProgressStatus(translationAssignment.getTrProgressStatus())
+                .trPtDiagnosis(translationRequestList.getTrPtDiagnosis())
+                .build();
+
+        return translateListDto;
+    }
+
 
 
 }

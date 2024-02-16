@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ad from '../../css/AdAdviceListPage.module.css';
-import { useNavigate, useLocation } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 
 export default function AdAdviceListPage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -10,29 +9,26 @@ export default function AdAdviceListPage() {
   const [assignmentDate, setAssignmentDate] = useState('');
   const [responseDate, setResponseDate] = useState('');
   const [admProgressStatus, setProgressStatus] = useState('자문의뢰중');
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [filteredAdviceList, setFilteredAdviceList] = useState([]);
   const itemsPerPage = 7;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const quiryList = allAdviceList.slice(startIndex, startIndex + itemsPerPage);
-
-
   const navigate = useNavigate();
 
-  const btn_detail_advice = async(index) => {
+  const btn_detail_advice = async (index) => {
     navigate(`/medic/adminstrator/addetail/${index}`);
   };
 
   const btn_set_doctor = (index) => {
-    const selectedAdvice = allAdviceList[(index-1)];
-
-    navigate(`/medic/adminstrator/docset/${index}`,{state:{selectedAdvice}});
-
+    const adId = index;
+    navigate(`/medic/adminstrator/docset/${index}`, { state: { adId } });
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/admin/advice/list');
-        console.log(response);
         setAllAdviceList(response.data);
       } catch (error) {
         console.error('자문 리스트를 가져오는 도중 에러 발생:', error);
@@ -47,26 +43,7 @@ export default function AdAdviceListPage() {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-  
     return `${year}-${month}-${day}`;
-  };
-
-  const handleInputChange = (index, field, value) => {
-    const updatedAdviceList = allAdviceList.map((advice, i) => {
-      if (i === (currentPage - 1) * itemsPerPage + index) {
-        return {
-          ...advice,
-          [field]: value,
-        };
-      }
-      return advice;
-    });
-  
-    setAllAdviceList(updatedAdviceList);
-  };
-  const parseDateString = (formattedDate) => {
-    const [year, month, day] = formattedDate.split('-');
-    return new Date(year, month - 1, day);
   };
 
   const calculateNo = (index) => {
@@ -77,31 +54,14 @@ export default function AdAdviceListPage() {
     setCurrentPage(newPage);
   };
 
-  const handleUpdateField = async () => {
-    try {
-      const updatedAdviceList = allAdviceList.map((advice, i) => {
-        if (i === currentPage - 2) {
-          return {
-            ...advice,
-            adAnswerDate: responseDate,
-            admDate: assignmentDate,
-            admProgressStatus: admProgressStatus
-          };
-        }
-        return advice;
-      });
-
-      console.log('Request Data:', updatedAdviceList);
-
-      const response = await axios.put('/advice/update/', updatedAdviceList);
-
-      console.log('Update response:', response.data, assignmentDate);
-
-      navigate('/');
-    } catch (error) {
-      console.error(`자문 업데이트 중 에러 발생:`, error);
-    }
+  const searchInfo = () => {
+    const filteredList = allAdviceList.filter(advice =>
+      advice.uname.toLowerCase().includes(searchKeyword.toLowerCase())
+    );
+    setFilteredAdviceList(filteredList);
   };
+
+  const renderList = filteredAdviceList.length > 0 ? filteredAdviceList : quiryList;
 
   return (
     <div className={ad.ad_contents}>
@@ -111,6 +71,16 @@ export default function AdAdviceListPage() {
           자문의뢰 현황
         </h1>
       </div>
+      <div>
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요"
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+        />
+        <button onClick={searchInfo}>검색</button>
+      </div>
+
       <table className={ad.ad_table}>
         <thead>
           <tr>
@@ -126,38 +96,27 @@ export default function AdAdviceListPage() {
           </tr>
         </thead>
         <tbody>
-          {quiryList?.map((advice, index) => (
+          {renderList?.map((advice, index) => (
             <tr key={index}>
-              <td className={ad.ad_td} onClick={() => btn_detail_advice(calculateNo(index))}>
+              <td className={ad.ad_td} onClick={() => btn_detail_advice(advice.adId)}>
                 {calculateNo(index)}
               </td>
               <td className={ad.ad_td}>{advice.uname}</td>
               <td className={ad.ad_td}>{advice.adPtDiagnosis}</td>
               <td className={ad.ad_td}>{formatDate(advice.adRegDate)}</td>
+              <td className={ad.ad_td}>{formatDate(advice.admDate)}</td>
+              <td className={ad.ad_td}>{formatDate(advice.adAnswerDate)}</td>
+              <td className={ad.ad_td}>{advice.admProgressStatus || '자문의뢰중'}</td>
               <td className={ad.ad_td}>
-                {formatDate(advice.admDate)}
+                <span className="your-custom-style">
+                  {advice.cname || '미배정'}
+                </span>
               </td>
               <td className={ad.ad_td}>
-              {formatDate(advice.adAnswerDate)}
+                <div onClick={() => btn_set_doctor(advice.adId)}>
+                  <i className="fa-solid fa-pen-to-square"></i>
+                </div>
               </td>
-              <td className={ad.ad_td}>
-              {advice.admProgressStatus||'자문의뢰중'}
-              </td>
-              <td className={ad.ad_td}>
-  <span
-    className="your-custom-style"
-   
-  >
-    {advice.cname||'미배정'}
-  </span>
-</td>
-
-<td className={ad.ad_td}>
-<div  onClick={() => btn_set_doctor(calculateNo(index))}>
-<i class="fa-solid fa-pen-to-square"></i>
-</div>
-</td>
-
             </tr>
           ))}
         </tbody>
@@ -181,13 +140,12 @@ export default function AdAdviceListPage() {
           </button>
         ))}
         <button
-          className={ad.ad_paginationButston}
+          className={ad.ad_paginationButton}
           onClick={() => handlePageChange(currentPage + 1)}
         >
           ▶
         </button>
-      </div >
-   
+      </div>
     </div>
   );
 }

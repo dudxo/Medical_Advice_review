@@ -12,13 +12,9 @@ export default function FaqDetailPage()  {
 
   const [isAdmin, setIsAdmin] = useState(false);
 
- 
-  const faqs = location.state.faq;
+
   const faqId = location.state.faqId;
   const [faqDetail,setFaqDetail] = useState([]);
-  const manager = faqDetail.manager;
-
-  const [prevNum, setPrevNum] = useState('');
 
 
   const [prevTitle, setPrevTitle] = useState('');
