@@ -131,7 +131,7 @@ export default function AnalyzeRequestpage(){
           const anFile = [anReqForm, anDiagnosis, anRecord, anFilm, anOther]
           const anFile_toString = []
           anFile.forEach(file => {
-            if (file === null) {
+            if (file === null || typeof file === 'undefined') {
                 anFile_toString.push("empty_file")
             } else {
                 allAnalyzeRequest.append('files', file);

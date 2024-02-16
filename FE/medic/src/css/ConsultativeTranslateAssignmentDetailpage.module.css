@@ -92,3 +92,12 @@ div.complete {
   width: 100%;
   overflow-x: auto; /* Enable horizontal scroll if content overflows */
 }
+.notice{
+    font-size: 0.9rem;
+    color: #be0000;
+    margin-left : 80px;
+}
+
+.file_box{
+    margin-top : 50px
+}
