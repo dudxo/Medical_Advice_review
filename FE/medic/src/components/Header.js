@@ -13,7 +13,9 @@ export default function Header({}) {
     useEffect(() => {
         if(cookies.get('uId')){
             setIsSession(true)
-        } else{
+        }
+        
+        else{
             setIsSession(false)
         }
     },[uId])
@@ -236,9 +238,11 @@ export default function Header({}) {
             const myInfo = await getMyInfo();
             const role = cookies.get('uRole');
             let nextPage = '/medic/mypage/modifymyinfo';
-    
+            
             if (role === 'docter') {
                 nextPage = '/medic/mypage/ChangeConsultativeInfo';
+            } else if(role === 'manager'){
+                nextPage = '/medic/adminstrator/administratormypage';
             }
             
             console.log(myInfo);
@@ -254,7 +258,11 @@ export default function Header({}) {
         const role = cookies.get('uRole');
         if (role === 'docter') {
             navigate('/medic/consultativeMypage');
-        } else {
+        } else if(role ==='manager') {
+            navigate('/medic/adminstrator/administratormypage')
+        }
+    
+        else {
             navigate('/medic/mypage');
         }
     } else {

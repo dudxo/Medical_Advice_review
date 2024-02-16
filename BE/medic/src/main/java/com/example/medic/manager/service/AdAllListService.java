@@ -110,6 +110,8 @@ return false;
     }
 
 
+
+
     /*
     전문의 목록
      */
@@ -199,6 +201,23 @@ return false;
 //                .adAnswerContent(adviceRequestList.getAdviceQuestions().get(0).getAdAnswerContent())
                 .build();
         return adDetailDto;
+    }
+
+    public AdviceListDto adviceListDto(Long adId){
+        AdviceAssignment adviceAssignment = adviceAssignmentRepository.findByAdId(adId);
+        AdviceRequestList adviceRequestList = adviceAssignment.getAdviceRequestList();
+        List<AdviceQuestion> adviceQuestion = adviceRequestList.getAdviceQuestions();
+        Client client  = adviceRequestList.getClient();
+        AdviceListDto adviceListDto = AdviceListDto.builder()
+                .adAnswerDate(adviceQuestion.get(0).getAdAnswerDate())
+                .adId(adId)
+                .admProgressStatus(adviceAssignment.getAdmProgressStatus())
+                .uName(client.getUName())
+                .adPtDiagnosis(adviceRequestList.getAdPtDiagnosis())
+                .amdDate(adviceAssignment.getAdmDate())
+                .adRegDate(adviceRequestList.getAdRegDate())
+                .build();
+        return adviceListDto;
     }
 
 }

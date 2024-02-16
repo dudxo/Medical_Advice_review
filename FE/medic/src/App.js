@@ -70,6 +70,7 @@ import ChangeConsultativePwpage from "./pages/Mypage/ChangeConsultativePwpage";
 import AnnouncementEdit from "./pages/Customerpage/Announcement/AnnouncementEdit";
 import FaqEdit  from "./pages/Customerpage/FAQ/FaqEdit";
 import ScrollToTop from "./components/ScrollToTop";
+import ErrorPage from "./pages/Adminstrator/ErrorPage";
 
 export default function App(){
     return(
@@ -146,6 +147,7 @@ export default function App(){
                     <Route path='/medic/adminstrator/tndetail/:index' element={<AdDetailTranslate/>}/>
                     <Route path='/medic/customer/announcement/edit/:amId' element ={<AnnouncementEdit/>}/>
                     <Route path='/medic/customre/faq/edit/:faqId' element={<FaqEdit/>}/>
+                    <Route path="/medic/adminstrator/error" element={<ErrorPage/>}/>
 
 
 

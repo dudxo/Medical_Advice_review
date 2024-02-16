@@ -9,11 +9,24 @@ const AdTranslateListPage = () => {
   const [allTransList, setAllTransList] = useState([]);
   const [assignmentDate, setAssignmentDate] = useState('');
   const [responseDate, setResponseDate] = useState('');
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [filteredAdviceList, setFilteredAdviceList] = useState([]);
+
+
   const [trProgressStatus, setTrProgressStatus] = useState('');
   console.log(allTransList)
   const itemsPerPage = 7;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const quiryList = allTransList.slice(startIndex, startIndex + itemsPerPage);
+
+  const searchInfo = () => {
+    const filteredList = allTransList.filter(advice =>
+      advice.uname.toLowerCase().includes(searchKeyword.toLowerCase())
+    );
+    setFilteredAdviceList(filteredList);
+  };
+
+  const renderList = filteredAdviceList.length > 0 ? filteredAdviceList : quiryList;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,9 +65,8 @@ const AdTranslateListPage = () => {
   };
 
   const btn_set_doctor = (index) => {
-    const selectedTranslate = allTransList[(index-1)]
-    console.log(selectedTranslate)
-    navigate(`/medic/adminstrator/trdocset/${index}`,{state:{selectedTranslate}});
+    const trId = index
+    navigate(`/medic/adminstrator/trdocset/${index}`,{state:{trId}});
   };
 
   const formatDate = (dateString) => {
@@ -83,6 +95,16 @@ const AdTranslateListPage = () => {
           번역의뢰 현황
         </h1>
       </div>
+      <div>
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요"
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+        />
+        <button onClick={searchInfo}>검색</button>
+      </div>
+
       <table className={ad.ad_table}>
         <thead>
           <tr>
@@ -98,9 +120,9 @@ const AdTranslateListPage = () => {
           </tr>
         </thead>
         <tbody>
-          {quiryList?.map((trans, index) => (
+          {renderList?.map((trans, index) => (
             <tr key={index}>
-              <td className={ad.ad_td} onClick={() => btn_detail_translate(calculateNo(index))}>{calculateNo(index)}</td>
+              <td className={ad.ad_td} onClick={() => btn_detail_translate(trans.trId)}>{calculateNo(index)}</td>
               <td className={ad.ad_td}>{trans.uname}</td>
               <td className={ad.ad_td}>{trans.trPtDiagnosis}</td>
               <td className={ad.ad_td}>{formatDate(trans.trRegDate)}</td>
@@ -125,7 +147,7 @@ const AdTranslateListPage = () => {
 </td>
 
 <td className={ad.ad_td}>
-<div  onClick={() => btn_set_doctor(calculateNo(index))}>
+<div  onClick={() => btn_set_doctor(trans.trId)}>
 <i class="fa-solid fa-pen-to-square"></i>
 </div>
 </td>

@@ -1,5 +1,6 @@
 package com.example.medic.manager.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -19,6 +20,7 @@ public class AdviceListDto {
     private String admProgressStatus;
     private String cName;
 
+    @Builder
     public AdviceListDto(Long adId,   String adPtDiagnosis,
                                  LocalDate adRegDate, String uName, LocalDate amdDate, LocalDate adAnswerDate,
                             String admProgressStatus, String cName) {

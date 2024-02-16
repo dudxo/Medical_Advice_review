@@ -1,5 +1,6 @@
 package com.example.medic.manager.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ public class AnalyzeListDto {
     private String anProgressStatus;
     private String cName;
 
+    @Builder
     public AnalyzeListDto(Long anId,  String anPtDiagnosis,
                          LocalDate anRegDate, String uName, LocalDate adMdDate, LocalDate anAnswerDate,
                          String anProgressStatus, String cName) {

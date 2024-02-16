@@ -5,27 +5,42 @@ import { useNavigate, useParams , useLocation} from 'react-router-dom';
 
 export default function TrSetDoc() {
   const [currentPage, setCurrentPage] = useState(1);
+  const location = useLocation();
   const [allDocList, setAllDocList] = useState([]);
   const [selectedCIds, setSelectedCIds] = useState(new Set());
   const { index } = useParams();
-  const {cId} = useState();
+  const {trId} = location.state||{};
   const navigate = useNavigate();
   const itemsPerPage = 7;
   
-  const location = useLocation();
-  const {selectedTranslate} = location.state;
+
+  const [selectedTranslate,setSelectedTranslate] = useState("");
   console.log(selectedTranslate);
   
   const [tamDate , setTamDate] = useState();
   const [trProgressStatus , setTrProgressStatus] = useState();
 
-  useEffect(() => {
-    if (selectedTranslate) {
-      setTamDate(selectedTranslate.tamDate);
-      setTrProgressStatus(selectedTranslate.trProgressStatus);
-    }
-  }, [selectedTranslate]);
+
   const [selectedCId, setSelectedCId] = useState(null);
+
+
+  useEffect(()=> {
+    const fetchData1 = async () => {
+      try{
+     const response = await axios.get(`/admin/trnaslation/status/${trId}`)
+        console.log('response',response.data)
+        const data = response.data
+        setSelectedTranslate(data);
+       
+        setTrProgressStatus(response.data.trProgressStatus);
+        setTamDate(response.data.tamDate);
+
+      } catch(error){
+        console.error('에러발생:',error)
+      }
+    };
+fetchData1();
+},[]);
 
 
   useEffect(() => {
@@ -41,6 +56,11 @@ export default function TrSetDoc() {
 
     fetchData();
   }, []);
+  
+  const btn_trans_list = async() => {
+    navigate('/medic/adminstrator/trlist')
+}
+
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -69,12 +89,16 @@ export default function TrSetDoc() {
 
   const handleSave = async () => {
     try {
-
-      
       if (selectedCId !== null) {
-        const response = await axios.post(`/admin/translate/setConsultative/${index}`, { cId: selectedCId });
-        console.log('저장 응답:', response.data);
-        navigate('/medic/adminstrator/trlist');
+        if (window.confirm('배정하시겠습니까?')) {
+          const response = await axios.post(`/admin/translate/setConsultative/${trId}`, { cId: selectedCId });
+          console.log('저장 응답:', response.data);
+          if (response.data === 1) {
+            alert('배정이 완료되었습니다.');
+          } else {
+            alert('배정 중 오류 발생.');
+          }
+        }
       } else {
         console.error('선택된 cId가 없습니다.');
       }
@@ -82,6 +106,7 @@ export default function TrSetDoc() {
       console.error('저장 중 에러 발생:', error);
     }
   };
+
   
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -105,8 +130,16 @@ export default function TrSetDoc() {
 
   const handleUpdateField = async(info) => {
     try{
-      const response = await axios.put(`/translate/update/${index}`,info);
-      console.log(response)
+    
+        const response = await axios.put(`/admin/translate/updateStatus/${trId}`,info);
+        if(response.data==1){
+          alert('저장이 완료되었습니다.')
+
+        }else{
+          alert('저장 실패')
+        }
+      
+     
     }catch(error){
       console.error('에러발생')
     }
@@ -181,7 +214,7 @@ export default function TrSetDoc() {
       </div>
       <div className={ad.ad_complete}>
       <button className={ad.ad_complete} onClick={handleSave} disabled={!isSaveButtonEnabled}>
-        저장
+        배정
       </button>
       </div>
 
@@ -206,7 +239,7 @@ export default function TrSetDoc() {
         <tbody>
           
             <tr key={index}>
-              <td className={ad.ad_td}>{selectedTranslate.trId}</td>
+              <td className={ad.ad_td}>{trId}</td>
               <td className={ad.ad_td}>{selectedTranslate.uname}</td>
               <td className={ad.ad_td}>{selectedTranslate.trPtDiagnosis}</td>
               <td className={ad.ad_td}>{selectedTranslate.trRegDate}</td>
@@ -236,7 +269,12 @@ export default function TrSetDoc() {
 
       <div className={ad.ad_complete}>
         <button className={ad.ad_complete} onClick={btn_modify}>
-          배정
+          저장
+        </button>
+      </div>
+      <div className={ad.ad_complete}>
+        <button className={ad.ad_complete} onClick={btn_trans_list}>
+          목록
         </button>
       </div>
 

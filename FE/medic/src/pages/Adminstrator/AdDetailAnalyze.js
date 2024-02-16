@@ -132,7 +132,7 @@ export default function AdDetailAnalyze(){
             <div className={analyzerequest.input_box}>
               <input
                 type="text"
-                value={question.anQuestionAnswer || ''}
+                value={question.anAnswerContent || ''}
                 maxLength={300}
                 readOnly={true}
               />

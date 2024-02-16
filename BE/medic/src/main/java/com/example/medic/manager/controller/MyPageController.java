@@ -74,5 +74,25 @@ public class MyPageController {
         }
     }
 
+    @GetMapping("/admin/faqCount")
+    public ResponseEntity<Long> faqRequestCount(){
+        try{
+            long faqCount = myPageService.getFaqCount();
+            return ResponseEntity.ok(faqCount);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @GetMapping("/admin/announceCount")
+    public ResponseEntity<Long> announceRequestCount(){
+        try{
+            long announceCount = myPageService.getAnnounceCount();
+            return ResponseEntity.ok(announceCount);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
 
 }

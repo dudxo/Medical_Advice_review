@@ -1,6 +1,8 @@
 package com.example.medic.manager.service;
 
 import com.example.medic.advice.domain.AdviceAssignment;
+import com.example.medic.advice.domain.AdviceQuestion;
+import com.example.medic.advice.domain.AdviceRequestList;
 import com.example.medic.analyze.domain.AnalyzeAssignment;
 import com.example.medic.analyze.domain.AnalyzeRequest;
 import com.example.medic.analyze.domain.AnalyzeRequestList;
@@ -190,5 +192,25 @@ public class AnAllListService {
                .build();
 
        return anDetailDto;
+    }
+
+    public AnalyzeListDto analyzeListDto(Long anId){
+
+        AnalyzeAssignment analyzeAssignment = analyzeAssignmentRepository.findByAnId(anId);
+        AnalyzeRequestList analyzeRequestList = analyzeAssignment.getAnalyzeRequestList();
+        List<AnalyzeRequest> analyzeRequests = analyzeRequestList.getAnalyzeRequests();
+
+        Client client  = analyzeRequestList.getClient();
+
+        AnalyzeListDto analyzeListDto = AnalyzeListDto.builder()
+                .anAnswerDate(analyzeRequests.get(0).getAnAnswerDate())
+                .anProgressStatus(analyzeAssignment.getAnProgressStatus())
+                .anId(anId)
+                .anRegDate(analyzeRequestList.getAnRegDate())
+                .uName(client.getUName())
+                .anPtDiagnosis(analyzeRequestList.getAnPtDiagnosis())
+                .adMdDate(analyzeAssignment.getAdMdDate())
+                .build();
+        return analyzeListDto;
     }
 }

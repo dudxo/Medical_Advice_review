@@ -11,14 +11,32 @@ export default function AnSetDoc() {
   const {cId} = useState();
   const [selectedCId, setSelectedCId] = useState(null);
   const location = useLocation();
-  const {selectedAnalyze} = location.state;
-  console.log(selectedAnalyze)
+  const [selectedAnalyze, setSelectedAnalyze] = useState(null);
+  const {anId} = location.state||{}; 
+  console.log(anId)
   const navigate = useNavigate();
   const itemsPerPage = 7;
-  const [adMdDate,setAdMdDate] = useState(selectedAnalyze.adMdDate||"")
-  const [adProgressStatus , setAdProgressStatus] = useState(selectedAnalyze.anProgressStatus||"")
-  console.log('aa',adMdDate);
-  console.log('bb', adProgressStatus)
+  const [adMdDate,setAdMdDate] = useState("")
+  const [adProgressStatus , setAdProgressStatus] = useState("")
+
+  useEffect(()=> {
+    const fetchData1 = async () => {
+      try{
+     const response = await axios.get(`/admin/analyze/status/${anId}`)
+        console.log('response',response.data)
+        const data = response.data
+       setSelectedAnalyze(data);
+       
+        setAdProgressStatus(response.data.admProgressStatus);
+        setAdMdDate(response.data.admDate);
+
+      } catch(error){
+        console.error('에러발생:',error)
+      }
+    };
+fetchData1();
+},[]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -64,13 +82,21 @@ export default function AnSetDoc() {
   const handleSave = async () => {
     try {
       // const selectedCId = Array.from(selectedCIds)[0];
-      if (selectedCId !== null) {
-        const response = await axios.post(`/admin/analyze/setConsultative/${index}`, { cId: selectedCId });
-        console.log('저장 응답:', response.data);
-        navigate('/medic/adminstrator/anlist');
-      } else {
-        console.error('선택된 cId가 없습니다.');
+      if(window.confirm("배정하시겠습니까?")){
+        if (selectedCId !== null) {
+          const response = await axios.post(`/admin/analyze/setConsultative/${anId}`, { cId: selectedCId });
+          console.log('저장 응답:', response.data);
+          if(response.data == 1){
+            alert('배정 성공')
+          }else{
+            alert('배정 오류')
+          }
+    
+        } else {
+          console.error('선택된 cId가 없습니다.');
+        }
       }
+      
     } catch (error) {
       console.error('저장 중 에러 발생:', error);
     }
@@ -90,17 +116,26 @@ export default function AnSetDoc() {
     
   }
 
+  const btn_trans_list = async() => {
+    navigate('/medic/adminstrator/anlist')
+}
+
   const handleUpdateField = async(info) => {
     try{
-      const response = await axios.put(`/admin/analyze/updateStatus/${index}`,info);
-      console.log(response)
-    }catch(error){
+     
+        const response = await axios.put(`/admin/analyze/updateStatus/${anId}`,info);
+        console.log(response)
+          if(response.data == 1){
+            alert('배정 성공')
+          }else{
+            alert('배정 실패')
+          }
+      
+          }catch(error){
       console.error('에러발생')
     }
   }
   
-
-  // 선택된 cId가 하나 이상일 때만 저장 버튼 활성화
   const isSaveButtonEnabled = selectedCId !== null;
 
   return (
@@ -169,7 +204,7 @@ export default function AnSetDoc() {
       </div>
       <div className={ad.ad_complete}>
       <button className={ad.ad_complete} onClick={handleSave} disabled={!isSaveButtonEnabled}>
-        저장
+        배정
       </button>
       </div>
 
@@ -195,18 +230,19 @@ export default function AnSetDoc() {
         <tbody>
           
             <tr key={index}>
-              <td className={ad.ad_td}>{selectedAnalyze.anId}</td>
-              <td className={ad.ad_td}>{selectedAnalyze.uname}</td>
-              <td className={ad.ad_td}>{selectedAnalyze.anPtDiagnosis}</td>
-              <td className={ad.ad_td}>{selectedAnalyze.anRegDate}</td>
-              <td className={ad.ad_td}>
-                <input
-                  type="date"
-                  value={formatDate(adMdDate)}
-                  onChange={(e) => input_adMdate(e)}
-                />
-              </td>
-              <td className={ad.ad_td}>{selectedAnalyze.anAnswerDate}</td>
+              <td className={ad.ad_td}>{anId}</td>
+              <td className={ad.ad_td}>{selectedAnalyze ? selectedAnalyze.uname : ""}</td>
+<td className={ad.ad_td}>{selectedAnalyze ? selectedAnalyze.anPtDiagnosis : ""}</td>
+<td className={ad.ad_td}>{selectedAnalyze ? selectedAnalyze.anRegDate : ""}</td>
+<td className={ad.ad_td}>
+  <input
+    type="date"
+    value={formatDate(adMdDate)}
+    onChange={(e) => input_adMdate(e)}
+  />
+</td>
+<td className={ad.ad_td}>{selectedAnalyze ? selectedAnalyze.anAnswerDate : ""}</td>
+
               <td className={ad.ad_td}>
               <select
                   value={adProgressStatus || '자문의뢰중'}
@@ -225,7 +261,13 @@ export default function AnSetDoc() {
 
       <div className={ad.ad_complete}>
         <button className={ad.ad_complete} onClick={btn_modify}>
-          배정
+          저장
+        </button>
+      </div>
+
+      <div className={ad.ad_complete}>
+        <button className={ad.ad_complete} onClick={btn_trans_list}>
+          목록
         </button>
       </div>
 
