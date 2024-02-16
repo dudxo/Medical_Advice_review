@@ -114,9 +114,10 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
             List<AdviceQuestion> findAdviceQuestion = adviceQuestionRepository.findAllByAdviceRequestList(findAdviceRequestList);
             AdviceFile findAdviceFile = adviceFileRepository.findByAdviceRequestList(findAdviceRequestList);
             DiagnosisRecord findDiagnosisRecord = diagnosisRecordRepository.findByAdviceRequestList(findAdviceRequestList);
+            AdviceAssignment findAdviceAssignment = adviceAssignmentRepository.findByAdviceRequestList(findAdviceRequestList);
 
             return createResponseAllAdviceDto(findAdviceRequestList, requestClient, findAdviceQuestion,
-                    findAdviceFile, findDiagnosisRecord);
+                    findAdviceFile, findDiagnosisRecord, findAdviceAssignment);
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException();
         }
@@ -127,7 +128,7 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
      */
     public AllAdviceRequestDto createResponseAllAdviceDto (AdviceRequestList findAdviceRequestList, Client requestClient,
                                                            List<AdviceQuestion> findAdviceQuestionList, AdviceFile findAdviceFile,
-                                                           DiagnosisRecord findDiagnosisRecord) {
+                                                           DiagnosisRecord findDiagnosisRecord, AdviceAssignment findAdviceAssignment) {
         List<String> questionContent = new ArrayList<>();
         List<String> answerContent = new ArrayList<>();
         for (AdviceQuestion adviceQuestion : findAdviceQuestionList) {
@@ -166,6 +167,7 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
                 .adDiagnosis(findAdviceFile.getAdDiagnosis())
                 .adRecord(findAdviceFile.getAdRecord())
                 .adFilm(findAdviceFile.getAdFilm())
+                .admProgressStatus(findAdviceAssignment.getAdmProgressStatus())
 //                .adOther(findAdviceFile.getAdOther())
                 .build();
     }
@@ -215,8 +217,9 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
             Client requestClient = findAnalyzeRequestList.getClient();
             List<AnalyzeRequest> findAnalyzeQuestion = analyzeRequestRepository.findAllByAnalyzeRequestList(findAnalyzeRequestList);
             AnalyzeRequestFile findAnalyzeFile = analyzeRequestFileRepository.findByAnalyzeRequestList(findAnalyzeRequestList);
+            AnalyzeAssignment findAnalyzeAssignment = analyzeAssignmentRepository.findByAnalyzeRequestList(findAnalyzeRequestList);
 
-            return createResponseAnalyzeDto(findAnalyzeRequestList, requestClient, findAnalyzeQuestion, findAnalyzeFile);
+            return createResponseAnalyzeDto(findAnalyzeRequestList, requestClient, findAnalyzeQuestion, findAnalyzeFile, findAnalyzeAssignment);
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException();
         }
@@ -226,7 +229,8 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
      * @return 신청된 의료 분석 정보 응답 dto 생성
      */
     private AnalyzeResponseDto createResponseAnalyzeDto(AnalyzeRequestList findAnalyzeRequestList, Client requestClient,
-                                                        List<AnalyzeRequest> findAnalyzeQuestion, AnalyzeRequestFile findAnalyzeFile) {
+                                                        List<AnalyzeRequest> findAnalyzeQuestion, AnalyzeRequestFile findAnalyzeFile,
+                                                        AnalyzeAssignment findAnalyzeAssignment) {
         List<String> questionContent = new ArrayList<>();
         List<String> answerContent = new ArrayList<>();
         for (AnalyzeRequest analyzeRequest : findAnalyzeQuestion) {
@@ -255,6 +259,7 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
                 .anRecord(findAnalyzeFile.getAnRecord())
                 .anFilm(findAnalyzeFile.getAnFilm())
                 .anOther(findAnalyzeFile.getAnOther())
+                .anProgressStatus(findAnalyzeAssignment.getAnProgressStatus())
                 .build();
     }
 

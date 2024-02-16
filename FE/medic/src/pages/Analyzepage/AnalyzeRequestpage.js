@@ -338,7 +338,7 @@ export default function AnalyzeRequestpage(){
                     </div>
                 </div>
                 <div className={analyzerequest.complete}>
-                    <button type = "button" className={analyzerequest.btt_complete} onClick={btn_analyze_request}>자문 의뢰신청</button>
+                    <button type = "button" className={analyzerequest.btt_complete} onClick={btn_analyze_request}>분석 의뢰신청</button>
                     <button type = "button" className={analyzerequest.btt_complete} onClick={btn_analyze_cancle}>취소</button>
                  </div>
             </div>

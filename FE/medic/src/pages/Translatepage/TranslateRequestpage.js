@@ -242,7 +242,7 @@ export default function TranslateRequestpage(){
                     </div>
                 </div>
                 <div className={translaterequest.complete}>
-                    <button type = "button" className={translaterequest.btt_complete} onClick={btn_translate_request}>자문 의뢰신청</button>
+                    <button type = "button" className={translaterequest.btt_complete} onClick={btn_translate_request}>번역 의뢰신청</button>
                     <button type = "button" className={translaterequest.btt_complete} onClick={btn_translate_cancle}>취소</button>
                  </div>
             </div>

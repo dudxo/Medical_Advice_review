@@ -38,10 +38,15 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
 
     const [anAnswerDate, setAnAnswerDate] = useState('');
 
+    const [anProgressStatus, setAnProgressStatus] = useState('');
+
+    const [assignmentAnalyze, setAssignmentAnalyze] = useState('');
+
     const getUserInfo = async() =>{
         try{
             const response = await axios.get(`/consultative/assignedAnalyze/detail/${index}`)
             console.log(response)
+            setAssignmentAnalyze(response.data)
             setUname(response.data.uname)
             setUtel(response.data.userTel)
             setUphone(response.data.userPhone)
@@ -54,6 +59,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
             setAnQuestionTotal(response.data.anQuestionContent)
             setAnQuestionContents(response.data.anQuestionContent)
             setAnAnswerContents(response.data.anAnswerContent)
+            setAnProgressStatus(response.date.anProgressStatus)
 
             const an_PtSsNum = response.data.anPtSsNum.split('-');  // 주민번호 나누기
             setAnptssnum1(an_PtSsNum[0]);
@@ -160,20 +166,11 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
     };
     
     const btn_analyze_request = async() => {
-        if (isFormValid()) {
-            await saveAnalysisResponse();
+        if (assignmentAnalyze.anProgressStatus == '결제하기') {
+            alert("회원에게 답변이 전달되면 답변을 수정할 수 없습니다.");
         } else {
-            alert('답변을 모두 입력해주세요.');
+            await saveAnalysisResponse();
         }
-    };
-    
-    const isFormValid = () => {
-        // 여러 입력 필드와 텍스트 영역의 유효성을 확인
-        
-        const isadAnswerContentsInfoValid = anAnswerContents.every(content => content); // 모든 질문 내용이 비어있지 않아야 함
-      
-        // 모든 조건을 만족하면 true를 반환
-        return isadAnswerContentsInfoValid;
     };
 
     

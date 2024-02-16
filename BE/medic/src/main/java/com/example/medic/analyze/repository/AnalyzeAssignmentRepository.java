@@ -3,6 +3,7 @@ package com.example.medic.analyze.repository;
 
 import com.example.medic.advice.domain.AdviceAssignment;
 import com.example.medic.analyze.domain.AnalyzeAssignment;
+import com.example.medic.analyze.domain.AnalyzeRequestFile;
 import com.example.medic.analyze.domain.AnalyzeRequestList;
 import com.example.medic.consultative.domain.Consultative;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +23,6 @@ public interface AnalyzeAssignmentRepository extends JpaRepository<AnalyzeAssign
 
     @Query("SELECT aa FROM AnalyzeAssignment aa WHERE aa.consultative.cId = :cId")
     List<AnalyzeAssignment> findByConsultative_CId(String cId);
+
+    AnalyzeAssignment findByAnalyzeRequestList(AnalyzeRequestList analyzeRequestList);
 }

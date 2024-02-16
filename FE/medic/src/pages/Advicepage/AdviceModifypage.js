@@ -321,7 +321,7 @@ const renderQuestionInputs = () => {
             <input
               type="text"
               name={`adQuestionContent_${index}`}
-              value={adQuestionContentArray[index]}
+              value={adQuestionContentArray[index] || ''}
               onChange={(e) => handleQuestionContentChange(index, e)}
               maxLength={300}
             />
@@ -374,11 +374,20 @@ const handleYearChange = (e) => {
       setAdetccount(e.target.value.length)
     };
 
-  const handleQuestionTotalChange = (e) => {
-      let value = parseInt(e.target.value, 10);
-      value = isNaN(value) ? '' : Math.min(Math.max(value, 1), 5); // Ensure the value is between 1 and 10
-      setAdQuestionTotal(value);
-  };
+    const handleQuestionTotalChange = (e) => {
+        let value = parseInt(e.target.value, 10);
+        value = isNaN(value) ? 1 : Math.min(Math.max(value, 1), 5); // Ensure the value is between 1 and 5
+        setAdQuestionTotal(value);
+    
+        const newContents = adQuestionContentArray.slice(0, value);
+        
+        if (value > adQuestionContentArray.length) {
+            for (let i = adQuestionContentArray.length; i < value; i++) {
+                newContents[i] = '';
+            }
+        }
+        setAdQuestionContentArray(newContents);
+    };
   
   const handleQuestionContentChange = (index, e) => {
       const newContents = [...adQuestionContentArray];
