@@ -197,20 +197,20 @@ export default function Header({}) {
         if (myInfo) {
             const uAdd = myInfo.userAddress.split(' ');
             const cAdd = myInfo.cpAddress.split(' ');
-            const cadd = myInfo.cAddress.split(' ');
-            const hpadd = myInfo.hospAddress.split(' ');
+            // const cadd = myInfo.cAddress.split(' ');
+            // const hpadd = myInfo.hospAddress.split(' ');
             myInfo['zipcodeNum'] = uAdd[0]
             myInfo['zipCode'] = uAdd[1]
             myInfo['detailAddress'] = uAdd[2]
             myInfo['cpZipcodeNum'] = cAdd[0]
             myInfo['cpZipcode'] = cAdd[1]
             myInfo['detailCpAddress'] = cAdd[2]
-            myInfo['cZipcodeNum'] = cadd[0]
-            myInfo['cZipCode'] = cadd[1]
-            myInfo['cDetailAddress'] = cadd[2]
-            myInfo['hpZipcodeNum'] = hpadd[0]
-            myInfo['hpZipcode'] = hpadd[1]
-            myInfo['detailHpAddress'] = hpadd[2]
+            // myInfo['cZipcodeNum'] = cadd[0]
+            // myInfo['cZipCode'] = cadd[1]
+            // myInfo['cDetailAddress'] = cadd[2]
+            // myInfo['hpZipcodeNum'] = hpadd[0]
+            // myInfo['hpZipcode'] = hpadd[1]
+            // myInfo['detailHpAddress'] = hpadd[2]
             
         }
     }
