@@ -81,7 +81,7 @@ console.log('ann',faqDetail)
             <div className={announcedetail.inquiry_title}>
                 <h1>
                     <i className="fa-solid fa-circle icon"></i>
-                    FAQ 수정
+                    자주 묻는 질문 수정
                 </h1>
             </div>
         <div className={announcedetail.detail_table}>

@@ -45,6 +45,7 @@ public class Client {
 
     @NotNull
     private String userAddress;
+    private String uPart;
 
     private String company;
 
@@ -72,7 +73,7 @@ public class Client {
 
     @Builder
     private Client(String uId, String uPw, String uEmail, String uName, String userPhone, String userTel, String userAddress
-                    , String company, String ceo, String cpFx, String cpNum, String cpTel, String cpAddress, String uRole){
+                    , String company, String ceo, String cpFx, String cpNum, String cpTel, String cpAddress, String uRole,String uPart){
         this.uId = uId;
         this.uPw = uPw;
         this.uEmail = uEmail;
@@ -87,6 +88,7 @@ public class Client {
         this.cpTel =cpTel;
         this.uRole = uRole;
         this.cpAddress = cpAddress;
+        this.uPart = uPart;
     }
 
     public void updatePassword(String newUpw) {

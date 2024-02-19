@@ -157,7 +157,7 @@ public class AnnouncementService {
      * @return 검색
      */
     public List<Announcement> searchAnnouncementInfo(String keyword) {
-        return announcementRepository.findByAmName(keyword);
+        return announcementRepository.findByAmNameContaining(keyword);
     }
 
 }

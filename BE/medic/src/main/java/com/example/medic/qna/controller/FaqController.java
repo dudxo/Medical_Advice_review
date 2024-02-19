@@ -124,6 +124,14 @@ public class FaqController {
 
     }
 
-
+    @GetMapping("/faq/search/{keyword}")
+    public ResponseEntity<List<Faq>> searchFaq(@PathVariable String keyword) {
+        try {
+            List<Faq> searchResults =faqSituationService.searchFaqInfo(keyword);
+            return ResponseEntity.ok(searchResults);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
 

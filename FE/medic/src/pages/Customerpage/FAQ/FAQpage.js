@@ -164,13 +164,15 @@ export default function FAQpage() {
           ))}
         </div>
       </div>
-
-      <div className={faq.complete}>
+      {isAdmin &&(
+        <div className={faq.complete}>
         <button className={faq.btn_write_inquiry} onClick={medicWrite}>
           작성
         </button>
       </div>
 
+      )}
+      
       <div className={faq.pagination}>
         <button
           className={faq.paginationButton}

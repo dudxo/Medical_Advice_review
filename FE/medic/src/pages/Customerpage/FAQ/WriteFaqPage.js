@@ -119,7 +119,7 @@ export default function WriteFaqPage  ()  {
 
         <div className={writeannoucement.btn_writequestionbox}>
           <button type="button" onClick={faqWrite} className={writeannoucement.btn_writequestion}>작성</button>
-          <button type="button" onClick={faqWrite} className={writeannoucement.btn_writequestion}>목록</button>
+          <button type="button" onClick={faqList} className={writeannoucement.btn_writequestion}>목록</button>
 
         </div>
     </div>

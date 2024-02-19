@@ -18,6 +18,6 @@ public interface FaqRepository extends JpaRepository<Faq,Long> {
     @Query(value = "SELECT * FROM faq WHERE faq_id > :faqId ORDER BY faq_id ASC LIMIT 1", nativeQuery = true)
     Faq findNextFaqInfo(@Param("faqId") Long faqId);
 
-    List<Faq> findByFaqQuestion(String keyword);
+    List<Faq> findByFaqQuestionContaining(String keyword);
 
 }
