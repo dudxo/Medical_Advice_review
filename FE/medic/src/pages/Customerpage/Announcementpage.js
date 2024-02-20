@@ -43,13 +43,20 @@ export default function Announcementpage() {
 
   const searchAnnounceInfo = async () => {
     try {
-      const resp = await axios.get(`/announcement/search/${searchKeyword}`);
-      const data = resp.data;
-      setAnnouncements(data);
+      if (searchKeyword.trim() !== "") {
+        const resp = await axios.get(`/announcement/search/${searchKeyword}`);
+        const data = resp.data;
+        setAnnouncements(data);
+      } else {
+        const resp = await axios.get('/announcement/list');
+        const data = resp.data.reverse();
+        setAnnouncements(data);
+      }
     } catch (error) {
       console.error('공지사항 정보 검색 실패:', error);
     }
   };
+  
 
 
   const formatDateString = (dateString) => {

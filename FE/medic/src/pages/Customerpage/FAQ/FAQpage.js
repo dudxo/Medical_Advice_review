@@ -42,14 +42,20 @@ export default function FAQpage() {
   
   const searchFaqInfo = async () => {
     try {
-      const resp = await axios.get(`/faq/search/${searchKeyword}`);
-      const data = resp.data;
-      setFaqList(data);
+      if (searchKeyword.trim() === "") { // 검색어가 비어 있는 경우
+        const resp = await axios.get(`/faq/list`);
+        const data = resp.data.reverse();
+        setFaqList(data);
+      } else {
+        const resp = await axios.get(`/faq/search/${searchKeyword}`);
+        const data = resp.data;
+        setFaqList(data);
+      }
     } catch (error) {
       console.error('faq 정보 검색 실패:', error);
     }
   };
-
+  
   const handleDeleteAnnounce = async (faqId) => {
     try {
       const confirmed = window.confirm('게시글을 삭제하시겠습니까?');
