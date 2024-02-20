@@ -99,9 +99,7 @@ export default function DocEdit() {
     const [hospZipcode, setHospZipcode] = useState('')
     const [hospAddress, setHospAddress] = useState('')
 
-  const input_cid = (e) => {
-    setCId(e.target.value);
-  };
+
   const input_crole = (e) => {
     setCRole(e.target.value);
   };
@@ -120,11 +118,11 @@ export default function DocEdit() {
   }
   
   const input_ctel = (e) => {
-    setCpTel(e.target.value);
+    setCTel(e.target.value);
   }
   
   const input_cphone = (e) => {
-    setCpTel(e.target.value);
+    setCPhone(e.target.value);
   }
   
 const input_doc_zipcode_num = e => {
@@ -144,7 +142,7 @@ const input_hospname = (e) => {
   
 
   const input_hospTel = (e) => {
-    setCpTel(e.target.value);
+    setHospTel(e.target.value);
   }
   
   const input_department = (e) => {
@@ -153,11 +151,11 @@ const input_hospname = (e) => {
   
   
   const input_hosp_fx = (e) => {
-    setCpFx(e.target.value);
+    setHospFx(e.target.value);
   }
 
   const input_hosp_num = (e) => {
-    setCpNum(e.target.value);
+    setHospNum(e.target.value);
   }
 const input_hosp_zipcode_num = e => {
     setCpZipcodeNum(e.target.value)
@@ -230,8 +228,8 @@ const navigate = useNavigate();
               <td  className={docedit.docedit}> 
               <div className={docedit.docedit_td}>
                 <input type="text" name="cid" 
-                onChange={input_cid} 
-                maxLength={12} value={cId} />
+              readOnly ={true}
+               value={cId} />
               </div>
               </td>
 
@@ -333,7 +331,7 @@ const navigate = useNavigate();
       <div className={docedit.docedit_iconbox}>
               <h3>
                 <i className="fa-solid fa-circle icon"></i>
-                병원 정보
+                병원 정보 수정
               </h3>
       </div>
 
@@ -391,7 +389,7 @@ const navigate = useNavigate();
                     <td className={docedit.docedit_td}>
                     사업자 번호(법인)
                     </td>
-                    <td className={docedit.docedit_th}>
+                    <td   className={docedit.docedit_th} >
                         <input type="text" name="hosp_num"
                          value={hospNum}
                          onChange={input_hosp_num}
