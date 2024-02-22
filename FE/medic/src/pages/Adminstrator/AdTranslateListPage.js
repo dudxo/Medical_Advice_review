@@ -7,11 +7,6 @@ const AdTranslateListPage = () => {
   const [selectedStatus, setSelectedStatus] = useState('자문의뢰중');
   const [currentPage, setCurrentPage] = useState(1);
   const [allTransList, setAllTransList] = useState([]);
-  const [assignmentDate, setAssignmentDate] = useState('');
-  const [responseDate, setResponseDate] = useState('');
-  const [searchKeyword, setSearchKeyword] = useState("");
-  const [filteredAdviceList, setFilteredAdviceList] = useState([]);
-
 
   const [trProgressStatus, setTrProgressStatus] = useState('');
   console.log(allTransList)
@@ -19,14 +14,6 @@ const AdTranslateListPage = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const quiryList = allTransList.slice(startIndex, startIndex + itemsPerPage);
 
-  const searchInfo = () => {
-    const filteredList = allTransList.filter(advice =>
-      advice.uname.toLowerCase().includes(searchKeyword.toLowerCase())
-    );
-    setFilteredAdviceList(filteredList);
-  };
-
-  const renderList = filteredAdviceList.length > 0 ? filteredAdviceList : quiryList;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -95,15 +82,7 @@ const AdTranslateListPage = () => {
           번역의뢰 현황
         </h1>
       </div>
-      <div>
-        <input
-          type="text"
-          placeholder="검색어를 입력하세요"
-          value={searchKeyword}
-          onChange={(e) => setSearchKeyword(e.target.value)}
-        />
-        <button onClick={searchInfo}>검색</button>
-      </div>
+
 
       <table className={ad.ad_table}>
         <thead>
@@ -120,7 +99,7 @@ const AdTranslateListPage = () => {
           </tr>
         </thead>
         <tbody>
-          {renderList?.map((trans, index) => (
+          {quiryList?.map((trans, index) => (
             <tr key={index}>
               <td className={ad.ad_td} onClick={() => btn_detail_translate(trans.trId)}>{calculateNo(index)}</td>
               <td className={ad.ad_td}>{trans.uname}</td>

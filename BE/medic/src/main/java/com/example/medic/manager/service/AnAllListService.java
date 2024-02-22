@@ -93,7 +93,7 @@ public class AnAllListService {
     }
 
     /*
-    배정일, 진행상황 설정
+    진행상황 설정
      */
 
     public boolean updateAdviceList(Long andId , AnalyzeListDto analyzeListDto) {
@@ -101,7 +101,7 @@ public class AnAllListService {
        AnalyzeAssignment analyzeAssignment = analyzeAssignmentRepository.findByAnId(andId);
        logger.info("aaa:{}",analyzeAssignment.getAdMdDate());
         if(analyzeAssignment != null){
-            analyzeAssignment.updateStatusAndAdmDate(analyzeListDto.getAdMdDate() , analyzeListDto.getAnProgressStatus() );
+            analyzeAssignment.updateStatus( analyzeListDto.getAnProgressStatus() );
             analyzeAssignmentRepository.save(analyzeAssignment);
             return true;
         }
@@ -148,11 +148,10 @@ public class AnAllListService {
 
             AnalyzeAssignment analyzeAssignment = analyzeAssignmentRepository.findByAnId(analyzeRequestList.getAnId()) ;
             Consultative consultative = consultativeRepository.findById(dto.getCId()).get();
-            AnalyzeAssignment analyzeAssignment1 = analyzeAssignment.toBuilder()
-                    .consultative(consultative)
-                    .build();
+            analyzeAssignment.updateDoc(consultative);
+            analyzeAssignment.updateAdmDate();
 
-            analyzeAssignmentRepository.save(analyzeAssignment1);
+            analyzeAssignmentRepository.save(analyzeAssignment);
             return true;
         }catch (Exception e){
             return false;

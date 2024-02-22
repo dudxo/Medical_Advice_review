@@ -6,11 +6,6 @@ import { useNavigate } from "react-router-dom";
 export default function AdAdviceListPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [allAdviceList, setAllAdviceList] = useState([]);
-  const [assignmentDate, setAssignmentDate] = useState('');
-  const [responseDate, setResponseDate] = useState('');
-  const [admProgressStatus, setProgressStatus] = useState('자문의뢰중');
-  const [searchKeyword, setSearchKeyword] = useState("");
-  const [filteredAdviceList, setFilteredAdviceList] = useState([]);
   const itemsPerPage = 7;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const quiryList = allAdviceList.slice(startIndex, startIndex + itemsPerPage);
@@ -54,14 +49,6 @@ export default function AdAdviceListPage() {
     setCurrentPage(newPage);
   };
 
-  const searchInfo = () => {
-    const filteredList = allAdviceList.filter(advice =>
-      advice.uname.toLowerCase().includes(searchKeyword.toLowerCase())
-    );
-    setFilteredAdviceList(filteredList);
-  };
-
-  const renderList = filteredAdviceList.length > 0 ? filteredAdviceList : quiryList;
 
   return (
     <div className={ad.ad_contents}>
@@ -71,16 +58,6 @@ export default function AdAdviceListPage() {
           자문의뢰 현황
         </h1>
       </div>
-      <div>
-        <input
-          type="text"
-          placeholder="검색어를 입력하세요"
-          value={searchKeyword}
-          onChange={(e) => setSearchKeyword(e.target.value)}
-        />
-        <button onClick={searchInfo}>검색</button>
-      </div>
-
       <table className={ad.ad_table}>
         <thead>
           <tr>
@@ -96,7 +73,7 @@ export default function AdAdviceListPage() {
           </tr>
         </thead>
         <tbody>
-          {renderList?.map((advice, index) => (
+          {quiryList?.map((advice, index) => (
             <tr key={index}>
               <td className={ad.ad_td} onClick={() => btn_detail_advice(advice.adId)}>
                 {calculateNo(index)}
@@ -104,8 +81,8 @@ export default function AdAdviceListPage() {
               <td className={ad.ad_td}>{advice.uname}</td>
               <td className={ad.ad_td}>{advice.adPtDiagnosis}</td>
               <td className={ad.ad_td}>{formatDate(advice.adRegDate)}</td>
-              <td className={ad.ad_td}>{formatDate(advice.admDate)}</td>
-              <td className={ad.ad_td}>{formatDate(advice.adAnswerDate)}</td>
+              <td className={ad.ad_td}>{advice.admDate||"미배정"}</td>
+              <td className={ad.ad_td}>{advice.adAnswerDate||"미답변"}</td>
               <td className={ad.ad_td}>{advice.admProgressStatus || '자문의뢰중'}</td>
               <td className={ad.ad_td}>
                 <span className="your-custom-style">

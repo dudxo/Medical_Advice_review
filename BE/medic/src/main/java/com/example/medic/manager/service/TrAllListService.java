@@ -95,7 +95,7 @@ public class TrAllListService {
     }
 
     /*
-    배정일, 진행상황 저장
+    진행상황 저장
      */
     public boolean updateAdviceList(Long trId, TranslateListDto translateListDto) {
 
@@ -103,7 +103,7 @@ public class TrAllListService {
 
         if(translationAssignment!=null){
 
-            translationAssignment.updateStatusAndAdmDate(translateListDto.getTamDate(),translateListDto.getTrProgressStatus());
+            translationAssignment.updateStatus(translateListDto.getTrProgressStatus());
             translationAssignmentRepository.save(translationAssignment);
             return true;
         }
@@ -154,7 +154,7 @@ public class TrAllListService {
             Consultative consultative = consultativeRepository.findById(dto.getCId()).get();
 
             translationAssignment.updateDoc(consultative);
-
+            translationAssignment.updateAdmDate();
 
             translationAssignmentRepository.save(translationAssignment);
             return true;

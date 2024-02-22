@@ -50,8 +50,14 @@ public class AdviceAssignment {
         }
 
 
-    public void updateStatusAndAdmDate(LocalDate admDate, String admProgressStatus) {
-        this.admDate = admDate;
+    public void updateAdmDate() {
+        this.admDate = LocalDate.now();
+
+
+    }
+
+    public void updateStatus( String admProgressStatus) {
+
         this.admProgressStatus = admProgressStatus;
 
     }

@@ -9,6 +9,8 @@ export default function TrSetDoc() {
   const [allDocList, setAllDocList] = useState([]);
   const [selectedCIds, setSelectedCIds] = useState(new Set());
   const { index } = useParams();
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+
   const {trId} = location.state||{};
   const navigate = useNavigate();
   const itemsPerPage = 7;
@@ -19,7 +21,7 @@ export default function TrSetDoc() {
   
   const [tamDate , setTamDate] = useState();
   const [trProgressStatus , setTrProgressStatus] = useState();
-
+  const [trAnswerDate,setTrAnswerDate] = useState();
 
   const [selectedCId, setSelectedCId] = useState(null);
 
@@ -32,8 +34,9 @@ export default function TrSetDoc() {
         const data = response.data
         setSelectedTranslate(data);
        
+        setTamDate(response.data.tamDate)
         setTrProgressStatus(response.data.trProgressStatus);
-        setTamDate(response.data.tamDate);
+        setTrAnswerDate(response.data.trAnswerDate);
 
       } catch(error){
         console.error('에러발생:',error)
@@ -49,6 +52,7 @@ fetchData1();
         const response = await axios.get('/admin/translate/consultativeList');
         console.log(response);
         setAllDocList(response.data);
+      
       } catch (error) {
         console.error('자문 리스트를 가져오는 도중 에러 발생:', error);
       }
@@ -107,10 +111,13 @@ fetchData1();
     }
   };
 
+  const filteredDocList = allDocList.filter(doc => doc.department === selectedDepartment);
+
+
   
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const totalPages = Math.ceil(allDocList.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredDocList.length / itemsPerPage);
 
   const isSaveButtonEnabled = selectedCId !== null;
 
@@ -156,6 +163,39 @@ fetchData1();
           전문의 목록
         </h1>
       </div>
+      <select value={selectedDepartment} onChange={e => setSelectedDepartment(e.target.value)}>
+        <option value="">부서 선택</option>
+        <option value="가정의학과">가정의학과</option>
+        <option value="감염내과">감염내과</option>
+        <option value="류마티스내과">류마티스내과</option>
+        <option value="마취통증의학">마취통증의학</option>
+        <option value="방사종양학과">방사종양학과</option>
+        <option value="병리과">병리과</option>
+        <option value="치과">치과</option>
+        <option value="비뇨기과">비뇨기과</option>
+        <option value="산부인과">산부인과</option>
+        <option value="성형외과">성형외과</option>
+        <option value="소아청소년과">소아청소년과</option>
+        <option value="신경과">신경과</option>
+        <option value="신경외과">신경외과</option>
+        <option value="신장내과">신장내과</option>
+        <option value="심장내과">심장내과</option>
+        <option value="소아심장과">소아심장과</option>
+        <option value="안과">안과</option>
+        <option value="영상의학과">영상의학과</option>
+        <option value="외과">외과</option>
+        <option value="응급의학과">응급의학과</option>
+        <option value="이비인과">이비인과</option>
+        <option value="재활의학과">재활의학과</option>
+        <option value="정신건강의학과">정신건강의학과</option>
+        <option value="정형외과">정형외과</option>
+        <option value="진단검사의학과">진단검사의학과</option>
+        <option value="피부과">피부과</option>
+        <option value="핵의학과">핵의학과</option>
+        <option value="혈액종양내과">혈액종양내과</option>
+        <option value="호흡기내과">호흡기내과</option>
+        <option value="흉부외과">흉부외과</option>
+      </select>
       <table className={ad.ad_table}>
         <thead>
           <tr>
@@ -170,7 +210,7 @@ fetchData1();
           </tr>
         </thead>
         <tbody>
-          {allDocList.map((advice, index) => (
+          {filteredDocList.slice(startIndex, endIndex).map((advice, index) => (
             <tr key={index}>
               <td className={ad.ad_td}>{startIndex + index + 1}</td>
               <td className={ad.ad_td}>{advice.cid}</td>
@@ -244,13 +284,9 @@ fetchData1();
               <td className={ad.ad_td}>{selectedTranslate.trPtDiagnosis}</td>
               <td className={ad.ad_td}>{selectedTranslate.trRegDate}</td>
               <td className={ad.ad_td}>
-                <input
-                  type="date"
-                  value={formatDate(tamDate)||""}
-                  onChange={(e) => input_tamDate(e)}
-                />
+               {tamDate||"미배정"}
               </td>
-              <td className={ad.ad_td}>{selectedTranslate.anAnswerDate||""}</td>
+              <td className={ad.ad_td}>{trAnswerDate||"미답변"}</td>
               <td className={ad.ad_td}>
               <select
                   value={trProgressStatus || '번역의뢰중'}

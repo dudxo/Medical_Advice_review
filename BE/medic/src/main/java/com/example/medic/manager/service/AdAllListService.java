@@ -96,13 +96,13 @@ public class AdAllListService {
 
 
     /*
-    배정일 및 진행상황 수정
+    진행상황 수정
      */
     public boolean updateAdviceList( Long adId ,AdviceListDto adviceListDto) {
 
         AdviceAssignment adviceAssignment = adviceAssignmentRepository.findByAdId(adId);
         if(adviceAssignment != null){
-            adviceAssignment.updateStatusAndAdmDate(adviceListDto.getAdmDate(), adviceListDto.getAdmProgressStatus());
+            adviceAssignment.updateStatus(adviceListDto.getAdmProgressStatus());
             adviceAssignmentRepository.save(adviceAssignment);
             return true;
         }
@@ -152,6 +152,7 @@ return false;
             AdviceAssignment adviceAssignment = adviceAssignmentRepository.findByAdId(adviceRequestList.getAdId()) ;
             Consultative consultative = consultativeRepository.findById(dto.getCId()).get();
             adviceAssignment.updateDoc(consultative);
+            adviceAssignment.updateAdmDate();
 
             adviceAssignmentRepository.save(adviceAssignment);
             return true;
