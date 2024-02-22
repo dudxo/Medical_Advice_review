@@ -42,7 +42,7 @@ export default function FAQpage() {
   
   const searchFaqInfo = async () => {
     try {
-      if (searchKeyword.trim() === "") { // 검색어가 비어 있는 경우
+      if (searchKeyword.trim() === "") {
         const resp = await axios.get(`/faq/list`);
         const data = resp.data.reverse();
         setFaqList(data);

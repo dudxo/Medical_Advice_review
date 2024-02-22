@@ -114,27 +114,31 @@ export default function AdministratorMypage() {
                             <h3>전체 {myAdvice} 건</h3>
                         </div>
                     </div>
-                    <div className={administrator.adminMypage_countbox} onClick={btn_show_qna}>
-                        <h2 className={administrator.adminMypage_my_counttitle}>Qna 관리</h2>
-                        <div className= {administrator.adminMy_count}>
-                            <h3>전체 {qnaCount} 건</h3>
-                        </div>
-                    </div>
-                </div>
 
-                <div className={administrator.adminMypage_count_wrap}>
                     <div className={administrator.adminMypage_countbox} onClick={btn_show_analyze}>
                         <h2 className={administrator.adminMypage_my_counttitle}>분석 현황 관리</h2>
                         <div className={administrator.adminMy_count}>
                             <h3>전체 {myanalysis}건</h3>
                         </div>
                     </div>
-                    <div className={administrator.adminMypage_countbox} onClick={btn_show_translate} >
+                    
+                 
+                </div>
+
+                <div className={administrator.adminMypage_count_wrap}>
+                <div className={administrator.adminMypage_countbox} onClick={btn_show_translate} >
                         <h2 className={administrator.adminMypage_my_counttitle}>번역 현황 관리</h2>
                         <div className={administrator.adminMy_count}>
                             <h3>전체 {myTranslation}명</h3>
                         </div>
                     </div>
+                    <div className={administrator.adminMypage_countbox} onClick={btn_show_qna}>
+                        <h2 className={administrator.adminMypage_my_counttitle}>Qna 관리</h2>
+                        <div className= {administrator.adminMy_count}>
+                            <h3>전체 {qnaCount} 건</h3>
+                        </div>
+                    </div>
+            
                 </div>
 
                    <div className={administrator.adminMypage_count_wrap}>
