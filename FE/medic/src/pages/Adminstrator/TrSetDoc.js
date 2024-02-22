@@ -66,9 +66,12 @@ fetchData1();
 }
 
 
-  const handlePageChange = (newPage) => {
+const handlePageChange = (newPage) => {
+  if (newPage >= 1 && newPage <= Math.ceil(filteredDocList.length / 7)) {
     setCurrentPage(newPage);
-  };
+  }
+}
+
 
   const handleCheckboxChange = (cId) => {
     setSelectedCId((prevSelectedCId) => (prevSelectedCId === cId ? null : cId));
@@ -122,7 +125,7 @@ fetchData1();
   const isSaveButtonEnabled = selectedCId !== null;
 
   const btn_modify = e => {
-    if(window.confirm("배정하시겠습니까?")){
+    if(window.confirm("진행상태를 변경하시겠습니까?")){
         e.preventDefault()
         console.log(tamDate)
         console.log(trProgressStatus)
@@ -140,10 +143,10 @@ fetchData1();
     
         const response = await axios.put(`/admin/translate/updateStatus/${trId}`,info);
         if(response.data==1){
-          alert('저장이 완료되었습니다.')
+          alert('변경 성공!')
 
         }else{
-          alert('저장 실패')
+          alert('변경 실패')
         }
       
      
@@ -261,7 +264,7 @@ fetchData1();
       <div className={ad.ad_iconbox}>
         <h1>
           <i className="fa-solid fa-circle icon"></i>
-          배정
+          진행 상황
         </h1>
       </div>
       <table className={ad.ad_table}>

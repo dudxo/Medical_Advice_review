@@ -70,8 +70,10 @@ export default function AdAnalyzeListPage() {
 
 
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
+    if (newPage >= 1 && newPage <= Math.ceil(allAnalyzeList.length / 7)) {
+      setCurrentPage(newPage);
+    }
+  }
 
 
   const handleUpdateField = async () => {

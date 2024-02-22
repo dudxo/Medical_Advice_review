@@ -44,11 +44,11 @@ export default function AdAdviceListPage() {
   const calculateNo = (index) => {
     return (currentPage - 1) * itemsPerPage + index + 1;
   };
-
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
-
+    if (newPage >= 1 && newPage <= Math.ceil(allAdviceList.length / 7)) {
+      setCurrentPage(newPage);
+    }
+  }
 
   return (
     <div className={ad.ad_contents}>

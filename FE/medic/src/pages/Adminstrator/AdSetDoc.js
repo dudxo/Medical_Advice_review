@@ -63,9 +63,10 @@ export default function AdSetDoc() {
   };
 
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
-
+    if (newPage >= 1 && newPage <= Math.ceil(filteredDocList.length / 7)) {
+      setCurrentPage(newPage);
+    }
+  }
   const handleCheckboxChange = (cId) => {
     setSelectedCId((prevSelectedCId) => (prevSelectedCId === cId ? null : cId));
   };
@@ -96,7 +97,7 @@ export default function AdSetDoc() {
   };
 
   const btn_modify = e => {
-    if (window.confirm("저장하시겠습니까?")) {
+    if (window.confirm("진행상태를 변경하시겠습니까?")) {
       e.preventDefault()
       console.log(admDate)
       console.log(admProgressStatus)
@@ -116,9 +117,9 @@ export default function AdSetDoc() {
       console.log(response)
 
       if (response.data == 1) {
-        alert('저장 성공!')
+        alert('변경 성공!')
       } else {
-        alert('저장 오류')
+        alert('변경 오류')
       }
 
 
@@ -250,7 +251,7 @@ export default function AdSetDoc() {
       <div className={ad.ad_iconbox}>
         <h1>
           <i className="fa-solid fa-circle icon"></i>
-          배정 상황
+          진행 상황
         </h1>
       </div>
       <table className={ad.ad_table}>

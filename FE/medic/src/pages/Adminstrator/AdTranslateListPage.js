@@ -70,8 +70,10 @@ const AdTranslateListPage = () => {
   };
 
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
+    if (newPage >= 1 && newPage <= Math.ceil(allTransList.length / 7)) {
+      setCurrentPage(newPage);
+    }
+  }
 
 
   return (

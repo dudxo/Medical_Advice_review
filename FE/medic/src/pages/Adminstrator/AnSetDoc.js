@@ -56,8 +56,10 @@ fetchData1();
   }, []);
 
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
+    if (newPage >= 1 && newPage <= Math.ceil(filteredDocList.length / 7)) {
+      setCurrentPage(newPage);
+    }
+  }
 
   const input_adMdate = (e) =>{
     setAdMdDate(e.target.value);
@@ -105,7 +107,7 @@ fetchData1();
   };
   
   const btn_modify = e => {
-    if(window.confirm("배정하시겠습니까?")){
+    if(window.confirm("진행상황을 변경하시겠습니까?")){
         e.preventDefault()
         console.log(adMdDate)
         console.log(adProgressStatus)
@@ -128,9 +130,9 @@ fetchData1();
         const response = await axios.put(`/admin/analyze/updateStatus/${anId}`,info);
         console.log(response)
           if(response.data == 1){
-            alert('배정 성공')
+            alert('변경 성공')
           }else{
-            alert('배정 실패')
+            alert('변경 실패')
           }
       
           }catch(error){
@@ -254,7 +256,7 @@ fetchData1();
       <div className={ad.ad_iconbox}>
         <h1>
           <i className="fa-solid fa-circle icon"></i>
-          배정
+          진행 상황
         </h1>
       </div>
       <table className={ad.ad_table}>
