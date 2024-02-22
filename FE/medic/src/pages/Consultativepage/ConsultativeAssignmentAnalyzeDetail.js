@@ -15,8 +15,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
 
     //환자
     const [an_ptname, setAnptname] = useState('')
-    const [an_ptssnum1, setAnptssnum1] = useState('');
-    const [an_ptssnum2, setAnptssnum2] = useState('');
+    const [an_ptssnum, setAnptssnum] = useState('');
     const [an_ptsub, setAnptsub] = useState('');
     const [an_ptdiagnosis, setAnptdiagnosis] = useState('')
     const [an_ptdiagcontent, setAnptdiagcontent] = useState('')
@@ -38,8 +37,6 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
 
     const [anAnswerDate, setAnAnswerDate] = useState('');
 
-    const [anProgressStatus, setAnProgressStatus] = useState('');
-
     const [assignmentAnalyze, setAssignmentAnalyze] = useState('');
 
     const getUserInfo = async() =>{
@@ -59,11 +56,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
             setAnQuestionTotal(response.data.anQuestionContent)
             setAnQuestionContents(response.data.anQuestionContent)
             setAnAnswerContents(response.data.anAnswerContent)
-            setAnProgressStatus(response.date.anProgressStatus)
-
-            const an_PtSsNum = response.data.anPtSsNum.split('-');  // 주민번호 나누기
-            setAnptssnum1(an_PtSsNum[0]);
-            setAnptssnum2(an_PtSsNum[1]);
+            setAnptssnum(response.data.anPtSsNum);
 
             setAnReqForm(() => {
                 if(response.data.anReqForm === "empty_file"){
@@ -230,9 +223,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
                     </div>
                     <div className={`${assignmentanalyzedetail.title_box} ${assignmentanalyzedetail.patient_box}`} style={{borderLeft : '1px solid black'}}>주민등록번호</div>
                     <div className={`${assignmentanalyzedetail.input_box} ${assignmentanalyzedetail.input_ptssnumbox} ${assignmentanalyzedetail.patient_box}`}>
-                        <input type="text" disabled={true} value={an_ptssnum1}></input>
-                         -
-                        <input type="password" disabled={true} value={an_ptssnum2}></input>
+                        <input type="text" disabled={true} value={an_ptssnum}></input>
                     </div>
                 </div>
                 <div className={assignmentanalyzedetail.row_box}>

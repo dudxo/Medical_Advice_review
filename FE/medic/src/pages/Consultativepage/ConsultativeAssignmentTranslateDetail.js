@@ -17,8 +17,7 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
 
     //환자
     const [tr_ptname, setTrptname] = useState('')
-    const [tr_ptssnum1, setTrptssnum1] = useState('');
-    const [tr_ptssnum2, setTrptssnum2] = useState('');
+    const [tr_ptssnum, setTrptssnum] = useState('');
     const [tr_ptsub, setTrptsub] = useState('');
     const [tr_ptdiagnosis, setTrptdiagnosis] = useState('')
     const [tr_ptdiagcontent, setTrptdiagcontent] = useState('')
@@ -55,9 +54,7 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
                 setTrProgressStatus(false)
             }
 
-            const trPtSsNum = response.data.trPtSsNum.split('-');  // 주민번호 나누기
-            setTrptssnum1(trPtSsNum[0]);
-            setTrptssnum2(trPtSsNum[1]);
+            setTrptssnum(response.data.trPtSsNum);
 
             setTrMtl(()=>{
                 if(response.data.trMtl === "empty_file"){
@@ -192,9 +189,7 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
                     </div>
                     <div className={`${assignmenttranslatedetail.title_box} ${assignmenttranslatedetail.patient_box}`} style={{borderLeft : '1px solid black'}}>주민등록번호</div>
                     <div className={`${assignmenttranslatedetail.input_box} ${assignmenttranslatedetail.input_ptssnumbox} ${assignmenttranslatedetail.patient_box}`}>
-                        <input type="text" disabled={true} value={tr_ptssnum1}></input>
-                         -
-                        <input type="password" disabled={true} value={tr_ptssnum2}></input>
+                        <input type="text" disabled={true} value={tr_ptssnum}></input>
                     </div>
                 </div>
                 <div className={assignmenttranslatedetail.row_box}>

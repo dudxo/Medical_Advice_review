@@ -15,8 +15,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
 
     //환자
     const [ad_ptname, setAdptname] = useState('')
-    const [ad_ptssnum1, setAdptssnum1] = useState('');
-    const [ad_ptssnum2, setAdptssnum2] = useState('');
+    const [ad_ptssnum, setAdptssnum] = useState('');
     const [ad_ptsub, setAdptsub] = useState('');
     const [ad_ptdiagnosis, setAdptdiagnosis] = useState('')
     const [ad_ptrec ,setAdptrec] = useState('')
@@ -25,23 +24,13 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
     // 보험사
     const [insurance ,setInsurance] = useState('')
     const [insure_name, setInsurename] = useState('')
-    const [insuranceYear, setInsuranceYear] = useState('')  // 계약일자
-    const [insuranceMonth, setInsuranceMonth] = useState('')
-    const [insuranceDay, setInsuranceDay] = useState('')
+    const [insureDate, setInsureDate] = useState('')  // 계약일자
 
     // 진료기록
     const [hospital, setHospital] = useState('')
-    const [adm_startYear ,setAdmstartYear] = useState('')
-    const [adm_startMonth, setAdmstartMonth] = useState('')
     const [adm_startDay, setAdmstartDay] = useState('')
-    const [adm_endYear, setAdmendYear] = useState('')
-    const [adm_endMonth, setAdmendMonth] = useState('')
     const [adm_endDay, setAdmendDay] = useState('')
-    const [visit_startYear ,setVisitstartYear] = useState('')
-    const [visit_startMonth, setVisitstartMonth] = useState('')
     const [visit_startDay, setVisitstartDay] = useState('')
-    const [visit_endYear, setVisitendYear] = useState('')
-    const [visit_endMonth, setVisitendMonth] = useState('')
     const [visit_endDay, setVisitendDay] = useState('')
     const [treat_cmt ,setTreatcmt] = useState('')
 
@@ -90,39 +79,12 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
             setAdQuestionContents(response.data.adQuestionContent)
             setAdAnswerContents(response.data.adAnswerContent)
             setAdmProgressStatus(response.data.admProgressStatus)
-                        
-            const ad_PtSsNum = response.data.adPtSsNum.split('-');  // 주민번호 나누기
-            setAdptssnum1(ad_PtSsNum[0]);
-            setAdptssnum2(ad_PtSsNum[1]);
-            
-            const insure = response.data.insureDate.split('-'); // 계약 날짜 나누기
-            setInsuranceYear(insure[0])
-            setInsuranceMonth(insure[1])
-            setInsuranceDay(insure[2])
-
-            const adm_startDay = response.data.admStart.split('-'); // 입원 치료기간 나누기
-            setAdmstartYear(adm_startDay[0])
-            setAdmstartMonth(adm_startDay[1])
-            setAdmstartDay(adm_startDay[2])
-            const adm_endDay = response.data.admEnd.split('-');
-            setAdmendYear(adm_endDay[0])
-            setAdmendMonth(adm_endDay[1])
-            setAdmendDay(adm_endDay[2])
-
-            const visit_startDay = response.data.visitStart.split('-'); // 통원 치료기간 나누기
-            setVisitstartYear(visit_startDay[0])
-            setVisitstartMonth(visit_startDay[1])
-            setVisitstartDay(visit_startDay[2])
-            const visit_endDay = response.data.visitEnd.split('-');
-            setVisitendYear(visit_endDay[0])
-            setVisitendMonth(visit_endDay[1])
-            setVisitendDay(visit_endDay[2])
-
-            console.log(response.data.adReqForm)
-            console.log(response.data.adDiagnosis)
-            console.log(response.data.adRecord)
-            console.log(response.data.adFilm)
-            console.log(response.data.adOther)
+            setInsureDate(response.data.insureDate.replaceAll('-', '/'))
+            setAdptssnum(response.data.adPtSsNum);
+            setAdmstartDay(response.data.admStart.replaceAll('-', '/'))
+            setAdmendDay(response.data.admEnd.replaceAll('-', '/'))
+            setVisitstartDay(response.data.visitStart.replaceAll('-', '/'))
+            setVisitendDay(response.data.visitEnd.replaceAll('-', '/'))
 
             setAdReqForm(() => {
                 if(response.data.adReqForm === "empty_file"){
@@ -286,9 +248,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                     </div>
                     <div className={`${assignmentadvicedetail.title_box} ${assignmentadvicedetail.patient_box}`} style={{borderLeft : '1px solid black'}}>주민등록번호</div>
                     <div className={`${assignmentadvicedetail.input_box} ${assignmentadvicedetail.input_ptssnumbox} ${assignmentadvicedetail.patient_box}`}>
-                        <input type="text" disabled={true} value={ad_ptssnum1}></input>
-                         -
-                        <input type="password" disabled={true} value={ad_ptssnum2}></input>
+                        <input type="text" disabled={true} value={ad_ptssnum}></input>
                     </div>
                 </div>
                 <div className={assignmentadvicedetail.row_box}>
@@ -330,9 +290,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                     </div>
                     <div className={assignmentadvicedetail.title_box} style={{borderLeft : '1px solid black'}}>계약일자</div>
                     <div className={assignmentadvicedetail.input_box}>
-                    <input type="text" disabled={true} value={insuranceYear}></input> -
-                    <input type="text" disabled={true} value={insuranceMonth}></input> -
-                    <input type="text" disabled={true} value={insuranceDay}></input>
+                    <input type="text" disabled={true} value={insureDate}></input>
                     </div>
                 </div>
                 <div className={assignmentadvicedetail.row_box}>
@@ -357,33 +315,25 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
                 </div>
                 <div className={assignmentadvicedetail.row_box}>
                     <div className={assignmentadvicedetail.title_box} style={{height : '92px'}}>입원 치료기간</div>
-                    <div className={assignmentadvicedetail.input_box} style={{display:'flex', flexDirection:'column' ,width: '600px', alignItems : 'space-between', height : '80px'}}>
+                    <div className={assignmentadvicedetail.input_box} style={{display:'flex', width: '600px', alignItems : 'space-between', height : '80px'}}>
                         <div className={assignmentadvicedetail.datebox}>
-                        <input type="text" disabled={true} value={adm_startYear}></input>년
-                        <input type="text" disabled={true} value={adm_startMonth}></input>월
-                        <input type="text" disabled={true} value={adm_startDay}></input>일
+                        <input type="text" disabled={true} value={adm_startDay}></input>
                         </div>                       
                         ~
                         <div className={assignmentadvicedetail.datebox}>
-                        <input type="text" disabled={true} value={adm_endYear}></input>년
-                        <input type="text" disabled={true} value={adm_endMonth}></input>월
-                        <input type="text" disabled={true} value={adm_endDay}></input>일
+                        <input type="text" disabled={true} value={adm_endDay}></input>
                         </div>                       
                     </div>
                 </div>
                 <div className={assignmentadvicedetail.row_box}>
                     <div className={assignmentadvicedetail.title_box} style={{height : '92px'}}>통원 치료기간</div>
-                    <div className={assignmentadvicedetail.input_box} style={{display:'flex', flexDirection:'column' ,width: '600px', justifyContent : 'start', alignItems : 'space-between', height : '80px'}}>
+                    <div className={assignmentadvicedetail.input_box} style={{display:'flex', width: '600px', alignItems : 'space-between', height : '80px'}}>
                         <div className={assignmentadvicedetail.datebox}>
-                        <input type="text" disabled={true} value={visit_startYear}></input>년
-                        <input type="text" disabled={true} value={visit_startMonth}></input>월
-                        <input type="text" disabled={true} value={visit_startDay}></input>일
-                        </div>                       
+                        <input type="text" disabled={true} value={visit_startDay}></input>
                         ~
+                        </div>
                         <div className={assignmentadvicedetail.datebox}>
-                        <input type="text" disabled={true} value={visit_endYear}></input>년
-                        <input type="text" disabled={true} value={visit_endMonth}></input>월
-                        <input type="text" disabled={true} value={visit_endDay}></input>일
+                        <input type="text" disabled={true} value={visit_endDay}></input>
                         </div>                       
                     </div>
                 </div>
