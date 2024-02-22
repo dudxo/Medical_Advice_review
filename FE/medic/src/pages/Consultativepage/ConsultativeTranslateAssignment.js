@@ -6,7 +6,7 @@ import { useNavigate} from 'react-router-dom';
 
 export default function ConsultativeTranslateAssignmentpage() {
   const [selectedStatus, setSelectedStatus] = useState('번역의뢰중');
-  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태 추가
+  const [currentPage, setCurrentPage] = useState(1);
   const [translateList, setTranslateList] = useState([]);
   const navigate = useNavigate();
 
@@ -15,7 +15,8 @@ export default function ConsultativeTranslateAssignmentpage() {
       try {
         const response = await axios.get('/consultative/assignedTranslate/list');
         console.log(response)
-        setTranslateList(response.data);
+        const data = response.data.reverse();
+        setTranslateList(data);
       } catch (error) {
         console.error('Error fetching translation list:', error);
       }
@@ -42,9 +43,16 @@ export default function ConsultativeTranslateAssignmentpage() {
   };
 
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
   };
 
+  const itemsPerPage = 7;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, translateList.length);
+  const visibleTranslateList = translateList.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(translateList.length / itemsPerPage);
 
   return (
     <div className={assignmentTranslate.contents}>
@@ -66,46 +74,45 @@ export default function ConsultativeTranslateAssignmentpage() {
             <th className={assignmentTranslate.translateList_th}>진행상태</th>
           </tr>
           </thead>
-        <tbody>
-            {[...Array(7)].map((_, rowIndex) => (
-                <tr key={rowIndex}>
-                {translateList.map((translation, index) => (
-                    rowIndex === index && (
-                    <React.Fragment key={index}>
-                        <td className={assignmentTranslate.translateList_td} onClick={() => handledetailClick(translation.trId)}>{index + 1}</td>
-                        <td className={assignmentTranslate.translateList_td}>{translation.trPtSub}</td>
-                        <td className={assignmentTranslate.translateList_td}>{translation.trPtDiagnosis}</td>
-                        <td className={assignmentTranslate.translateList_td}>
-                            {formatDate(translation.trRegDate)}
-                        </td>
-                        <td className={assignmentTranslate.translateList_td}>{translation.tamDate}</td>
-                        <td className={assignmentTranslate.translateList_td}>{translation.trAnswerDate === null ? '미답변' : translation.trAnswerDate}</td>
-                        <td className={assignmentTranslate.translateList_td}>{translation.trProgressStatus}</td>
-                        {/* <td className={analyzelist.analyzeList_td}>
-                        <select value={selectedStatus} onChange={(e) => handleStatusChange(e.target.value)}>
-                            <option value="자문의뢰중">자문의뢰중</option>
-                            <option value="자문배정중">자문배정중</option>
-                            <option value="결제하기">결제하기</option>
-                            <option value="자문완료">자문완료</option>
-                        </select>
-                        </td> */}
-                    </React.Fragment>
-                    )
-                ))}
-                </tr>
-            ))}
-</tbody>
+          <tbody>
+          {visibleTranslateList.map((translation, index) => (
+            <tr key={index}>
+              <td className={assignmentTranslate.translateList_td} onClick={() => handledetailClick(translation.trId)}>
+                  {translateList.length - startIndex - index}
+              </td>              
+              <td className={assignmentTranslate.translateList_td}>{translation.trPtSub}</td>
+              <td className={assignmentTranslate.translateList_td}>{translation.trPtDiagnosis}</td>
+              <td className={assignmentTranslate.translateList_td}>{formatDate(translation.trRegDate)}</td>
+              <td className={assignmentTranslate.translateList_td}>{translation.tamDate}</td>
+              <td className={assignmentTranslate.translateList_td}>{translation.trAnswerDate === null ? '미답변' : translation.trAnswerDate}</td>
+              <td className={assignmentTranslate.translateList_td}>{translation.trProgressStatus}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
       <div className={assignmentTranslate.pagination}>
-        <button className={assignmentTranslate.paginationButton} onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+        <button
+          className={assignmentTranslate.paginationButton}
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
           ◀
         </button>
-        {[...Array(10)].map((_, index) => (
-          <button key={index} className={assignmentTranslate.paginationButton} onClick={() => handlePageChange(index + 1)} disabled={currentPage === index + 1}>
+        {[...Array(Math.ceil(translateList.length / itemsPerPage))].map((_, index) => (
+          <button
+            key={index}
+            className={assignmentTranslate.paginationButton}
+            onClick={() => handlePageChange(index + 1)}
+            disabled={currentPage === index + 1}
+          >
             {index + 1}
           </button>
         ))}
-        <button className={assignmentTranslate.paginationButton} onClick={() => handlePageChange(currentPage + 1)}>
+        <button
+          className={assignmentTranslate.paginationButton}
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === Math.ceil(translateList.length / itemsPerPage)}
+        >
           ▶
         </button>
       </div>
