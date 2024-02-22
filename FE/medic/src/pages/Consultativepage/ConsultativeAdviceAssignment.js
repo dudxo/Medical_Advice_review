@@ -81,7 +81,7 @@ export default function ConsultativeAdviceAssignmentpage() {
                         </td>
                         <td className={assignmentAdvice.adviceList_td}>{advice.admDate}</td>
                         <td className={assignmentAdvice.adviceList_td}>{advice.adAnswerDate === null ? '미답변' : advice.adAnswerDate}</td>
-                        <td className={assignmentAdvice.adviceList_td}>{'자문의뢰중'}</td>
+                        <td className={assignmentAdvice.adviceList_td}>{advice.admProgressStatus}</td>
                         {/* <td className={advicelist.adviceList_td}>
                         <select value={selectedStatus} onChange={(e) => handleStatusChange(e.target.value)}>
                             <option value="자문의뢰중">자문의뢰중</option>

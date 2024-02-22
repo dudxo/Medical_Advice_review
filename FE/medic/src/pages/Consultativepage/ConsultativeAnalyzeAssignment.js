@@ -80,8 +80,8 @@ export default function ConsultativeAnalyzeAssignmentpage() {
                             {formatDate(analyze.anRegDate)}
                         </td>
                         <td className={assignmentAnalyze.analyzelist_td}>{analyze.anMdDate}</td>
-                        <td className={assignmentAnalyze.analyzelist_td}>{analyze.anAnswerDate === null ? '미답변' : analyze.anMdDate}</td>
-                        <td className={assignmentAnalyze.analyzelist_td}>{'분석의뢰중'}</td>
+                        <td className={assignmentAnalyze.analyzelist_td}>{analyze.anAnswerDate === null ? '미답변' : analyze.anAnswerDate}</td>
+                        <td className={assignmentAnalyze.analyzelist_td}>{analyze.anProgressStatus}</td>
                         {/* <td className={analyzelist.analyzeList_td}>
                         <select value={selectedStatus} onChange={(e) => handleStatusChange(e.target.value)}>
                             <option value="자문의뢰중">자문의뢰중</option>

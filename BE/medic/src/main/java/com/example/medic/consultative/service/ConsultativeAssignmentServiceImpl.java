@@ -44,10 +44,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,14 +82,31 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
             List<AdviceAssignment> findAllAdviceAssignment = adviceAssignmentRepository.findAllAdviceAssignmentByConsultative(findConsultative);    // 해당 전문의가 배정된 배정 목록 꺼내기
             for (AdviceAssignment adviceAssignment : findAllAdviceAssignment) {     // 배정 목록을 순회하며
                 AdviceRequestList adviceRequestList = adviceAssignment.getAdviceRequestList();      // 각 자문 의뢰에 접근해
-                AdviceSituationDto adviceSituationDto = AdviceSituationDto.builder()        // 배정 목록 Dto에 맞게 변환
-                        .adId(adviceRequestList.getAdId())
-                        .adPtSub(adviceRequestList.getAdPtSub())
-                        .adPtDiagnosis(adviceRequestList.getAdPtDiagnosis())
-                        .adRegDate(adviceRequestList.getAdRegDate())
-                        .admDate(adviceAssignment.getAdmDate())
-                        .build();
-                findAllAdviceSituationDto.add(adviceSituationDto);
+                boolean isNullAnswer = adviceQuestionRepository.existsByAdAnswerDateNullAndAdviceRequestList(adviceRequestList);
+                if (isNullAnswer) {
+                    AdviceSituationDto adviceSituationDto = AdviceSituationDto.builder()        // 배정 목록 Dto에 맞게 변환
+                            .adId(adviceRequestList.getAdId())
+                            .adPtSub(adviceRequestList.getAdPtSub())
+                            .adPtDiagnosis(adviceRequestList.getAdPtDiagnosis())
+                            .adRegDate(adviceRequestList.getAdRegDate())
+                            .admDate(adviceAssignment.getAdmDate())
+                            .admProgressStatus(adviceAssignment.getAdmProgressStatus())
+                            .adAnswerDate(null)
+                            .build();
+                    findAllAdviceSituationDto.add(adviceSituationDto);
+                } else {
+                    LocalDate latestAnswerDate = adviceQuestionRepository.findLatestAdAnswerDateByAdviceRequestList(adviceRequestList);
+                    AdviceSituationDto adviceSituationDto = AdviceSituationDto.builder()        // 배정 목록 Dto에 맞게 변환
+                            .adId(adviceRequestList.getAdId())
+                            .adPtSub(adviceRequestList.getAdPtSub())
+                            .adPtDiagnosis(adviceRequestList.getAdPtDiagnosis())
+                            .adRegDate(adviceRequestList.getAdRegDate())
+                            .admDate(adviceAssignment.getAdmDate())
+                            .admProgressStatus(adviceAssignment.getAdmProgressStatus())
+                            .adAnswerDate(latestAnswerDate)
+                            .build();
+                    findAllAdviceSituationDto.add(adviceSituationDto);
+                }
             }
             return findAllAdviceSituationDto;
         } catch (NoSuchElementException e) {
@@ -168,11 +182,8 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
                 .adDiagnosis(findAdviceFile.getAdDiagnosis())
                 .adRecord(findAdviceFile.getAdRecord())
                 .adFilm(findAdviceFile.getAdFilm())
-
                 .admProgressStatus(findAdviceAssignment.getAdmProgressStatus())
-
                 .adOther(findAdviceFile.getAdOther())
-
                 .build();
     }
 
@@ -190,14 +201,32 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
             List<AnalyzeAssignment> findAllAnalyzeRequestList = analyzeAssignmentRepository.findAllAnalyzeAssignmentByConsultative(findConsultative);    // 해당 전문의가 배정된 분석 목록 꺼내기
             for (AnalyzeAssignment analyzeAssignment : findAllAnalyzeRequestList) {     // 배정 목록을 순회하며
                 AnalyzeRequestList findAnalyzeRequest = analyzeAssignment.getAnalyzeRequestList();      // 각 분석 의뢰에 접근해
-                AnalyzeSituationDto analyzeSituationDto = AnalyzeSituationDto.builder()        // 배정 목록 Dto에 맞게 변환
-                        .anId(findAnalyzeRequest.getAnId())
-                        .anPtSub(findAnalyzeRequest.getAnPtSub())
-                        .anPtDiagnosis(findAnalyzeRequest.getAnPtDiagnosis())
-                        .anRegDate(findAnalyzeRequest.getAnRegDate())
-                        .anMdDate(analyzeAssignment.getAdMdDate())
-                        .build();
-                findAllAnalyzeSituationDto.add(analyzeSituationDto);
+                boolean isNullAnswer = analyzeRequestRepository.existsByAnAnswerDateNullAndAnalyzeRequestList(findAnalyzeRequest);
+                if (isNullAnswer) {
+                    AnalyzeSituationDto analyzeSituationDto = AnalyzeSituationDto.builder()        // 배정 목록 Dto에 맞게 변환
+                            .anId(findAnalyzeRequest.getAnId())
+                            .anPtSub(findAnalyzeRequest.getAnPtSub())
+                            .anPtDiagnosis(findAnalyzeRequest.getAnPtDiagnosis())
+                            .anRegDate(findAnalyzeRequest.getAnRegDate())
+                            .anMdDate(analyzeAssignment.getAdMdDate())
+                            .anProgressStatus(analyzeAssignment.getAnProgressStatus())
+                            .anAnswerDate(null)
+                            .build();
+                    findAllAnalyzeSituationDto.add(analyzeSituationDto);
+                } else {
+                    LocalDate latestAnswerDate = analyzeRequestRepository.findLatestAnAnswerDateByAnalyzeRequestList(findAnalyzeRequest);
+                    AnalyzeSituationDto analyzeSituationDto = AnalyzeSituationDto.builder()        // 배정 목록 Dto에 맞게 변환
+                            .anId(findAnalyzeRequest.getAnId())
+                            .anPtSub(findAnalyzeRequest.getAnPtSub())
+                            .anPtDiagnosis(findAnalyzeRequest.getAnPtDiagnosis())
+                            .anRegDate(findAnalyzeRequest.getAnRegDate())
+                            .anMdDate(analyzeAssignment.getAdMdDate())
+                            .anProgressStatus(analyzeAssignment.getAnProgressStatus())
+                            .anAnswerDate(latestAnswerDate)
+                            .build();
+                    findAllAnalyzeSituationDto.add(analyzeSituationDto);
+                }
+
             }
 
             return findAllAnalyzeSituationDto;
@@ -282,14 +311,32 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
                     translationAssignmentRepository.findAllTranslationAssignmentByConsultative(findConsultative);
             for (TranslationAssignment translationAssignment : findAllTranslationAssignment) {
                 TranslationRequestList translationRequestList = translationAssignment.getTranslationRequestList();
-                TranslationSituationDto translationRequestDto = TranslationSituationDto.builder()
-                        .trPtSub(translationRequestList.getTrPtSub())
-                        .trPtDiagnosis(translationRequestList.getTrPtDiagnosis())
-                        .trRegDate(translationRequestList.getTrRegDate())
-                        .trId(translationRequestList.getTrId())
-                        .tamDate(translationAssignment.getTamDate())
-                        .build();
-                findAllTranslationSituationDto.add(translationRequestDto);
+                boolean isNullAnswer = translationAnswerFileRepository.existsByTrAnswerDateNullAndTranslationRequestList(translationRequestList);
+                if (isNullAnswer) {
+                    TranslationSituationDto translationRequestDto = TranslationSituationDto.builder()
+                            .trPtSub(translationRequestList.getTrPtSub())
+                            .trPtDiagnosis(translationRequestList.getTrPtDiagnosis())
+                            .trRegDate(translationRequestList.getTrRegDate())
+                            .trId(translationRequestList.getTrId())
+                            .tamDate(translationAssignment.getTamDate())
+                            .trProgressStatus(translationAssignment.getTrProgressStatus())
+                            .trAnswerDate(null)
+                            .build();
+                    findAllTranslationSituationDto.add(translationRequestDto);
+                } else {
+                    LocalDate latestAnswerDate = translationAnswerFileRepository.findLatestTrAnswerDateByTranslationRequestList(translationRequestList);
+                    TranslationSituationDto translationRequestDto = TranslationSituationDto.builder()
+                            .trPtSub(translationRequestList.getTrPtSub())
+                            .trPtDiagnosis(translationRequestList.getTrPtDiagnosis())
+                            .trRegDate(translationRequestList.getTrRegDate())
+                            .trId(translationRequestList.getTrId())
+                            .tamDate(translationAssignment.getTamDate())
+                            .trProgressStatus(translationAssignment.getTrProgressStatus())
+                            .trAnswerDate(latestAnswerDate)
+                            .build();
+                    findAllTranslationSituationDto.add(translationRequestDto);
+                }
+
             }
             return findAllTranslationSituationDto;
         } catch (NoSuchElementException e) {

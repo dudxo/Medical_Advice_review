@@ -80,7 +80,7 @@ export default function ConsultativeTranslateAssignmentpage() {
                         </td>
                         <td className={assignmentTranslate.translateList_td}>{translation.tamDate}</td>
                         <td className={assignmentTranslate.translateList_td}>{translation.trAnswerDate === null ? '미답변' : translation.trAnswerDate}</td>
-                        <td className={assignmentTranslate.translateList_td}>{'번역의뢰중'}</td>
+                        <td className={assignmentTranslate.translateList_td}>{translation.trProgressStatus}</td>
                         {/* <td className={analyzelist.analyzeList_td}>
                         <select value={selectedStatus} onChange={(e) => handleStatusChange(e.target.value)}>
                             <option value="자문의뢰중">자문의뢰중</option>
