@@ -12,7 +12,7 @@
     text-align: center;
   }
   
-  .analyzeList_th, .adviceList_td {
+  .analyzeList_th, .analyzeList_td {
     border: 1px solid #ddd;
     padding: 8px;
   }
