@@ -9,6 +9,7 @@ import com.example.medic.analyze.dto.AnalyzeResponseDto;
 import com.example.medic.analyze.service.AnalyzeServiceImpl;
 import com.example.medic.client.dto.ClientInfoDto;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -42,16 +43,20 @@ public class AnalyzeController {
     public ResponseEntity<String> saveAnalyzeRequest(@RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles,
                                                      @RequestPart(name = "dto") AnalyzeRequestDto analyzeRequestDto,
                                                      HttpServletRequest request) throws IOException {
-        HttpSession session = request.getSession();
-        String findUId = (String) session.getAttribute("uId");
+        try{
+            HttpSession session = request.getSession();
+            String findUId = (String) session.getAttribute("uId");
 
-        ClientInfoDto clientInfoDto = ClientInfoDto.builder()
-                .uId(findUId)
-                .build();
-        if (analyzeService.saveAnalyzeRequest(analyzeRequestDto, clientInfoDto, multipartFiles)) {
-            return ResponseEntity.ok().body("분석 의뢰 신청 저장 성공");
+            ClientInfoDto clientInfoDto = ClientInfoDto.builder()
+                    .uId(findUId)
+                    .build();
+            if (analyzeService.saveAnalyzeRequest(analyzeRequestDto, clientInfoDto, multipartFiles)) {
+                return ResponseEntity.ok().body("분석 의뢰 신청 저장 성공");
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
+        } catch (SizeLimitExceededException e){
+            return ResponseEntity.ok().body("파일의 크기가 너무 큽니다.");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
     }
 
     /**
@@ -92,12 +97,16 @@ public class AnalyzeController {
     public ResponseEntity<String> updateAnalyzeRequest(@PathVariable Long anId,
                                                        @RequestPart(name = "dto") AnalyzeUpdateDto updateDto,
                                                        @RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles) throws IOException {
-        boolean updated = analyzeService.updateAnalyzeRequest(anId, updateDto, multipartFiles);
+        try{
+            boolean updated = analyzeService.updateAnalyzeRequest(anId, updateDto, multipartFiles);
 
-        if (updated) {
-            return ResponseEntity.ok("분석의뢰 수정 성공");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Analyze request with ID " + anId + " not found");
+            if (updated) {
+                return ResponseEntity.ok("분석의뢰 수정 성공");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Analyze request with ID " + anId + " not found");
+            }
+        } catch (SizeLimitExceededException e){
+            return ResponseEntity.ok("파일의 크기가 너무 큽니다.");
         }
     }
 }

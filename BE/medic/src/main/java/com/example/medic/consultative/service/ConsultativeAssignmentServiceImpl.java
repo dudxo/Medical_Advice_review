@@ -421,7 +421,7 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
         }
     }
 
-    public boolean updateTranslationAnswerFile(ConsultativeDto consultativeDto, List<MultipartFile> multipartFiles, Long trId) throws IOException {
+    public boolean updateTranslationAnswerFile(ConsultativeDto consultativeDto, List<MultipartFile> multipartFiles, Long trId, TranslationAnswerFileRequestDto translationAnswerFileRequestDto) throws IOException {
         Consultative consultative = consultativeRepository.findById(consultativeDto.getCId()).get();
         TranslationRequestList translationRequestList = translationRequestListRepository.findById(trId).get();
         Long traId = translationAnswerFileRepository.findByFileId(trId);
@@ -433,7 +433,7 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
             translationAnswerFile = TranslationAnswerFile.builder()
                     .trAnswerId(traId)
                     .trAnswer(updatetranslationAnswerFileRequestDto.getTrAnswer())
-                    .trAnswerDate(translationAnswerFile.getTrAnswerDate())
+                    .trAnswerDate(translationAnswerFileRequestDto.getTrAnswerDate())
                     .translationRequestList(translationRequestList)
                     .consultative(consultative)
                     .build();

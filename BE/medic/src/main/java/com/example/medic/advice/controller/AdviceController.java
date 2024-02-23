@@ -9,6 +9,7 @@ import com.example.medic.client.dto.ClientInfoDto;
 
 import com.example.medic.manager.controller.AdListAllController;
 import lombok.AllArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
@@ -38,17 +39,20 @@ public class AdviceController {
     public ResponseEntity<String> saveAdviceRequest(@RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles,
                                                     @RequestPart(name = "dto") AllAdviceRequestDto allAdviceRequestDto,
                                                     HttpServletRequest request) throws IOException {
+        try{
+            HttpSession session = request.getSession();
+            String uid = (String) session.getAttribute("uId");
 
-        HttpSession session = request.getSession();
-        String uid = (String) session.getAttribute("uId");
-
-        ClientInfoDto clientInfoDto = ClientInfoDto.builder()
-                .uId(uid)
-                .build();
-        if (adviceService.saveAdviceRequest(allAdviceRequestDto, clientInfoDto, multipartFiles)) {
-            return ResponseEntity.ok().body("saved");
+            ClientInfoDto clientInfoDto = ClientInfoDto.builder()
+                    .uId(uid)
+                    .build();
+            if (adviceService.saveAdviceRequest(allAdviceRequestDto, clientInfoDto, multipartFiles)) {
+                return ResponseEntity.ok().body("saved");
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
+        }catch (SizeLimitExceededException e ){
+            return ResponseEntity.ok().body("파일의 용량이 너무 큽니다.");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
     }
 
     /**
@@ -92,12 +96,16 @@ public class AdviceController {
     public ResponseEntity<String> updateAdviceRequestList(@PathVariable Long adId,
                                                           @RequestPart(name = "dto") AdviceUpdateDto adviceUpdateDto,
                                                           @RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles) throws IOException {
-        boolean updated = adviceService.updateAdviceRequest(adId, adviceUpdateDto, multipartFiles);
+        try{
+            boolean updated = adviceService.updateAdviceRequest(adId, adviceUpdateDto, multipartFiles);
 
-        if (updated) {
-            return ResponseEntity.ok("자문의뢰 수정 성공");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Advice request with ID " + adId + " not found");
+            if (updated) {
+                return ResponseEntity.ok("자문의뢰 수정 성공");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Advice request with ID " + adId + " not found");
+            }
+        } catch (SizeLimitExceededException e){
+            return ResponseEntity.ok("파일의 크기가 너무 큽니다.");
         }
     }
 

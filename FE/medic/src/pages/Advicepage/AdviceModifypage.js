@@ -299,6 +299,10 @@ const btn_advice_update = async() => {
         console.log(adQuestionContentArray)
 
     try{
+        const maxSizeInBytes = 100 * 1024 * 1024
+            if (allAdviceUpdate.getAll('files').some(file => file.size > maxSizeInBytes)) {
+                throw new Error('파일 크기가 너무 큽니다.')
+            }
         const response = await axios.put(`/user/advice/detail/update/${index}`, allAdviceUpdate,{
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -307,7 +311,7 @@ const btn_advice_update = async() => {
         alert('자문의뢰 수정이 완료되었습니다.')
         navigate('/')
     } catch(err){
-        console.log(err)
+        console.log(err.message)
     }
 }
 
