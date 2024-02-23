@@ -201,13 +201,7 @@
 
         return(
             <div className={advicerequest.advicerequest_wrap}>
-                <div className={advicerequest.iconbox}>
-                    <h2>
-                        <i className="fa-solid fa-circle icon"></i>
-                        자문의뢰 상세보기
-                    </h2>
-                    - 의료 자문의뢰를 신청하고자 하는 의뢰자께서는 아래 모든 항목에 대해 모두 입력해주세요.
-                </div>
+         
                 <div className={advicerequest.iconbox}>
                     <h3>
                         <i className="fa-solid fa-circle icon"></i>

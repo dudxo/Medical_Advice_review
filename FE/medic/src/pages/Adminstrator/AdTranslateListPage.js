@@ -109,12 +109,12 @@ const AdTranslateListPage = () => {
               <td className={ad.ad_td}>{formatDate(trans.trRegDate)}</td>
               <td className={ad.ad_td}>
               
-                  {formatDate(trans.tamDate)}
+                  {formatDate(trans.tamDate)||"미배정"}
                  
               </td>
               <td className={ad.ad_td}>
                
-                 {formatDate(trans.trAnswerDate)}
+                 {trans.trAnswerDate||"미답변"}
                
               </td>
               <td className={ad.ad_td}>

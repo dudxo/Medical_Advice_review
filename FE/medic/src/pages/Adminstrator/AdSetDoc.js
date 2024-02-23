@@ -272,9 +272,9 @@ export default function AdSetDoc() {
             <td className={ad.ad_td}>{selectedAdvice.uname}</td>
             <td className={ad.ad_td}>{selectedAdvice.adPtDiagnosis}</td>
             <td className={ad.ad_td}>{selectedAdvice.adRegDate}</td>
-            <td className={ad.ad_td}>{admDate}
+            <td className={ad.ad_td}>{admDate||"미배정"}
             </td>
-            <td className={ad.ad_td}>{adAnswerDate}</td>
+            <td className={ad.ad_td}>{adAnswerDate||"미답변"}</td>
             <td className={ad.ad_td}>
               <select
                 value={admProgressStatus || '자문의뢰중'}
