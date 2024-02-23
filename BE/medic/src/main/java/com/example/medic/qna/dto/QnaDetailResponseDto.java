@@ -3,12 +3,13 @@ package com.example.medic.qna.dto;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
 public class QnaDetailResponseDto {
     private Long qaId;
-    private Date qaDate;
+    private LocalDate qaDate;
     private String qaTitle;     // QNA 제목
     private String qaQuestion;      // QNA 본문 내용
     private String qaPw;
@@ -16,7 +17,7 @@ public class QnaDetailResponseDto {
     private String uId;
 
     @Builder
-    QnaDetailResponseDto(Long qaId, Date qaDate, String qaTitle, String qaQuestion, boolean qaSecret, String uId, String qaPw){
+    QnaDetailResponseDto(Long qaId, LocalDate qaDate, String qaTitle, String qaQuestion, boolean qaSecret, String uId, String qaPw){
         this.qaId = qaId;
         this.qaDate = qaDate;
         this.qaTitle = qaTitle;
