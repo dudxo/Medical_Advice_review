@@ -31,6 +31,7 @@ public class SignUpDto {
 
     @NotNull
     private String userPhone;
+    private String uPart;
 
     @NotNull
     private String userAddress;
@@ -64,6 +65,7 @@ public class SignUpDto {
                 .cpFx(client.getCpFx())
                 .cpNum(client.getCpNum())
                 .cpTel(client.getCpTel())
+                .uPart(client.getUPart())
                 .build();
     }
 

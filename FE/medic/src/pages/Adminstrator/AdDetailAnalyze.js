@@ -151,13 +151,7 @@ export default function AdDetailAnalyze(){
 
     return(
         <div className={analyzerequest.anvicerequest_wrap}>
-            <div className={analyzerequest.iconbox}>
-                <h2>
-                    <i className="fa-solid fa-circle icon"></i>
-                    분석의뢰 신청
-                </h2>
-                - 의료 분석의뢰를 신청하고자 하는 의뢰자께서는 아래 모든 항목에 대해 모두 입력해주세요.
-             </div>
+      
              <div className={analyzerequest.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>

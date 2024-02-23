@@ -35,6 +35,7 @@ public class SignUpService {
                 .cpFx(signUpDto.getCpFx())
                 .cpNum(signUpDto.getCpNum())
                 .cpAddress(signUpDto.getCpAddress())
+                .uPart(signUpDto.getUPart())
                 .build();
 
         return clientRepository.save(client);

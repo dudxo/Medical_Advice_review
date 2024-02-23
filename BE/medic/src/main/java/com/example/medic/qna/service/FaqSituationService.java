@@ -136,7 +136,7 @@ public class FaqSituationService {
      * @return 검색
      */
     public List<Faq> searchFaqInfo(String keyword) {
-        return faqRepository.findByFaqQuestion(keyword);
+        return faqRepository.findByFaqQuestionContaining(keyword);
     }
 
 

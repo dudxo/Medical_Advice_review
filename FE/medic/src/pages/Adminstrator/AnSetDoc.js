@@ -7,17 +7,20 @@ export default function AnSetDoc() {
   const [currentPage, setCurrentPage] = useState(1);
   const [allDocList, setAllDocList] = useState([]);
   const [selectedCIds, setSelectedCIds] = useState(new Set());
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+
   const { index } = useParams();
   const {cId} = useState();
   const [selectedCId, setSelectedCId] = useState(null);
   const location = useLocation();
-  const [selectedAnalyze, setSelectedAnalyze] = useState(null);
+  const [selectedAnalyze, setSelectedAnalyze] = useState([]);
   const {anId} = location.state||{}; 
   console.log(anId)
   const navigate = useNavigate();
   const itemsPerPage = 7;
-  const [adMdDate,setAdMdDate] = useState("")
-  const [adProgressStatus , setAdProgressStatus] = useState("")
+  const [adMdDate,setAdMdDate] = useState(selectedAnalyze.adMdDate||"미배정")
+  const [adProgressStatus , setAdProgressStatus] = useState(selectedAnalyze.admProgressStatus||"")
+  const [anAnswerDate, setAnAnswerDate] = useState(selectedAnalyze.anAnswerDate||"미답변") 
 
   useEffect(()=> {
     const fetchData1 = async () => {
@@ -28,7 +31,8 @@ export default function AnSetDoc() {
        setSelectedAnalyze(data);
        
         setAdProgressStatus(response.data.admProgressStatus);
-        setAdMdDate(response.data.admDate);
+        setAdMdDate(response.data.adMdDate);
+        setAnAnswerDate(response.data.anAnswerDate);
 
       } catch(error){
         console.error('에러발생:',error)
@@ -52,8 +56,10 @@ fetchData1();
   }, []);
 
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
+    if (newPage >= 1 && newPage <= Math.ceil(filteredDocList.length / 7)) {
+      setCurrentPage(newPage);
+    }
+  }
 
   const input_adMdate = (e) =>{
     setAdMdDate(e.target.value);
@@ -61,6 +67,7 @@ fetchData1();
   const input_adProgressStatus = (e) =>{
     setAdProgressStatus(e.target.value);
   } ;
+  
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -75,9 +82,6 @@ fetchData1();
     setSelectedCId((prevSelectedCId) => (prevSelectedCId === cId ? null : cId));
   };
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const totalPages = Math.ceil(allDocList.length / itemsPerPage);
 
   const handleSave = async () => {
     try {
@@ -103,7 +107,7 @@ fetchData1();
   };
   
   const btn_modify = e => {
-    if(window.confirm("배정하시겠습니까?")){
+    if(window.confirm("진행상황을 변경하시겠습니까?")){
         e.preventDefault()
         console.log(adMdDate)
         console.log(adProgressStatus)
@@ -126,9 +130,9 @@ fetchData1();
         const response = await axios.put(`/admin/analyze/updateStatus/${anId}`,info);
         console.log(response)
           if(response.data == 1){
-            alert('배정 성공')
+            alert('변경 성공')
           }else{
-            alert('배정 실패')
+            alert('변경 실패')
           }
       
           }catch(error){
@@ -138,6 +142,13 @@ fetchData1();
   
   const isSaveButtonEnabled = selectedCId !== null;
 
+  const filteredDocList = allDocList.filter(doc => doc.department === selectedDepartment);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const totalPages = Math.ceil(filteredDocList.length / itemsPerPage);
+
+
   return (
     <div className={ad.ad_contents}>
       <div className={ad.ad_iconbox}>
@@ -146,6 +157,39 @@ fetchData1();
           전문의 목록
         </h1>
       </div>
+      <select value={selectedDepartment} onChange={e => setSelectedDepartment(e.target.value)}>
+        <option value="">부서 선택</option>
+        <option value="가정의학과">가정의학과</option>
+        <option value="감염내과">감염내과</option>
+        <option value="류마티스내과">류마티스내과</option>
+        <option value="마취통증의학">마취통증의학</option>
+        <option value="방사종양학과">방사종양학과</option>
+        <option value="병리과">병리과</option>
+        <option value="치과">치과</option>
+        <option value="비뇨기과">비뇨기과</option>
+        <option value="산부인과">산부인과</option>
+        <option value="성형외과">성형외과</option>
+        <option value="소아청소년과">소아청소년과</option>
+        <option value="신경과">신경과</option>
+        <option value="신경외과">신경외과</option>
+        <option value="신장내과">신장내과</option>
+        <option value="심장내과">심장내과</option>
+        <option value="소아심장과">소아심장과</option>
+        <option value="안과">안과</option>
+        <option value="영상의학과">영상의학과</option>
+        <option value="외과">외과</option>
+        <option value="응급의학과">응급의학과</option>
+        <option value="이비인과">이비인과</option>
+        <option value="재활의학과">재활의학과</option>
+        <option value="정신건강의학과">정신건강의학과</option>
+        <option value="정형외과">정형외과</option>
+        <option value="진단검사의학과">진단검사의학과</option>
+        <option value="피부과">피부과</option>
+        <option value="핵의학과">핵의학과</option>
+        <option value="혈액종양내과">혈액종양내과</option>
+        <option value="호흡기내과">호흡기내과</option>
+        <option value="흉부외과">흉부외과</option>
+      </select>
       <table className={ad.ad_table}>
         <thead>
           <tr>
@@ -160,7 +204,7 @@ fetchData1();
           </tr>
         </thead>
         <tbody>
-          {allDocList.slice(startIndex, endIndex).map((advice, index) => (
+        {filteredDocList.slice(startIndex, endIndex).map((advice, index) => (
             <tr key={index}>
               <td className={ad.ad_td}>{startIndex + index + 1}</td>
               <td className={ad.ad_td}>{advice.cid}</td>
@@ -212,7 +256,7 @@ fetchData1();
       <div className={ad.ad_iconbox}>
         <h1>
           <i className="fa-solid fa-circle icon"></i>
-          배정
+          진행 상황
         </h1>
       </div>
       <table className={ad.ad_table}>
@@ -232,16 +276,12 @@ fetchData1();
             <tr key={index}>
               <td className={ad.ad_td}>{anId}</td>
               <td className={ad.ad_td}>{selectedAnalyze ? selectedAnalyze.uname : ""}</td>
-<td className={ad.ad_td}>{selectedAnalyze ? selectedAnalyze.anPtDiagnosis : ""}</td>
-<td className={ad.ad_td}>{selectedAnalyze ? selectedAnalyze.anRegDate : ""}</td>
-<td className={ad.ad_td}>
-  <input
-    type="date"
-    value={formatDate(adMdDate)}
-    onChange={(e) => input_adMdate(e)}
-  />
+              <td className={ad.ad_td}>{selectedAnalyze ? selectedAnalyze.anPtDiagnosis : ""}</td>
+              <td className={ad.ad_td}>{selectedAnalyze ? selectedAnalyze.anRegDate : ""}</td>
+              <td className={ad.ad_td}>{adMdDate||"미배정"}
+
 </td>
-<td className={ad.ad_td}>{selectedAnalyze ? selectedAnalyze.anAnswerDate : ""}</td>
+<td className={ad.ad_td}>{anAnswerDate||"미답변"}</td>
 
               <td className={ad.ad_td}>
               <select
@@ -249,7 +289,7 @@ fetchData1();
                   onChange={(e) => input_adProgressStatus(e)}
                 >
                   <option value="자문의뢰중">분석의뢰중</option>
-                  <option value="자문배정중">분석배정중</option>
+                  <option value="분석배정중">분석배정중</option>
                   <option value="결제하기">결제하기</option>
                   <option value="자문완료">자문완료</option>
                 </select>

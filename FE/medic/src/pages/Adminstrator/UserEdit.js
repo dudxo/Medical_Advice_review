@@ -157,50 +157,15 @@ export default function UserEdit() {
     }
 }
 
-  
-
 
   const navigate = useNavigate();
 
-  // 아이디 중복 확인 버튼 클릭 시 실행되는 함수
-  const btn_progrm_idConfirm = async () => {
-    if (uId === '') {
-      alert('아이디를 입력해주세요.');
-      return;
-    }
-    try {
-      const response = await axios.get(`/signUp/${uId}`);
-      console.log(response);
-      // setIdchk(response.data === 1);
-      if (response.data === 1) {  
-        alert('사용가능한 아이디입니다.');
-      } else {
-        alert('이미 사용중인 아이디 입니다.');
-      }
-    } catch (err) {
-      alert('이미 사용중인 아이디 입니다.');
-    }
-  };
-
-  // 아이디 입력 시 실행되는 함수
-  const input_id = (e) => {
-    setUId(e.target.value);
-  };
 
   // 비밀번호 입력 시 실행되는 함수
   const input_pw = (e) => {
    setUPw(e.target.value);
   };
 
-  // 비밀번호 확인 입력 시 실행되는 함수
-  const input_pwchk = (e) => {
-    const re_pw = e.target.value; 
-    if (uPw === re_pw) {
-      alert('입력하신 비밀번호와 일치합니다.');
-    } else {
-      alert('입력하신 비밀번호와 일치하지 않습니다.');
-    }
-  };
   const radio_select_userRole = e => {
     selectUserRole(e.target.value)
     setURole(e.target.value)
@@ -364,22 +329,16 @@ const btn_progrm_modify = async (e) => {
                       </tr>
           <tr>
             <td className={user.useredit_th}>아이디</td>
-            <td colSpan="3" className={user.useredit_td}>
+            <td  className={user.useredit_td}>
               <div className={user.uid}>
                 <input  type="text" name="id"
-                  onChange={input_id}
-                  maxLength={12}
+              
+                  readOnly={true}
                   value={uId}
                 />
-                <button type="button" onClick={btn_progrm_idConfirm} className={user.btt_id}>
-                  아이디 중복확인
-                </button>
               </div>
             </td>
-          </tr>
-
-          <tr>
-                        <td className={user.useredit_th}>
+            <td className={user.useredit_th}>
                             비밀번호
                         </td>
                         <td className={user.useredit_td}>
@@ -387,13 +346,8 @@ const btn_progrm_modify = async (e) => {
                             onChange={input_pw} 
                             value={uPw} maxLength={15}/>
                         </td>
-                        <td className={user.useredit_th}>
-                            비밀번호 재입력
-                        </td>
-                        <td className={user.useredit_td}>
-                            <input type="password" name="re_pw" onBlur={input_pwchk} maxLength={15}/>
-                        </td>
-                    </tr>
+          </tr>
+
 
                     <tr>
                         <td className={user.useredit_td}>

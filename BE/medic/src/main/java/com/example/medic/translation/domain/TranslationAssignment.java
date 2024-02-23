@@ -44,10 +44,14 @@ public class TranslationAssignment {
         this.translationRequestList = translationRequestList;
     }
 
-    public void updateStatusAndAdmDate(LocalDate tamDate, String trProgressStatus) {
-        this.tamDate = tamDate;
+    public void updateStatus( String trProgressStatus) {
+
         this.trProgressStatus = trProgressStatus;
 
+    }
+
+    public void updateAdmDate() {
+        this.tamDate = LocalDate.now();
     }
     public void updateDoc( Consultative consultative
     ) {

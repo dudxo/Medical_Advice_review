@@ -42,14 +42,20 @@ export default function FAQpage() {
   
   const searchFaqInfo = async () => {
     try {
-      const resp = await axios.get(`/faq/search/${searchKeyword}`);
-      const data = resp.data;
-      setFaqList(data);
+      if (searchKeyword.trim() === "") {
+        const resp = await axios.get(`/faq/list`);
+        const data = resp.data.reverse();
+        setFaqList(data);
+      } else {
+        const resp = await axios.get(`/faq/search/${searchKeyword}`);
+        const data = resp.data;
+        setFaqList(data);
+      }
     } catch (error) {
       console.error('faq 정보 검색 실패:', error);
     }
   };
-
+  
   const handleDeleteAnnounce = async (faqId) => {
     try {
       const confirmed = window.confirm('게시글을 삭제하시겠습니까?');
@@ -164,13 +170,15 @@ export default function FAQpage() {
           ))}
         </div>
       </div>
-
-      <div className={faq.complete}>
+      {isAdmin &&(
+        <div className={faq.complete}>
         <button className={faq.btn_write_inquiry} onClick={medicWrite}>
           작성
         </button>
       </div>
 
+      )}
+      
       <div className={faq.pagination}>
         <button
           className={faq.paginationButton}

@@ -29,9 +29,11 @@ export default function UserManagement() {
   };
 
   const handlePageChange = (newPage) => {
-    setPage(newPage);
+    if (newPage >= 1 && newPage <= Math.ceil(userList.length / 7)) {
+      setPage(newPage);
+    }
   }
-
+  
   const handleEditUser = (userId) => {
     navigate(`/medic/adminstrator/useredit/${userId}`, { state: { useredit: userList[userId] } });
   }
