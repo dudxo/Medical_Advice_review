@@ -311,7 +311,7 @@ const btn_advice_update = async() => {
         alert('자문의뢰 수정이 완료되었습니다.')
         navigate('/')
     } catch(err){
-        console.log(err.message)
+        alert(err.message);
     }
 }
 

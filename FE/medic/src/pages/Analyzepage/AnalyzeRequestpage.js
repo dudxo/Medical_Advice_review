@@ -167,7 +167,7 @@ export default function AnalyzeRequestpage(){
               alert('분석의뢰 신청이 완료되었습니다.')
               navigate('/')
           } catch(err){
-              console.log(err.message)
+            alert(err.message);
           }
       }
       const btn_analyze_cancle = async() => {
