@@ -8,6 +8,7 @@ import com.example.medic.translation.service.TranslationFileService;
 import com.example.medic.translation.dto.TranslationResponseDto;
 import com.example.medic.translation.service.TranslationServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -38,16 +39,21 @@ public class TranslationController {
     public ResponseEntity<String> saveTranslationRequest(@RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles,
                                                          @RequestPart(name = "dto") TranslationRequestDto translationRequestDto,
                                                          HttpServletRequest request) throws IOException {
-        HttpSession session = request.getSession();
-        String findUId = (String) session.getAttribute("uId");
+        try{
+            HttpSession session = request.getSession();
+            String findUId = (String) session.getAttribute("uId");
 
-        ClientInfoDto clientInfoDto = ClientInfoDto.builder()
-                .uId(findUId)
-                .build();
-        if (translationServiceImpl.saveTranslationRequest(translationRequestDto, clientInfoDto, multipartFiles)) {
-            return ResponseEntity.ok().body("번역 의뢰 신청 저장 성공");
+            ClientInfoDto clientInfoDto = ClientInfoDto.builder()
+                    .uId(findUId)
+                    .build();
+            if (translationServiceImpl.saveTranslationRequest(translationRequestDto, clientInfoDto, multipartFiles)) {
+                return ResponseEntity.ok().body("번역 의뢰 신청 저장 성공");
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("번역 의뢰 신청 저장 실패");
+        } catch (SizeLimitExceededException e){
+            return ResponseEntity.ok().body("파일의 크기가 너무 큽니다.");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("번역 의뢰 신청 저장 실패");
+
     }
 
     /**
@@ -91,12 +97,17 @@ public class TranslationController {
     public ResponseEntity<String> updateTranslationRequest(@PathVariable Long trId,
                                                            @RequestPart(name = "dto") TranslationResponseDto updateDto,
                                                            @RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles) throws IOException {
-        boolean updated = translationServiceImpl.updateTranslationRequest(trId, updateDto, multipartFiles);
+        try{
+            boolean updated = translationServiceImpl.updateTranslationRequest(trId, updateDto, multipartFiles);
 
-        if (updated) {
-            return ResponseEntity.ok("번역의뢰 수정 성공");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Analyze request with ID " + trId + " not found");
+            if (updated) {
+                return ResponseEntity.ok("번역의뢰 수정 성공");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Analyze request with ID " + trId + " not found");
+            }
+        } catch (SizeLimitExceededException e){
+            return ResponseEntity.ok("파일의 크기가 너무 큽니다.");
         }
+
     }
 }

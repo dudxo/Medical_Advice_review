@@ -81,7 +81,7 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
     }, [])
 
     const btn_translate_request = async() => {
-        if (!isAnswer) {
+        if (trAnswer === null && typeof trAnswer === 'undefined') {
             alert('입력값을 확인해주세요.');
             return;
         }
@@ -91,7 +91,11 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
               "trAnswerDate" : today
         })], {type : "application/json"}))
         try{
-            const response = axios.post(`/consultative/assignedTranslate/saveFile/${index}`, translateAnswer, {
+            const maxSizeInBytes = 100 * 1024 * 1024
+            if (translateAnswer.getAll('files').some(file => file.size > maxSizeInBytes)) {
+                throw new Error('파일 크기가 너무 큽니다.')
+            }
+            const response = await axios.post(`/consultative/assignedTranslate/saveFile/${index}`, translateAnswer, {
                 headers : {
                     "Content-Type" : 'multipart/form-data',
                 },
@@ -99,7 +103,7 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
             alert('번역의뢰 답변이 저장되었습니다.')
             navigate('/')
         } catch(err){
-            console.log(err)
+            alert(err.message);
         }
     }
     const btn_translate_cancle = async() => {
@@ -113,14 +117,21 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
         }
     }
     const btn_translate_update = async() => {
-        if (!isAnswer) {
+        if (trAnswer === null && typeof trAnswer === 'undefined') {
             alert('입력값을 확인해주세요.');
             return;
         }
         const today = new Date()
         translateAnswer.append('files', trAnswer)  
+        translateAnswer.append("dto", new Blob([JSON.stringify({
+            "trAnswerDate" : today
+        })], {type : "application/json"}))
         try{
-            const response = axios.put(`/consultative/assignedTranslate/updateFile/${index}`, translateAnswer, {
+            const maxSizeInBytes = 100 * 1024 * 1024
+            if (translateAnswer.getAll('files').some(file => file.size > maxSizeInBytes)) {
+                throw new Error('파일 크기가 너무 큽니다.')
+            }
+            const response = await axios.put(`/consultative/assignedTranslate/updateFile/${index}`, translateAnswer, {
                 headers : {
                     "Content-Type" : 'multipart/form-data',
                 },
@@ -128,14 +139,9 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
             alert('번역의뢰 답변이 수정되었습니다.')
             navigate('/')
         } catch(err){
-            console.log(err)
+            alert(err.message);
         }
     }
-    useEffect(()=>{
-        if(!(trAnswer === null && typeof trAnswer === 'undefined')){
-            setIsAnswer(true)
-        }
-    }, [trAnswer])
     return(
         <div className={assignmenttranslatedetail.translaterequest_wrap}>
             <div className={assignmenttranslatedetail.iconbox}>
@@ -267,8 +273,7 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
                             <>
                                 <button>
                                     <a
-                                        href={`http://localhost:8080/translate/findFile/${index}`}
-                                        download="adRecord.zip"
+                                        href={`http://localhost:8080/assignedTranslate/findFile/${index}`}
                                     >
                                         다운로드
                                     </a>

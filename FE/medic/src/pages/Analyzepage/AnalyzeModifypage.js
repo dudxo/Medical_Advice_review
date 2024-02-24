@@ -192,6 +192,10 @@ const btn_analyze_update = async() => {
         console.log(anQuestionContentArray)
         
           try{
+            const maxSizeInBytes = 100 * 1024 * 1024
+            if (analyzeUpdate.getAll('files').some(file => file.size > maxSizeInBytes)) {
+                throw new Error('파일 크기가 너무 큽니다.')
+            }
               const response = await axios.put(`/user/analyze/detail/update/${index}`, analyzeUpdate,{
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -200,7 +204,7 @@ const btn_analyze_update = async() => {
               alert('분석의뢰 수정이 완료되었습니다.')
               navigate('/')
           } catch(err){
-              console.log(err)
+            alert(err.message);
           }
       }
 

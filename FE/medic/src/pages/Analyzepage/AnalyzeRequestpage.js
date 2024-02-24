@@ -155,7 +155,10 @@ export default function AnalyzeRequestpage(){
             })], {type : "application/json"}))
 
           try{
-                console.log("allAnalyzeRequest : ", allAnalyzeRequest);
+            const maxSizeInBytes = 100 * 1024 * 1024
+            if (allAnalyzeRequest.getAll('files').some(file => file.size > maxSizeInBytes)) {
+                throw new Error('파일 크기가 너무 큽니다.')
+            }
               const response = axios.post('/user/analyze/request', allAnalyzeRequest, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -164,7 +167,7 @@ export default function AnalyzeRequestpage(){
               alert('분석의뢰 신청이 완료되었습니다.')
               navigate('/')
           } catch(err){
-              console.log(err)
+            alert(err.message);
           }
       }
       const btn_analyze_cancle = async() => {

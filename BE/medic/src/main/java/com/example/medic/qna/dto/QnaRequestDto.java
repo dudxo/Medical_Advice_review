@@ -6,12 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class QnaRequestDto {
-    private Date qaDate;
+    private LocalDate qaDate;
     private String qaTitle;     // QNA 제목
     private String qaQuestion;      // QNA 본문 내용
     private boolean qaSecret;
@@ -29,7 +30,7 @@ public class QnaRequestDto {
                 .build();
     }
     @Builder
-    private QnaRequestDto(String qaTitle, Date qaDate, String qaQuestion, boolean qaSecret, String qaPw, Client client){
+    private QnaRequestDto(String qaTitle, LocalDate qaDate, String qaQuestion, boolean qaSecret, String qaPw, Client client){
         this.qaTitle = qaTitle;
         this.qaDate = qaDate;
         this.qaQuestion = qaQuestion;

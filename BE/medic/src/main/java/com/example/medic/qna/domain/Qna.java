@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -21,9 +22,8 @@ public class Qna {
     @NotNull
     private Long qaId;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull
-    private Date qaDate;
+    private LocalDate qaDate;
 
     @NotNull
     private String qaTitle;     // QNA 제목
@@ -41,7 +41,7 @@ public class Qna {
     private Client client;
 
     @Builder
-    private Qna(Long qaId, String qaTitle, Date qaDate, String qaQuestion, boolean qaSecret, String qaPw, Client client){
+    private Qna(Long qaId, String qaTitle, LocalDate qaDate, String qaQuestion, boolean qaSecret, String qaPw, Client client){
         this.qaId = qaId;
         this.qaTitle = qaTitle;
         this.qaDate = qaDate;

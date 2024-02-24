@@ -110,6 +110,10 @@ export default function TranslateRequestpage(){
               "trMtl" : trFile_toString[0]
         })], {type : "application/json"}))
           try{
+            const maxSizeInBytes = 100 * 1024 * 1024
+            if (allTranslateRequest.getAll('files').some(file => file.size > maxSizeInBytes)) {
+                throw new Error('파일 크기가 너무 큽니다.')
+            }
               const response = axios.post('/user/translate/request', allTranslateRequest, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -117,9 +121,9 @@ export default function TranslateRequestpage(){
             })
               alert('번역의뢰 신청이 완료되었습니다.')
               navigate('/')
-          } catch(err){
-              console.log(err)
-          }
+          } catch (err) {
+            alert(err.message); // 에러 메시지 출력
+        }
       }
       const btn_translate_cancle = async() => {
           navigate('/')

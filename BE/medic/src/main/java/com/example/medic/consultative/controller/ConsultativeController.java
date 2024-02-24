@@ -13,6 +13,7 @@ import com.example.medic.translation.dto.TranslationRequestDto;
 import com.example.medic.translation.dto.TranslationResponseDto;
 import com.example.medic.translation.dto.TranslationSituationDto;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -161,16 +162,21 @@ public class ConsultativeController {
                                                             @RequestPart(name = "dto") TranslationAnswerFileRequestDto translationAnswerFileRequestDto,
                                                             @PathVariable Long trId,
                                                             HttpServletRequest request) throws IOException {
-        HttpSession session = request.getSession();
-        String cId = (String) session.getAttribute("uId");
+        try{
+            HttpSession session = request.getSession();
+            String cId = (String) session.getAttribute("uId");
 
-        ConsultativeDto consultativeDto = ConsultativeDto.builder()
-                .cId(cId)
-                .build();
-        if(consultativeAssignmentService.saveTranslationAnswerFile(consultativeDto, multipartFiles, trId, translationAnswerFileRequestDto)){
-            return ResponseEntity.ok("저장되었습니다.");
+            ConsultativeDto consultativeDto = ConsultativeDto.builder()
+                    .cId(cId)
+                    .build();
+            if(consultativeAssignmentService.saveTranslationAnswerFile(consultativeDto, multipartFiles, trId, translationAnswerFileRequestDto)){
+                return ResponseEntity.ok("저장되었습니다.");
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
+        } catch (SizeLimitExceededException e){
+            return ResponseEntity.ok().body("파일의 크기가 너무 큽니다.");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
+
     }
 
     /**
@@ -178,18 +184,23 @@ public class ConsultativeController {
      */
     @PutMapping("/consultative/assignedTranslate/updateFile/{trId}")
     public ResponseEntity<String> updateTranslationAnswerFile(@RequestPart(name = "files") List<MultipartFile> multipartFiles,
-                                                            @PathVariable Long trId,
-                                                            HttpServletRequest request) throws IOException {
-        HttpSession session = request.getSession();
-        String cId = (String) session.getAttribute("uId");
+                                                              @RequestPart(name = "dto") TranslationAnswerFileRequestDto translationAnswerFileRequestDto,
+                                                              @PathVariable Long trId,
+                                                              HttpServletRequest request) throws IOException {
+        try{
+            HttpSession session = request.getSession();
+            String cId = (String) session.getAttribute("uId");
 
-        ConsultativeDto consultativeDto = ConsultativeDto.builder()
-                .cId(cId)
-                .build();
-        if(consultativeAssignmentService.updateTranslationAnswerFile(consultativeDto, multipartFiles, trId)){
-            return ResponseEntity.ok("저장되었습니다.");
+            ConsultativeDto consultativeDto = ConsultativeDto.builder()
+                    .cId(cId)
+                    .build();
+            if(consultativeAssignmentService.updateTranslationAnswerFile(consultativeDto, multipartFiles, trId, translationAnswerFileRequestDto)){
+                return ResponseEntity.ok("저장되었습니다.");
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
+        } catch (SizeLimitExceededException e){
+            return ResponseEntity.ok("파일의 크기가 너무 큽니다.");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed");
     }
 
     /**

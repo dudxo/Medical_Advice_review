@@ -12,6 +12,7 @@ import com.example.medic.qna.repository.QnaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -69,7 +70,7 @@ public class QnaService {
     public Qna saveQPost(String currentUid, QnaRequestDto qnaRequestDto) {
         Client client = clientRepository.findByUId(currentUid).orElse(null);
         Qna qna = Qna.builder()
-                .qaDate(qnaRequestDto.getQaDate())
+                .qaDate(LocalDate.now())
                 .qaTitle(qnaRequestDto.getQaTitle())
                 .qaSecret(qnaRequestDto.isQaSecret())
                 .qaPw(qnaRequestDto.getQaPw())
@@ -89,7 +90,7 @@ public class QnaService {
         }
         Qna updateQna = qna.builder()
                 .qaId(qna.getQaId())
-                .qaDate(qnaRequestDto.getQaDate())
+                .qaDate(LocalDate.now())
                 .qaTitle(qnaRequestDto.getQaTitle())
                 .qaSecret(qnaRequestDto.isQaSecret())
                 .qaPw(qnaRequestDto.getQaPw())

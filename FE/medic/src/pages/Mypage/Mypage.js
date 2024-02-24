@@ -37,11 +37,11 @@ export default function Mypage(){
         
     }
     const btn_show_myAnalysis = e => {
-        navigate('/medic/analysis/analysisList')
+        navigate('/medic/analyze/analyzeList')
     }
 
     const btn_show_myTranslaion = e => {
-        navigate('/meidc/translate/translateList')
+        navigate('/medic/translate/translateList')
     }
     const btn_show_customerInquiry = e => {
         navigate('/medic/customer/customerinquiry')

@@ -122,6 +122,10 @@ export default function TranslateModifypage(){
         })], {type : "application/json"}))
 
         try{
+            const maxSizeInBytes = 100 * 1024 * 1024
+            if (updateTranslate.getAll('files').some(file => file.size > maxSizeInBytes)) {
+                throw new Error('파일 크기가 너무 큽니다.')
+            }
             const response = axios.put(`/user/translate/translateDetail/update/${index}`, updateTranslate, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -130,7 +134,7 @@ export default function TranslateModifypage(){
             alert('번역의뢰 신청이 완료되었습니다.')
             navigate('/')
         } catch(err){
-            console.log(err)
+            alert(err.message);
         }
     }
 
