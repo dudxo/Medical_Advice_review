@@ -39,13 +39,11 @@ public class AdAllListService {
         Map<Long, AdviceListDto> adviceListDtoMap = new HashMap<>();
 
         for (AdviceRequestList adviceRequestList : adviceRequestLists) {
-            String uName = getClientName(adviceRequestList.getClient());
             String uName1 = adviceRequestList.getClient().getUName();
-
             List<AdviceQuestion> adviceQuestions = adviceRequestList.getAdviceQuestions();
 
             for (AdviceQuestion adviceQuestion : adviceQuestions) {
-                AdviceListDto adviceListDto = convertToDTO(adviceRequestList, uName1, adviceQuestion);
+                AdviceListDto adviceListDto = convertToDTO(adviceRequestList, uName1, adviceQuestions);
 
                 if (!adviceListDtoMap.containsKey(adviceListDto.getAdId())) {
                     adviceListDtoMap.put(adviceListDto.getAdId(), adviceListDto);
@@ -56,44 +54,61 @@ public class AdAllListService {
         return new ArrayList<>(adviceListDtoMap.values());
     }
 
-
-    /*
-    유저조회
-     */
-    private String getClientName(Client client) {
-        return (client != null) ? client.getUName() : null;
-    }
-
-    /*
-    dto 값 지정
-     */
-    private AdviceListDto convertToDTO(AdviceRequestList adviceRequestList, String clientName, AdviceQuestion adviceQuestion) {
+    private AdviceListDto convertToDTO(AdviceRequestList adviceRequestList, String clientName, List<AdviceQuestion> adviceQuestions) {
         String admProgressStatus = null;
         if (adviceRequestList.getAdviceAssignment() != null) {
             admProgressStatus = adviceRequestList.getAdviceAssignment().getAdmProgressStatus();
         }
         AdviceAssignment adviceAssignment = adviceRequestList.getAdviceAssignment();
-
         Consultative consultative = adviceAssignment.getConsultative();
-
         String cName = null;
-        if (consultative != null){
-            cName= consultative.getCName();
+        if (consultative != null) {
+            cName = consultative.getCName();
         }
 
-        return new AdviceListDto(
+        // 하나라도 adAnswerDate가 null인지 확인
+        boolean anyNull = false;
+        for (AdviceQuestion adviceQuestion : adviceQuestions) {
+            if (adviceQuestion.getAdAnswerDate() == null) {
+                anyNull = true;
+                break;
+            }
+        }
 
-                adviceRequestList.getAdId(),
-                adviceRequestList.getAdPtDiagnosis(),
-                adviceRequestList.getAdRegDate(),
-                clientName,
-                (adviceRequestList.getAdviceAssignment() != null && adviceRequestList.getAdviceAssignment().getAdmDate() != null) ? adviceRequestList.getAdviceAssignment().getAdmDate() : null,
-                adviceQuestion.getAdAnswerDate()
-                ,admProgressStatus
-                ,cName
-        );
+        // 하나라도 null이 있으면 null 반환
+        if (anyNull) {
+            return new AdviceListDto(
+                    adviceRequestList.getAdId(),
+                    adviceRequestList.getAdPtDiagnosis(),
+                    adviceRequestList.getAdRegDate(),
+                    clientName,
+                    (adviceRequestList.getAdviceAssignment() != null && adviceRequestList.getAdviceAssignment().getAdmDate() != null) ? adviceRequestList.getAdviceAssignment().getAdmDate() : null,
+                    null,
+                    admProgressStatus,
+                    cName
+            );
+        } else {
+            // 하나도 null이 없으면 첫 번째 adAnswerDate 반환
+            return new AdviceListDto(
+                    adviceRequestList.getAdId(),
+                    adviceRequestList.getAdPtDiagnosis(),
+                    adviceRequestList.getAdRegDate(),
+                    clientName,
+                    (adviceRequestList.getAdviceAssignment() != null && adviceRequestList.getAdviceAssignment().getAdmDate() != null) ? adviceRequestList.getAdviceAssignment().getAdmDate() : null,
+                    adviceQuestions.get(0).getAdAnswerDate(),
+                    admProgressStatus,
+                    cName
+            );
+        }
     }
 
+
+    /*
+  유저조회
+   */
+    private String getClientName(Client client) {
+        return (client != null) ? client.getUName() : null;
+    }
 
     /*
     진행상황 수정
