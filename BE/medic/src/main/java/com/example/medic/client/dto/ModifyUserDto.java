@@ -13,8 +13,6 @@ public class ModifyUserDto {
 
     private static final Logger logger = LoggerFactory.getLogger(ModifyUserDto.class);
 
-    private String uRole;
-
     private String uEmail;
 
     private String userTel;
@@ -38,7 +36,6 @@ public class ModifyUserDto {
     public static ModifyUserDto form(Client client){
         if(client != null) {
             return ModifyUserDto.builder()
-                    .uRole(client.getURole())
                     .uEmail(client.getUEmail())
                     .userTel(client.getUserTel())
                     .userPhone(client.getUserPhone())

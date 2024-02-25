@@ -11,7 +11,7 @@ public class ClientInfoAllDto {
 
     private String uPw;
 
-    private String uRole;
+    private String uPart;
 
     private String name;
 
@@ -37,11 +37,11 @@ public class ClientInfoAllDto {
 
 
     @Builder
-    public ClientInfoAllDto (String uId, String uPw, String uRole, String name, String uEmail, String userTel, String userPhone, String userAddress,
+    public ClientInfoAllDto (String uId, String uPw, String uPart, String name, String uEmail, String userTel, String userPhone, String userAddress,
                              String company, String ceo, String cpTel, String cpFx, String cpNum, String cpAddress){
                 this.uId = uId;
                 this.uPw = uPw;
-                this.uRole = uRole;
+                this.uPart = uPart;
                 this.name = name;
                 this.uEmail = uEmail;
                 this.userTel = userTel;

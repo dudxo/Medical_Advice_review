@@ -4,7 +4,7 @@ import joinpage from '../css/Joinpage.module.css'
 import { useNavigate } from "react-router-dom";
 
 export default function Joinpage(){
-    const [uRole, setURole] = useState('');   //역할
+    const [uPart, setUPart] = useState('');   //역할
     const [uId, setUId] = useState('')      //id 
     const [uPw, setUPw] = useState('')      //pw
     const [uName, setUName] = useState('') //name
@@ -31,15 +31,15 @@ export default function Joinpage(){
     const navigate = useNavigate()
 
     useEffect(()=>{
-        if(uRole && uId && uPw && uName && uEmail && userTel && userPhone && userAddress && company && ceo && cpTel && cpFx && cpNum && cpAddress && idchk && pwchk){
+        if(uPart && uId && uPw && uName && uEmail && userTel && userPhone && userAddress && company && ceo && cpTel && cpFx && cpNum && cpAddress && idchk && pwchk){
             setInfoEmpty(true);
         } else{
             setInfoEmpty(false)
         }
-    }, [uRole,  uId,  uPw,  uName,  uEmail,  userTel,  userPhone,  userAddress,  company,  ceo,  cpTel,  cpFx,  cpNum,  cpAddress,  idchk,  pwchk])
+    }, [uPart,  uId,  uPw,  uName,  uEmail,  userTel,  userPhone,  userAddress,  company,  ceo,  cpTel,  cpFx,  cpNum,  cpAddress,  idchk,  pwchk])
 
-    const radio_select_userRole = e => {
-        setURole(e.target.value)
+    const radio_select_userPart = e => {
+        setUPart(e.target.value)
         console.log(e.target.value)
     }
     const btn_progrm_idConfirm = async(e) =>{
@@ -137,10 +137,10 @@ export default function Joinpage(){
         }
     }
     const btn_progrm_signup = e => {
-        console.log(1)
         e.preventDefault()
         const userInfo = {
-            'uRole' : uRole,
+            'uRole' : 'general_user',
+            'uPart' : uPart,
             'uId' : uId,
             'uPw' : uPw,
             'uName' : uName,
@@ -178,13 +178,13 @@ export default function Joinpage(){
                             회원구분
                         </td>
                         <td colSpan="3" className={joinpage.joinpage_td}>
-                            <input type="radio" name="user_role" value="general_user" onChange={radio_select_userRole}/>일반회원
-                            <input type="radio" name="user_role" value="insurance_co" onChange={radio_select_userRole}/>보험사
-                            <input type="radio" name="user_role" value="deduction_sc" onChange={radio_select_userRole}/>공제회
-                            <input type="radio" name="user_role" value="adjuster_cp" onChange={radio_select_userRole}/>손해사정법인
-                            <input type="radio" name="user_role" value="adjuster_oc" onChange={radio_select_userRole}/>손해사정사무소
-                            <input type="radio" name="user_role" value="lawfirm" onChange={radio_select_userRole}/>법무법인
-                            <input type="radio" name="user_role" value="labor_cp" onChange={radio_select_userRole}/>노무법인
+                            <input type="radio" name="user_role" value="general_user" onChange={radio_select_userPart}/>일반회원
+                            <input type="radio" name="user_role" value="insurance_co" onChange={radio_select_userPart}/>보험사
+                            <input type="radio" name="user_role" value="deduction_sc" onChange={radio_select_userPart}/>공제회
+                            <input type="radio" name="user_role" value="adjuster_cp" onChange={radio_select_userPart}/>손해사정법인
+                            <input type="radio" name="user_role" value="adjuster_oc" onChange={radio_select_userPart}/>손해사정사무소
+                            <input type="radio" name="user_role" value="lawfirm" onChange={radio_select_userPart}/>법무법인
+                            <input type="radio" name="user_role" value="labor_cp" onChange={radio_select_userPart}/>노무법인
                         </td>
                     </tr>
 
