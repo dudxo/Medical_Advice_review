@@ -46,6 +46,9 @@ export default function Mypage(){
     const btn_show_customerInquiry = e => {
         navigate('/medic/customer/customerinquiry')
     }
+    const btn_show_myInfo = e => {
+        navigate('/medic/mypage/modifymyinfo')
+    }
     return(
         <div className={mypage.mypage_box}>
             <div className={mypage.mypage_requestcount_box}>
@@ -78,6 +81,7 @@ export default function Mypage(){
                     </div>
                 </div>
             </div>
+            <button className={mypage.mypage_modifymyinfo} onClick={btn_show_myInfo}>내 정보수정</button>
         </div>
     )
 }
