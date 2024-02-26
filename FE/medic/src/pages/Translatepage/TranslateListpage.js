@@ -28,7 +28,7 @@ export default function TranslateListPage() {
   
   const formatDate = (dateString) => {
     if (!dateString) { 
-      return ' ';
+      return '미배정';
     }
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -48,8 +48,16 @@ export default function TranslateListPage() {
   };
 
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+    if (newPage > 0 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+    }
   };
+
+  const itemsPerPage = 7;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, translateList.length);
+  const visibleTranslateList = translateList.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(translateList.length / itemsPerPage);
 
 
   return (
@@ -74,33 +82,44 @@ export default function TranslateListPage() {
           </tr>
           </thead>
         <tbody>
-            {translateList.map((translateRequestList, index) => (
-    <tr key={index}>
-      <React.Fragment>
-        <td className={translatelist.translateList_td} onClick={() => btn_detail_translate(translateRequestList.trId)}>
-        {typeof translateRequestList.trId === 'number' ? translateRequestList.trId : 'Invalid trId'}
-        </td>
-        <td className={translatelist.translateList_td}>{translateRequestList.trPtSub}</td>
-        <td className={translatelist.translateList_td}>{translateRequestList.trPtDiagnosis}</td>
-        <td className={translatelist.translateList_td}>{formatDate(translateRequestList.trRegDate)}</td>
-        <td className={translatelist.translateList_td}>{formatDate(translateRequestList.tamDate)}</td>
-        <td className={translatelist.translateList_td}>{formatDate(translateRequestList.trAnswerDate)}</td>
-        <td className={translatelist.translateList_td}>{translateRequestList.trProgressStatus}</td>
-      </React.Fragment>
-    </tr>
-  ))}
-</tbody>
+        {visibleTranslateList.map((translation, index) => (
+            <tr key={index}>
+              <td className={translatelist.translateList_td} onClick={() => btn_detail_translate(translation.trId)}>
+                  {translateList.length - startIndex - index}
+              </td>              
+              <td className={translatelist.translateList_td}>{translation.trPtSub}</td>
+              <td className={translatelist.translateList_td}>{translation.trPtDiagnosis}</td>
+              <td className={translatelist.translateList_td}>{formatDate(translation.trRegDate)}</td>
+              <td className={translatelist.translateList_td}>{formatDate(translation.tamDate)}</td>
+              <td className={translatelist.translateList_td}>{translation.trAnswerDate === null ? '미답변' : translation.trAnswerDate}</td>
+              <td className={translatelist.translateList_td}>{translation.trProgressStatus === null ? '번역의뢰중' : translation.trProgressStatus}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
       <div className={translatelist.pagination}>
-        <button className={translatelist.paginationButton} onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+        <button
+          className={translatelist.paginationButton}
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
           ◀
         </button>
-        {[...Array(10)].map((_, index) => (
-          <button key={index} className={translatelist.paginationButton} onClick={() => handlePageChange(index + 1)} disabled={currentPage === index + 1}>
+        {[...Array(Math.ceil(translateList.length / itemsPerPage))].map((_, index) => (
+          <button
+            key={index}
+            className={translatelist.paginationButton}
+            onClick={() => handlePageChange(index + 1)}
+            disabled={currentPage === index + 1}
+          >
             {index + 1}
           </button>
         ))}
-        <button className={translatelist.paginationButton} onClick={() => handlePageChange(currentPage + 1)}>
+        <button
+          className={translatelist.paginationButton}
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === Math.ceil(translateList.length / itemsPerPage)}
+        >
           ▶
         </button>
       </div>

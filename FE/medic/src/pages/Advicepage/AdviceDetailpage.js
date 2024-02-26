@@ -420,6 +420,8 @@ const generateOptions = (start, end) => {
                     </div>
                         {renderQuestionInputs()}
                     </div>
+        {adviceDetails.admProgressStatus === '자문완료' && (
+            <div>
             <div className={advicerequest.iconbox} style={{marginTop : '50px'}}>
                     <h3>
                         <i className="fa-solid fa-circle icon"></i>
@@ -442,6 +444,8 @@ const generateOptions = (start, end) => {
                     </div>
                         {renderAnswerInputs()}
                     </div>
+                    </div>
+        )}
              <div className={advicerequest.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>

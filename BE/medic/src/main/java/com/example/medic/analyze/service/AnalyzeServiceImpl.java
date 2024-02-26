@@ -222,6 +222,7 @@ public class AnalyzeServiceImpl implements AnalyzeService {
                 .anFilm(analyzeRequestFile.getAnFilm())
                 .anOther(analyzeRequestFile.getAnOther())
                 .adMdDate(analyzeAssignment.getAdMdDate())
+                .anProgressStatus(analyzeAssignment.getAnProgressStatus())
                 .build();
 
         return analyzeResponseDto;

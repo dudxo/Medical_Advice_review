@@ -280,6 +280,7 @@ public class AdviceService {
                 .adOther(adviceFile.getAdOther())
                 .adviceQuestions(adviceQuestions)
                 .admDate(adviceAssignment.getAdmDate())
+                .admProgressStatus(adviceAssignment.getAdmProgressStatus())
                 .build();
 
         return allAdviceRequestDto;

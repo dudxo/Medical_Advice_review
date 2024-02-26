@@ -159,7 +159,7 @@ export default function ConsultativeAnalyzeAssignmentDetailpage(){
     };
     
     const btn_analyze_request = async() => {
-        if (assignmentAnalyze.anProgressStatus == '결제하기') {
+        if (assignmentAnalyze.anProgressStatus === '결제하기' || assignmentAnalyze.anProgressStatus === '분석완료') {
             alert("회원에게 답변이 전달되면 답변을 수정할 수 없습니다.");
         } else {
             await saveAnalysisResponse();

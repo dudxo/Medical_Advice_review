@@ -147,7 +147,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
               />
             </div>
             <div className={assignmentadvicedetail.title_box}>
-              답변 입력
+              답변 {index + 1}
             </div>
             <div className={assignmentadvicedetail.input_box}>
               <input
@@ -169,7 +169,7 @@ export default function ConsultativeAdviceAssignmentDetailpage(){
     };
     
     const btn_advice_request = async() => {
-        if (assignmentAdvice.admProgressStatus == '결제하기') {
+        if (assignmentAdvice.admProgressStatus === '결제하기' || assignmentAdvice.admProgressStatus === '자문완료') {
             alert("회원에게 답변이 전달되면 답변을 수정할 수 없습니다.");
         } else {
             await saveAdviceisResponse();

@@ -34,8 +34,9 @@ export default function AdviceListPage() {
   
   const formatDate = (dateString) => {
     if (!dateString) {
-      return '';
+      return '미배정';
     }
+
 
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -50,8 +51,16 @@ export default function AdviceListPage() {
   };
 
   const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
     setCurrentPage(newPage);
+    }
   };
+
+  const itemsPerPage = 7;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, adviceList.length);
+  const visibleAdviceList = adviceList.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(adviceList.length / itemsPerPage);
 
   return (
     <div className={advicelist.contents}>
@@ -74,36 +83,50 @@ export default function AdviceListPage() {
           </tr>
           </thead>
           <tbody>
-            {adviceList.map((adviceRequestList, index) => (
-              <tr key={index}>
-                <React.Fragment>
-                  <td className={advicelist.adviceList_td} onClick={() => btn_detail_advice(adviceRequestList.adId)}>
-                  {adviceList.length - index}
-                  </td>
-                  <td className={advicelist.adviceList_td}>{adviceRequestList.adPtSub}</td>
-                  <td className={advicelist.adviceList_td}>{adviceRequestList.adPtDiagnosis}</td>
-                  <td className={advicelist.adviceList_td}>{formatDate(adviceRequestList.adRegDate)}</td>
-                  <td className={advicelist.adviceList_td}>{formatDate(adviceRequestList.admDate)}</td>
-                  <td className={advicelist.adviceList_td}>{formatDate(adviceRequestList.adAnswerDate)}</td>
-                  <td className={advicelist.adviceList_td}>{adviceRequestList.admProgressStatus}</td>
-                </React.Fragment>
-              </tr>
-            ))}
-          </tbody>
+          {visibleAdviceList.map((advice, index) => (
+            <tr key={index}>
+              <td className={advicelist.adviceList_td} onClick={() => btn_detail_advice(advice.adId)}>
+                  {adviceList.length - startIndex - index}
+              </td>
+              <td className={advicelist.adviceList_td}>{advice.adPtSub}</td>
+              <td className={advicelist.adviceList_td}>{advice.adPtDiagnosis}</td>
+              <td className={advicelist.adviceList_td}>{formatDate(advice.adRegDate)}</td>
+              <td className={advicelist.adviceList_td}>{formatDate(advice.admDate)}</td>
+              <td className={advicelist.adviceList_td}>
+                {advice.adAnswerDate === null ? '미답변' : advice.adAnswerDate}
+              </td>
+              <td className={advicelist.adviceList_td}>{advice.admProgressStatus === null ? '자문의뢰중' : advice.admProgressStatus}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
       <div className={advicelist.pagination}>
-        <button className={advicelist.paginationButton} onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+        <button
+          className={advicelist.paginationButton}
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
           ◀
         </button>
-        {[...Array(10)].map((_, index) => (
-          <button key={index} className={advicelist.paginationButton} onClick={() => handlePageChange(index + 1)} disabled={currentPage === index + 1}>
+        {[...Array(Math.ceil(adviceList.length / itemsPerPage))].map((_, index) => (
+          <button
+            key={index}
+            className={advicelist.paginationButton}
+            onClick={() => handlePageChange(index + 1)}
+            disabled={currentPage === index + 1}
+          >
             {index + 1}
           </button>
         ))}
-        <button className={advicelist.paginationButton} onClick={() => handlePageChange(currentPage + 1)}>
+        <button
+          className={advicelist.paginationButton}
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === Math.ceil(adviceList.length / itemsPerPage)}
+        >
           ▶
         </button>
       </div>
     </div>
   );
 }
+
