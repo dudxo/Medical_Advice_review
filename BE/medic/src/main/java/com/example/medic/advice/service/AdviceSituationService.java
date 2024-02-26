@@ -8,6 +8,8 @@ import com.example.medic.advice.dto.AdviceSituationDto;
 import com.example.medic.advice.repository.AdviceAssignmentRepository;
 import com.example.medic.advice.repository.AdviceQuestionRepository;
 import com.example.medic.advice.repository.AdviceRequestListRepository;
+import com.example.medic.analyze.domain.AnalyzeRequest;
+import com.example.medic.analyze.domain.AnalyzeRequestList;
 import com.example.medic.client.dto.ClientInfoDto;
 import com.example.medic.consultative.domain.Consultative;
 import com.example.medic.manager.dto.AdviceListDto;
@@ -63,11 +65,42 @@ public class AdviceSituationService {
         }
 
         Consultative consultative = adviceAssignmentOptional.map(AdviceAssignment::getConsultative).orElse(null);
+        LocalDate latestAnswerDate = getLatestAnswerDate(adviceRequestList);
 
         return new AdviceSituationDto(adviceRequestList.getAdId(), adviceRequestList.getAdPtSub(),
                 adviceRequestList.getAdPtDiagnosis(), adviceRequestList.getAdRegDate(),
                 (adviceAssignmentOptional.map(AdviceAssignment::getAdmDate).orElse(null)),
-                adviceQuestion.getAdAnswerDate(), admProgressStatus);
+                latestAnswerDate, admProgressStatus);
+    }
+
+    private LocalDate getLatestAnswerDate(AdviceRequestList adviceRequestList) {
+        Map<Long, LocalDate> answerDatesMap = new HashMap<>();
+
+        for (AdviceQuestion adviceQuestion : adviceRequestList.getAdviceQuestions()) {
+            LocalDate answerDate = adviceQuestion.getAdAnswerDate();
+            if (answerDate != null) {
+                answerDatesMap.put(adviceQuestion.getAdId(), answerDate);
+            } else {
+                answerDatesMap.put(adviceQuestion.getAdId(), null); // null일 경우도 기록
+            }
+        }
+
+        // 동일한 adId를 참조하는 AdviceQuestion들의 adAnswerDate를 확인
+        for (LocalDate answerDate : answerDatesMap.values()) {
+            if (answerDate == null) {
+                return null; // 하나라도 null이면 null을 반환
+            }
+        }
+
+        // 모든 AdviceQuestion들의 adAnswerDate가 null이 아니라면, 가장 최근 값을 반환
+        LocalDate latestAnswerDate = null;
+        for (LocalDate answerDate : answerDatesMap.values()) {
+            if (latestAnswerDate == null || (answerDate != null && answerDate.isAfter(latestAnswerDate))) {
+                latestAnswerDate = answerDate;
+            }
+        }
+
+        return latestAnswerDate;
     }
 
 
