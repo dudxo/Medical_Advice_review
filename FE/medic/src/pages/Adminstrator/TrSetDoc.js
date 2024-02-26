@@ -298,7 +298,7 @@ const handlePageChange = (newPage) => {
                   <option value="번역의뢰중">번역의뢰중</option>
                   <option value="번역배정중">번역배정중</option>
                   <option value="결제하기">결제하기</option>
-                  <option value="자문완료">자문완료</option>
+                  <option value="번역완료">번역완료</option>
                 </select>
               </td>
             </tr>
