@@ -24,6 +24,7 @@ export default function AdAdviceListPage() {
     const fetchData = async () => {
       try {
         const response = await axios.get('/admin/advice/list');
+        console.log('',response.data)
         setAllAdviceList(response.data);
       } catch (error) {
         console.error('자문 리스트를 가져오는 도중 에러 발생:', error);

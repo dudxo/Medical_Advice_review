@@ -44,7 +44,7 @@ public class AnAllListService {
             List<AnalyzeRequest> analyzeRequests = analyzeRequestList.getAnalyzeRequests();
 
             for (AnalyzeRequest analyzeRequest : analyzeRequests) {
-                AnalyzeListDto adviceListDto = convertToDTO(analyzeRequestList, uName, analyzeRequest);
+                AnalyzeListDto adviceListDto = convertToDTO(analyzeRequestList, uName, analyzeRequests);
 
                 if (!analyzeListDtoMap.containsKey(adviceListDto.getAnId())) {
                     analyzeListDtoMap.put(adviceListDto.getAnId(), adviceListDto);
@@ -66,7 +66,7 @@ public class AnAllListService {
     /*
     dto 값 설정
      */
-    private AnalyzeListDto convertToDTO(AnalyzeRequestList analyzeRequestList, String clientName, AnalyzeRequest analyzeRequest) {
+    private AnalyzeListDto convertToDTO(AnalyzeRequestList analyzeRequestList, String clientName, List<AnalyzeRequest> analyzeRequests) {
         String admProgressStatus = null;
         if (analyzeRequestList.getAnalyzeAssignment() != null) {
             admProgressStatus = analyzeRequestList.getAnalyzeAssignment().getAnProgressStatus();
@@ -76,20 +76,44 @@ public class AnAllListService {
         Consultative consultative = analyzeAssignment1.getConsultative();
 
         String cName = null;
-        if (consultative != null){
-            cName= consultative.getCName();
+        if (consultative != null) {
+            cName = consultative.getCName();
         }
-        return new AnalyzeListDto(
 
-                analyzeRequestList.getAnId(),
-                analyzeRequestList.getAnPtDiagnosis(),
-                analyzeRequestList.getAnRegDate(),
-                clientName,
-               adMdDate,
-                analyzeRequest.getAnAnswerDate()
-                ,admProgressStatus
-                ,cName
-        );
+        // 하나라도 anAnswerDate가 null인지 확인
+        boolean anyNull = false;
+        for (AnalyzeRequest analyzeRequest : analyzeRequests) {
+            if (analyzeRequest.getAnAnswerDate() == null) {
+                anyNull = true;
+                break;
+            }
+        }
+
+        // 하나라도 null이 있으면 null 반환
+        if (anyNull) {
+            return new AnalyzeListDto(
+                    analyzeRequestList.getAnId(),
+                    analyzeRequestList.getAnPtDiagnosis(),
+                    analyzeRequestList.getAnRegDate(),
+                    clientName,
+                    adMdDate,
+                    null,
+                    admProgressStatus,
+                    cName
+            );
+        } else {
+            // 하나도 null이 없으면 첫 번째 anAnswerDate 반환
+            return new AnalyzeListDto(
+                    analyzeRequestList.getAnId(),
+                    analyzeRequestList.getAnPtDiagnosis(),
+                    analyzeRequestList.getAnRegDate(),
+                    clientName,
+                    adMdDate,
+                    analyzeRequests.get(0).getAnAnswerDate(),
+                    admProgressStatus,
+                    cName
+            );
+        }
     }
 
     /*

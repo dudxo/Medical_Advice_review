@@ -547,26 +547,34 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
             // 기존에 저장된 답변 업데이트
             for (int i = 0; i < analyzeRequests.size(); i++) {
                 AnalyzeRequest analyzeRequest = analyzeRequests.get(i);
-                String answerContent = null; // 기본값으로 null로 설정
+                String newAnswerContent = null; // 새로운 값
+                String currentAnswerContent = analyzeRequest.getAnAnswerContent(); // 현재 값
 
                 // 새로운 답변이 존재하는 경우에만 가져옴
                 if (answerContents != null && i < answerContents.size()) {
-                    answerContent = answerContents.get(i);
+                    newAnswerContent = answerContents.get(i);
                 }
 
-                // 답변 업데이트
-                analyzeRequest.updateAnAnswerContent(answerContent);
+                // 새로운 값이 기존 값과 다를 때에만 업데이트 수행
+                if (!Objects.equals(newAnswerContent, currentAnswerContent)) {
+                    // 답변 업데이트
+                    analyzeRequest.updateAnAnswerContent(newAnswerContent);
 
-                // 답변일 업데이트
-                analyzeRequest.updateAnAnswerDate(anAnswerDate);
+                    // 답변이 있는 경우에만 업데이트 수행
+                    if (newAnswerContent != null && !newAnswerContent.isEmpty()) {
+                        // 답변일 업데이트
+                        analyzeRequest.updateAnAnswerDate(anAnswerDate);
+                    }
 
-                analyzeRequestRepository.save(analyzeRequest);
+                    analyzeRequestRepository.save(analyzeRequest);
+                }
             }
         } catch (PersistenceException e) {
             logger.info("분석 의뢰 답변지 저장 실패");
             throw new PersistenceException();
         }
     }
+
 
     /**
      * 배정받은 자문의뢰 답변 저장
@@ -610,20 +618,27 @@ public class ConsultativeAssignmentServiceImpl implements ConsultativeAssignment
             // 기존에 저장된 답변 업데이트
             for (int i = 0; i < adviceQuestions.size(); i++) {
                 AdviceQuestion adviceQuestion = adviceQuestions.get(i);
-                String answerContent = null; // 기본값으로 null로 설정
+                String newAnswerContent = null; // 새로운 값
+                String currentAnswerContent = adviceQuestion.getAdAnswerContent(); // 현재 값
 
                 // 새로운 답변이 존재하는 경우에만 가져옴
                 if (answerContents != null && i < answerContents.size()) {
-                    answerContent = answerContents.get(i);
+                    newAnswerContent = answerContents.get(i);
                 }
 
-                // 답변 업데이트
-                adviceQuestion.updateAdAnswerContent(answerContent);
+                // 새로운 값이 기존 값과 다를 때에만 업데이트 수행
+                if (!Objects.equals(newAnswerContent, currentAnswerContent)) {
+                    // 답변 업데이트
+                    adviceQuestion.updateAdAnswerContent(newAnswerContent);
 
-                // 답변일 업데이트
-                adviceQuestion.updateAdAnswerDate(adAnswerDate);
+                    // 답변이 있는 경우에만 업데이트 수행
+                    if (newAnswerContent != null && !newAnswerContent.isEmpty()) {
+                        // 답변일 업데이트
+                        adviceQuestion.updateAdAnswerDate(adAnswerDate);
+                    }
 
-                adviceQuestionRepository.save(adviceQuestion);
+                    adviceQuestionRepository.save(adviceQuestion);
+                }
             }
         } catch (PersistenceException e) {
             logger.info("자문 의뢰 답변지 저장 실패");

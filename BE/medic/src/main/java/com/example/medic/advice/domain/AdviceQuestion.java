@@ -54,4 +54,10 @@ public class AdviceQuestion {
         this.adAnswerContent = adAnswerContent;
     }
 
+    public Long getAdId() {
+        if (this.adviceRequestList != null) {
+            return this.adviceRequestList.getAdId();
+        }
+        return null;
+    }
 }

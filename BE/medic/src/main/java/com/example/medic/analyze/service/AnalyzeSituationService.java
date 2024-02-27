@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -68,12 +69,44 @@ public class AnalyzeSituationService {
         }
 
         Consultative consultative = analyzeAssignmentOptional.map(AnalyzeAssignment::getConsultative).orElse(null);
+        LocalDate latestAnswerDate = getLatestAnswerDate(analyzeRequestList);
 
         return new AnalyzeSituationDto(analyzeRequestList.getAnId(), analyzeRequestList.getAnPtSub(),
                 analyzeRequestList.getAnPtDiagnosis(), analyzeRequestList.getAnRegDate(),
                 (analyzeAssignmentOptional.map(AnalyzeAssignment::getAdMdDate).orElse(null)),
-                analyzeRequest.getAnAnswerDate(), anProgressStatus);
+                latestAnswerDate, anProgressStatus);
     }
+
+    private LocalDate getLatestAnswerDate(AnalyzeRequestList analyzeRequestList) {
+        Map<Long, LocalDate> answerDatesMap = new HashMap<>();
+
+        for (AnalyzeRequest analyzeRequest : analyzeRequestList.getAnalyzeRequests()) {
+            LocalDate answerDate = analyzeRequest.getAnAnswerDate();
+            if (answerDate != null) {
+                answerDatesMap.put(analyzeRequest.getAnId(), answerDate);
+            } else {
+                answerDatesMap.put(analyzeRequest.getAnId(), null); // null일 경우도 기록
+            }
+        }
+
+        // 동일한 anId를 참조하는 AnalyzeRequest들의 anAnswerDate를 확인
+        for (LocalDate answerDate : answerDatesMap.values()) {
+            if (answerDate == null) {
+                return null; // 하나라도 null이면 null을 반환
+            }
+        }
+
+        // 모든 AnalyzeRequest들의 anAnswerDate가 null이 아니라면, 가장 최근 값을 반환
+        LocalDate latestAnswerDate = null;
+        for (LocalDate answerDate : answerDatesMap.values()) {
+            if (latestAnswerDate == null || (answerDate != null && answerDate.isAfter(latestAnswerDate))) {
+                latestAnswerDate = answerDate;
+            }
+        }
+
+        return latestAnswerDate;
+    }
+
 
     public int getAnalyzeCount(String uid) {
         try {

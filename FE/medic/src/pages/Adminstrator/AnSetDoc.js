@@ -285,13 +285,13 @@ fetchData1();
 
               <td className={ad.ad_td}>
               <select
-                  value={adProgressStatus || '자문의뢰중'}
+                  value={adProgressStatus || '분석의뢰중'}
                   onChange={(e) => input_adProgressStatus(e)}
                 >
-                  <option value="자문의뢰중">분석의뢰중</option>
+                  <option value="분석의뢰중">분석의뢰중</option>
                   <option value="분석배정중">분석배정중</option>
                   <option value="결제하기">결제하기</option>
-                  <option value="자문완료">자문완료</option>
+                  <option value="분석완료">분석완료</option>
                 </select>
               </td>
             </tr>

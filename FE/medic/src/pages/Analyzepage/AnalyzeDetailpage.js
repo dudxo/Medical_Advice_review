@@ -268,6 +268,8 @@ export default function AnalyzeDetailpage(){
                 </div>
                 {renderQuestionInputs()}
                 </div>
+        {analyzeDetails.anProgressStatus === '분석완료' && (
+            <div>
             <div className={analyzerequest.iconbox} style={{marginTop : '50px'}}>
                     <h3>
                         <i className="fa-solid fa-circle icon"></i>
@@ -291,6 +293,8 @@ export default function AnalyzeDetailpage(){
                 </div>
                 {renderAnswerInputs()}
                 </div>
+                </div>
+                )}
              <div className={analyzerequest.iconbox}>
                 <h3>
                     <i className="fa-solid fa-circle icon"></i>

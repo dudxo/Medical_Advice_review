@@ -53,4 +53,12 @@ public class AnalyzeRequest {
     public void updateAnAnswerDate(LocalDate anAnswerDate) {
         this.anAnswerDate = anAnswerDate;
     }
+
+    public Long getAnId() {
+        if (this.analyzeRequestList != null) {
+            return this.analyzeRequestList.getAnId();
+        }
+        return null;
+    }
+
 }
