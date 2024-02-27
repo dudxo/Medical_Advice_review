@@ -25,7 +25,6 @@ export default function Qnapage(){
     const cookie = new Cookies();
 
     const uRole = cookie.get('uRole')
-    console.log(uRole)
     const handlePageChange = (newPage) => {
       const totalPages = Math.ceil(quiryList.length / itemsPerPage);
   
@@ -83,7 +82,7 @@ export default function Qnapage(){
                 const response = await axios.get('/qna/list');
                 console.log(response.data)
                 setQuiryList(response.data);
-                if(cookie.get('uRole') == 'admin'){
+                if(cookie.get('uRole') == 'manager'){
                     setIsAdmin(true)
                 } else{
                     setIsAdmin(false)
