@@ -14,20 +14,18 @@ public class TranslateListDto {
     private LocalDate trRegDate;
     private String uName;
     private LocalDate tamDate;
-    private LocalDate trAnswerDate;
     private String trProgressStatus;
     private String cName;
 
     @Builder
     public TranslateListDto(Long trId,  String trPtDiagnosis,
-                          LocalDate trRegDate, String uName, LocalDate tamDate, LocalDate trAnswerDate,
+                          LocalDate trRegDate, String uName, LocalDate tamDate,
                           String trProgressStatus, String cName) {
         this.trId = trId;
         this.trPtDiagnosis = trPtDiagnosis;
         this.trRegDate = trRegDate;
         this.uName = uName;
         this.tamDate = tamDate;
-        this.trAnswerDate = trAnswerDate;
         this.trProgressStatus = trProgressStatus;
         this.cName = cName;
     }

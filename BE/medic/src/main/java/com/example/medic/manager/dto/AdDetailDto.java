@@ -69,6 +69,15 @@ public class AdDetailDto {
     private List<AdviceQuestion> adviceQuestions;
     private List<AdviceQuestion> adviceAnswers;
 
+    private String adReqForm;
+
+    private String adDiagnosis;
+
+    private String adRecord;
+
+    private String adFilm;
+
+    private String adOther;
     @Builder
     public AdDetailDto(String adPtName, String adPtSsNum, String adPtSub, String adPtDiagnosis,
                        String adPtRec, String adPtCmt, String insurance, String insureDate,
@@ -76,7 +85,8 @@ public class AdDetailDto {
                        String uId, String uName, String userAddress, String userPhone, String userTel,
                         String hospital, String admStart, String admEnd, String visitStart, String visitEnd, String treatCmt,
                        int diagRound , List<String> adQuestionContent, String adAnswerContent, List<AdviceQuestion> adviceQuestions,
-                        List<AdviceQuestion> adviceAnswers) {
+                        List<AdviceQuestion> adviceAnswers,
+                       String adReqForm, String adDiagnosis, String adRecord, String adFilm, String adOther) {
         this.adPtName = adPtName;
         this.adPtSsNum = adPtSsNum;
         this.adPtSub = adPtSub;
@@ -107,6 +117,12 @@ public class AdDetailDto {
         this.adAnswerContent = adAnswerContent;
         this.adviceQuestions = adviceQuestions;
         this.adviceAnswers = adviceAnswers;
+
+        this.adReqForm = adReqForm;
+        this.adDiagnosis = adDiagnosis;
+        this.adRecord = adRecord;
+        this.adFilm = adFilm;
+        this.adOther = adOther;
     }
 
 

@@ -8,9 +8,11 @@ import com.example.medic.client.domain.Client;
 import com.example.medic.consultative.domain.Consultative;
 import com.example.medic.consultative.repository.ConsultativeRepository;
 import com.example.medic.manager.dto.*;
+import com.example.medic.translation.domain.TranslationAnswerFile;
 import com.example.medic.translation.domain.TranslationAssignment;
 import com.example.medic.translation.domain.TranslationRequestFile;
 import com.example.medic.translation.domain.TranslationRequestList;
+import com.example.medic.translation.repository.TranslationAnswerFileRepository;
 import com.example.medic.translation.repository.TranslationAssignmentRepository;
 import com.example.medic.translation.repository.TranslationRequestFileRepository;
 import com.example.medic.translation.repository.TranslationRequestListRepository;
@@ -32,6 +34,7 @@ public class TrAllListService {
     private final TranslationAssignmentRepository translationAssignmentRepository;
     private final TranslationRequestFileRepository translationRequestFileRepository;
     private final ConsultativeRepository consultativeRepository;
+    private final TranslationAnswerFileRepository translationAnswerFileRepository;
 
     /*
     번역 목록 조회
@@ -87,8 +90,7 @@ public class TrAllListService {
                 translationRequestList.getTrRegDate(),
                 clientName,
 //                (translationRequestList.getTranslationAssignment() != null && translationRequestList.getTranslationAssignment().getTamDate() != null) ? translationRequestList.getTranslationAssignment().getTamDate() : null,
-                translationAssignment.getTamDate(),
-                translationRequestFile.getTrAnswerDate()
+                translationAssignment.getTamDate()
                 ,admProgressStatus
                 ,cName
         );
@@ -170,6 +172,8 @@ public class TrAllListService {
     public TrDetailDto trDetailDto(Long trId){
         TranslationRequestList translationRequestList = translationRequestListRepository.findById(trId).get();
         Client client= translationRequestList.getClient();
+        TranslationRequestFile translationRequestFile = translationRequestFileRepository.findByTrId(trId);
+        TranslationAnswerFile translationAnswerFile = translationAnswerFileRepository.findAnswerFileById(trId);
 
         TrDetailDto trDetailDto = TrDetailDto.builder()
                 .trPtName(translationRequestList.getTrPtName())
@@ -186,24 +190,20 @@ public class TrAllListService {
                 .trPtSub(translationRequestList.getTrPtSub())
                 .trEtc(translationRequestList.getTrEtc())
                 .trPtDiagContent(translationRequestList.getTrPtDiagContent())
+                .trMtl(translationRequestFile.getTrMtl())
+                .trAnswer(translationAnswerFile.getTrAnswer())
                 .build();
 
         return trDetailDto;
     }
 
     public TranslateListDto translateListDto(Long trId){
-        logger.info("trid:{}",trId);
         TranslationAssignment translationAssignment = translationAssignmentRepository.findByTrId(trId);
-        logger.info("trid1:{}",translationAssignment.getTrProgressStatus());
         TranslationRequestList translationRequestList = translationAssignment.getTranslationRequestList();
-        logger.info("trid2:{}",translationRequestList.getTrPtDiagnosis());
-        TranslationRequestFile translationRequestFile = translationRequestList.getTranslationRequestFile();
-        logger.info("trid3:{}",translationRequestFile.getTrAnswerDate());
 
         Client client  = translationRequestList.getClient();
         logger.info("trid4:{}",client.getUName());
         TranslateListDto translateListDto = TranslateListDto.builder()
-                .trAnswerDate(translationRequestFile.getTrAnswerDate())
                 .trId(trId)
                 .tamDate(translationAssignment.getTamDate())
                 .trRegDate(translationRequestList.getTrRegDate())

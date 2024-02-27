@@ -51,7 +51,7 @@ export default function AdDetailTranslate(){
                     
                 })
                 setTrAnswer(()=>{
-                    if(response.data.trAnswer === "empty_file"){
+                    if(response.data.trAnswer === null){
                         return false
                     } else{
                         return true

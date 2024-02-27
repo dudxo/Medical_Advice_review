@@ -32,9 +32,13 @@ public class TrDetailDto {
     private String userPhone;
     private String userTel;
 
+    private String trMtl;
+    private String trAnswer;
+
 @Builder
     public TrDetailDto(String trPtName , String trPtSsNum, String trPtSub, String trEtc, LocalDate trMdDate,String trPtDiagnosis,
-                      String uId, String uName, String userAddress, String userPhone, String userTel ,String trPtDiagContent){
+                      String uId, String uName, String userAddress, String userPhone, String userTel ,String trPtDiagContent,
+                      String trMtl, String trAnswer){
     this.trPtName = trPtName;
     this.trEtc = trEtc;
     this.trMdDate = trMdDate;
@@ -48,5 +52,7 @@ public class TrDetailDto {
     this.userPhone = userPhone;
     this.userTel = userTel;
 
+    this.trMtl = trMtl;
+    this.trAnswer = trAnswer;
     }
 }

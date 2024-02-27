@@ -210,6 +210,7 @@ public class AnAllListService {
                .anPtSsNum(analyzeRequestList.getAnPtSsNum())
                .anRecord(analyzeRequestList.getAnalyzeRequestFiles().get(0).getAnRecord())
                .anReqForm(analyzeRequestList.getAnalyzeRequestFiles().get(0).getAnReqForm())
+               .anDiagnosis(analyzeRequestList.getAnalyzeRequestFiles().get(0).getAnDiagnosis())
                .anRegDate(analyzeRequestList.getAnRegDate())
                .analyzeRequests(analyzeRequests)
                .build();

@@ -82,12 +82,12 @@ export default function AdDetailAnalyze(){
                 })
                 setAnOther(()=>{
                     if(response.data.anOther === "empty_file"){
-                        console.log(1)
                         return false
                     } else{
                         return true
                     }
                 })
+                console.log(response.data)
 
                
             }catch(error){

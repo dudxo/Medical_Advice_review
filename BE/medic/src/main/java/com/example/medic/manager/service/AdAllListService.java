@@ -1,10 +1,8 @@
 package com.example.medic.manager.service;
 
-import com.example.medic.advice.domain.AdviceAssignment;
-import com.example.medic.advice.domain.AdviceQuestion;
-import com.example.medic.advice.domain.AdviceRequestList;
-import com.example.medic.advice.domain.DiagnosisRecord;
+import com.example.medic.advice.domain.*;
 import com.example.medic.advice.repository.AdviceAssignmentRepository;
+import com.example.medic.advice.repository.AdviceFileRepository;
 import com.example.medic.advice.repository.AdviceQuestionRepository;
 import com.example.medic.advice.repository.AdviceRequestListRepository;
 import com.example.medic.client.domain.Client;
@@ -29,6 +27,7 @@ public class AdAllListService {
     private final AdviceAssignmentRepository adviceAssignmentRepository;
     private final AdviceQuestionRepository adviceQuestionRepository;
     private final ConsultativeRepository consultativeRepository;
+    private final AdviceFileRepository adviceFileRepository;
 
 
     /*
@@ -184,6 +183,7 @@ return false;
         AdviceRequestList adviceRequestList = adviceRequestListRepository.findById(adId).get();
         Client client = adviceRequestList.getClient();
         List<AdviceQuestion> adviceQuestion = adviceQuestionRepository.findByAdIds(adId);
+        AdviceFile adviceFile = adviceFileRepository.findByAdviceRequestId(adId);
 
         logger.info("adviceQuestion:{}",adviceQuestion.get(0));
         AdDetailDto adDetailDto = AdDetailDto.builder()
@@ -215,6 +215,11 @@ return false;
                 .adviceQuestions(adviceQuestion)
 //                .adQuestionContent(allAdQuestionContents)
 //                .adAnswerContent(adviceRequestList.getAdviceQuestions().get(0).getAdAnswerContent())
+                .adReqForm(adviceFile.getAdReqForm())
+                .adDiagnosis(adviceFile.getAdDiagnosis())
+                .adRecord(adviceFile.getAdRecord())
+                .adFilm(adviceFile.getAdFilm())
+                .adOther(adviceFile.getAdOther())
                 .build();
         return adDetailDto;
     }
