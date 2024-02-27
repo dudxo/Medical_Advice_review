@@ -291,15 +291,15 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
                 </div>
                 <div className={assignmenttranslatedetail.complete}>
                     {
-                        isAnswer ? trProgressStatus ? <></> : 
-                        isUpdate ?
+                        isAnswer ? (trProgressStatus ? <></> : 
+                        <button type="button" className={assignmenttranslatedetail.btt_complete} onClick={btn_translate_update}>번역의뢰 답변 수정</button>) 
+                        :
+                        isUpdate ? 
                         <button type="button" className={assignmenttranslatedetail.btt_complete} onClick={btn_translate_update}>번역의뢰 답변 수정</button>
                         :
                         <button type="button" className={assignmenttranslatedetail.btt_complete} onClick={btn_translate_request}>번역의뢰 답변 저장</button>
-                        :
-                        <button type="button" className={assignmenttranslatedetail.btt_complete} onClick={btn_translate_request}>번역의뢰 답변 저장</button>
-                    }     
-                    <button type = "button" className={assignmenttranslatedetail.btt_complete} onClick={btn_translate_cancle}>취소</button>
+                    }
+                <button type="button" className={assignmenttranslatedetail.btt_complete} onClick={btn_translate_cancle}>취소</button>
                 </div>
             </div>
         </div>
