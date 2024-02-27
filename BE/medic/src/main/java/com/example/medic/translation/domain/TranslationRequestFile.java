@@ -22,8 +22,6 @@ public class TranslationRequestFile {
 
     private String trMtl;
 
-    private LocalDate trAnswerDate;
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trId")
     private TranslationRequestList translationRequestList;
@@ -35,11 +33,4 @@ public class TranslationRequestFile {
         this.trMtl = trMtl;
         this.translationRequestList = translationRequestList;
     }
-
-
-    public void updateAdAnswerDate(LocalDate trAnswerDate) {
-        this.trAnswerDate = trAnswerDate;
-    }
-
-
 }
