@@ -41,11 +41,10 @@ export default function ModifyInputUserPw(){
     }
     const chkPw = e => {
         if(newPw === pwChk){
-            alert('설정한 비밀번호와 같습니다.')
-            setComplete(false)
+            return false
         } else{
             alert('설정한 비밀번호와 다릅니다.')
-            setComplete(true)
+            return true
         }
     }
     const btn_checkCurrentPw = e => {
@@ -57,6 +56,9 @@ export default function ModifyInputUserPw(){
         }
     }
     const btn_modifyPw = async()=>{
+        if(chkPw()){
+            return;
+        }
         const userPw = {
             'uPw' : newPw,
         }
@@ -85,10 +87,10 @@ export default function ModifyInputUserPw(){
                                 <input type="text" className={modifypw.input_currentpw} onChange={input_newpw}/>
                             </div>
                             <div className={modifypw.input_newpwchkbox}>
-                                <input type="text" className={modifypw.input_currentpw} onChange={input_newpwcheck} onBlur={chkPw}/>
+                                <input type="text" className={modifypw.input_currentpw} onChange={input_newpwcheck}/>
                             </div>
                         </div>  
-                        <button className={modifypw.checkCurrentPw} disabled={complete} onClick={btn_modifyPw}>비밀번호 재설정</button>
+                        <button className={modifypw.checkCurrentPw} onClick={btn_modifyPw}>비밀번호 재설정</button>
                     </>
                     :
                     <>
