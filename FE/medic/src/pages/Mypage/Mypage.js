@@ -20,7 +20,7 @@ export default function Mypage(){
             setMyAnalysis(Analysis.data)
             const Translation = await axios.get('/user/myPage/myTranslateSituation')
             setMyTranslation(Translation.data)
-            const CustomerInquiry = await axios.get(`/mypage/myCustomerInquiry`)
+            const CustomerInquiry = await axios.get(`/myPage/myQna`)
             setMyRequset(CustomerInquiry.data)
         } catch(err){
             console.log(err)

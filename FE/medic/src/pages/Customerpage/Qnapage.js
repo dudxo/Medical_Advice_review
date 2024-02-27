@@ -144,7 +144,7 @@ export default function Qnapage(){
         </div>
         <div className={cusinquiry.btn_write_inquirybox}>
                 {
-                    uRole === 'doctor' || uRole === 'manager'? 
+                    uRole === 'consultative' || uRole === 'manager'? 
                     <></>
                     :
                     <button className={cusinquiry.btn_write_inquiry} onClick={btn_write_inquiry}>
