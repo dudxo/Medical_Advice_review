@@ -45,7 +45,7 @@ public class ClientService {
             ClientInfoAllDto responseClientInfoAll = ClientInfoAllDto.builder()
                     .uId(client.getUId())
                     .uPw(client.getUPw())
-                    .uRole(client.getURole())
+                    .uPart(client.getUPart())
                     .uEmail(client.getUEmail())
                     .name(client.getUName())
                     .userTel(client.getUserTel())

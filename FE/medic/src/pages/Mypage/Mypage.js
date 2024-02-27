@@ -20,7 +20,7 @@ export default function Mypage(){
             setMyAnalysis(Analysis.data)
             const Translation = await axios.get('/user/myPage/myTranslateSituation')
             setMyTranslation(Translation.data)
-            const CustomerInquiry = await axios.get(`/mypage/myCustomerInquiry`)
+            const CustomerInquiry = await axios.get(`/myPage/myQna`)
             setMyRequset(CustomerInquiry.data)
         } catch(err){
             console.log(err)
@@ -45,6 +45,9 @@ export default function Mypage(){
     }
     const btn_show_customerInquiry = e => {
         navigate('/medic/customer/customerinquiry')
+    }
+    const btn_show_myInfo = e => {
+        navigate('/medic/mypage/modifymyinfo')
     }
     return(
         <div className={mypage.mypage_box}>
@@ -78,6 +81,7 @@ export default function Mypage(){
                     </div>
                 </div>
             </div>
+            <button className={mypage.mypage_modifymyinfo} onClick={btn_show_myInfo}>내 정보수정</button>
         </div>
     )
 }

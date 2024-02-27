@@ -39,11 +39,11 @@ export default function Header({}) {
 
     const signout_text = async () => {
         try {
+            cookies.remove('uId')
+            cookies.remove('uRole')
             const response = await axios.get('/logout');
             if (response.status === 200) {
                 alert('로그아웃 되었습니다.');
-                cookies.remove('uId')
-                cookies.remove('uRole')
                 navigate('/');
             } else {
                 alert('현재 로그인된 세션이 없습니다.');
@@ -221,9 +221,8 @@ export default function Header({}) {
     }
     const getMyInfo = async () => {
         try {
-            const role = cookies.get('uRole');
             let endpoint = '/user/userInfoAll';
-            if (role === 'consultative') {
+            if (uRole === 'consultative') {
                 endpoint = '/consultative/consultativeInfoAll';
             }
             const response = await axios.get(endpoint);
@@ -238,18 +237,15 @@ export default function Header({}) {
     };
     const btn_program_changeMemberInfo_view = async (e) => {
         if (isSession) {
-            const myInfo = await getMyInfo();
-            const role = cookies.get('uRole');
+            // const myInfo = await getMyInfo();
             let nextPage = '/medic/mypage/modifymyinfo';
-            
-            if (role === 'docter') {
+            if (uRole === 'docter') {
                 nextPage = '/medic/mypage/ChangeConsultativeInfo';
-            } else if(role === 'manager'){
+            } else if(uRole === 'manager'){
                 nextPage = '/medic/adminstrator/administratormypage';
             }
-            
-            console.log(myInfo);
-            navigate(nextPage, { state: { myInfo: myInfo } });
+            // navigate(nextPage, { state: { myInfo: myInfo } });
+            navigate(nextPage)
         } else {
             alert('로그인 후 이용해주세요!');
             navigate('/mediclogin');

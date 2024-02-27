@@ -7,7 +7,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.PersistenceException;
 import java.net.MalformedURLException;
 import java.util.NoSuchElementException;
 
@@ -24,9 +23,20 @@ public class AnalyzeFileService {
         AnalyzeRequestFile analyzeRequestFile = analyzeRequestFileRepository.findById(fileId)
                 .orElseThrow(() -> new NoSuchElementException("AdviceFile not found with id: " + fileId));
 
-        if (analyzeRequestFile != null) {
-            String baseUrl = "file:" + System.getProperty("user.dir") + "/medic/src/main/resources/static/file/analyzerequest/";
-            Resource resource = null;
+        if(analyzeRequestFile != null){
+            if(System.getProperty("user.dir").contains("medic")){
+                String baseUrl = "file:" + System.getProperty("user.dir") + "/src/main/resources/static/file/analyzerequest/";
+                return getFileResource(baseUrl, fileType, analyzeRequestFile);
+            } else{
+                String baseUrl = "file:" + System.getProperty("user.dir") + "/medic/src/main/resources/static/file/analyzerequest/";
+                return getFileResource(baseUrl, fileType, analyzeRequestFile);
+            }
+        }
+        return null;
+    }
+
+    private Resource getFileResource(String baseUrl, String fileType, AnalyzeRequestFile analyzeRequestFile) throws MalformedURLException {
+        Resource resource = null;
             switch (fileType) {
                 case "anReqForm":
                     resource = new UrlResource(baseUrl + analyzeRequestFile.getAnReqForm());
@@ -46,7 +56,6 @@ public class AnalyzeFileService {
                 default:
                     throw new IllegalArgumentException("Invalid file type: " + fileType);
             }
-        }
-        return null;
     }
 }
+

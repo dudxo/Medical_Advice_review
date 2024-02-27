@@ -30,7 +30,8 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
 
     //답변
     const [isAnswer, setIsAnswer] = useState(false)
-    const [trAnswer, setTrAnswer] = useState(false)
+    const [trAnswer, setTrAnswer] = useState(null)
+    const [isUpdate, setIsUpdate] = useState(false)
 
     //번역요청파일
     const [trMtl, setTrMtl] = useState(false)
@@ -81,7 +82,7 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
     }, [])
 
     const btn_translate_request = async() => {
-        if (trAnswer === null && typeof trAnswer === 'undefined') {
+        if (trAnswer === null || typeof trAnswer === 'undefined') {
             alert('입력값을 확인해주세요.');
             return;
         }
@@ -114,10 +115,11 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
         if(window.confirm('수정하시겠습니까?')){
             setIsAnswer(false)
             setTrAnswer(null)
+            setIsUpdate(true)
         }
     }
     const btn_translate_update = async() => {
-        if (trAnswer === null && typeof trAnswer === 'undefined') {
+        if (trAnswer === null || typeof trAnswer === 'undefined') {
             alert('입력값을 확인해주세요.');
             return;
         }
@@ -288,15 +290,16 @@ export default function ConsultativeTranslateAssignmentDetailpage(){
                     </div>
                 </div>
                 <div className={assignmenttranslatedetail.complete}>
-                {isAnswer ?
-                    trProgressStatus ?
-                    <></>
-                    :
-                    <button type="button" className={assignmenttranslatedetail.btt_complete} onClick={btn_translate_update}>번역의뢰 답변 수정</button>
-                    :
-                    <button type="button" className={assignmenttranslatedetail.btt_complete} onClick={btn_translate_request}>번역의뢰 답변 저장</button>
-                }        
-                    <button type = "button" className={assignmenttranslatedetail.btt_complete} onClick={btn_translate_cancle}>취소</button>
+                    {
+                        isAnswer ? (trProgressStatus ? <></> : 
+                        <button type="button" className={assignmenttranslatedetail.btt_complete} onClick={btn_translate_update}>번역의뢰 답변 수정</button>) 
+                        :
+                        isUpdate ? 
+                        <button type="button" className={assignmenttranslatedetail.btt_complete} onClick={btn_translate_update}>번역의뢰 답변 수정</button>
+                        :
+                        <button type="button" className={assignmenttranslatedetail.btt_complete} onClick={btn_translate_request}>번역의뢰 답변 저장</button>
+                    }
+                <button type="button" className={assignmenttranslatedetail.btt_complete} onClick={btn_translate_cancle}>취소</button>
                 </div>
             </div>
         </div>

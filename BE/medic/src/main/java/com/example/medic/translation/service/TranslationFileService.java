@@ -20,20 +20,30 @@ public class TranslationFileService {
      */
     public Resource findTranslationFile(Long trId) throws MalformedURLException {
         Long fileId = translationRequestFileRepository.findByFileId(trId);
-        System.out.println("23 : "+fileId);
         TranslationRequestFile translationRequestFile = translationRequestFileRepository.findById(fileId)
                 .orElseThrow(() -> new NoSuchElementException("AdviceFile not found with id: " + fileId));
 
         if (translationRequestFile != null) {
-            String baseUrl = "file:" + System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translationrequest/";
-            try {
-                Resource resource = new UrlResource(baseUrl + translationRequestFile.getTrMtl());
-                return resource;
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Invalid file type: ");
+            if (System.getProperty("user.dir").contains("medic")) {
+                String baseUrl = "file:" + System.getProperty("user.dir") + "/src/main/resources/static/file/translationrequest/";
+                return getFileResource(baseUrl, translationRequestFile);
+            } else {
+                String baseUrl = "file:" + System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translationrequest/";
+                return getFileResource(baseUrl, translationRequestFile);
             }
         }
         return null;
+    }
+
+    private Resource getFileResource(String baseUrl, TranslationRequestFile translationRequestFile){
+        try {
+            Resource resource = new UrlResource(baseUrl + translationRequestFile.getTrMtl());
+            return resource;
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid file type: ");
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

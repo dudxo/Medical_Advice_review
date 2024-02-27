@@ -1,21 +1,14 @@
 package com.example.medic.advice.service;
 
 import com.example.medic.advice.domain.AdviceFile;
-import com.example.medic.advice.dto.AdviceFileResponseDto;
 import com.example.medic.advice.repository.AdviceFileRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.net.MalformedURLException;
-import java.nio.file.Paths;
 import java.util.NoSuchElementException;
 
 @Service
@@ -35,16 +28,16 @@ public class AdviceFileService {
         if (adviceFile != null) {
             if (System.getProperty("user.dir").contains("medic")) {
                 String baseUrl = "file:" + System.getProperty("user.dir") + "/src/main/resources/static/file/advicerequest/";
-                return getFileResouce(baseUrl, fileType, adviceFile);
+                return getFileResource(baseUrl, fileType, adviceFile);
             } else {
                 String baseUrl = "file:" + System.getProperty("user.dir") + "/medic/src/main/resources/static/file/advicerequest/";
-                return getFileResouce(baseUrl, fileType, adviceFile);
+                return getFileResource(baseUrl, fileType, adviceFile);
             }
         }
         return null;
     }
 
-    private Resource getFileResouce(String baseUrl, String fileType, AdviceFile adviceFile) throws MalformedURLException {
+    private Resource getFileResource(String baseUrl, String fileType, AdviceFile adviceFile) throws MalformedURLException {
         Resource resource = null;
         switch (fileType) {
             case "adReqForm":

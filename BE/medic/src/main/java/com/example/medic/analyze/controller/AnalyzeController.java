@@ -71,7 +71,6 @@ public class AnalyzeController {
                         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileResource.getFilename() + "\"")
                         .body(fileResource);
             } else {
-                System.out.println(64);
                 return ResponseEntity.notFound().build();
             }
         } catch (IOException e) {

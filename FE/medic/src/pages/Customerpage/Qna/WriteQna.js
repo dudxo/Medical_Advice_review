@@ -55,6 +55,7 @@ export default function WriteQna() {
         }
         try{
             await axios.post('/qna/post', InquiryInfo)
+            alert('작성되었습니다.')
             navigate('/medic/customer/customerInquiry');
         } catch(err){
             console.log(err)

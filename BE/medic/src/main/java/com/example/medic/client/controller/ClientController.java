@@ -83,7 +83,7 @@ public class ClientController {
             return new ResponseEntity<>("에러 발생", HttpStatus.BAD_REQUEST);
         }
     }
-    @DeleteMapping("/user/deleteUser")
+    @PostMapping("/user/deleteUser")
     public ResponseEntity<String> deleteUserInfo(HttpServletRequest request){
         try{
             HttpSession session = request.getSession();

@@ -26,14 +26,25 @@ public class ConsultativeFileService {
                 .orElseThrow(() -> new NoSuchElementException("AdviceFile not found with id: " + fileId));
 
         if (translationAnswerFile != null) {
-            String baseUrl = "file:" + System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translationanswer/";
-            try {
-                Resource resource = new UrlResource(baseUrl + translationAnswerFile.getTrAnswer());
-                return resource;
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Invalid file type: ");
+            if (System.getProperty("user.dir").contains("medic")) {
+                String baseUrl = "file:" + System.getProperty("user.dir") + "/src/main/resources/static/file/translationanswer/";
+                return getFileResource(baseUrl, translationAnswerFile);
+            } else {
+                String baseUrl = "file:" + System.getProperty("user.dir") + "/medic/src/main/resources/static/file/translationanswer/";
+                return getFileResource(baseUrl, translationAnswerFile);
             }
         }
         return null;
+    }
+
+    private Resource getFileResource(String baseUrl, TranslationAnswerFile translationAnswerFile){
+        try {
+            Resource resource = new UrlResource(baseUrl + translationAnswerFile.getTrAnswer());
+            return resource;
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid file type: ");
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

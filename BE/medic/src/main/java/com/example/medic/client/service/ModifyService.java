@@ -24,11 +24,12 @@ public class ModifyService {
         if(client == null){
             throw new IllegalArgumentException("유저를 찾을 수 없습니다.");
         }
-        Client client1 =  client.builder()
+        Client updateClient =  client.builder()
                 .uId(client.getUId())
                 .uName(client.getUName())
                 .uPw(client.getUPw())
-                .uRole(modifyUserDto.getURole())
+                .uPart(client.getUPart())
+                .uRole(client.getURole())
                 .uEmail(modifyUserDto.getUEmail())
                 .userTel(modifyUserDto.getUserTel())
                 .userPhone(modifyUserDto.getUserPhone())
@@ -40,7 +41,7 @@ public class ModifyService {
                 .cpNum(modifyUserDto.getCpNum())
                 .cpAddress(modifyUserDto.getCpAddress())
                 .build();
-        Client savedClient = clientRepository.save(client1);
+        Client savedClient = clientRepository.save(updateClient);
         return modifyUserDto.form(savedClient);
     }
     public void modifyUserPw(String uid, String newPw){

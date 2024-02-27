@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -158,7 +159,7 @@ public class ConsultativeController {
      * @return 배정 받은 번역 의뢰 답변파일 저장
      */
     @PostMapping("/consultative/assignedTranslate/saveFile/{trId}")
-    public ResponseEntity<String> saveTranslationAnswerFile(@RequestPart(name = "files") List<MultipartFile> multipartFiles,
+    public ResponseEntity<String> saveTranslationAnswerFile(@RequestPart(name = "files", required = false) List<MultipartFile> multipartFiles,
                                                             @RequestPart(name = "dto") TranslationAnswerFileRequestDto translationAnswerFileRequestDto,
                                                             @PathVariable Long trId,
                                                             HttpServletRequest request) throws IOException {
@@ -176,14 +177,13 @@ public class ConsultativeController {
         } catch (SizeLimitExceededException e){
             return ResponseEntity.ok().body("파일의 크기가 너무 큽니다.");
         }
-
     }
 
     /**
      * 배정 받은 번역 의뢰 답변파일 수정
      */
     @PutMapping("/consultative/assignedTranslate/updateFile/{trId}")
-    public ResponseEntity<String> updateTranslationAnswerFile(@RequestPart(name = "files") List<MultipartFile> multipartFiles,
+    public ResponseEntity<String> updateTranslationAnswerFile(@RequestPart(name = "files",  required = false) List<MultipartFile> multipartFiles,
                                                               @RequestPart(name = "dto") TranslationAnswerFileRequestDto translationAnswerFileRequestDto,
                                                               @PathVariable Long trId,
                                                               HttpServletRequest request) throws IOException {
